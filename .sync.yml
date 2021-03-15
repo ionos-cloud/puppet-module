@@ -1,0 +1,42 @@
+# This file can be used to customize the files managed by PDK.
+#
+# See https://github.com/puppetlabs/pdk-templates/blob/main/README.md
+# for more information.
+#
+# See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
+# for the default values.
+appveyor.yml:
+  delete: true
+
+.devcontainer/Dockerfile:
+  delete: true
+
+.devcontainer/devcontainer.json:
+  delete: true
+
+.devcontainer/Dockerfile:
+  delete: true
+
+.fixtures.yml:
+  delete: true
+
+.gitlab-ci.yml:
+  delete: true
+
+.yardopts:
+  delete: true
+
+hiera.yaml:
+  delete: true
+
+.travis.yml:
+  unmanaged: true
+
+Gemfile:
+  unmanaged: true
+
+Rakefile:
+  unmanaged: true
+
+spec/spec_helper.rb:
+  unmanaged: true
