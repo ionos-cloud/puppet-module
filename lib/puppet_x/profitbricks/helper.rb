@@ -1,4 +1,6 @@
 require 'profitbricks'
+require 'ionoscloud'
+
 
 module PuppetX
   module Profitbricks
@@ -17,38 +19,50 @@ module PuppetX
           config.headers = Hash.new
           config.headers['User-Agent'] = "Puppet/#{Puppet.version}"
         end
+        Ionoscloud.configure do |config|
+          config.username = ENV['PROFITBRICKS_USERNAME']
+          config.password = ENV['PROFITBRICKS_PASSWORD']
+        end
       end
 
       def self.count_by_name(res_name, items)
-        count = 0
-        unless items.empty?
-          name_key = res_name.strip.downcase
-          items.each do |item|
-            unless item.properties['name'].nil? || item.properties['name'].empty?
-              item_name = item.properties['name'].strip.downcase
-              count += 1 if item_name == name_key
+        begin
+          puts items
+          items.count { |item| res_name.strip.downcase == item.properties.name.strip.downcase }
+        rescue Exception
+          count = 0
+          unless items.empty?
+            name_key = res_name.strip.downcase
+            items.each do |item|
+              unless item.properties['name'].nil? || item.properties['name'].empty?
+                item_name = item.properties['name'].strip.downcase
+                count += 1 if item_name == name_key
+              end
             end
           end
+          count
         end
-        count
       end
 
       def self.resolve_datacenter_id(dc_id, dc_name)
         return dc_id unless dc_id.nil? || dc_id.empty?
         unless dc_name.nil? || dc_name.empty?
-          datacenters = Datacenter.list
-
           Puppet.info("Validating if data center name is unique.")
-          if count_by_name(dc_name, datacenters) > 1
-            fail "Found more than one data center named '#{dc_name}'."
-          end
-
-          datacenters.each do |dc|
-            return dc.id if dc_name.casecmp(dc.properties['name']) == 0
-          end
-          fail "Data center named '#{dc_name}' cannot be found."
+          return datacenter_from_name(dc_name).id
         end
         fail "Data center ID or name must be provided."
+      end
+
+      def self.datacenter_from_name(dc_name)
+        datacenters = Ionoscloud::DataCenterApi.new.datacenters_get({ depth: 1 })
+        dc_count = count_by_name(dc_name, datacenters.items)
+
+        puts [dc_count, dc_name].to_s
+    
+        fail "Found more than one data center named '#{dc_name}'." if dc_count > 1
+        fail "Data center named '#{dc_name}' cannot be found." if dc_count == 0
+    
+        datacenters.items.find { |dc| dc.properties.name == dc_name }
       end
 
       def self.lan_from_name(lan_name, datacenter_id)
@@ -78,6 +92,23 @@ module PuppetX
         user = User.list.find { |user| user.properties['email'] == user_email }
         fail "User with email '#{user_email}' cannot be found." unless user
         user
+      end
+
+      def self.wait_request(headers)
+        begin
+          Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
+        rescue Ionoscloud::ApiError => err
+          puts err
+          exit(1)
+        end
+      end
+
+      def self.get_request_id(headers)
+        begin
+          headers['Location'].scan(%r{/requests/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}).last.first
+        rescue NoMethodError
+          nil
+        end
       end
     end
   end

@@ -6,24 +6,15 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
+    PuppetX::Profitbricks::Helper::profitbricks_config
     super(*args)
   end
 
-  def self.client
-    PuppetX::Profitbricks::Helper::profitbricks_config
-  end
-
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
-
     datacenters = []
-    Datacenter.list.each do |dc|
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.each do |dc|
       # Ignore data centers if name is not defined.
-      unless dc.properties['name'].nil? || dc.properties['name'].empty?
-        hash = instance_to_hash(dc)
-        datacenters << new(hash)
-      end
+      datacenters << new(instance_to_hash(dc)) unless dc.properties.name.nil? || dc.properties.name.empty?
     end
     datacenters.flatten
   end
@@ -39,18 +30,23 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def self.instance_to_hash(instance)
     config = {
       id: instance.id,
-      name: instance.properties['name'],
-      description: instance.properties['description'],
-      location: instance.properties['location'],
-      ensure: :present
+      name: instance.properties.name,
+      description: instance.properties.description,
+      location: instance.properties.location,
+      ensure: :present,
     }
-    config
   end
 
   def description=(value)
-    datacenter = datacenter_from_name(name)
-    Puppet.info("Updating data center '#{name}' description.")
-    datacenter.update(description: value)
+    Puppet.info("Updating data center '#{resource[:name]}' description.")
+
+    datacenter = PuppetX::Profitbricks::Helper::datacenter_from_name(name)
+    changes = Ionoscloud::DatacenterProperties.new(
+      description: value,
+    )
+
+    datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_patch_with_http_info(datacenter.id, changes)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
   end
 
   def exists?
@@ -59,46 +55,28 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   end
 
   def create
-    datacenter = Datacenter.create(
-      name: name,
-      description: resource[:description],
-      location: resource[:location]
+    Puppet.info("Creating a new data center named #{resource[:name]}.")
+
+    datacenter = Ionoscloud::Datacenter.new(
+      properties: Ionoscloud::DatacenterProperties.new(
+        name: resource[:name],
+        description: resource[:description],
+        location: resource[:location],
+      ),
     )
+    datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_post_with_http_info(datacenter)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
 
-    begin
-      datacenter.wait_for(3).wait_for { ready? }
-    rescue StandardError
-      request = request_error(datacenter)
-      if request['status'] == 'FAILED'
-        fail "Failed to create data center: #{request['message']}"
-      end
-    end
-
-    Puppet.info("Creating a new data center named #{name}.")
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    Puppet.info("Deleting data center #{name}.")
-    datacenter = datacenter_from_name(resource[:name])
-    datacenter.delete
-    datacenter.wait_for { ready? }
+    Puppet.info("Deleting data center #{resource[:name]}.")
+
+    datacenter = PuppetX::Profitbricks::Helper::datacenter_from_name(resource[:name])
+    _, _, headers = Ionoscloud::DataCenterApi.new.datacenters_delete_with_http_info(datacenter.id)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
     @property_hash[:ensure] = :absent
-  end
-
-  private
-
-  def request_error(datacenter)
-    Request.get(datacenter.requestId).status.metadata if datacenter.requestId
-  end
-
-  def datacenter_from_name(dc_name)
-    datacenters = Datacenter.list
-    dc_count = PuppetX::Profitbricks::Helper.count_by_name(dc_name, datacenters)
-
-    fail "Found more than one data center named '#{dc_name}'." if dc_count > 1
-    fail "Data center named '#{dc_name}' cannot be found." if dc_count == 0
-
-    datacenters.find { |dc| dc.properties['name'] == dc_name }
   end
 end

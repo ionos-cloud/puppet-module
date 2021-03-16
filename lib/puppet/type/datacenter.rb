@@ -13,6 +13,9 @@ Puppet::Type.newtype(:datacenter) do
 
   newproperty(:description) do
     desc 'The data center description.'
+    validate do |value|
+      fail('Data center description must be a String') unless value.is_a?(String)
+    end
   end
 
   # read-only properties
