@@ -27,7 +27,6 @@ module PuppetX
 
       def self.count_by_name(res_name, items)
         begin
-          puts items
           items.count { |item| res_name.strip.downcase == item.properties.name.strip.downcase }
         rescue Exception
           count = 0
@@ -56,8 +55,6 @@ module PuppetX
       def self.datacenter_from_name(dc_name)
         datacenters = Ionoscloud::DataCenterApi.new.datacenters_get({ depth: 1 })
         dc_count = count_by_name(dc_name, datacenters.items)
-
-        puts [dc_count, dc_name].to_s
     
         fail "Found more than one data center named '#{dc_name}'." if dc_count > 1
         fail "Data center named '#{dc_name}' cannot be found." if dc_count == 0
