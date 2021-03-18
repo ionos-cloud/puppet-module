@@ -68,12 +68,9 @@ Puppet::Type.type(:server).provide(:v1) do
       availability_zone: instance.properties.availability_zone,
       boot_volume: boot_volume_name,
       ensure: state,
+      volumes: volumes,
+      nics: nics,
     }
-    config[:volumes] = volumes unless volumes.empty?
-    config[:nics] = nics unless nics.empty?
-    puts config
-    config
-    
   end
 
   def cores=(value)
@@ -124,7 +121,11 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def config_with_volumes(volumes)
-    mappings = volumes.map do |volume|
+    if volumes.nil?
+      return []
+    end
+
+    volumes.map do |volume|
       config = {
         name: volume['name'],
         size: volume['size'],
@@ -152,13 +153,15 @@ Puppet::Type.type(:server).provide(:v1) do
       Ionoscloud::Volume.new(
         properties: Ionoscloud::VolumeProperties.new(**config),
       )
-
     end
-    mappings unless mappings.empty?
   end
 
   def config_with_fwrules(fwrules)
-    mappings = fwrules.map do |fwrule|
+    if fwrules.nil?
+      return []
+    end
+
+    fwrules.map do |fwrule|
       Ionoscloud::FirewallRule.new(
         properties: Ionoscloud::FirewallruleProperties.new(
           name: fwrule['name'],
@@ -173,44 +176,38 @@ Puppet::Type.type(:server).provide(:v1) do
         ),
       )
     end
-    mappings unless mappings.empty?
   end
 
   def config_with_nics(nics)
-    mappings = nics.map do |nic|
-      if nic.key?('firewall_rules')
-        fwrules = config_with_fwrules(nic['firewall_rules'])
-      end
+    if nics.nil?
+      return []
+    end
+
+    nics.map do |nic|
       lan = PuppetX::Profitbricks::Helper::lan_from_name(
         nic['lan'],
         PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
       )
-      config = {
+
+      Ionoscloud::Nic.new(
         properties: Ionoscloud::NicProperties.new(
           name: nic['name'],
           ips: nic['ips'],
           dhcp: nic['dhcp'],
           lan: lan.id,
           nat: nic['nat']
-        )
-      }
-
-      if fwrules
-        config[:entities] = Ionoscloud::NicEntities.new(
+        ),
+        entities: Ionoscloud::NicEntities.new(
           firewallrules: Ionoscloud::FirewallRules.new(
-            items: fwrules,
+            items: config_with_fwrules(nic['firewall_rules']),
           ),
-        )
-      end
-
-      Ionoscloud::Nic.new(**config)
+        ),
+      )
     end
-    mappings unless mappings.empty?
   end
 
   def exists?
     Puppet.info("Checking if server #{name} exists")
-    puts [running?, stopped?, @property_hash].to_s
     running? || stopped?
   end
 
@@ -287,14 +284,14 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def destroy
-    puts 'cea'
+    puts 'distrugere'
     datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:name], datacenter_id).id
     destroy_volumes(datacenter_id, server_id) if !resource[:purge_volumes].nil? && resource[:purge_volumes].to_s == 'true'
 
     Puppet.info("Deleting server #{name}.")
 
-    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_delete_with_http_info(config[:datacenter_id], server_id)
+    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_delete_with_http_info(datacenter_id, server_id)
     PuppetX::Profitbricks::Helper::wait_request(headers)
 
     @property_hash[:ensure] = :absent
