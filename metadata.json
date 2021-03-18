@@ -1,19 +1,67 @@
 {
   "name": "profitbricks-profitbricks",
   "version": "1.6.0",
-  "author": "Ethan Devenport",
+  "author": "IONOS Cloud",
+  "summary": "Manage ProfitBricks cloud environment with Puppet",
   "license": "Apache-2.0",
   "source": "git://github.com/profitbricks/profitbricks-puppet",
-  "summary": "Manage ProfitBricks cloud environment with Puppet",
-  "description": "Manage ProfitBricks cloud environment with Puppet",
   "project_page": "https://github.com/profitbricks/profitbricks-puppet",
   "issues_url": "https://github.com/profitbricks/profitbricks-puppet/issues",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "10"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04"
+      ]
+    },
+    {
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "2019",
+        "10"
+      ]
+    }
+  ],
   "requirements": [
     {
       "name": "puppet",
       "version_requirement": ">= 3.3.0"
     }
   ],
-  "dependencies": [
-  ]
+  "pdk-version": "2.0.0",
+  "template-url": "pdk-default#2.0.0",
+  "template-ref": "tags/2.0.0-0-ge838f1d"
 }
