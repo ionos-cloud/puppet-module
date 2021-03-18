@@ -8,6 +8,7 @@ Puppet::Type.type(:server).provide(:v1) do
   def initialize(*args)
     PuppetX::Profitbricks::Helper::profitbricks_config()
     super(*args)
+    @property_flush = {}
   end
 
   def self.instances
@@ -74,50 +75,55 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def cores=(value)
-    server = PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+    @property_flush[:cores] = value
+    # server = PuppetX::Profitbricks::Helper::server_from_name(name,
+    #   PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
 
-    Puppet.info("Updating server '#{name}', cores.")
-    server.update(cores: value)
-    server.wait_for { ready? }
+    # Puppet.info("Updating server '#{name}', cores.")
+    # server.update(cores: value)
+    # server.wait_for { ready? }
   end
 
   def cpu_family=(value)
-    server = PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+    @property_flush[:cpu_family] = value
+    # server = PuppetX::Profitbricks::Helper::server_from_name(name,
+    #   PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
 
-    Puppet.info("Updating server '#{name}', CPU family.")
-    server.update(cpuFamily: value, allowReboot: true)
-    server.wait_for { ready? }
+    # Puppet.info("Updating server '#{name}', CPU family.")
+    # server.update(cpuFamily: value, allowReboot: true)
+    # server.wait_for { ready? }
   end
 
   def ram=(value)
-    server = PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+    @property_flush[:ram] = value
+    # server = PuppetX::Profitbricks::Helper::server_from_name(name,
+    #   PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
 
-    Puppet.info("Updating server '#{name}', RAM.")
-    server.update(ram: value)
-    server.wait_for { ready? }
+    # Puppet.info("Updating server '#{name}', RAM.")
+    # server.update(ram: value)
+    # server.wait_for { ready? }
   end
 
   def availability_zone=(value)
-    server = PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+    @property_flush[:availability_zone] = value
+    # server = PuppetX::Profitbricks::Helper::server_from_name(name,
+    #   PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
 
-    Puppet.info("Updating server '#{name}', availability zone.")
-    server.update(availabilityZone: value)
-    server.wait_for { ready? }
+    # Puppet.info("Updating server '#{name}', availability zone.")
+    # server.update(availabilityZone: value)
+    # server.wait_for { ready? }
   end
 
   def boot_volume=(value)
-    server = PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+    @property_flush[:boot_volume] = value
+    # server = PuppetX::Profitbricks::Helper::server_from_name(name,
+    #   PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
 
-    volume = server.list_volumes.find { |volume| volume.properties['name'] == value }
+    # volume = server.list_volumes.find { |volume| volume.properties['name'] == value }
 
-    Puppet.info("Updating server '#{name}', boot volume.")
-    server.update(bootVolume: { id: volume.id })
-    server.wait_for { ready? }
+    # Puppet.info("Updating server '#{name}', boot volume.")
+    # server.update(bootVolume: { id: volume.id })
+    # server.wait_for { ready? }
   end
 
   def config_with_volumes(volumes)
@@ -258,10 +264,24 @@ Puppet::Type.type(:server).provide(:v1) do
     end
   end
 
+  def flush
+    changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
+    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
+    
+    if !changes.empty?
+      Puppet.info("Updating server '#{name}', #{changes.keys.to_s}.")
+      
+      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+      server_id = PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id
+      datacenter, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
+      PuppetX::Profitbricks::Helper::wait_request(headers)
+    end
+  end
+
   def restart
     Puppet.info("Restarting server #{name}")
 
-    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]).id
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_reboot_post_with_http_info(
       datacenter_id, PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id,
     )
@@ -274,7 +294,7 @@ Puppet::Type.type(:server).provide(:v1) do
     create unless exists?
     Puppet.info("Stopping server #{name}")
 
-    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]).id
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_stop_post_with_http_info(
       datacenter_id, PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id,
     )
@@ -284,7 +304,6 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def destroy
-    puts 'distrugere'
     datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:name], datacenter_id).id
     destroy_volumes(datacenter_id, server_id) if !resource[:purge_volumes].nil? && resource[:purge_volumes].to_s == 'true'

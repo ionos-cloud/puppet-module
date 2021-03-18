@@ -46,9 +46,9 @@ lan { 'public' :
 
 server { 'frontend' :
   ensure => present,
-  cores => 1,
+  cores => 2,
   datacenter_name => 'myDataCenter2',
-  ram => 1024,
+  ram => 2048,
   volumes => [
     {
       name => 'system',
