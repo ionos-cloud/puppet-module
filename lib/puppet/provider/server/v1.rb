@@ -6,24 +6,17 @@ Puppet::Type.type(:server).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
+    PuppetX::Profitbricks::Helper::profitbricks_config()
     super(*args)
   end
 
-  def self.client
-    PuppetX::Profitbricks::Helper::profitbricks_config(3)
-  end
-
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config(3)
-
-    Datacenter.list.map do |datacenter|
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       servers = []
       # Ignore data center if name is not defined.
-      unless datacenter.properties['name'].nil? || datacenter.properties['name'].empty?
-        Server.list(datacenter.id).each do |server|
-          hash = instance_to_hash(server, datacenter)
-          servers << new(hash)
+      unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
+        Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 3).items.each do |server|
+          servers << new(instance_to_hash(server, datacenter))
         end
       end
       servers
@@ -41,15 +34,15 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
-    volumes = instance.list_volumes.map do |mapping|
-      { :name => mapping.properties['name'] }
+    volumes = instance.entities.volumes.items.map do |mapping|
+      { name: mapping.properties.name }
     end
 
-    nics = instance.list_nics.map do |mapping|
-      { :name => mapping.properties['name'] }
+    nics = instance.entities.nics.items.map do |mapping|
+      { name: mapping.properties.name }
     end
 
-    instance_state = instance.properties['vmState']
+    instance_state = instance.properties.vm_state
     if ['SHUTOFF', 'SHUTDOWN', 'CRASHED'].include?(instance_state)
       state = :stopped
     else
@@ -57,28 +50,30 @@ Puppet::Type.type(:server).provide(:v1) do
     end
 
     boot_volume_name = ''
-    unless instance.properties['bootVolume'].nil?
-      boot_volume_id = instance.properties['bootVolume']['id']
-      instance.entities['volumes']['items'].map do |volume|
-        boot_volume_name = volume['properties']['name'] if volume['id'] == boot_volume_id
+    unless instance.properties.boot_volume.nil?
+      boot_volume_id = instance.properties.boot_volume.id
+      instance.entities.volumes.items.map do |volume|
+        boot_volume_name = volume.properties.name if volume.id == boot_volume_id
       end
     end
 
     config = {
-      :id => instance.id,
-      :datacenter_id => instance.datacenterId,
-      :datacenter_name => datacenter.properties['name'],
-      :name => instance.properties['name'],
-      :cores => instance.properties['cores'],
-      :cpu_family => instance.properties['cpuFamily'],
-      :ram => instance.properties['ram'],
-      :availability_zone => instance.properties['availabilityZone'],
-      :boot_volume => boot_volume_name,
-      :ensure => state
+      id: instance.id,
+      datacenter_id: datacenter.id,
+      datacenter_name: datacenter.properties.name,
+      name: instance.properties.name,
+      cores: instance.properties.cores,
+      cpu_family: instance.properties.cpu_family,
+      ram: instance.properties.ram,
+      availability_zone: instance.properties.availability_zone,
+      boot_volume: boot_volume_name,
+      ensure: state,
     }
     config[:volumes] = volumes unless volumes.empty?
     config[:nics] = nics unless nics.empty?
+    puts config
     config
+    
   end
 
   def cores=(value)
@@ -131,32 +126,52 @@ Puppet::Type.type(:server).provide(:v1) do
   def config_with_volumes(volumes)
     mappings = volumes.map do |volume|
       config = {
-        :name => volume['name'],
-        :size => volume['size'],
-        :bus => volume['bus'],
-        :type => volume['volume_type'] || 'HDD',
-        :imagePassword => volume['image_password'],
-        :availabilityZone => volume['availability_zone']
+        name: volume['name'],
+        size: volume['size'],
+        bus: volume['bus'],
+        type: volume['volume_type'] || 'HDD',
+        availability_zone: volume['availability_zone'],
       }
-      assign_ssh_keys(config, volume)
-      assign_image_or_licence(config, volume)
+
+      if volume.key?('image_password')
+        config[:image_password] = volume['image_password']
+      elsif volume.key?('ssh_keys')
+        config[:sshKeys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
+      else
+        fail('Volume must have either image_password or ssh_keys defined.')
+      end
+
+      if volume.key?('image_id')
+        config[:image] = volume['image_id']
+      elsif volume.key?('image_alias')
+        config[:image_alias] = volume['image_alias']
+      else
+        fail('Volume must have either image_id or image_alias defined.')
+      end
+
+      Ionoscloud::Volume.new(
+        properties: Ionoscloud::VolumeProperties.new(**config),
+      )
+
     end
     mappings unless mappings.empty?
   end
 
   def config_with_fwrules(fwrules)
     mappings = fwrules.map do |fwrule|
-      {
-        :name => fwrule['name'],
-        :protocol => fwrule['protocol'],
-        :sourceMac => fwrule['source_mac'],
-        :sourceIp => fwrule['source_ip'],
-        :targetIp => fwrule['target_ip'],
-        :portRangeStart => fwrule['port_range_start'],
-        :portRangeEnd => fwrule['port_range_end'],
-        :icmpType => fwrule['icmp_type'],
-        :icmpCode => fwrule['icmp_code']
-      }
+      Ionoscloud::FirewallRule.new(
+        properties: Ionoscloud::FirewallruleProperties.new(
+          name: fwrule['name'],
+          protocol: fwrule['protocol'],
+          source_mac: fwrule['source_mac'],
+          source_ip: fwrule['source_ip'],
+          target_ip: fwrule['target_ip'],
+          port_range_start: fwrule['port_range_start'],
+          port_range_end: fwrule['port_range_end'],
+          icmp_type: fwrule['icmp_type'],
+          icmp_code: fwrule['icmp_code'],
+        ),
+      )
     end
     mappings unless mappings.empty?
   end
@@ -166,24 +181,36 @@ Puppet::Type.type(:server).provide(:v1) do
       if nic.key?('firewall_rules')
         fwrules = config_with_fwrules(nic['firewall_rules'])
       end
-      if nic.key?('lan')
-        lan = PuppetX::Profitbricks::Helper::lan_from_name(nic['lan'],
-          PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
-      end
-      {
-        :name => nic['name'],
-        :ips => nic['ips'],
-        :dhcp => nic['dhcp'],
-        :lan => lan.id,
-        :firewallrules => fwrules,
-        :nat => nic['nat']
+      lan = PuppetX::Profitbricks::Helper::lan_from_name(
+        nic['lan'],
+        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
+      )
+      config = {
+        properties: Ionoscloud::NicProperties.new(
+          name: nic['name'],
+          ips: nic['ips'],
+          dhcp: nic['dhcp'],
+          lan: lan.id,
+          nat: nic['nat']
+        )
       }
+
+      if fwrules
+        config[:entities] = Ionoscloud::NicEntities.new(
+          firewallrules: Ionoscloud::FirewallRules.new(
+            items: fwrules,
+          ),
+        )
+      end
+
+      Ionoscloud::Nic.new(**config)
     end
     mappings unless mappings.empty?
   end
 
   def exists?
     Puppet.info("Checking if server #{name} exists")
+    puts [running?, stopped?, @property_hash].to_s
     running? || stopped?
   end
 
@@ -202,50 +229,33 @@ Puppet::Type.type(:server).provide(:v1) do
     if stopped?
       restart
     else
-      if resource.propertydefined?(:volumes)
-        volumes = config_with_volumes(
-          resource[:volumes]
-        )
-      end
-
-      if resource.propertydefined?(:nics)
-        nics = config_with_nics(
-          resource[:nics]
-        )
-      end
-
-      server = Server.create(
-        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-        {:name => name,
-        :cores => resource[:cores],
-        :cpuFamily => resource[:cpu_family],
-        :ram => resource[:ram],
-        :availabilityZone => resource[:availability_zone],
-        :volumes => volumes,
-        :nics => nics}
+      server = Ionoscloud::Server.new(
+        properties: Ionoscloud::ServerProperties.new(
+          name: resource[:name],
+          cores: resource[:cores],
+          cpu_family: resource[:cpu_family],
+          ram: resource[:ram],
+          availability_zone: resource[:availability_zone].to_s,
+          boot_volume: resource[:boot_volume],
+        ),
+        entities: Ionoscloud::ServerEntities.new(
+          volumes: Ionoscloud::Volumes.new(
+            items: config_with_volumes(resource[:volumes]),
+          ),
+          nics: Ionoscloud::Nics.new(
+            items: config_with_nics(resource[:nics]),
+          ),
+        ),
       )
 
-      begin
-        server.wait_for { ready? }
-      rescue StandardError
-        request = request_error(server)
-        if request['status'] == 'FAILED'
-          fail "Failed to create server: #{request['message']}"
-        end
-      end
+      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(
+        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
+        server,
+      )
+      PuppetX::Profitbricks::Helper::wait_request(headers)
 
       Puppet.info("Server '#{name}' has been created.")
       @property_hash[:ensure] = :present
-
-      unless resource[:boot_volume].nil? 
-        volumes = server.list_volumes
-        if volumes.length > 1
-          boot_volume = volumes.find { |volume| volume.properties['name'] == resource[:boot_volume] }
-          Puppet.info("Setting boot volume for the server.")
-          server.update(bootVolume: { id: boot_volume.id })
-          server.wait_for { ready? }
-        end
-      end
 
       @property_hash[:id] = server.id
     end
@@ -253,65 +263,57 @@ Puppet::Type.type(:server).provide(:v1) do
 
   def restart
     Puppet.info("Restarting server #{name}")
-    PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])).reboot
+
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]).id
+    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_reboot_post_with_http_info(
+      datacenter_id, PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id,
+    )
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+      
     @property_hash[:ensure] = :present
   end
 
   def stop
     create unless exists?
     Puppet.info("Stopping server #{name}")
-    PuppetX::Profitbricks::Helper::server_from_name(name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])).stop
+
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]).id
+    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_stop_post_with_http_info(
+      datacenter_id, PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id,
+    )
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
     @property_hash[:ensure] = :stopped
   end
 
   def destroy
-    server = PuppetX::Profitbricks::Helper::server_from_name(resource[:name],
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
-    destroy_volumes(server.list_volumes) if !resource[:purge_volumes].nil? && resource[:purge_volumes].to_s == 'true'
+    puts 'cea'
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:name], datacenter_id).id
+    destroy_volumes(datacenter_id, server_id) if !resource[:purge_volumes].nil? && resource[:purge_volumes].to_s == 'true'
+
     Puppet.info("Deleting server #{name}.")
-    server.delete
-    server.wait_for { ready? }
+
+    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_delete_with_http_info(config[:datacenter_id], server_id)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
     @property_hash[:ensure] = :absent
   end
 
-  def destroy_volumes(volumes)
-    volumes.each do |volume|
-      Puppet.info("Deleting volume #{volume.properties['name']}")
-      volume.delete
-      volume.wait_for { ready? }
-    end
-  end
+  def destroy_volumes(datacenter_id, server_id)
+    headers_list = []
 
-  private
+    Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
+      datacenter_id,
+      server_id,
+      depth: 1,
+    ).each do |volume|
+      Puppet.info("Deleting volume #{volume.properties.name}")
 
-  def request_error(server)
-    Request.get(server.requestId).status.metadata if server.requestId
-  end
-
-  def assign_ssh_keys(config, volume)
-    if volume.key?('ssh_keys')
-      ssh_keys = volume['ssh_keys']
-      ssh_keys = ssh_keys.is_a?(Array) ? ssh_keys : [ssh_keys]
-      config.merge!(sshKeys: ssh_keys)
-    end
-  end
-
-  def assign_image_or_licence(config, volume)
-    if volume.key?('image_id')
-      config[:image] = volume['image_id']
-    elsif volume.key?('image_alias')
-      config[:imageAlias] = volume['image_alias']
-    elsif volume.key?('licence_type')
-      config[:licenceType] = volume['licence_type']
-    else
-      fail('Volume must have either image_id, image_alias or licence_type defined.')
+      _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_delete_with_http_info(datacenter_id, volume.id)
+      headers_list << headers
     end
 
-    if volume.key?('image_password')
-      config[:imagePassword] = volume['image_password']
-    end
-    config
+    headers_list.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }
   end
 end
