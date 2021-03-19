@@ -20,8 +20,7 @@ describe provider_class do
       vol1['bus'] = 'VIRTIO'
       vol1['volume_type'] = 'SSD'
       vol1['availability_zone'] = 'AUTO'
-      # Ubuntu-16.04-LTS-server-2017-10-01
-      vol1['image_id'] = '1871dd47-a671-11e7-90a7-525400f64d8d'
+      vol1['image_alias'] = 'ubuntu:latest'
       vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
       vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
@@ -31,8 +30,7 @@ describe provider_class do
       vol2['bus'] = 'VIRTIO'
       vol2['volume_type'] = 'HDD'
       vol2['availability_zone'] = 'ZONE_3'
-      # CentOS-7-server-2017-10-01
-      vol2['image_id'] = '34e8ad2e-a65e-11e7-90a7-525400f64d8d'
+      vol2['image_alias'] = 'ubuntu:latest'
       vol2['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
       vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
@@ -95,6 +93,7 @@ describe provider_class do
     it 'should update boot volume' do
       VCR.use_cassette('server_update_boot_volume') do
         @provider2.boot_volume = 'Puppet Module Test 2'
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
@@ -106,6 +105,7 @@ describe provider_class do
     it 'should update RAM' do
       VCR.use_cassette('server_update_ram') do
         @provider2.ram = 2048
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
@@ -117,6 +117,7 @@ describe provider_class do
     it 'should update cores' do
       VCR.use_cassette('server_update_cores') do
         @provider2.cores = 2
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
@@ -128,6 +129,7 @@ describe provider_class do
     it 'should update CPU family' do
       VCR.use_cassette('server_update_cpu_family') do
         @provider2.cpu_family = 'AMD_OPTERON'
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
@@ -139,6 +141,7 @@ describe provider_class do
     it 'should update availability zone' do
       VCR.use_cassette('server_update_availabilty_zone') do
         @provider1.availability_zone = 'AUTO'
+        @provider1.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test'

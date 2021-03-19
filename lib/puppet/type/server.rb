@@ -122,15 +122,18 @@ Puppet::Type.newtype(:server) do
       volumes = value.is_a?(Array) ? value : [value]
       fail('A single volume is supported at this time') unless volumes.count <= 1
       volumes.each do |volume|
-        ['name', 'size', 'volume_type'].each do |key|
-          fail("Volume must include #{key}") unless value.keys.include?(key)
+        if !volume.keys.include?('id')
+          ['name', 'size', 'volume_type'].each do |key|
+            fail("Volume must include #{key}") unless volume.keys.include?(key)
+          end
         end
       end
     end
 
     def insync?(is)
-      existing_volumes = is.collect { |volume| volume[:name] } 
-      specified_volumes = should.collect { |volume| volume['name'] }
+      existing_volumes = is.collect { |volume| [ volume[:name], Integer(volume[:size]), volume[:id] ] } 
+      specified_volumes = should.collect { |volume| [ volume['name'], Integer(volume['size']), volume['id'] ] }
+      puts [existing_volumes, specified_volumes].to_s
       existing_volumes.to_set == specified_volumes.to_set
     end
   end

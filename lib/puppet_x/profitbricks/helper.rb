@@ -91,13 +91,28 @@ module PuppetX
         user
       end
 
+      def self.update_volume(datacenter_id, volume_id, current, result, wait = false)
+        changeable_properties = [:size]
+
+        changes = Hash[*changeable_properties.collect {|v| [ v, result[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+
+        return nil unless !changes.empty?
+
+        puts ['facem call update!', changes].to_s
+        
+        _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
+
+        wait_request(headers) unless !wait
+
+        return headers
+      end
+
       def self.wait_request(headers)
-        begin
-          Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
-        rescue Ionoscloud::ApiError => err
-          puts err
-          exit(1)
-        end
+        # begin
+        Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
+        # rescue Ionoscloud::ApiError => err
+        #   fail err.message
+        # end
       end
 
       def self.get_request_id(headers)
