@@ -94,6 +94,8 @@ module PuppetX
       def self.update_volume(datacenter_id, volume_id, current, result, wait = false)
         changeable_properties = [:size]
 
+        puts [current, result].to_s
+
         changes = Hash[*changeable_properties.collect {|v| [ v, result[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
 
         return nil unless !changes.empty?

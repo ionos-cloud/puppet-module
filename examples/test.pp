@@ -4,10 +4,10 @@
 #   ensure      => present,
 #   location    => 'us/las',
 # },
-#   datacenter { 'myDataCenter2' :
-#   ensure      => present,
-#   location    => 'us/las',
-# },
+  datacenter { 'myDataCenter2' :
+  ensure      => present,
+  location    => 'us/las',
+},
 
 # server { 'worker1' :
 #   ensure => present,
@@ -46,20 +46,30 @@ lan { 'public' :
 
 server { 'frontend2' :
   ensure => present,
-  cores => 2,
+  cores => 1,
   datacenter_name => 'myDataCenter2',
-  ram => 2048,
-  # volumes => [
-  #   {
-  #     id => '24256682-9c4a-488e-b01b-462601baec8b',
-  #     size => 10,
-  #     bus => 'VIRTIO',
-  #     volume_type => 'SSD',
-  #     image_alias => 'ubuntu:latest',
-  #     image_password => 'secretpassword2015',
-  #     availability_zone => 'AUTO',
-  #   }
-  # ],
+  ram => 1024,
+  boot_volume => 'data2',
+  volumes => [
+    { 
+      name => 'data',
+      size => 10,
+      bus => 'VIRTIO',
+      volume_type => 'SSD',
+      image_alias => 'ubuntu:latest',
+      image_password => 'secretpassword2015',
+      availability_zone => 'AUTO',
+    },
+    { 
+      name => 'data2',
+      size => 10,
+      bus => 'VIRTIO',
+      volume_type => 'SSD',
+      image_alias => 'ubuntu:latest',
+      image_password => 'secretpassword2015',
+      availability_zone => 'AUTO',
+    }
+  ],
   # nics => [
   #   {
   #     name => 'public',

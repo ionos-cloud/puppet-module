@@ -111,7 +111,6 @@ Puppet::Type.type(:server).provide(:v1) do
         puts ['test', existing_ids].to_s
         if existing_ids.include? desired_volume['id']
           existing_volume = @property_hash[:volumes].find { |volume| volume[:id] == desired_volume['id'] }
-
           puts ['update', existing_volume, desired_volume].to_s
           headers =  PuppetX::Profitbricks::Helper::update_volume(
             @property_hash[:datacenter_id], existing_volume[:id], existing_volume, desired_volume,
@@ -131,7 +130,7 @@ Puppet::Type.type(:server).provide(:v1) do
       elsif desired_volume['name']
         puts ['test nume', existing_names].to_s
         if existing_names.include? desired_volume['name']
-          existing_volume = @property_hash[:volumes].find { |volume| volume[:id] == desired_volume['id'] }
+          existing_volume = @property_hash[:volumes].find { |volume| volume[:name] == desired_volume['name'] }
 
           puts ['update', existing_volume, desired_volume].to_s
           headers =  PuppetX::Profitbricks::Helper::update_volume(
@@ -329,9 +328,16 @@ Puppet::Type.type(:server).provide(:v1) do
     
     if !changes.empty?
       Puppet.info("Updating server '#{name}', #{changes.keys.to_s}.")
+      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+      server_id = PuppetX::Profitbricks::Helper::server_from_name(name, datacenter_id).id
+      if changes[:boot_volume]
+        volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(datacenter_id, server_id, depth: 1).items.find { |volume| volume.properties.name == changes[:boot_volume] }
+        changes[:boot_volume] = { id: volume.id }
+      end
+      changes = Ionoscloud::ServerProperties.new(**changes)
 
-      server_id = PuppetX::Profitbricks::Helper::server_from_name(name, @property_hash[:datacenter_id]).id
-      datacenter, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(@property_hash[:datacenter_id], server_id, changes)
+      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
+
       PuppetX::Profitbricks::Helper::wait_request(headers)
     end
   end

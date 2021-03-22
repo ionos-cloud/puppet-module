@@ -120,7 +120,7 @@ Puppet::Type.newtype(:server) do
     desc 'A list of volumes to associate with the server.'
     validate do |value|
       volumes = value.is_a?(Array) ? value : [value]
-      fail('A single volume is supported at this time') unless volumes.count <= 1
+      # fail('A single volume is supported at this time') unless volumes.count <= 1
       volumes.each do |volume|
         if !volume.keys.include?('id')
           ['name', 'size', 'volume_type'].each do |key|
