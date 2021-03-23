@@ -195,43 +195,28 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def nics=(value)
-    existing_ids = @property_hash[:nics].map { |nic| nic[:id] }
     existing_names = @property_hash[:nics].map { |nic| nic[:name] }
 
-    to_delete = existing_ids
+    to_delete = @property_hash[:nics].map { |nic| nic[:id] }
     to_wait = []
     to_wait_create = []
 
     value.each do |desired_nic|
-      if desired_nic['id']
-        if existing_ids.include? desired_nic['id']
-          existing_nic = @property_hash[:nics].find { |volume| volume[:id] == desired_nic['id'] }
-          headers =  PuppetX::Profitbricks::Helper::update_nic(
-            @property_hash[:datacenter_id], @property_hash[:id], existing_nic[:id], existing_nic, desired_nic,
-          )
-          
-          to_wait << headers unless headers.nil?
-          to_delete.delete(existing_nic[:id])
-        else
-          fail "Invalid NIC ID #{desired_nic['id']}"
-        end
-      elsif desired_nic['name']
-        if existing_names.include? desired_nic['name']
-          existing_nic = @property_hash[:nics].find { |volume| volume[:name] == desired_nic['name'] }
-          headers =  PuppetX::Profitbricks::Helper::update_nic(
-            @property_hash[:datacenter_id], @property_hash[:id], existing_nic[:id], existing_nic, desired_nic,
-          )
-          
-          to_wait << headers unless headers.nil?
-          to_delete.delete(existing_nic[:id])
-        else
-          puts "Creating NIC #{desired_nic} in server #{@property_hash[:name]}"
+      if existing_names.include? desired_nic['name']
+        existing_nic = @property_hash[:nics].find { |volume| volume[:name] == desired_nic['name'] }
+        headers =  PuppetX::Profitbricks::Helper::update_nic(
+          @property_hash[:datacenter_id], @property_hash[:id], existing_nic[:id], existing_nic, desired_nic,
+        )
+        
+        to_wait += headers unless headers.empty?
+        to_delete.delete(existing_nic[:id])
+      else
+        puts "Creating NIC #{desired_nic} in server #{@property_hash[:name]}"
 
-          volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
-            @property_hash[:datacenter_id], @property_hash[:id], nic_object_from_hash(desired_nic),
-          )
-          to_wait << headers
-        end
+        volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
+          @property_hash[:datacenter_id], @property_hash[:id], nic_object_from_hash(desired_nic),
+        )
+        to_wait << headers
       end
     end
 

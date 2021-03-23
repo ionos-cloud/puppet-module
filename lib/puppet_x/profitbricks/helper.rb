@@ -96,7 +96,7 @@ module PuppetX
         return nil unless !changes.empty?
 
         puts ['facem call update!', changes].to_s
-        
+
         _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
         wait_request(headers) unless !wait
 
@@ -104,16 +104,81 @@ module PuppetX
       end
 
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
+        firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
+
         target['lan'] = Integer(lan_from_name(target['lan'], datacenter_id).id) unless target['lan'].nil?
         changes = Hash[*[:ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
-        return nil unless !changes.empty?
+        return firewallrules_headers unless !changes.empty?
 
         puts "Updating NIC #{current[:name]} with #{changes}"
-        
-        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
-        wait_request(headers) unless !wait
 
-        return headers
+        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
+
+
+
+        all_headers = firewallrules_headers
+        all_headers << headers
+
+        all_headers.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) } unless !wait
+
+        return all_headers
+      end
+
+      def self.sync_firewallrules(datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules, wait = false)
+        return nil unless !target_firewallrules.nil?
+
+        puts [datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules].to_s
+
+        existing_names = existing_firewallrules.map { |firewallrule| firewallrule[:name] }
+
+        to_delete = existing_firewallrules.map { |firewallrule| firewallrule[:id] }
+        to_wait = []
+        to_wait_create = []
+
+        target_firewallrules.each do |desired_firewallrule|
+          if existing_names.include? desired_firewallrule['name']
+            existing_firewallrule = existing_firewallrules.find { |volume| volume[:name] == desired_firewallrule['name'] }
+            headers =  update_firewallrule(
+              datacenter_id, server_id, nic_id, existing_firewallrule[:id], existing_firewallrule, desired_firewallrule,
+            )
+
+            to_wait << headers unless headers.nil?
+            to_delete.delete(existing_firewallrule[:id])
+          else
+            puts "Creating FirewallRule #{desired_firewallrule}"
+
+            firewallrule = Ionoscloud::FirewallRule.new(
+              properties: Ionoscloud::FirewallruleProperties.new(
+                name: desired_firewallrule['name'],
+                protocol: desired_firewallrule['protocol'],
+                source_mac: desired_firewallrule['source_mac'],
+                source_ip: desired_firewallrule['source_ip'],
+                target_ip: desired_firewallrule['target_ip'],
+                port_range_start: desired_firewallrule['port_range_start'],
+                port_range_end: desired_firewallrule['port_range_end'],
+                icmp_type: desired_firewallrule['icmp_type'],
+                icmp_code: desired_firewallrule['icmp_code'],
+              ),
+            )
+
+            volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+              datacenter_id, server_id, nic_id, nic_object_from_hash(firewallrule),
+            )
+            to_wait << headers
+          end
+        end
+
+        puts(['to_delete', to_delete].to_s)
+
+        to_delete.each do |firewallrule_id|
+          puts "Deleting FirewallRule #{firewallrule_id}"
+          _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules, delete_with_http_info(
+            datacenter_id, server_id, nic_id, firewallrule_id,
+          )
+          to_wait << headers
+        end
+
+        return to_wait
       end
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
@@ -122,7 +187,7 @@ module PuppetX
         return nil unless !changes.empty?
 
         puts "Updating Firewall Rule #{current[:name]} with #{changes}"
-        
+
         _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
           datacenter_id, server_id, nic_id, firewallrule_id, changes,
         )

@@ -131,10 +131,11 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      fields_to_check = [:name, :size, :id]
-      existing_volumes = is.collect { |volume| fields_to_check.collect { |field| volume[field] } }
-      specified_volumes = should.collect { |volume| fields_to_check.collect { |field| volume[field.to_s] } }
-      existing_volumes.to_set == specified_volumes.to_set
+      # fields_to_check = [:name, :size, :id]
+      # existing_volumes = is.collect { |volume| fields_to_check.collect { |field| volume[field] } }
+      # specified_volumes = should.collect { |volume| fields_to_check.collect { |field| volume[field.to_s] } }
+      # existing_volumes.to_set == specified_volumes.to_set
+      false
     end
   end
 
@@ -163,10 +164,13 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      # existing_nics = is.collect { |nic| nic[:name] }
-      # specified_nics = should.collect { |nic| nic['name'] }
+      # fields_to_check = [:name, :ips, :dhcp, :nat, :lan, :firewall_rules]
+      # existing_nics = is.collect { |nic| fields_to_check.collect { |field| nic[field] } }
+      # existing_nics.sort! { |a,b| a.first <=> b.first }
+      # specified_nics = should.collect { |nic| fields_to_check.collect { |field| nic[field.to_s] } }
+      # specified_nics.sort! { |a,b| a.first <=> b.first }
+      # puts ['compare', existing_nics, specified_nics].to_s
       # existing_nics.to_set == specified_nics.to_set
-
       false
     end
   end
