@@ -16,7 +16,7 @@ Puppet::Type.type(:server).provide(:v1) do
       servers = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 3).items.each do |server|
+        Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.each do |server|
           servers << new(instance_to_hash(server, datacenter))
         end
       end
@@ -35,16 +35,37 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
-    volumes = instance.entities.volumes.items.map do |mapping|
+    volumes = instance.entities.volumes.items.map do |volume|
       {
-        id: mapping.id,
-        name: mapping.properties.name,
-        size: Integer(mapping.properties.size),
+        id: volume.id,
+        name: volume.properties.name,
+        size: Integer(volume.properties.size),
       }
     end
 
-    nics = instance.entities.nics.items.map do |mapping|
-      { name: mapping.properties.name }
+    nics = instance.entities.nics.items.map do |nic|
+      {
+        id: nic.id,
+        name: nic.properties.name,
+        ips: nic.properties.ips,
+        dhcp: nic.properties.dhcp,
+        nat: nic.properties.nat,
+        lan: nic.properties.lan,
+        firewall_rules: nic.entities.firewallrules.items.map do
+          |firewall_rule|
+          {
+            id: firewall_rule.id,
+            name: firewall_rule.properties.name,
+            source_mac: firewall_rule.properties.source_mac,
+            source_ip: firewall_rule.properties.source_ip,
+            target_ip: firewall_rule.properties.target_ip,
+            port_range_start: firewall_rule.properties.port_range_start,
+            port_range_end: firewall_rule.properties.port_range_end,
+            icmp_type: firewall_rule.properties.icmp_type,
+            icmp_code: firewall_rule.properties.icmp_code,
+          }.delete_if { |_k, v| v.nil? }
+        end,
+      }.delete_if { |_k, v| v.nil? }
     end
 
     instance_state = instance.properties.vm_state
@@ -173,6 +194,58 @@ Puppet::Type.type(:server).provide(:v1) do
     to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }
   end
 
+  def nics=(value)
+    existing_ids = @property_hash[:nics].map { |nic| nic[:id] }
+    existing_names = @property_hash[:nics].map { |nic| nic[:name] }
+
+    to_delete = existing_ids
+    to_wait = []
+    to_wait_create = []
+
+    value.each do |desired_nic|
+      if desired_nic['id']
+        if existing_ids.include? desired_nic['id']
+          existing_nic = @property_hash[:nics].find { |volume| volume[:id] == desired_nic['id'] }
+          headers =  PuppetX::Profitbricks::Helper::update_nic(
+            @property_hash[:datacenter_id], @property_hash[:id], existing_nic[:id], existing_nic, desired_nic,
+          )
+          
+          to_wait << headers unless headers.nil?
+          to_delete.delete(existing_nic[:id])
+        else
+          fail "Invalid NIC ID #{desired_nic['id']}"
+        end
+      elsif desired_nic['name']
+        if existing_names.include? desired_nic['name']
+          existing_nic = @property_hash[:nics].find { |volume| volume[:name] == desired_nic['name'] }
+          headers =  PuppetX::Profitbricks::Helper::update_nic(
+            @property_hash[:datacenter_id], @property_hash[:id], existing_nic[:id], existing_nic, desired_nic,
+          )
+          
+          to_wait << headers unless headers.nil?
+          to_delete.delete(existing_nic[:id])
+        else
+          puts "Creating NIC #{desired_nic} in server #{@property_hash[:name]}"
+
+          volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
+            @property_hash[:datacenter_id], @property_hash[:id], nic_object_from_hash(desired_nic),
+          )
+          to_wait << headers
+        end
+      end
+    end
+
+    to_delete.each do |nic_id|
+      puts "Deleting NIC #{nic_id} from server #{@property_hash[:name]}"
+      _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+        @property_hash[:datacenter_id], @property_hash[:id], nic_id,
+      )
+      to_wait << headers
+    end
+
+    to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }
+  end
+
   def volume_object_from_hash(volume)
     config = {
       name: volume['name'],
@@ -242,31 +315,35 @@ Puppet::Type.type(:server).provide(:v1) do
     end
   end
 
+  def nic_object_from_hash(nic)
+    lan = PuppetX::Profitbricks::Helper::lan_from_name(
+      nic['lan'],
+      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
+    )
+
+    Ionoscloud::Nic.new(
+      properties: Ionoscloud::NicProperties.new(
+        name: nic['name'],
+        ips: nic['ips'],
+        dhcp: nic['dhcp'],
+        lan: lan.id,
+        nat: nic['nat'],
+      ),
+      entities: Ionoscloud::NicEntities.new(
+        firewallrules: Ionoscloud::FirewallRules.new(
+          items: config_with_fwrules(nic['firewall_rules']),
+        ),
+      ),
+    )
+  end
+
   def config_with_nics(nics)
     if nics.nil?
       return []
     end
 
     nics.map do |nic|
-      lan = PuppetX::Profitbricks::Helper::lan_from_name(
-        nic['lan'],
-        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-      )
-
-      Ionoscloud::Nic.new(
-        properties: Ionoscloud::NicProperties.new(
-          name: nic['name'],
-          ips: nic['ips'],
-          dhcp: nic['dhcp'],
-          lan: lan.id,
-          nat: nic['nat'],
-        ),
-        entities: Ionoscloud::NicEntities.new(
-          firewallrules: Ionoscloud::FirewallRules.new(
-            items: config_with_fwrules(nic['firewall_rules']),
-          ),
-        ),
-      )
+      nic_object_from_hash(nic)
     end
   end
 

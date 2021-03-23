@@ -91,19 +91,41 @@ module PuppetX
         user
       end
 
-      def self.update_volume(datacenter_id, volume_id, current, result, wait = false)
-        changeable_properties = [:size]
-
-        puts [current, result].to_s
-
-        changes = Hash[*changeable_properties.collect {|v| [ v, result[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
-
+      def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
+        changes = Hash[*[:size].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return nil unless !changes.empty?
 
         puts ['facem call update!', changes].to_s
         
         _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
+        wait_request(headers) unless !wait
 
+        return headers
+      end
+
+      def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
+        target['lan'] = Integer(lan_from_name(target['lan'], datacenter_id).id) unless target['lan'].nil?
+        changes = Hash[*[:ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        return nil unless !changes.empty?
+
+        puts "Updating NIC #{current[:name]} with #{changes}"
+        
+        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
+        wait_request(headers) unless !wait
+
+        return headers
+      end
+
+      def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
+        changeable_fields = [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
+        changes = Hash[*changeable_fields.collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        return nil unless !changes.empty?
+
+        puts "Updating Firewall Rule #{current[:name]} with #{changes}"
+        
+        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
+          datacenter_id, server_id, nic_id, firewallrule_id, changes,
+        )
         wait_request(headers) unless !wait
 
         return headers

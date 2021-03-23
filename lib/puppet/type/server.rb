@@ -131,9 +131,9 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      existing_volumes = is.collect { |volume| [ volume[:name], Integer(volume[:size]), volume[:id] ] } 
-      specified_volumes = should.collect { |volume| [ volume['name'], Integer(volume['size']), volume['id'] ] }
-      puts [existing_volumes, specified_volumes].to_s
+      fields_to_check = [:name, :size, :id]
+      existing_volumes = is.collect { |volume| fields_to_check.collect { |field| volume[field] } }
+      specified_volumes = should.collect { |volume| fields_to_check.collect { |field| volume[field.to_s] } }
       existing_volumes.to_set == specified_volumes.to_set
     end
   end
@@ -163,9 +163,11 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      existing_nics = is.collect { |nic| nic[:name] }
-      specified_nics = should.collect { |nic| nic['name'] }
-      existing_nics.to_set == specified_nics.to_set
+      # existing_nics = is.collect { |nic| nic[:name] }
+      # specified_nics = should.collect { |nic| nic['name'] }
+      # existing_nics.to_set == specified_nics.to_set
+
+      false
     end
   end
 
