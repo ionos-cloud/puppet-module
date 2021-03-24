@@ -131,11 +131,19 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      # fields_to_check = [:name, :size, :id]
-      # existing_volumes = is.collect { |volume| fields_to_check.collect { |field| volume[field] } }
-      # specified_volumes = should.collect { |volume| fields_to_check.collect { |field| volume[field.to_s] } }
-      # existing_volumes.to_set == specified_volumes.to_set
-      false
+      return false unless is.length == should.length
+
+      existing_ids = is.map { |volume| volume[:id] }
+
+      should.each do |target_volume|
+        existing_volume = is.find { |volume| volume[:id] == target_volume['id'] } || is.find { |volume| volume[:name] == target_volume['name'] }
+        return false unless existing_volume
+        changes = Hash[*[:size].collect {|v| [ v, target_volume[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == existing_volume[k] }
+        return false unless changes.empty?
+        existing_ids.delete(existing_volume[:id])
+      end
+
+      return existing_ids.empty?
     end
   end
 
@@ -164,15 +172,23 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
+      return false unless is.length == should.length
 
-      # fields_to_check = [:name, :ips, :dhcp, :nat, :lan, :firewall_rules]
-      # existing_nics = is.collect { |nic| fields_to_check.collect { |field| nic[field] } }
-      # existing_nics.sort! { |a,b| a.first <=> b.first }
-      # specified_nics = should.collect { |nic| fields_to_check.collect { |field| nic[field.to_s] } }
-      # specified_nics.sort! { |a,b| a.first <=> b.first }
-      # puts ['compare', existing_nics, specified_nics].to_s
-      # existing_nics.to_set == specified_nics.to_set
-      false
+      fields_to_check = [:firewall_active, :ips, :dhcp, :nat, :lan]
+      existing_ids = is.map { |nic| nic[:id] }
+
+      should.each do |target_nic|
+        existing_nic = is.find { |nic| nic[:name] == target_nic['name'] }
+        return false unless existing_nic
+        fields_to_check.each do
+          |field|
+          return false unless (target_nic[field.to_s].nil? || target_nic[field.to_s] == existing_nic[field])
+        end
+
+        existing_ids.delete(existing_nic[:id])
+      end
+
+      return existing_ids.empty?
     end
   end
 

@@ -212,16 +212,14 @@ module PuppetX
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
         firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
 
-        target['lan'] = Integer(lan_from_name(target['lan'], datacenter_id).id) unless target['lan'].nil?
         changes = Hash[*[:firewall_active, :ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return firewallrules_headers unless !changes.empty?
 
+        changes[:lan] = Integer(lan_from_name(changes[:lan], datacenter_id).id) unless changes[:lan].nil?
         changes = Ionoscloud::NicProperties.new(**changes)
         puts "Updating NIC #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
-
-
 
         all_headers = firewallrules_headers
         all_headers << headers
@@ -387,11 +385,7 @@ module PuppetX
       end
 
       def self.wait_request(headers)
-        # begin
         Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
-        # rescue Ionoscloud::ApiError => err
-        #   fail err.message
-        # end
       end
 
       def self.get_request_id(headers)

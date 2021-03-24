@@ -44,13 +44,14 @@ Puppet::Type.type(:server).provide(:v1) do
     end
 
     nics = instance.entities.nics.items.map do |nic|
+      lan = Ionoscloud::LanApi.new.datacenters_lans_find_by_id(datacenter.id, nic.properties.lan)
       {
         id: nic.id,
         name: nic.properties.name,
         ips: nic.properties.ips,
         dhcp: nic.properties.dhcp,
         nat: nic.properties.nat,
-        lan: nic.properties.lan,
+        lan: lan.properties.name,
         firewall_active: nic.properties.firewall_active,
         firewall_rules: nic.entities.firewallrules.items.map do
           |firewall_rule|
@@ -117,7 +118,9 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def boot_volume=(value)
-    volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(@property_hash[:datacenter_id], @property_hash[:id], depth: 1).items.find { |volume| volume.properties.name == value }
+    volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
+      @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
+    ).items.find { |volume| volume.properties.name == value }
     fail "Volume #{value} not found" unless volume
     @property_flush[:boot_volume] = volume.id
   end

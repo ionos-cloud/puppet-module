@@ -49,10 +49,9 @@ server { 'frontend2' :
   cores => 1,
   datacenter_name => 'myDataCenter2',
   ram => 1024,
-  boot_volume => 'data3',
   volumes => [
     { 
-      name => 'data4',
+      name => 'data2',
       size => 10,
       bus => 'VIRTIO',
       volume_type => 'SSD',
@@ -71,7 +70,7 @@ server { 'frontend2' :
     {
       name => 'private',
       dhcp => false,
-      lan => 'public',
+      lan => 'private',
       nat => false,
       firewall_active => true,
       firewall_rules => [
@@ -84,14 +83,14 @@ server { 'frontend2' :
         { 
           name => 'HTTP2',
           protocol => 'TCP',
-          port_range_start => 80,
+          port_range_start => 65,
           port_range_end => 80
         }
       ]
     },
     {
       name => 'private2',
-      dhcp => false,
+      dhcp => true,
       lan => 'public',
       nat => false,
     }
