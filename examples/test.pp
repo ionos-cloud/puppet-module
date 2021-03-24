@@ -49,52 +49,45 @@ server { 'frontend2' :
   cores => 1,
   datacenter_name => 'myDataCenter2',
   ram => 1024,
-  # volumes => [
-  #   { 
-  #     name => 'data',
-  #     size => 10,
-  #     bus => 'VIRTIO',
-  #     volume_type => 'SSD',
-  #     image_alias => 'ubuntu:latest',
-  #     image_password => 'secretpassword2015',
-  #     availability_zone => 'AUTO',
-  #   },
-  #   { 
-  #     name => 'data2',
-  #     size => 10,
-  #     bus => 'VIRTIO',
-  #     volume_type => 'SSD',
-  #     image_alias => 'ubuntu:latest',
-  #     image_password => 'secretpassword2015',
-  #     availability_zone => 'AUTO',
-  #   }
-  # ],
+  boot_volume => 'data3',
+  volumes => [
+    { 
+      name => 'data4',
+      size => 10,
+      bus => 'VIRTIO',
+      volume_type => 'SSD',
+      image_alias => 'ubuntu:latest',
+      image_password => 'secretpassword2015',
+      availability_zone => 'AUTO',
+    },
+  ],
   nics => [
     {
       name => 'public',
       dhcp => true,
       lan => 'public',
       nat => false,
-      firewall_rules => [
-        { 
-          name => 'SSH',
-          protocol => 'TCP',
-          port_range_start => 22,
-          port_range_end => 22
-        },
-        { 
-          name => 'HTTP',
-          protocol => 'TCP',
-          port_range_start => 80,
-          port_range_end => 80
-        }
-      ]
     },
     {
       name => 'private',
       dhcp => false,
       lan => 'public',
       nat => false,
+      firewall_active => true,
+      firewall_rules => [
+        { 
+          name => 'SSH',
+          protocol => 'TCP',
+          port_range_start => 22,
+          port_range_end => 23
+        },
+        { 
+          name => 'HTTP2',
+          protocol => 'TCP',
+          port_range_start => 80,
+          port_range_end => 80
+        }
+      ]
     },
     {
       name => 'private2',

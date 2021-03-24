@@ -164,6 +164,7 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
+
       # fields_to_check = [:name, :ips, :dhcp, :nat, :lan, :firewall_rules]
       # existing_nics = is.collect { |nic| fields_to_check.collect { |field| nic[field] } }
       # existing_nics.sort! { |a,b| a.first <=> b.first }
