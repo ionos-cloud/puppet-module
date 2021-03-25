@@ -70,7 +70,7 @@ server { 'frontend2' :
     {
       name => 'private',
       dhcp => false,
-      lan => 'private',
+      lan => 'public',
       nat => false,
       firewall_active => true,
       firewall_rules => [
@@ -78,7 +78,7 @@ server { 'frontend2' :
           name => 'SSH',
           protocol => 'TCP',
           port_range_start => 22,
-          port_range_end => 23
+          port_range_end => 22,
         },
         { 
           name => 'HTTP2',

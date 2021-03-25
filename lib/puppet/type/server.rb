@@ -1,5 +1,8 @@
 require 'puppet/parameter/boolean'
 
+require 'puppet_x/profitbricks/helper'
+
+
 Puppet::Type.newtype(:server) do
   @doc = 'Type representing a ProfitBricks server.'
 
@@ -120,7 +123,6 @@ Puppet::Type.newtype(:server) do
     desc 'A list of volumes to associate with the server.'
     validate do |value|
       volumes = value.is_a?(Array) ? value : [value]
-      # fail('A single volume is supported at this time') unless volumes.count <= 1
       volumes.each do |volume|
         if !volume.keys.include?('id')
           ['name', 'size', 'volume_type'].each do |key|
@@ -131,19 +133,7 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      return false unless is.length == should.length
-
-      existing_ids = is.map { |volume| volume[:id] }
-
-      should.each do |target_volume|
-        existing_volume = is.find { |volume| volume[:id] == target_volume['id'] } || is.find { |volume| volume[:name] == target_volume['name'] }
-        return false unless existing_volume
-        changes = Hash[*[:size].collect {|v| [ v, target_volume[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == existing_volume[k] }
-        return false unless changes.empty?
-        existing_ids.delete(existing_volume[:id])
-      end
-
-      return existing_ids.empty?
+      PuppetX::Profitbricks::Helper::objects_match(is, should, [:size])
     end
   end
 
@@ -172,23 +162,15 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      return false unless is.length == should.length
-
-      fields_to_check = [:firewall_active, :ips, :dhcp, :nat, :lan]
-      existing_ids = is.map { |nic| nic[:id] }
-
-      should.each do |target_nic|
-        existing_nic = is.find { |nic| nic[:name] == target_nic['name'] }
-        return false unless existing_nic
-        fields_to_check.each do
-          |field|
-          return false unless (target_nic[field.to_s].nil? || target_nic[field.to_s] == existing_nic[field])
-        end
-
-        existing_ids.delete(existing_nic[:id])
-      end
-
-      return existing_ids.empty?
+      block = lambda {
+        |existing_object, target_object|
+        PuppetX::Profitbricks::Helper::objects_match(
+          existing_object[:firewall_rules],
+          target_object['firewall_rules'],
+          [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
+        )
+      }
+      PuppetX::Profitbricks::Helper::objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
     end
   end
 

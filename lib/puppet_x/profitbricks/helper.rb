@@ -92,16 +92,15 @@ module PuppetX
       end
 
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
-        existing_ids = existing_volumes.map { |volume| volume[:id] }
         existing_names = existing_volumes.map { |volume| volume[:name] }
     
-        to_detach = existing_ids
+        to_detach = existing_volumes.map { |volume| volume[:id] }
         to_wait = []
         to_wait_create = []
     
         target_volumes.each do |target_volume|
           if target_volume['id']
-            if existing_ids.include? target_volume['id']
+            if to_detach.include? target_volume['id']
               existing_volume = existing_volumes.find { |volume| volume[:id] == target_volume['id'] }
               headers = update_volume(datacenter_id, existing_volume[:id], existing_volume, target_volume)
               
@@ -250,19 +249,7 @@ module PuppetX
           else
             puts "Creating FirewallRule #{desired_firewallrule}"
 
-            firewallrule = Ionoscloud::FirewallRule.new(
-              properties: Ionoscloud::FirewallruleProperties.new(
-                name: desired_firewallrule['name'],
-                protocol: desired_firewallrule['protocol'],
-                source_mac: desired_firewallrule['source_mac'],
-                source_ip: desired_firewallrule['source_ip'],
-                target_ip: desired_firewallrule['target_ip'],
-                port_range_start: desired_firewallrule['port_range_start'],
-                port_range_end: desired_firewallrule['port_range_end'],
-                icmp_type: desired_firewallrule['icmp_type'],
-                icmp_code: desired_firewallrule['icmp_code'],
-              ),
-            )
+            firewallrule = firewallrule_object_from_hash(desired_firewallrule)
 
             volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
               datacenter_id, server_id, nic_id, firewallrule,
@@ -382,6 +369,33 @@ module PuppetX
       def self.nic_object_array_from_hashes(nics)
         return nics.map { |nic| nic_object_from_hash(nic) } unless nics.nil?
         []
+      end
+
+      def self.objects_match(existing_objects, target_objects, fields_to_check)
+        return true if target_objects.nil?
+        return false unless existing_objects.length == target_objects.length
+   
+        existing_ids = existing_objects.map { |object| object[:id] }
+  
+        target_objects.each do |target_object|
+          existing_object = existing_objects.find do
+            |object|
+            (object[:name] == target_object['name']) || (object[:id] == target_object['id'])
+          end
+          return false unless existing_object
+          fields_to_check.each do
+            |field|
+            return false unless (target_object[field.to_s].nil? || target_object[field.to_s] == existing_object[field])
+          end
+
+          if block_given?
+            return false unless yield(existing_object, target_object)
+          end
+  
+          existing_ids.delete(existing_object[:id])
+        end
+  
+        return existing_ids.empty?
       end
 
       def self.wait_request(headers)
