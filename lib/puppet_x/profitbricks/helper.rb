@@ -160,15 +160,18 @@ module PuppetX
       end
 
       def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
+        puts ['wait', wait].to_s
         changes = Hash[*[:size].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return nil unless !changes.empty?
+
+        fail 'Decreasing size of the volume is not allowed.' unless target['size'] > current[:size]
 
         changes = Ionoscloud::VolumeProperties.new(**changes)
 
         puts "Updating Volume #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
-        wait_request(headers) unless !wait
+        wait_request(headers) if wait
 
         return headers
       end
@@ -286,6 +289,7 @@ module PuppetX
       end
 
       def self.volume_object_from_hash(volume)
+        puts ['volume', volume].to_s
         config = {
           name: volume['name'],
           size: volume['size'],
@@ -294,17 +298,17 @@ module PuppetX
           availability_zone: volume['availability_zone'],
         }
 
-        if volume.key?('image_password')
+        if volume['image_password']
           config[:image_password] = volume['image_password']
-        elsif volume.key?('ssh_keys')
+        elsif volume['ssh_keys']
           config[:sshKeys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
         else
           fail('Volume must have either image_password or ssh_keys defined.')
         end
 
-        if volume.key?('image_id')
+        if volume['image_id']
           config[:image] = volume['image_id']
-        elsif volume.key?('image_alias')
+        elsif volume['image_alias']
           config[:image_alias] = volume['image_alias']
         else
           fail('Volume must have either image_id or image_alias defined.')
@@ -408,6 +412,12 @@ module PuppetX
         rescue NoMethodError
           nil
         end
+      end
+
+      def self.validate_uuid_format(uuid)
+        uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+        return true if uuid_regex.match?(uuid.to_s.downcase)
+        false
       end
     end
   end

@@ -95,6 +95,23 @@ server { 'frontend2' :
       nat => false,
     }
   ]
+},
+
+server { 'frontend3' :
+  ensure => present,
+  cores => 1,
+  datacenter_name => 'myDataCenter2',
+  ram => 1024,
+  cpu_family => 'INTEL_XEON'
+},
+volume { 'testvolume' :
+  ensure            => present,
+  datacenter_name   => 'myDataCenter2',
+  size              => 10,
+  volume_type       => 'SSD',
+  image_alias       => 'ubuntu:latest',
+  image_password    => 'secretpassword2015',
+  availability_zone => 'AUTO',
 }
 
 # server { 'frontend' :

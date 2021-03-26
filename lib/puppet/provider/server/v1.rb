@@ -85,7 +85,7 @@ Puppet::Type.type(:server).provide(:v1) do
       end
     end
 
-    config = {
+    {
       id: instance.id,
       datacenter_id: datacenter.id,
       datacenter_name: datacenter.properties.name,
@@ -153,34 +153,51 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def create
+    puts ['server', resource[:cpu_family], resource[:name]].to_s
     Puppet.info("Creating a new server called #{name}.")
     if stopped?
       restart
     else
+
+      volume = resource[:volumes].find { |volume| (volume['name'] == resource[:boot_volume]) || (volume['id'] == resource[:boot_volume]) }
+
       server = Ionoscloud::Server.new(
         properties: Ionoscloud::ServerProperties.new(
-          name: resource[:name],
+          name: resource[:name].to_s,
           cores: resource[:cores],
-          cpu_family: resource[:cpu_family],
+          cpu_family: resource[:cpu_family].to_s,
           ram: resource[:ram],
           availability_zone: resource[:availability_zone].to_s,
-          boot_volume: resource[:boot_volume],
         ),
         entities: Ionoscloud::ServerEntities.new(
           volumes: Ionoscloud::Volumes.new(
-            items: volume_object_array_from_hashes(resource[:volumes]),
+            items: PuppetX::Profitbricks::Helper::volume_object_array_from_hashes(resource[:volumes]),
           ),
           nics: Ionoscloud::Nics.new(
-            items: nic_object_array_from_hashes(resource[:nics]),
+            items: PuppetX::Profitbricks::Helper::nic_object_array_from_hashes(resource[:nics]),
           ),
         ),
       )
-
-      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(
-        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-        server,
-      )
+      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(datacenter_id, server)
       PuppetX::Profitbricks::Helper::wait_request(headers)
+
+      if resource[:boot_volume]
+        if PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+          boot_volume_id = resource[:boot_volume].to_s
+        else
+          volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(datacenter_id, server.id, depth: 1).items.find do
+            |volume|
+            volume.properties.name == resource[:boot_volume].to_s
+          end
+          boot_volume_id = volume.id
+        end
+        
+        changes = Ionoscloud::ServerProperties.new(boot_volume: boot_volume_id)
+        server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server.id, changes)
+
+        PuppetX::Profitbricks::Helper::wait_request(headers)
+      end
 
       Puppet.info("Server '#{name}' has been created.")
       @property_hash[:ensure] = :present
@@ -190,6 +207,7 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def flush
+    puts ['ceva', @property_hash].to_s
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
     
