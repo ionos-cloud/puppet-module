@@ -158,7 +158,11 @@ Puppet::Type.type(:server).provide(:v1) do
       restart
     else
 
-      volume = resource[:volumes].find { |volume| (volume['name'] == resource[:boot_volume]) || (volume['id'] == resource[:boot_volume]) }
+      if resource[:volumes]
+        volume = resource[:volumes].find { |volume| (volume['name'] == resource[:boot_volume]) || (volume['id'] == resource[:boot_volume]) }
+      end
+
+      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
       server = Ionoscloud::Server.new(
         properties: Ionoscloud::ServerProperties.new(
@@ -173,15 +177,14 @@ Puppet::Type.type(:server).provide(:v1) do
             items: PuppetX::Profitbricks::Helper::volume_object_array_from_hashes(resource[:volumes]),
           ),
           nics: Ionoscloud::Nics.new(
-            items: PuppetX::Profitbricks::Helper::nic_object_array_from_hashes(resource[:nics]),
+            items: PuppetX::Profitbricks::Helper::nic_object_array_from_hashes(resource[:nics], datacenter_id),
           ),
         ),
       )
-      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
       server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(datacenter_id, server)
       PuppetX::Profitbricks::Helper::wait_request(headers)
 
-      if resource[:boot_volume]
+      if resource[:boot_volume] && resource[:volumes]
         if PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
           boot_volume_id = resource[:boot_volume].to_s
         else
@@ -218,6 +221,10 @@ Puppet::Type.type(:server).provide(:v1) do
       server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
 
       PuppetX::Profitbricks::Helper::wait_request(headers)
+    end
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property]
     end
   end
 

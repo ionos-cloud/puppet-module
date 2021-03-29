@@ -56,6 +56,7 @@ Puppet::Type.type(:volume).provide(:v1) do
 
   def size=(value)
     PuppetX::Profitbricks::Helper::update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
+    @property_hash[:size] = value
   end
 
   def create
@@ -74,18 +75,19 @@ Puppet::Type.type(:volume).provide(:v1) do
 
     datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
-    volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(
-      datacenter_id, volume,
-    )
+    volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(datacenter_id, volume)
     PuppetX::Profitbricks::Helper::wait_request(headers)
 
     Puppet.info("Created a new volume named #{resource[:name]}.")
     @property_hash[:ensure] = :present
-    @property_hash[:size] = resource[:size]
+    @property_hash[:datacenter_id] = datacenter_id
+    @property_hash[:id] = volume.id
+    @property_hash[:size] = Integer(volume.properties.size)
   end
 
   def destroy
     _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
     PuppetX::Profitbricks::Helper::wait_request(headers)
+    @property_hash[:ensure] = :absent
   end
 end

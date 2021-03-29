@@ -7,7 +7,7 @@ describe provider_class do
     before(:all) do
       @resource1 = Puppet::Type.type(:volume).new(
         name: 'Puppet Module Test',
-        size: 2,
+        size: 3,
         image_alias: 'ubuntu:latest',
         availability_zone: 'ZONE_3',
         ssh_keys: ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'],
@@ -19,6 +19,8 @@ describe provider_class do
         name: 'Puppet Module Test 2',
         size: 100,
         licence_type: 'WINDOWS2016',
+        image_alias: 'ubuntu:latest',
+        image_password: 'secretpassword2015',
         volume_type: 'SSD',
         availability_zone: 'AUTO',
         datacenter_name: 'Puppet Module Test'

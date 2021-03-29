@@ -190,23 +190,22 @@ module PuppetX
             to_wait += headers unless headers.empty?
             to_delete.delete(existing_nic[:id])
           else
-            puts "Creating NIC #{desired_nic} in server #{@property_hash[:name]}"
+            puts "Creating NIC #{desired_nic} in server #{server_id}"
     
             volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
-              datacenter_id, server_id, nic_object_from_hash(desired_nic),
+              datacenter_id, server_id, nic_object_from_hash(desired_nic, datacenter_id),
             )
             to_wait << headers
           end
         end
-    
+
         to_delete.each do |nic_id|
-          puts "Deleting NIC #{nic_id} from server #{@property_hash[:name]}"
+          puts "Deleting NIC #{nic_id} from server #{server_id}"
           _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
             datacenter_id, server_id, nic_id,
           )
           to_wait << headers
         end
-    
         to_wait.each { |headers| wait_request(headers) }
       end
 
@@ -296,27 +295,29 @@ module PuppetX
           availability_zone: volume['availability_zone'],
         }
 
-        if volume['image_password']
+        if volume['image_password'] && !volume['image_password'].empty?
           config[:image_password] = volume['image_password']
-        elsif volume['ssh_keys']
-          config[:sshKeys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
+        elsif volume['ssh_keys'] && !volume['ssh_keys'].empty?
+          config[:ssh_keys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
         else
           fail('Volume must have either image_password or ssh_keys defined.')
         end
 
-        if volume['image_id']
+        if volume['image_id'] && !volume['image_id'].empty?
           config[:image] = volume['image_id']
-        elsif volume['image_alias']
+        elsif volume['image_alias'] && !volume['image_alias'].empty?
           config[:image_alias] = volume['image_alias']
         else
           fail('Volume must have either image_id or image_alias defined.')
         end
 
+        config.delete_if { |_k, v| v.nil? }
+
         Ionoscloud::Volume.new(properties: Ionoscloud::VolumeProperties.new(**config))
       end
 
-      def nic_object_from_hash(nic)
-        lan = lan_from_name(nic['lan'], resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
+      def self.nic_object_from_hash(nic, datacenter_id)
+        lan = lan_from_name(nic['lan'], datacenter_id)
     
         Ionoscloud::Nic.new(
           properties: Ionoscloud::NicProperties.new(
@@ -335,7 +336,7 @@ module PuppetX
         )
       end
 
-      def firewallrule_object_from_hash(firewallrule)
+      def self.firewallrule_object_from_hash(firewallrule)
         Ionoscloud::FirewallRule.new(
           properties: Ionoscloud::FirewallruleProperties.new(
             name: firewallrule['name'],
@@ -368,8 +369,8 @@ module PuppetX
         []
       end
     
-      def self.nic_object_array_from_hashes(nics)
-        return nics.map { |nic| nic_object_from_hash(nic) } unless nics.nil?
+      def self.nic_object_array_from_hashes(nics, datacenter_id)
+        return nics.map { |nic| nic_object_from_hash(nic, datacenter_id) } unless nics.nil?
         []
       end
 
