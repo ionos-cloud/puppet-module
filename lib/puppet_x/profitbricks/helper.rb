@@ -160,7 +160,6 @@ module PuppetX
       end
 
       def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
-        puts ['wait', wait].to_s
         changes = Hash[*[:size].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return nil unless !changes.empty?
 

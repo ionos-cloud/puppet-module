@@ -107,7 +107,7 @@ server { 'frontend3' :
 volume { 'testvolume' :
   ensure            => present,
   datacenter_name   => 'myDataCenter2',
-  size              => 10,
+  size              => 11,
   volume_type       => 'SSD',
   image_alias       => 'ubuntu:latest',
   image_password    => 'secretpassword2015',
