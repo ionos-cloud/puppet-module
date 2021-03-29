@@ -153,7 +153,6 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def create
-    puts ['server', resource[:cpu_family], resource[:name]].to_s
     Puppet.info("Creating a new server called #{name}.")
     if stopped?
       restart
@@ -207,7 +206,6 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def flush
-    puts ['ceva', @property_hash].to_s
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
     

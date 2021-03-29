@@ -288,7 +288,6 @@ module PuppetX
       end
 
       def self.volume_object_from_hash(volume)
-        puts ['volume', volume].to_s
         config = {
           name: volume['name'],
           size: volume['size'],
