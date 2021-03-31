@@ -77,7 +77,7 @@ Puppet::Type.type(:server).provide(:v1) do
       state = :present
     end
 
-    boot_volume_name = ''
+    boot_volume_name = boot_volume_id = ''
     unless instance.properties.boot_volume.nil?
       boot_volume_id = instance.properties.boot_volume.id
       instance.entities.volumes.items.map do |volume|
@@ -94,7 +94,10 @@ Puppet::Type.type(:server).provide(:v1) do
       cpu_family: instance.properties.cpu_family,
       ram: instance.properties.ram,
       availability_zone: instance.properties.availability_zone,
-      boot_volume: boot_volume_name,
+      boot_volume: {
+        id: boot_volume_id,
+        name: boot_volume_name,
+      },
       ensure: state,
       volumes: volumes,
       nics: nics,
@@ -153,10 +156,6 @@ Puppet::Type.type(:server).provide(:v1) do
     if stopped?
       restart
     else
-      if resource[:volumes]
-        volume = resource[:volumes].find { |volume| (volume['name'] == resource[:boot_volume]) || (volume['id'] == resource[:boot_volume]) }
-      end
-
       datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
       server = Ionoscloud::Server.new(

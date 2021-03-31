@@ -26,21 +26,21 @@ module PuppetX
       end
 
       def self.count_by_name(res_name, items)
-        begin
-          items.count { |item| res_name.strip.downcase == item.properties.name.strip.downcase }
-        rescue Exception
-          count = 0
-          unless items.empty?
-            name_key = res_name.strip.downcase
-            items.each do |item|
-              unless item.properties['name'].nil? || item.properties['name'].empty?
-                item_name = item.properties['name'].strip.downcase
-                count += 1 if item_name == name_key
-              end
-            end
-          end
-          count
-        end
+        # begin
+        items.count { |item| res_name.strip.downcase == item.properties.name.strip.downcase }
+        # rescue Exception
+        #   count = 0
+        #   unless items.empty?
+        #     name_key = res_name.strip.downcase
+        #     items.each do |item|
+        #       unless item.properties['name'].nil? || item.properties['name'].empty?
+        #         item_name = item.properties['name'].strip.downcase
+        #         count += 1 if item_name == name_key
+        #       end
+        #     end
+        #   end
+        #   count
+        # end
       end
 
       def self.resolve_datacenter_id(dc_id, dc_name)
@@ -63,13 +63,15 @@ module PuppetX
       end
 
       def self.lan_from_name(lan_name, datacenter_id)
-        lan = LAN.list(datacenter_id).find { |lan| lan.properties['name'] == lan_name }
+        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter_id, { depth: 1 })
+        lan = lans.items.find { |lan| lan.properties.name == lan_name }
         fail "LAN named '#{lan_name}' cannot be found." unless lan
         lan
       end
 
       def self.server_from_name(server_name, datacenter_id)
-        server = Server.list(datacenter_id).find { |server| server.properties['name'] == server_name }
+        servers = Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter_id, { depth: 1 })
+        server = servers.items.find { |server| server.properties.name == server_name }
         fail "Server named '#{server_name}' cannot be found." unless server
         server
       end
