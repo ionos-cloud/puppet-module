@@ -118,11 +118,7 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def boot_volume=(value)
-    volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
-      @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
-    ).items.find { |volume| volume.properties.name == value }
-    fail "Volume #{value} not found" unless volume
-    @property_flush[:boot_volume] = volume.id
+    @property_flush[:boot_volume] = value
   end
 
   def volumes=(value)
@@ -195,7 +191,7 @@ Puppet::Type.type(:server).provide(:v1) do
           boot_volume_id = volume.id
         end
         
-        changes = Ionoscloud::ServerProperties.new(boot_volume: boot_volume_id)
+        changes = Ionoscloud::ServerProperties.new(boot_volume: { id: boot_volume_id })
         server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server.id, changes)
 
         PuppetX::Profitbricks::Helper::wait_request(headers)
@@ -203,12 +199,24 @@ Puppet::Type.type(:server).provide(:v1) do
 
       Puppet.info("Server '#{name}' has been created.")
       @property_hash[:ensure] = :present
-
       @property_hash[:id] = server.id
+      @property_hash[:datacenter_id] = datacenter_id
     end
   end
 
   def flush
+    if @property_flush[:boot_volume]
+      if !PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+        volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
+          @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
+        ).items.find { |volume| volume.properties.name == @property_flush[:boot_volume] }
+        fail "Volume #{@property_flush[:boot_volume]} not found" unless volume
+        @property_flush[:boot_volume] = { id: volume.id }
+      else
+        @property_flush[:boot_volume] = { id: @property_flush[:boot_volume] }
+      end
+    end
+
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
     
@@ -221,10 +229,10 @@ Puppet::Type.type(:server).provide(:v1) do
       server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
 
       PuppetX::Profitbricks::Helper::wait_request(headers)
-    end
 
-    changeable_properties.each do |property|
-      @property_hash[property] = @property_flush[property]
+      changeable_properties.each do |property|
+        @property_hash[property] = @property_flush[property] if @property_flush[property]
+      end
     end
   end
 
