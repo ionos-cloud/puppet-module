@@ -153,7 +153,6 @@ Puppet::Type.type(:server).provide(:v1) do
     if stopped?
       restart
     else
-
       if resource[:volumes]
         volume = resource[:volumes].find { |volume| (volume['name'] == resource[:boot_volume]) || (volume['id'] == resource[:boot_volume]) }
       end
