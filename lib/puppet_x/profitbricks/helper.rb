@@ -214,7 +214,7 @@ module PuppetX
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
         firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
 
-        changes = Hash[*[:firewall_active, :ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*[:firewall_active, :ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
         return firewallrules_headers unless !changes.empty?
 
         changes[:lan] = Integer(lan_from_name(changes[:lan], datacenter_id).id) unless changes[:lan].nil?

@@ -12,7 +12,23 @@ lan { 'private' :
 lan { 'public' :
   ensure => present,
   public => true,
-  datacenter_name => 'myDataCenter2'
+  datacenter_name => 'myDataCenter2',
+  ip_failover     => [
+    {
+      ip       => '158.222.102.164',
+      nic_uuid => '72da5fe4-734a-4580-8ba9-fdb950de87a6'
+    },
+    {
+      ip       => '158.222.102.161',
+      nic_uuid => '72da5fe4-734a-4580-8ba9-fdb950de87a6'
+    },
+  ]
+},
+
+lan { 'nou' :
+  ensure          => present,
+  public          => true,
+  datacenter_name => 'myDataCenter2',
 },
 
 # server { 'frontend' :
@@ -64,6 +80,7 @@ server { 'frontend2' :
       dhcp => true,
       lan => 'public',
       nat => false,
+      ips => ['158.222.102.161', '158.222.102.164'],
     }
   ]
 },

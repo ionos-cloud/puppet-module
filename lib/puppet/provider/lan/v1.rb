@@ -6,27 +6,18 @@ Puppet::Type.type(:lan).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
+    PuppetX::Profitbricks::Helper::profitbricks_config()
     super(*args)
-  end
-
-  def self.client
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    @property_flush = {}
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
-
-    Datacenter.list.map do |datacenter|
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       lans = []
       # Ignore data center if name is not defined.
-      unless datacenter.properties['name'].nil? || datacenter.properties['name'].empty?
-        LAN.list(datacenter.id).each do |lan|
-          # Ignore LAN if name is not defined.
-          unless lan.properties['name'].nil? || lan.properties['name'].empty?
-            hash = instance_to_hash(lan, datacenter)
-            lans << new(hash)
-          end
+      unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
+        Ionoscloud::LanApi.new.datacenters_lans_get(datacenter.id, depth: 1).items.each do |lan|
+          lans << new(instance_to_hash(lan, datacenter))
         end
       end
       lans
@@ -44,45 +35,24 @@ Puppet::Type.type(:lan).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
-    config = {
+    {
       id: instance.id,
-      datacenter_id: instance.datacenterId,
-      datacenter_name: datacenter.properties['name'],
-      name: instance.properties['name'],
-      ip_failover: instance.properties['ipFailover'],
-      public: instance.properties['public'],
-      ensure: :present
+      datacenter_id: datacenter.id,
+      datacenter_name: datacenter.properties.name,
+      name: instance.properties.name,
+      ip_failover: instance.properties.ip_failover.map { |el| el = el.to_hash; el[:nic_uuid] = el.delete :nicUuid; el.transform_keys(&:to_s) },
+      public: instance.properties.public,
+      ensure: :present,
     }
-    config
   end
 
   def public=(value)
-    lan = lan_from_name(
-      name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    )
-
-    Puppet.info("Updating LAN '#{name}' public property.")
-    lan.update(public: value.to_s == 'true' ? true : false)
-    lan.wait_for { ready? }
+    @property_flush[:public] = value
   end
 
   def ip_failover=(value)
-    lan = lan_from_name(
-      name,
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    )
-
-    ip_fo = value.map do |g|
-      {
-        ip: g['ip'],
-        nicUuid: g['nic_uuid']
-      }
-    end
-
-    Puppet.info("Updating LAN '#{name}' IP failover group.")
-    lan.update(ipFailover: ip_fo)
-    lan.wait_for { ready? }
+    ip_failovers = value.map { |ip_failover| { ip: ip_failover['ip'], nicUuid: ip_failover['nic_uuid'] } }
+    @property_flush[:ip_failover] = ip_failovers
   end
 
   def exists?
@@ -90,42 +60,48 @@ Puppet::Type.type(:lan).provide(:v1) do
     @property_hash[:ensure] == :present
   end
 
-  def create
-    lan = LAN.create(
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-      name: name,
-      public: resource[:public] || false
-    )
+  def flush
+    changeable_properties = [:public, :ip_failover]
+    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten(1) ].delete_if { |_k, v| v.nil? }
 
-    begin
-      lan.wait_for(3).wait_for { ready? }
-    rescue StandardError
-      request = request_error(lan)
-      if request['status'] == 'FAILED'
-        fail "Failed to create LAN: #{request['message']}"
+    if !changes.empty?
+      Puppet.info("Updating Lan '#{name}', #{changes.keys.to_s}.")
+      changes = Ionoscloud::LanProperties.new(**changes)
+
+      lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
+        @property_hash[:datacenter_id], @property_hash[:id], changes,
+      )
+
+      PuppetX::Profitbricks::Helper::wait_request(headers)
+
+      changeable_properties.each do |property|
+        @property_hash[property] = @property_flush[property] if @property_flush[property]
       end
     end
+  end
+
+  def create
+    lan = Ionoscloud::Lan.new(
+      properties: Ionoscloud::LanProperties.new(
+        name: resource[:name],
+        public: resource[:public] || false,
+      ),
+    )
+
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_post_with_http_info(datacenter_id, lan)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
 
     Puppet.info("Creating a new LAN called #{name}.")
     @property_hash[:ensure] = :present
+    @property_hash[:id] = lan.id
+    @property_hash[:datacenter_id] = datacenter_id
   end
 
   def destroy
-    lan = lan_from_name(resource[:name],
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
-    Puppet.info("Deleting LAN #{name}.")
-    lan.delete
-    lan.wait_for { ready? }
+    _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
     @property_hash[:ensure] = :absent
-  end
-
-  private
-
-  def request_error(lan)
-    Request.get(lan.requestId).status.metadata if lan.requestId
-  end
-
-  def lan_from_name(name, datacenter_id)
-    LAN.list(datacenter_id).find { |lan| lan.properties['name'] == name }
   end
 end
