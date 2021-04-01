@@ -290,15 +290,15 @@ module PuppetX
 
       def self.volume_object_from_hash(volume)
         config = {
-          name: volume['name'],
+          name: volume['name'].to_s,
           size: volume['size'],
-          bus: volume['bus'],
-          type: volume['volume_type'] || 'HDD',
-          availability_zone: volume['availability_zone'],
+          bus: volume['bus'].to_s,
+          type: volume['volume_type'].to_s || 'HDD',
+          availability_zone: volume['availability_zone'].to_s,
         }
 
         if volume['image_password'] && !volume['image_password'].empty?
-          config[:image_password] = volume['image_password']
+          config[:image_password] = volume['image_password'].to_s
         elsif volume['ssh_keys'] && !volume['ssh_keys'].empty?
           config[:ssh_keys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
         else
@@ -306,9 +306,9 @@ module PuppetX
         end
 
         if volume['image_id'] && !volume['image_id'].empty?
-          config[:image] = volume['image_id']
+          config[:image] = volume['image_id'].to_s
         elsif volume['image_alias'] && !volume['image_alias'].empty?
-          config[:image_alias] = volume['image_alias']
+          config[:image_alias] = volume['image_alias'].to_s
         else
           fail('Volume must have either image_id or image_alias defined.')
         end
@@ -323,7 +323,7 @@ module PuppetX
     
         Ionoscloud::Nic.new(
           properties: Ionoscloud::NicProperties.new(
-            name: nic['name'],
+            name: nic['name'].to_s,
             ips: nic['ips'],
             dhcp: nic['dhcp'],
             lan: lan.id,
