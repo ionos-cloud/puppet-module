@@ -26,21 +26,7 @@ module PuppetX
       end
 
       def self.count_by_name(res_name, items)
-        # begin
         items.count { |item| res_name.strip.downcase == item.properties.name.strip.downcase }
-        # rescue Exception
-        #   count = 0
-        #   unless items.empty?
-        #     name_key = res_name.strip.downcase
-        #     items.each do |item|
-        #       unless item.properties['name'].nil? || item.properties['name'].empty?
-        #         item_name = item.properties['name'].strip.downcase
-        #         count += 1 if item_name == name_key
-        #       end
-        #     end
-        #   end
-        #   count
-        # end
       end
 
       def self.resolve_datacenter_id(dc_id, dc_name)
@@ -159,6 +145,7 @@ module PuppetX
         return to_wait unless wait
     
         to_wait.each { |headers| wait_request(headers) }
+        []
       end
 
       def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
@@ -208,14 +195,20 @@ module PuppetX
           )
           to_wait << headers
         end
-        to_wait.each { |headers| wait_request(headers) }
+
+        to_wait.each { |headers| wait_request(headers) } if wait
+        wait ? [] : to_wait
       end
 
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
         firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
 
         changes = Hash[*[:firewall_active, :ips, :dhcp, :nat, :lan].collect {|v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
-        return firewallrules_headers unless !changes.empty?
+
+        if changes.empty?
+          firewallrules_headers.each { |headers| wait_request(headers) } if wait
+          return wait ? [] : firewallrules_headers
+        end
 
         changes[:lan] = Integer(lan_from_name(changes[:lan], datacenter_id).id) unless changes[:lan].nil?
         changes = Ionoscloud::NicProperties.new(**changes)
@@ -226,9 +219,8 @@ module PuppetX
         all_headers = firewallrules_headers
         all_headers << headers
 
-        all_headers.each { |headers| wait_request(headers) } unless !wait
-
-        return all_headers
+        all_headers.each { |headers| wait_request(headers) } if wait
+        wait ? [] : all_headers
       end
 
       def self.sync_firewallrules(datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules, wait = false)
@@ -269,7 +261,8 @@ module PuppetX
           to_wait << headers
         end
 
-        return to_wait
+        to_wait.each { |headers| wait_request(headers) } if wait
+        wait ? [] : to_wait
       end
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)

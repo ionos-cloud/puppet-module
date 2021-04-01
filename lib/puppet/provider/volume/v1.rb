@@ -60,19 +60,6 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def create
-    # volume = PuppetX::Profitbricks::Helper::volume_object_from_hash(
-    #   'name' => resource[:name].to_s,
-    #   'availability_zone' => resource[:availability_zone].to_s,
-    #   'image' => resource[:image_id].to_s,
-    #   'image_alias' => resource[:image_alias].to_s,
-    #   'bus' => resource[:bus].to_s,
-    #   'type' => resource[:volume_type].to_s,
-    #   'size' => resource[:size],
-    #   'licence_type' => resource[:licence_type].to_s,
-    #   'image_password' => resource[:image_password].to_s,
-    #   'ssh_keys' => resource[:ssh_keys],
-    # )
-
     volume = PuppetX::Profitbricks::Helper::volume_object_from_hash(resource)
 
     puts "Creating a new volume #{volume.to_hash}."

@@ -121,7 +121,15 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def boot_volume=(value)
-    @property_flush[:boot_volume] = value
+    if !PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+      volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
+        @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
+      ).items.find { |volume| volume.properties.name == value }
+      fail "Volume #{value} not found" unless volume
+      @property_flush[:boot_volume] = { id: volume.id }
+    else
+      @property_flush[:boot_volume] = { id: value }
+    end
   end
 
   def volumes=(value)
@@ -203,18 +211,6 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def flush
-    if @property_flush[:boot_volume]
-      if !PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
-        volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
-          @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
-        ).items.find { |volume| volume.properties.name == @property_flush[:boot_volume] }
-        fail "Volume #{@property_flush[:boot_volume]} not found" unless volume
-        @property_flush[:boot_volume] = { id: volume.id }
-      else
-        @property_flush[:boot_volume] = { id: @property_flush[:boot_volume] }
-      end
-    end
-
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
     

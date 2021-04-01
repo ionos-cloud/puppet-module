@@ -8,6 +8,7 @@ Puppet::Type.type(:nic).provide(:v1) do
   def initialize(*args)
     PuppetX::Profitbricks::Helper::profitbricks_config()
     super(*args)
+    @property_flush = {}
   end
   
   def self.instances
@@ -83,37 +84,23 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def ips=(value)
-    nic = nic_from_name(resource[:name])
-
-    Puppet.info("Updating NIC '#{name}' IPs.")
-    nic.update(ips: value)
-    nic.wait_for { ready? }
+    @property_flush[:ips] = value
   end
 
   def lan=(value)
-    nic = nic_from_name(resource[:name])
-
-    lan_id = PuppetX::Profitbricks::Helper::lan_from_name(value, nic.datacenterId).id
-
-    Puppet.info("Updating NIC '#{name}' LAN.")
-    nic.update(lan: lan_id)
-    nic.wait_for { ready? }
+    @property_flush[:lan] = value
   end
 
   def nat=(value)
-    nic = nic_from_name(resource[:name])
-
-    Puppet.info("Updating NIC '#{name}' NAT.")
-    nic.update(nat: value)
-    nic.wait_for { ready? }
+    @property_flush[:nat] = value
   end
 
   def dhcp=(value)
-    nic = nic_from_name(resource[:name])
+    @property_flush[:dhcp] = value
+  end
 
-    Puppet.info("Updating NIC '#{name}' DHCP.")
-    nic.update(dhcp: value)
-    nic.wait_for { ready? }
+  def firewall_rules=(value)
+    @property_flush[:firewall_rules] = value
   end
 
   def create
@@ -133,73 +120,21 @@ Puppet::Type.type(:nic).provide(:v1) do
     Puppet.info("Created a new nic named #{resource[:name]}.")
     @property_hash[:ensure] = :present
     @property_hash[:datacenter_id] = datacenter_id
+    @property_hash[:server_id] = server_id
     @property_hash[:id] = nic.id
-
-    # server_id = resource[:server_id]
-    # unless server_id
-    #   server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], dc_id).id
-    # end
-
-    # is_nat = false
-    # if !resource[:nat].nil? && resource[:nat].to_s == 'true'
-    #   is_nat = true
-    # end
-
-    # nic = NIC.create(
-    #   dc_id,
-    #   server_id, 
-    #   name: name,
-    #   nat: is_nat,
-    #   dhcp: resource[:dhcp],
-    #   lan: lan_id,
-    #   ips: resource[:ips],
-    #   firewallActive: resource[:firewall_active]
-    # )
-
-    # Puppet.info("Creating a new NIC named #{name}.")
-
-    # nic.wait_for { ready? }
-
-    # unless resource[:firewall_rules].nil? || resource[:firewall_rules].empty?
-    #   Puppet.info("Adding firewall rules to NIC #{name}.")
-    #   resource[:firewall_rules].each do |rule|
-    #     fwrule = nic.create_firewall_rule(
-    #       name: rule['name'],
-    #       protocol: rule['protocol'],
-    #       sourceMac: rule['source_mac'],
-    #       sourceIp: rule['source_ip'],
-    #       targetIp: rule['target_ip'],
-    #       portRangeStart: rule['port_range_start'],
-    #       portRangeEnd: rule['port_range_end'],
-    #       icmpType: rule['icmp_type'],
-    #       icmpCode: rule['icmp_code']
-    #     )
-
-    #     fwrule.wait_for { ready? }
-    #   end
-    # end
-
-    @property_hash[:ensure] = :present
   end
 
   def destroy
-    nic = nic_from_name(resource[:name])
-
-    Puppet.info("Deleting NIC #{name}.")
-    nic.delete
-    nic.wait_for { ready? }
+    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id],
+    )
+    PuppetX::Profitbricks::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
-  private
-
-  def nic_from_name(name)
-    dc_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    server_id = resource[:server_id]
-    unless server_id
-      server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], dc_id).id
-    end
-
-    NIC.list(dc_id, server_id).find { |nic| nic.properties['name'] == name }
+  def flush
+    PuppetX::Profitbricks::Helper::update_nic(
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true,
+    )
   end
 end

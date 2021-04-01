@@ -31,11 +31,6 @@ lan { 'nou' :
   datacenter_name => 'myDataCenter2',
 },
 
-# server { 'frontend' :
-#   ensure => absent,
-#   datacenter_name => 'myDataCenter2',
-# }
-
 # server { 'frontend2' :
 #   ensure => present,
 #   cores => 1,
@@ -46,6 +41,9 @@ lan { 'nou' :
 #     { 
 #       id => 'f85e24a8-990e-49f9-a5d3-dc86a3f9ecc3',
 #     },
+#     {
+#       id => 'cbdd58f9-8fa6-4fa8-80b9-e74e1b7b9391',
+#     }
 #   ],
 #   nics => [
 #     {
@@ -86,12 +84,12 @@ lan { 'nou' :
 # },
 
 nic { 'testnic':
+  ensure          => present,
   datacenter_name   => 'myDataCenter2',
   server_name => 'frontend2',
   nat => false,
   dhcp => true,
   lan => 'public',
-  ips => [],
   firewall_active => true,
   firewall_rules => [
     { 
@@ -103,9 +101,9 @@ nic { 'testnic':
     { 
       name => 'HTTP',
       protocol => 'TCP',
-      port_range_start => 80,
+      port_range_start => 76,
       port_range_end => 80
-    }
+    },
   ]
 },
 # volume { 'testvolume' :
