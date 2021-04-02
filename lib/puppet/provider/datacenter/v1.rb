@@ -11,6 +11,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   end
 
   def self.instances
+    PuppetX::Profitbricks::Helper::profitbricks_config
     datacenters = []
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.each do |dc|
       # Ignore data centers if name is not defined.

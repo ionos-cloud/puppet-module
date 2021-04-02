@@ -246,7 +246,7 @@ module PuppetX
 
             firewallrule = firewallrule_object_from_hash(desired_firewallrule)
 
-            volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+            _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
               datacenter_id, server_id, nic_id, firewallrule,
             )
             to_wait << headers
@@ -282,46 +282,52 @@ module PuppetX
       end
 
       def self.volume_object_from_hash(volume)
-        config = {
-          name: volume['name'].to_s,
+        volume_config = {
+          name: volume['name'],
           size: volume['size'],
-          bus: volume['bus'].to_s,
-          type: volume['volume_type'].to_s || 'HDD',
-          availability_zone: volume['availability_zone'].to_s,
+          bus: volume['bus'],
+          type: volume['volume_type'] || 'HDD',
+          availability_zone: volume['availability_zone'],
         }
 
         if volume['image_password'] && !volume['image_password'].empty?
-          config[:image_password] = volume['image_password'].to_s
+          volume_config[:image_password] = volume['image_password']
         elsif volume['ssh_keys'] && !volume['ssh_keys'].empty?
-          config[:ssh_keys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
+          volume_config[:ssh_keys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
         else
           fail('Volume must have either image_password or ssh_keys defined.')
         end
 
         if volume['image_id'] && !volume['image_id'].empty?
-          config[:image] = volume['image_id'].to_s
+          volume_config[:image] = volume['image_id']
         elsif volume['image_alias'] && !volume['image_alias'].empty?
-          config[:image_alias] = volume['image_alias'].to_s
+          volume_config[:image_alias] = volume['image_alias']
         else
           fail('Volume must have either image_id or image_alias defined.')
         end
 
-        config.delete_if { |_k, v| v.nil? }
-
-        Ionoscloud::Volume.new(properties: Ionoscloud::VolumeProperties.new(**config))
+        Ionoscloud::Volume.new(
+          properties: Ionoscloud::VolumeProperties.new(
+            **(volume_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
+          ),
+        )
       end
 
       def self.nic_object_from_hash(nic, datacenter_id)
         lan = lan_from_name(nic['lan'], datacenter_id)
-    
+
+        nic_config = {
+          name: nic['name'],
+          ips: nic['ips'],
+          dhcp: nic['dhcp'],
+          lan: lan.id,
+          nat: nic['nat'],
+          firewall_active: nic['firewall_active'],
+        }
+
         Ionoscloud::Nic.new(
           properties: Ionoscloud::NicProperties.new(
-            name: nic['name'].to_s,
-            ips: nic['ips'],
-            dhcp: nic['dhcp'],
-            lan: lan.id,
-            nat: nic['nat'],
-            firewall_active: nic['firewall_active'],
+            **(nic_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
           entities: Ionoscloud::NicEntities.new(
             firewallrules: Ionoscloud::FirewallRules.new(
@@ -332,17 +338,21 @@ module PuppetX
       end
 
       def self.firewallrule_object_from_hash(firewallrule)
+        firewallrule_config = {
+          name: firewallrule['name'],
+          protocol: firewallrule['protocol'],
+          source_mac: firewallrule['source_mac'],
+          source_ip: firewallrule['source_ip'],
+          target_ip: firewallrule['target_ip'],
+          port_range_start: firewallrule['port_range_start'],
+          port_range_end: firewallrule['port_range_end'],
+          icmp_type: firewallrule['icmp_type'],
+          icmp_code: firewallrule['icmp_code'],
+        }
+        
         Ionoscloud::FirewallRule.new(
           properties: Ionoscloud::FirewallruleProperties.new(
-            name: firewallrule['name'],
-            protocol: firewallrule['protocol'],
-            source_mac: firewallrule['source_mac'],
-            source_ip: firewallrule['source_ip'],
-            target_ip: firewallrule['target_ip'],
-            port_range_start: firewallrule['port_range_start'],
-            port_range_end: firewallrule['port_range_end'],
-            icmp_type: firewallrule['icmp_type'],
-            icmp_code: firewallrule['icmp_code'],
+            **(firewallrule_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
         )
       end

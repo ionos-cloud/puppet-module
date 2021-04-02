@@ -6,7 +6,7 @@ Puppet::Type.type(:nic).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config()
+    PuppetX::Profitbricks::Helper::profitbricks_config
     super(*args)
     @property_flush = {}
   end

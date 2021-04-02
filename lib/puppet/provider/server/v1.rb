@@ -6,12 +6,13 @@ Puppet::Type.type(:server).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config()
+    PuppetX::Profitbricks::Helper::profitbricks_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
+    PuppetX::Profitbricks::Helper::profitbricks_config
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       servers = []
       # Ignore data center if name is not defined.

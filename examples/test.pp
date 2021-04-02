@@ -83,29 +83,43 @@ lan { 'nou' :
 #   ]
 # },
 
-nic { 'testnic':
-  ensure          => present,
-  datacenter_name   => 'myDataCenter2',
-  server_name => 'frontend2',
-  nat => false,
-  dhcp => true,
-  lan => 'public',
-  firewall_active => true,
-  firewall_rules => [
-    { 
-      name => 'SSH',
-      protocol => 'TCP',
-      port_range_start => 22,
-      port_range_end => 22
-    },
-    { 
-      name => 'HTTP',
-      protocol => 'TCP',
-      port_range_start => 76,
-      port_range_end => 80
-    },
-  ]
-},
+# nic { 'testnic':
+#   ensure          => present,
+#   datacenter_name   => 'myDataCenter2',
+#   server_name => 'frontend2',
+#   nat => false,
+#   dhcp => true,
+#   lan => 'public',
+#   firewall_active => true,
+#   firewall_rules => [
+#     { 
+#       name => 'SSH',
+#       protocol => 'TCP',
+#       port_range_start => 22,
+#       port_range_end => 22
+#     },
+#     { 
+#       name => 'HTTP',
+#       protocol => 'TCP',
+#       port_range_start => 78,
+#       port_range_end => 80
+#     },
+#   ]
+# },
+
+firewall_rule { 'HTTP2':
+  ensure           => present,
+  datacenter_name  => 'myDataCenter2',
+  server_name      => 'frontend2',
+  nic              => 'testnic',
+  protocol         => 'TCP',
+  port_range_start => 81,
+  port_range_end   => 83,
+  source_mac       => '12:47:e9:b1:77:b4',
+  source_ip        => '10.81.12.122',
+  target_ip        => '10.81.12.126',
+}
+
 # volume { 'testvolume' :
 #   ensure            => present,
 #   datacenter_name   => 'myDataCenter2',
