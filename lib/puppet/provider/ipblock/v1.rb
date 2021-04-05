@@ -6,21 +6,16 @@ Puppet::Type.type(:ipblock).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
-    super(*args)
-  end
-
-  def self.client
     PuppetX::Profitbricks::Helper::profitbricks_config
+    super(*args)
   end
 
   def self.instances
     PuppetX::Profitbricks::Helper::profitbricks_config
 
     ipblocks = []
-    IPBlock.list.each do |ipblock|
-      hash = instance_to_hash(ipblock)
-      ipblocks << new(hash)
+    Ionoscloud::IPBlocksApi.new.ipblocks_get(depth: 1).items.each do |ipblock|
+      ipblocks << new(instance_to_hash(ipblock))
     end
     ipblocks.flatten
   end
@@ -34,16 +29,15 @@ Puppet::Type.type(:ipblock).provide(:v1) do
   end
 
   def self.instance_to_hash(instance)
-    config = {
+    {
       id: instance.id,
-      created_by: instance.metadata['createdBy'],
-      name: instance.properties['name'],
-      size: instance.properties['size'],
-      location: instance.properties['location'],
-      ips: instance.properties['ips'],
-      ensure: :present
+      created_by: instance.metadata.created_by,
+      name: instance.properties.name,
+      size: instance.properties.size,
+      location: instance.properties.location,
+      ips: instance.properties.ips,
+      ensure: :present,
     }
-    config
   end
 
   def exists?
@@ -52,13 +46,16 @@ Puppet::Type.type(:ipblock).provide(:v1) do
   end
 
   def create
-    ipblock = IPBlock.create(
-      name: resource[:name],
-      size: resource[:size],
-      location: resource[:location]
+    ipblock = Ionoscloud::IpBlock.new(
+      properties: Ionoscloud::IpBlockProperties.new(
+        name: resource[:name],
+        size: resource[:size],
+        location: resource[:location],
+      ),
     )
 
-    ipblock.wait_for { ready? }
+    ipblock, _, headers = Ionoscloud::IPBlocksApi.new.ipblocks_post_with_http_info(ipblock)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
 
     Puppet.info("Created new ipblock '#{name}'.")
     @property_hash[:ensure] = :present
@@ -66,9 +63,9 @@ Puppet::Type.type(:ipblock).provide(:v1) do
   end
 
   def destroy
-    ipblock = IPBlock.get(id)
     Puppet.info("Deleting ipblock '#{name}'...")
-    ipblock.delete
+    _, _, headers = Ionoscloud::IPBlocksApi.new.ipblocks_delete_with_http_info(@property_hash[:id])
+    PuppetX::Profitbricks::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 end

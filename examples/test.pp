@@ -129,6 +129,12 @@ volume { 'testvolume' :
   image_alias       => 'windows:2012r2',
   image_password    => 'secretpassword2015',
   availability_zone => 'AUTO',
+},
+ipblock { 'puppet_demo':
+  ensure     => present,
+  location   => 'us/ewr',
+  size       => 2
 }
+
 
 ]
