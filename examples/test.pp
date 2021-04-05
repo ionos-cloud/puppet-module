@@ -118,17 +118,17 @@ firewall_rule { 'HTTP2':
   source_mac       => '12:47:e9:b1:77:b4',
   source_ip        => '10.81.12.122',
   target_ip        => '10.81.12.126',
-}
+},
 
-# volume { 'testvolume' :
-#   ensure            => present,
-#   datacenter_name   => 'myDataCenter2',
-#   size              => 11,
-#   volume_type       => 'SSD',
-#   licence_type      => 'LINUX',
-#   image_alias       => 'ubuntu:latest',
-#   image_password    => 'secretpassword2015',
-#   availability_zone => 'AUTO',
-# }
+volume { 'testvolume' :
+  ensure            => present,
+  datacenter_name   => 'myDataCenter2',
+  size              => 15,
+  volume_type       => 'SSD',
+  licence_type      => 'LINUX',
+  image_alias       => 'windows:2012r2',
+  image_password    => 'secretpassword2015',
+  availability_zone => 'AUTO',
+}
 
 ]

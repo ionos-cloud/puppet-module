@@ -35,7 +35,6 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
-    puts instance
     {
       id: instance.id,
       datacenter_id: datacenter.id,
