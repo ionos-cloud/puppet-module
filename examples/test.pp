@@ -134,7 +134,14 @@ ipblock { 'puppet_demo':
   ensure     => present,
   location   => 'us/ewr',
   size       => 2
+},
+
+profitbricks_user { 'john.doe.00712@example.com' :
+  ensure        => present,
+  firstname     => 'John2',
+  lastname      => 'Doe2',
+  password      => 'Secrete.Password.007',
+  administrator => false,
+  groups        => ['Puppet Module Test', 'Puppet Module Test 2'],
 }
-
-
 ]
