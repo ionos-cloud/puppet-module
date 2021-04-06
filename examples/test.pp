@@ -136,12 +136,22 @@ ipblock { 'puppet_demo':
   size       => 2
 },
 
-profitbricks_user { 'john.doe.00712@example.com' :
-  ensure        => present,
-  firstname     => 'John2',
-  lastname      => 'Doe2',
-  password      => 'Secrete.Password.007',
-  administrator => false,
-  groups        => ['Puppet Module Test', 'Puppet Module Test 2'],
+# profitbricks_user { 'john.doe.00712@example.com' :
+#   ensure        => present,
+#   firstname     => 'John2',
+#   lastname      => 'Doe2',
+#   password      => 'Secrete.Password.007',
+#   administrator => false,
+#   groups        => ['Puppet Module Test', 'Puppet Module Test 2'],
+# },
+profitbricks_group { 'Puppet Test 2' :
+  ensure              => present,
+  create_data_center  => true,
+  create_snapshot     => false,
+  reserve_ip          => false,
+  access_activity_log => true,
+  s3_privilege        => true,
+  create_backup_unit  => true,
+  members             => ['john.doe.0071@example.com']
 }
 ]

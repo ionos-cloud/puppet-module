@@ -73,7 +73,7 @@ module PuppetX
         return group_from_name(group_name).id
       end
 
-      def self.user_from_name(user_email)
+      def self.user_from_email(user_email)
         user = User.list.find { |user| user.properties['email'] == user_email }
         fail "User with email '#{user_email}' cannot be found." unless user
         user

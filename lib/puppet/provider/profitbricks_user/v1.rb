@@ -117,7 +117,7 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
       force_sec_auth: @property_hash[:force_sec_auth],
     }
 
-    puts "Updating user #{@property_hash[:name]} with #{changes}"
+    puts "Updating user #{@property_hash[:email]} with #{changes}"
 
     new_user = Ionoscloud::User.new(properties: Ionoscloud::UserProperties.new(**user_properties.merge(changes)))
 
@@ -125,8 +125,7 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
     PuppetX::Profitbricks::Helper::wait_request(headers)
   end
 
-  def sync_groups(user_id, existing_groups, target_groups, wait = true)
-
+  def sync_groups(user_id, existing_groups, target_groups)
     to_wait = []
 
     target_groups.each do |group|
@@ -156,7 +155,6 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
     end
 
 
-    to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) } if wait
-    wait ? [] : to_wait
+    to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }
   end
 end
