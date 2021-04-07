@@ -39,7 +39,7 @@ module PuppetX
       end
 
       def self.datacenter_from_name(dc_name)
-        datacenters = Ionoscloud::DataCenterApi.new.datacenters_get({ depth: 1 })
+        datacenters = Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1)
         dc_count = count_by_name(dc_name, datacenters.items)
     
         fail "Found more than one data center named '#{dc_name}'." if dc_count > 1
@@ -49,14 +49,21 @@ module PuppetX
       end
 
       def self.lan_from_name(lan_name, datacenter_id)
-        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter_id, { depth: 1 })
+        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter_id, depth: 1)
         lan = lans.items.find { |lan| lan.properties.name == lan_name }
         fail "LAN named '#{lan_name}' cannot be found." unless lan
         lan
       end
 
+      def self.volume_from_name(volume_name, datacenter_id)
+        volumes = Ionoscloud::VolumeApi.new.datacenters_volumes_get(datacenter_id, depth: 1)
+        volume = volumes.items.find { |volume| volume.properties.name == volume_name }
+        fail "Volume named '#{volume_name}' cannot be found." unless volume
+        volume
+      end
+
       def self.server_from_name(server_name, datacenter_id)
-        servers = Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter_id, { depth: 1 })
+        servers = Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter_id, depth: 1)
         server = servers.items.find { |server| server.properties.name == server_name }
         fail "Server named '#{server_name}' cannot be found." unless server
         server

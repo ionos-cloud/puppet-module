@@ -130,6 +130,14 @@ volume { 'testvolume' :
   image_password    => 'secretpassword2015',
   availability_zone => 'AUTO',
 },
+
+snapshot { 'PPTestSnapshot' :
+  ensure     => present,
+  datacenter => 'myDataCenter2',
+  volume     => 'testvolume',
+  description => 'ceva',
+},
+
 ipblock { 'puppet_demo':
   ensure     => present,
   location   => 'us/ewr',

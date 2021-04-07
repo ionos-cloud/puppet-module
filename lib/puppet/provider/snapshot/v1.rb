@@ -6,21 +6,16 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
-    super(*args)
-  end
-
-  def self.client
     PuppetX::Profitbricks::Helper::profitbricks_config
+    super(*args)
+    @property_flush = {}
   end
 
   def self.instances
     PuppetX::Profitbricks::Helper::profitbricks_config
-
     snapshots = []
-    Snapshot.list.each do |snapshot|
-      hash = instance_to_hash(snapshot)
-      snapshots << new(hash)
+    Ionoscloud::SnapshotApi.new.snapshots_get(depth: 1).items.each do |snapshot|
+      snapshots << new(instance_to_hash(snapshot))
     end
     snapshots.flatten
   end
@@ -34,117 +29,89 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   end
 
   def self.instance_to_hash(instance)
-    config = {
+    {
       id: instance.id,
-      name: instance.properties['name'],
-      description: instance.properties['description'],
-      size: instance.properties['size'],
-      location: instance.properties['location'],
-      cpu_hot_plug: instance.properties['cpuHotPlug'],
-      cpu_hot_unplug: instance.properties['cpuHotUnplug'],
-      ram_hot_plug: instance.properties['ramHotPlug'],
-      ram_hot_unplug: instance.properties['ramHotUnplug'],
-      nic_hot_plug: instance.properties['nicHotPlug'],
-      nic_hot_unplug: instance.properties['nicHotUnplug'],
-      disc_virtio_hot_plug: instance.properties['discVirtioHotPlug'],
-      disc_virtio_hot_unplug: instance.properties['discVirtioHotUnplug'],
-      disc_scsi_hot_plug: instance.properties['discScsiHotPlug'],
-      disc_scsi_hot_unplug: instance.properties['discScsiHotUnplug'],
-      licence_type: instance.properties['licenceType'],
-      ensure: :present
+      name: instance.properties.name,
+      description: instance.properties.description,
+      size: instance.properties.size,
+      location: instance.properties.location,
+      cpu_hot_plug: instance.properties.cpu_hot_plug,
+      cpu_hot_unplug: instance.properties.cpu_hot_unplug,
+      ram_hot_plug: instance.properties.ram_hot_plug,
+      ram_hot_unplug: instance.properties.ram_hot_unplug,
+      nic_hot_plug: instance.properties.nic_hot_plug,
+      nic_hot_unplug: instance.properties.nic_hot_unplug,
+      disc_virtio_hot_plug: instance.properties.disc_virtio_hot_plug,
+      disc_virtio_hot_unplug: instance.properties.disc_virtio_hot_unplug,
+      disc_scsi_hot_plug: instance.properties.disc_scsi_hot_plug,
+      disc_scsi_hot_unplug: instance.properties.disc_scsi_hot_unplug,
+      licence_type: instance.properties.licence_type,
+      ensure: :present,
     }
-    config
   end
 
   def restore=(value)
     # restore setter is only invoked on restore => true
-    vol = get_volume()
+    datacenter_id = get_datacenter_id(resource[:datacenter])
+    volume_id = get_volume_id(datacenter_id, resource[:volume])
+
+    _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_restore_snapshot_post_with_http_info(
+      datacenter_id, volume_id, { snapshot_id: @property_hash[:id] },
+    )
     Puppet.info("Restoring snapshot '#{name}' onto volume '#{resource[:volume]}'...")
-    vol.restore_snapshot(id)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
   end
 
   def description=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating description property of snapshot '#{name}'...")
-    snapshot.update(description: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:description] = value
   end
 
   def cpu_hot_plug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating cpuHotPlug property of snapshot '#{name}'...")
-    snapshot.update(cpuHotPlug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:cpu_hot_plug] = value
   end
 
   def cpu_hot_unplug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating cpuHotUnplug property of snapshot '#{name}'...")
-    snapshot.update(cpuHotUnplug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:cpu_hot_unplug] = value
   end
 
   def ram_hot_plug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating ramHotPlug property of snapshot '#{name}'...")
-    snapshot.update(ramHotPlug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:ram_hot_plug] = value
   end
 
   def ram_hot_unplug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating ramHotUnplug property of snapshot '#{name}'...")
-    snapshot.update(ramHotUnplug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:ram_hot_unplug] = value
   end
 
   def nic_hot_plug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating nicHotPlug property of snapshot '#{name}'...")
-    snapshot.update(nicHotPlug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:nic_hot_plug] = value
   end
 
   def nic_hot_unplug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating nicHotUnplug property of snapshot '#{name}'...")
-    snapshot.update(nicHotUnplug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:nic_hot_unplug] = value
   end
 
   def disc_virtio_hot_plug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating discVirtioHotPlug property of snapshot '#{name}'...")
-    snapshot.update(discVirtioHotPlug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:disc_virtio_hot_plug] = value
   end
 
   def disc_virtio_hot_unplug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating discVirtioHotUnplug property of snapshot '#{name}'...")
-    snapshot.update(discVirtioHotUnplug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:disc_virtio_hot_unplug] = value
   end
 
   def disc_scsi_hot_plug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating discScsiHotPlug property of snapshot '#{name}'...")
-    snapshot.update(discScsiHotPlug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:disc_scsi_hot_plug] = value
   end
 
   def disc_scsi_hot_unplug=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating discScsiHotUnplug property of snapshot '#{name}'...")
-    snapshot.update(discScsiHotUnplug: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:disc_scsi_hot_unplug] = value
+  end
+
+  def sec_auth_protection=(value)
+    @property_flush[:licence_type] = value
   end
 
   def licence_type=(value)
-    snapshot = Snapshot.get(id)
-    Puppet.info("Updating licenceType property of snapshot '#{name}'...")
-    snapshot.update(licenceType: value)
-    snapshot.wait_for { ready? }
+    @property_flush[:licence_type] = value
   end
 
   def exists?
@@ -153,60 +120,66 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   end
 
   def create
-    volume = get_volume()
+    datacenter_id = get_datacenter_id(resource[:datacenter])
+    volume_id = get_volume_id(datacenter_id, resource[:volume])
 
-    snapshot = volume.create_snapshot(
-      name: resource[:name],
-      description: resource[:description]
+    snapshot, _, headers  = Ionoscloud::VolumeApi.new.datacenters_volumes_create_snapshot_post_with_http_info(
+      datacenter_id,
+      volume_id,
+      {
+        name: resource[:name],
+        description: resource[:description],
+        sec_auth_protection: resource[:sec_auth_protection],
+        licence_type: resource[:licence_type],
+      },
     )
-
-    snapshot.wait_for { ready? }
+    PuppetX::Profitbricks::Helper::wait_request(headers)
 
     Puppet.info("Created new snapshot '#{name}'.")
     @property_hash[:ensure] = :present
     @property_hash[:id] = snapshot.id
+    @property_hash[:datacenter] = datacenter_id
+    @property_hash[:volume] = volume_id
+  end
+
+  def flush
+    changeable_properties = [
+      :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug, 
+      :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug, 
+      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type,
+    ]
+    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
+    
+    if !changes.empty?
+      Puppet.info("Updating snapshot '#{name}', #{changes.keys.to_s}.")
+      changes = Ionoscloud::SnapshotProperties.new(**changes)
+
+      server, _, headers = Ionoscloud::SnapshotApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
+
+      PuppetX::Profitbricks::Helper::wait_request(headers)
+
+      changeable_properties.each do |property|
+        @property_hash[property] = @property_flush[property] if @property_flush[property]
+      end
+    end
   end
 
   def destroy
-    snapshot = Snapshot.get(id)
     Puppet.info("Deleting snapshot '#{name}'...")
-    snapshot.delete
-    snapshot.wait_for { ready? }
+    _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_delete_with_http_info(@property_hash[:id])
+    PuppetX::Profitbricks::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
   private
 
-  def get_volume()
-    fail "Data center ID or name must be provided." if resource[:datacenter].nil?
-    fail "Volume ID or name must be provided." if resource[:volume].nil?
+  def get_datacenter_id(datacenter_id_or_name)
+    return datacenter_id_or_name if PuppetX::Profitbricks::Helper.validate_uuid_format(datacenter_id_or_name)
+    PuppetX::Profitbricks::Helper::resolve_datacenter_id(nil, datacenter_id_or_name)
+  end
 
-    reg = Regexp.new('^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$')
-
-    if reg.match(resource[:datacenter])
-      dc_id = resource[:datacenter]
-      begin
-        Datacenter.get(dc_id)
-      rescue StandardError
-        dc_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(nil, resource[:datacenter])
-      end
-    else
-      dc_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(nil, resource[:datacenter])
-    end
-
-    if reg.match(resource[:volume])
-      volume = Volume.get(dc_id, resource[:volume])
-      begin
-        volume = Volume.get(dc_id, resource[:volume])
-      rescue StandardError
-        volume = Volume.list(dc_id).find { |volume| volume.properties['name'] == resource[:volume] }
-      end
-    else
-      volume = Volume.list(dc_id).find { |volume| volume.properties['name'] == resource[:volume] }
-    end
-    unless volume
-      fail "No volume with ID/name '#{resource[:volume]}'  was found in '#{resource[:datacenter]}' data center."
-    end
-    volume
+  def get_volume_id(datacenter_id, volume_id_or_name)
+    return volume_id_or_name if PuppetX::Profitbricks::Helper.validate_uuid_format(volume_id_or_name)
+    PuppetX::Profitbricks::Helper::volume_from_name(volume_id_or_name, datacenter_id).id
   end
 end

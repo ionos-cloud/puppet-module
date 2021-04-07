@@ -44,6 +44,27 @@ Puppet::Type.newtype(:snapshot) do
     desc "The snapshot's description."
   end
 
+  newproperty(:sec_auth_protection) do
+    desc "Flag representing if extra protection is enabled on snapshot e.g. Two Factor protection etc."
+    newvalues(:true, :false)
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:licence_type) do
+    desc "The OS type of this Snapshot"
+    newvalues('LINUX', 'WINDOWS', 'WINDOWS2016', 'UNKNOWN', 'OTHER')
+
+    validate do |value|
+      raise ArgumentError, 'The license type should be a String.' unless value.is_a?(String)
+    end
+
+    def insync?(is)
+      true
+    end
+  end
+
   newproperty(:cpu_hot_plug) do
     desc 'Indicates CPU hot plug capability.'
     newvalues(:true, :false)
@@ -122,10 +143,6 @@ Puppet::Type.newtype(:snapshot) do
     def insync?(is)
       is.to_s == should.to_s
     end
-  end
-
-  newproperty(:licence_type) do
-    desc 'The license type of the snapshot.'
   end
 
   # read-only properties
