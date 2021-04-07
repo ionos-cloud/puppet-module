@@ -63,7 +63,7 @@ module PuppetX
       end
 
       def self.group_from_name(group_name)
-        group = Group.list.find { |group| group.properties['name'] == group_name }
+        group = Ionoscloud::UserManagementApi.new.um_groups_get(depth: 1).items.find { |group| group.properties.name == group_name }
         fail "Group named '#{group_name}' cannot be found." unless group
         group
       end
@@ -74,7 +74,7 @@ module PuppetX
       end
 
       def self.user_from_email(user_email)
-        user = User.list.find { |user| user.properties['email'] == user_email }
+        user = Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.find { |user| user.properties.email == user_email }
         fail "User with email '#{user_email}' cannot be found." unless user
         user
       end

@@ -115,7 +115,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
   end
 
   def flush
-    changeable_fields = [:name, :create_backup_unit, :create_snapshot, :reserve_ip, :access_activity_log, :s3_privilege, :create_backup_unit]
+    changeable_fields = [:name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log, :s3_privilege, :create_backup_unit]
     changes = Hash[*changeable_fields.collect {|v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
 

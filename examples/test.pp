@@ -153,5 +153,12 @@ profitbricks_group { 'Puppet Test 2' :
   s3_privilege        => true,
   create_backup_unit  => true,
   members             => ['john.doe.0071@example.com']
+},
+
+share { '1ca85771-5c86-476e-b86b-803223352370' :
+  ensure          => present,
+  edit_privilege  => false,
+  share_privilege => true,
+  group_name      => 'Puppet Test 2'
 }
 ]
