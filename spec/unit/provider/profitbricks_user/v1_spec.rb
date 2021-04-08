@@ -39,6 +39,7 @@ describe provider_class do
     it 'should update profitbricks_user' do
       VCR.use_cassette('profitbricks_user_update') do
         @provider.administrator = false
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.email == 'john.doe_002@example.com'

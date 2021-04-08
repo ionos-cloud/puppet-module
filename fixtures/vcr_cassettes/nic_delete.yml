@@ -1,0 +1,553 @@
+---
+http_interactions:
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:00:49 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
+      Location:
+      - https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '48'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Thu, 08 Apr 2021 15:00:49 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:00:49 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:00:49 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:00:55 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:00:55 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:01:00 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:01:00 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:01:05 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:01:05 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:01:10 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:01:10 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:01:16 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:01:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:01:21 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '689'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/fdf457aa-9933-400a-b8bf-6e0b2be5777e/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "8bdc4939-fc58-4e27-b1fc-aba025b71395",
+                "type" : "nic",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/8bdc4939-fc58-4e27-b1fc-aba025b71395"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:01:21 GMT
+recorded_with: VCR 6.0.0

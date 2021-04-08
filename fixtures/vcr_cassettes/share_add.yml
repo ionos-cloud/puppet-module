@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v5/um/groups/b903838d-6384-4b81-b682-695068e50e48/shares/b9c6cb26-6100-4ba3-803a-caf75267068a
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"editPrivilege":"true","sharePrivilege":"true"}}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:15:50 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '118'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "httpStatus" : 404,
+          "messages" : [ {
+            "errorCode" : "309",
+            "message" : "Resource does not exist"
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 15:15:50 GMT
+recorded_with: VCR 6.0.0

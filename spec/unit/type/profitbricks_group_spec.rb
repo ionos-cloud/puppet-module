@@ -12,7 +12,7 @@ describe type_class do
   let :properties do
     [
       :ensure,
-      :create_datacenter,
+      :create_data_center,
       :create_snapshot,
       :reserve_ip,
       :access_activity_log,

@@ -98,7 +98,7 @@ describe provider_class do
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
         end
-        expect(updated_instance.boot_volume).to eq('Puppet Module Test 2')
+        expect(updated_instance.boot_volume[:name]).to eq('Puppet Module Test 2')
       end
     end
 

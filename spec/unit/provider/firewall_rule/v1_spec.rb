@@ -41,6 +41,7 @@ describe provider_class do
     it 'should update firewall rule' do
       VCR.use_cassette('firewall_rule_update') do
         @provider.target_ip = '10.81.12.124'
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'SSH'

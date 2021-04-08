@@ -1,0 +1,156 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/snapshots?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:16:55 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '3679'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "snapshots",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/snapshots",
+          "items" : [ {
+            "id" : "e3ddebfc-7aa1-41ba-ba68-8720fccc3a0d",
+            "type" : "snapshot",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/e3ddebfc-7aa1-41ba-ba68-8720fccc3a0d",
+            "metadata" : {
+              "etag" : "8df754f930e5a11a30eba83c3fddbfef",
+              "createdDate" : "2021-04-08T15:15:53Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-08T15:15:53Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "description" : "Puppet Module test snapshot",
+              "location" : "us/las",
+              "size" : 5,
+              "secAuthProtection" : false,
+              "cpuHotPlug" : true,
+              "cpuHotUnplug" : false,
+              "ramHotPlug" : true,
+              "ramHotUnplug" : false,
+              "nicHotPlug" : true,
+              "nicHotUnplug" : true,
+              "discVirtioHotPlug" : true,
+              "discVirtioHotUnplug" : true,
+              "discScsiHotPlug" : false,
+              "discScsiHotUnplug" : false,
+              "licenceType" : "LINUX"
+            }
+          }, {
+            "id" : "801bc68d-7c99-4890-84ea-98ebb7ca4985",
+            "type" : "snapshot",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/801bc68d-7c99-4890-84ea-98ebb7ca4985",
+            "metadata" : {
+              "etag" : "05a5e5e11e1a4a2cec466d8478754c9e",
+              "createdDate" : "2021-04-07T15:01:04Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-07T15:04:15Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "PPTestSnapshot",
+              "description" : "ceva",
+              "location" : "us/las",
+              "size" : 15,
+              "secAuthProtection" : false,
+              "cpuHotPlug" : true,
+              "cpuHotUnplug" : false,
+              "ramHotPlug" : false,
+              "ramHotUnplug" : false,
+              "nicHotPlug" : true,
+              "nicHotUnplug" : true,
+              "discVirtioHotPlug" : true,
+              "discVirtioHotUnplug" : false,
+              "discScsiHotPlug" : false,
+              "discScsiHotUnplug" : false,
+              "licenceType" : "WINDOWS"
+            }
+          }, {
+            "id" : "a7168f9d-0854-4b61-ab03-ba6c5b8dfba7",
+            "type" : "snapshot",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/a7168f9d-0854-4b61-ab03-ba6c5b8dfba7",
+            "metadata" : {
+              "etag" : "39be36b0fa4846e2ad8cb5d01c78d27c",
+              "createdDate" : "2021-02-22T08:49:44Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-02-22T08:49:44Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Unnamed HDD Storage-Snapshot-2021-02-22T08:49:44Z",
+              "description" : "Created from \"Unnamed HDD Storage\" in Data Center \"Unnamed Data Center\"",
+              "location" : "de/fra",
+              "size" : 10,
+              "secAuthProtection" : false,
+              "cpuHotPlug" : false,
+              "cpuHotUnplug" : false,
+              "ramHotPlug" : false,
+              "ramHotUnplug" : false,
+              "nicHotPlug" : false,
+              "nicHotUnplug" : false,
+              "discVirtioHotPlug" : false,
+              "discVirtioHotUnplug" : false,
+              "discScsiHotPlug" : false,
+              "discScsiHotUnplug" : false,
+              "licenceType" : "UNKNOWN"
+            }
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 15:16:55 GMT
+recorded_with: VCR 6.0.0

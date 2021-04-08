@@ -39,6 +39,7 @@ describe provider_class do
       VCR.use_cassette('snapshot_update') do
         new_desc = 'Puppet Module test snapshot - RENAME'
         @provider.description = new_desc
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test'

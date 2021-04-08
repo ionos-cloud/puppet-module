@@ -38,6 +38,7 @@ describe provider_class do
     it 'should update share' do
       VCR.use_cassette('share_update') do
         @provider.edit_privilege = false
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'b9c6cb26-6100-4ba3-803a-caf75267068a'

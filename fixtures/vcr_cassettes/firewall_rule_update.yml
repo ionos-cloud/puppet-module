@@ -1,0 +1,555 @@
+---
+http_interactions:
+- request:
+    method: patch
+    uri: https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0
+    body:
+      encoding: UTF-8
+      string: '{"targetIp":"10.81.12.124"}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:38 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '996'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9e4d9d4af5ee8e34dbff3dfcda261242
+      Location:
+      - https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+          "type" : "firewall-rule",
+          "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+          "metadata" : {
+            "etag" : "9e4d9d4af5ee8e34dbff3dfcda261242",
+            "createdDate" : "2021-04-08T15:06:28Z",
+            "createdBy" : "username",
+            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "lastModifiedDate" : "2021-04-08T15:06:38Z",
+            "lastModifiedBy" : "username",
+            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "state" : "BUSY"
+          },
+          "properties" : {
+            "name" : "SSH",
+            "protocol" : "TCP",
+            "sourceMac" : "01:23:45:67:89:00",
+            "sourceIp" : null,
+            "targetIp" : "10.81.12.124",
+            "icmpCode" : null,
+            "icmpType" : null,
+            "portRangeStart" : 22,
+            "portRangeEnd" : 22
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:38 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:38 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '739'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+                "type" : "firewall-rule",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:38 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:43 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '739'
+      Content-Type:
+      - application/json
+      Etag:
+      - 9df29ce7ca629ff1d47bca1149d9faae
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "metadata" : {
+            "status" : "QUEUED",
+            "message" : "Request has been queued",
+            "etag" : "9df29ce7ca629ff1d47bca1149d9faae",
+            "targets" : [ {
+              "target" : {
+                "id" : "4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+                "type" : "firewall-rule",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0"
+              },
+              "status" : "QUEUED"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:43 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:48 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '750'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/ee60e4fb-a130-4073-83f7-25cdf34bbc8a/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+                "type" : "firewall-rule",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/datacenters?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:48 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '1931'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "datacenters",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/datacenters",
+          "items" : [ {
+            "id" : "38486675-0110-478e-9079-e515242cd35b",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b",
+            "metadata" : {
+              "etag" : "9e28d0174c3522b7a4427f2a3f8a387d",
+              "createdDate" : "2021-04-08T13:38:27Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-08T15:06:39Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "description" : null,
+              "location" : "us/las",
+              "version" : 44,
+              "features" : [ "SSD" ],
+              "secAuthProtection" : false
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "38486675-0110-478e-9079-e515242cd35b/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers"
+              },
+              "volumes" : {
+                "id" : "38486675-0110-478e-9079-e515242cd35b/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "38486675-0110-478e-9079-e515242cd35b/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/loadbalancers"
+              },
+              "lans" : {
+                "id" : "38486675-0110-478e-9079-e515242cd35b/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/lans"
+              }
+            }
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers?depth=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:06:48 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '4901'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "38486675-0110-478e-9079-e515242cd35b/servers",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers",
+          "items" : [ {
+            "id" : "cf03c457-8245-4f3a-b658-453378db683a",
+            "type" : "server",
+            "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a",
+            "metadata" : {
+              "etag" : "f412c459833c1667a1c306cae2c5778d",
+              "createdDate" : "2021-04-08T13:49:02Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-08T15:05:07Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "cores" : 1,
+              "ram" : 1024,
+              "availabilityZone" : "AUTO",
+              "vmState" : "RUNNING",
+              "bootCdrom" : null,
+              "bootVolume" : null,
+              "cpuFamily" : "AMD_OPTERON"
+            },
+            "entities" : {
+              "cdroms" : {
+                "id" : "cf03c457-8245-4f3a-b658-453378db683a/cdroms",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/cdroms",
+                "items" : [ ]
+              },
+              "volumes" : {
+                "id" : "cf03c457-8245-4f3a-b658-453378db683a/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/volumes",
+                "items" : [ ]
+              },
+              "nics" : {
+                "id" : "cf03c457-8245-4f3a-b658-453378db683a/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics",
+                "items" : [ {
+                  "id" : "53fcf4dc-3e60-448a-a1da-2d007b675879",
+                  "type" : "nic",
+                  "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879",
+                  "metadata" : {
+                    "etag" : "f412c459833c1667a1c306cae2c5778d",
+                    "createdDate" : "2021-04-08T15:05:07Z",
+                    "createdBy" : "username",
+                    "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+                    "lastModifiedDate" : "2021-04-08T15:05:07Z",
+                    "lastModifiedBy" : "username",
+                    "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+                    "state" : "AVAILABLE"
+                  },
+                  "properties" : {
+                    "name" : "Puppet Module Test",
+                    "mac" : "02:01:79:fd:67:cb",
+                    "ips" : [ "10.14.184.11" ],
+                    "dhcp" : true,
+                    "lan" : 1,
+                    "firewallActive" : true,
+                    "nat" : false
+                  },
+                  "entities" : {
+                    "firewallrules" : {
+                      "id" : "53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules",
+                      "type" : "collection",
+                      "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules",
+                      "items" : [ {
+                        "id" : "4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+                        "type" : "firewall-rule",
+                        "href" : "https://api.ionos.com/cloudapi/v5/datacenters/38486675-0110-478e-9079-e515242cd35b/servers/cf03c457-8245-4f3a-b658-453378db683a/nics/53fcf4dc-3e60-448a-a1da-2d007b675879/firewallrules/4de2d8e4-9429-423d-9b31-fc7668ef17e0",
+                        "metadata" : {
+                          "etag" : "9e28d0174c3522b7a4427f2a3f8a387d",
+                          "createdDate" : "2021-04-08T15:06:28Z",
+                          "createdBy" : "username",
+                          "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+                          "lastModifiedDate" : "2021-04-08T15:06:39Z",
+                          "lastModifiedBy" : "username",
+                          "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+                          "state" : "AVAILABLE"
+                        },
+                        "properties" : {
+                          "name" : "SSH",
+                          "protocol" : "TCP",
+                          "sourceMac" : "01:23:45:67:89:00",
+                          "sourceIp" : null,
+                          "targetIp" : "10.81.12.124",
+                          "icmpCode" : null,
+                          "icmpType" : null,
+                          "portRangeStart" : 22,
+                          "portRangeEnd" : 22
+                        }
+                      } ]
+                    }
+                  }
+                } ]
+              }
+            }
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 15:06:49 GMT
+recorded_with: VCR 6.0.0

@@ -1,0 +1,123 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/ipblocks?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 14:03:08 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '2548'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "ipblocks",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/ipblocks",
+          "items" : [ {
+            "id" : "9901d3e4-abbb-4a7a-915e-e5f24ce1962c",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/9901d3e4-abbb-4a7a-915e-e5f24ce1962c",
+            "metadata" : {
+              "etag" : "8130f6b4bb27caf9c7ccdbb06bb21a8e",
+              "createdDate" : "2021-04-08T14:03:08Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-08T14:03:08Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "158.222.102.114", "158.222.102.202" ],
+              "location" : "us/las",
+              "size" : 2,
+              "name" : "Puppet Module Test",
+              "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "03f4a5d1-2f58-4d61-a8cb-8faadf5e8add",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/03f4a5d1-2f58-4d61-a8cb-8faadf5e8add",
+            "metadata" : {
+              "etag" : "17435fd4337f932ae10887fc54615e64",
+              "createdDate" : "2021-04-05T12:58:29Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-05T12:58:29Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "157.97.105.122", "157.97.105.120" ],
+              "location" : "us/ewr",
+              "size" : 2,
+              "name" : "puppet_demo",
+              "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "5641d1b0-696f-4105-b2ae-b10a394dc27f",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/5641d1b0-696f-4105-b2ae-b10a394dc27f",
+            "metadata" : {
+              "etag" : "8368bff4343eca45daaad609b0f7474c",
+              "createdDate" : "2021-03-31T13:13:24Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-03-31T13:13:24Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "158.222.102.164", "158.222.102.161" ],
+              "location" : "us/las",
+              "size" : 2,
+              "name" : "da",
+              "ipConsumers" : [ ]
+            }
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 14:03:08 GMT
+recorded_with: VCR 6.0.0

@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v5/um/users
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"firstname":"John","lastname":"Doe","email":"john.doe_002@example.com","administrator":"true","forceSecAuth":"false","password":"Secrete.Password.001"}}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:10:13 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '153'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "httpStatus" : 422,
+          "messages" : [ {
+            "errorCode" : "200",
+            "message" : "[VDC-0-7] Username john.doe_002@example.com already exists"
+          } ]
+        }
+  recorded_at: Thu, 08 Apr 2021 15:10:13 GMT
+recorded_with: VCR 6.0.0

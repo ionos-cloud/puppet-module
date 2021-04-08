@@ -39,6 +39,9 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
       access_activity_log: instance.properties.access_activity_log,
       s3_privilege: instance.properties.s3_privilege,
       create_backup_unit: instance.properties.create_backup_unit,
+      create_internet_access: instance.properties.create_internet_access,
+      create_k8s_cluster: instance.properties.create_k8s_cluster,
+      create_pcc: instance.properties.create_pcc,
       members: instance.entities.users.items.map { |user| user.properties.email },
       ensure: :present,
     }
@@ -68,6 +71,18 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     @property_flush[:create_backup_unit] = value
   end
 
+  def create_internet_access=(value)
+    @property_flush[:create_internet_access] = value
+  end
+
+  def create_k8s_cluster=(value)
+    @property_flush[:create_k8s_cluster] = value
+  end
+
+  def create_pcc=(value)
+    @property_flush[:create_pcc] = value
+  end
+
   def members=(value)
     sync_members(@property_hash[:id], @property_hash[:members], value)
   end
@@ -87,6 +102,9 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
         access_activity_log: resource[:access_activity_log],
         s3_privilege: resource[:s3_privilege],
         create_backup_unit: resource[:create_backup_unit],
+        create_internet_access: resource[:create_internet_access],
+        create_k8s_cluster: resource[:create_k8s_cluster],
+        create_pcc: resource[:create_pcc],
       ),
     )
 
@@ -103,19 +121,25 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     @property_hash[:access_activity_log] = group.properties.access_activity_log
     @property_hash[:s3_privilege] = group.properties.s3_privilege
     @property_hash[:create_backup_unit] = group.properties.create_backup_unit
+    @property_hash[:create_internet_access] = group.properties.create_internet_access
+    @property_hash[:create_k8s_cluster] = group.properties.create_k8s_cluster
+    @property_hash[:create_pcc] = group.properties.create_pcc
 
     sync_members(group.id, [], resource[:members])
   end
 
   def destroy
     Puppet.info("Deleting Group #{name}...")
-    _, _, headers = Ionoscloud::UserManagementApi.new.um_group_delete_with_http_info(@property_hash[:id])
+    _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_delete_with_http_info(@property_hash[:id])
     PuppetX::Profitbricks::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
   def flush
-    changeable_fields = [:name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log, :s3_privilege, :create_backup_unit]
+    changeable_fields = [
+      :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log, 
+      :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc,
+    ]
     changes = Hash[*changeable_fields.collect {|v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
 
@@ -127,6 +151,9 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
       access_activity_log: @property_hash[:access_activity_log],
       s3_privilege: @property_hash[:s3_privilege],
       create_backup_unit: @property_hash[:create_backup_unit],
+      create_internet_access: @property_hash[:create_internet_access],
+      create_k8s_cluster: @property_hash[:create_k8s_cluster],
+      create_pcc: @property_hash[:create_pcc],
     }
 
     puts "Updating group #{@property_hash[:name]} with #{changes}"
@@ -151,7 +178,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
 
         to_wait << headers
       end
-    end
+    end unless target_members.nil?
 
     existing_members.each do |user|
       unless target_members.include? user
@@ -164,7 +191,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
 
         to_wait << headers
       end
-    end
+    end unless existing_members.nil?
 
 
     to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }

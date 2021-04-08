@@ -136,6 +136,7 @@ snapshot { 'PPTestSnapshot' :
   datacenter => 'myDataCenter2',
   volume     => 'testvolume',
   description => 'ceva',
+  restore => false,
 },
 
 ipblock { 'puppet_demo':
@@ -160,6 +161,9 @@ profitbricks_group { 'Puppet Test 2' :
   access_activity_log => true,
   s3_privilege        => true,
   create_backup_unit  => true,
+  create_internet_access => true,
+  create_k8s_cluster        => true,
+  create_pcc  => true,
   members             => ['john.doe.0071@example.com']
 },
 

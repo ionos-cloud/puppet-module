@@ -72,6 +72,36 @@ Puppet::Type.newtype(:profitbricks_group) do
     end
   end
 
+  newproperty(:create_internet_access) do
+    desc 'Indicates if the group is allowed to create internet access.'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:create_k8s_cluster) do
+    desc 'Indicates if the group is allowed to create kubernetes cluster.'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:create_pcc) do
+    desc 'Indicates if the group is allowed to create pcc.'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
   newproperty(:members, array_matching: :all) do
     desc 'The profitbricks users associated with the group.'
 

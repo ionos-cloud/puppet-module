@@ -40,6 +40,7 @@ describe provider_class do
       VCR.use_cassette('nic_update') do
         @provider.dhcp = false
         @provider.ips = ['208.94.36.99', '208.94.36.101']
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test'

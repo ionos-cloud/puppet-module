@@ -1,0 +1,146 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v5/um/groups
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"name":"Puppet Module Test","createDataCenter":"true","createSnapshot":"true","reserveIp":"true","accessActivityLog":"true","createPcc":"false","s3Privilege":"false","createBackupUnit":"false","createInternetAccess":"false","createK8sCluster":"false"}}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:10:09 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '493'
+      Content-Type:
+      - application/json
+      Etag:
+      - 521d925abed31d83c90982e8e37af41e
+      Location:
+      - https://api.ionos.com/cloudapi/v5/requests/0d0557f9-c83f-44a3-8b21-1fadaf6713d9/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360",
+          "type" : "group",
+          "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360",
+          "properties" : {
+            "name" : "Puppet Module Test",
+            "createDataCenter" : true,
+            "createSnapshot" : true,
+            "reserveIp" : true,
+            "accessActivityLog" : true,
+            "createPcc" : false,
+            "s3Privilege" : false,
+            "createBackupUnit" : false,
+            "createInternetAccess" : false,
+            "createK8sCluster" : false
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:10:09 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/0d0557f9-c83f-44a3-8b21-1fadaf6713d9/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 08 Apr 2021 15:10:09 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '602'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "0d0557f9-c83f-44a3-8b21-1fadaf6713d9/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/0d0557f9-c83f-44a3-8b21-1fadaf6713d9/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360",
+                "type" : "group",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Thu, 08 Apr 2021 15:10:09 GMT
+recorded_with: VCR 6.0.0

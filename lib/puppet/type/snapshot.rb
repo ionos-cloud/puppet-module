@@ -28,6 +28,10 @@ Puppet::Type.newtype(:snapshot) do
         raise ArgumentError, 'The data center ID/name should be a String.'
       end
     end
+
+    def insync?(is)
+      true
+    end
   end
 
   newproperty(:volume) do
@@ -37,6 +41,10 @@ Puppet::Type.newtype(:snapshot) do
       unless value.is_a?(String)
         raise ArgumentError, 'The volume ID/name should be a String.'
       end
+    end
+
+    def insync?(is)
+      true
     end
   end
 
