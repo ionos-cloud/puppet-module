@@ -72,8 +72,10 @@ Puppet::Type.type(:share).provide(:v1) do
       ),
     )
 
+    group_id = PuppetX::Profitbricks::Helper::resolve_group_id(resource[:group_id], resource[:group_name])
+
     share, _, headers  = Ionoscloud::UserManagementApi.new.um_groups_shares_post_with_http_info(
-      PuppetX::Profitbricks::Helper::resolve_group_id(resource[:group_id], resource[:group_name]),
+      group_id,
       resource[:name],
       share,
     )
@@ -82,19 +84,20 @@ Puppet::Type.type(:share).provide(:v1) do
     Puppet.info("Added share #{share.id}.")
     @property_hash[:ensure] = :present
     @property_hash[:name] = share.id
+    @property_hash[:group_id] = group_id
   end
 
   def flush
     unless @property_flush.empty?
       share = Ionoscloud::GroupShare.new(
         properties: Ionoscloud::GroupShareProperties.new(
-          edit_privilege: @property_flush[:edit_privilege] || @property_hash[:edit_privilege],
-          share_privilege: @property_flush[:share_privilege] || @property_hash[:share_privilege],
+          edit_privilege: (@property_flush[:edit_privilege].nil? ? @property_hash[:edit_privilege] : @property_flush[:edit_privilege]),
+          share_privilege: (@property_flush[:share_privilege].nil? ? @property_hash[:share_privilege] : @property_flush[:share_privilege]),
         ),
       )
 
       share, _, headers  = Ionoscloud::UserManagementApi.new.um_groups_shares_put_with_http_info(
-        PuppetX::Profitbricks::Helper::resolve_group_id( @property_hash[:group_id],  @property_hash[:group_name]),
+        PuppetX::Profitbricks::Helper::resolve_group_id(@property_hash[:group_id],  @property_hash[:group_name]),
         @property_hash[:name],
         share,
       )

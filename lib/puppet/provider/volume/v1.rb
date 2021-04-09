@@ -63,7 +63,7 @@ Puppet::Type.type(:volume).provide(:v1) do
   def create
     volume = PuppetX::Profitbricks::Helper::volume_object_from_hash(resource)
 
-    puts "Creating a new volume #{volume.to_hash}."
+    Puppet.info "Creating a new volume #{volume.to_hash}."
 
     datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 

@@ -103,7 +103,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              puts "Attaching #{target_volume['id']} to server"
+              Puppet.info "Attaching #{target_volume['id']} to server"
               _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
                 datacenter_id, server_id, id: target_volume['id'],
               )
@@ -120,7 +120,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              puts "Creating volume #{target_volume} from server"
+              Puppet.info "Creating volume #{target_volume} from server"
     
               volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(
                 datacenter_id, volume_object_from_hash(target_volume),
@@ -132,7 +132,7 @@ module PuppetX
         end
     
         to_detach.each do |volume_id|
-          puts "Detaching #{volume_id} from server"
+          Puppet.info "Detaching #{volume_id} from server"
           _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_delete_with_http_info(
             datacenter_id, server_id, volume_id,
           )
@@ -140,7 +140,7 @@ module PuppetX
         end
     
         to_wait_create.each do |headers, volume_id|
-          puts "Attaching #{volume_id} to server"
+          Puppet.info "Attaching #{volume_id} to server"
           wait_request(headers)
           _, _, new_headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
             datacenter_id, server_id, id: volume_id,
@@ -163,7 +163,7 @@ module PuppetX
 
         changes = Ionoscloud::VolumeProperties.new(**changes)
 
-        puts "Updating Volume #{current[:name]} with #{changes}"
+        Puppet.info "Updating Volume #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
         wait_request(headers) if wait
@@ -186,7 +186,7 @@ module PuppetX
             to_wait += headers unless headers.empty?
             to_delete.delete(existing_nic[:id])
           else
-            puts "Creating NIC #{desired_nic} in server #{server_id}"
+            Puppet.info "Creating NIC #{desired_nic} in server #{server_id}"
     
             volume, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
               datacenter_id, server_id, nic_object_from_hash(desired_nic, datacenter_id),
@@ -196,7 +196,7 @@ module PuppetX
         end
 
         to_delete.each do |nic_id|
-          puts "Deleting NIC #{nic_id} from server #{server_id}"
+          Puppet.info "Deleting NIC #{nic_id} from server #{server_id}"
           _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
             datacenter_id, server_id, nic_id,
           )
@@ -219,7 +219,7 @@ module PuppetX
 
         changes[:lan] = Integer(lan_from_name(changes[:lan], datacenter_id).id) unless changes[:lan].nil?
         changes = Ionoscloud::NicProperties.new(**changes)
-        puts "Updating NIC #{current[:name]} with #{changes}"
+        Puppet.info "Updating NIC #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
 
@@ -249,7 +249,7 @@ module PuppetX
             to_wait << headers unless headers.nil?
             to_delete.delete(existing_firewallrule[:id])
           else
-            puts "Creating FirewallRule #{desired_firewallrule}"
+            Puppet.info "Creating FirewallRule #{desired_firewallrule}"
 
             firewallrule = firewallrule_object_from_hash(desired_firewallrule)
 
@@ -261,7 +261,7 @@ module PuppetX
         end
 
         to_delete.each do |firewallrule_id|
-          puts "Deleting FirewallRule #{firewallrule_id}"
+          Puppet.info "Deleting FirewallRule #{firewallrule_id}"
           _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
             datacenter_id, server_id, nic_id, firewallrule_id,
           )
@@ -278,7 +278,7 @@ module PuppetX
         return nil unless !changes.empty?
 
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
-        puts "Updating Firewall Rule #{current[:name]} with #{changes}"
+        Puppet.info "Updating Firewall Rule #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
           datacenter_id, server_id, nic_id, firewallrule_id, changes,

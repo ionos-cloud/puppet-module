@@ -1,6 +1,169 @@
 ---
 http_interactions:
 - request:
+    method: put
+    uri: https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"firstname":"John","lastname":"Doe","email":"john.doe_007@example.com","administrator":false,"forceSecAuth":false}}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Fri, 09 Apr 2021 08:35:43 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '1253'
+      Content-Type:
+      - application/json
+      Etag:
+      - 37a6259cc0c1dae299a7866489dff0bd
+      Location:
+      - https://api.ionos.com/cloudapi/v5/requests/0f4effda-d239-44d0-b18a-4090c3bff4f0/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd",
+          "type" : "user",
+          "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd",
+          "metadata" : {
+            "etag" : "37a6259cc0c1dae299a7866489dff0bd",
+            "lastLogin" : null,
+            "createdDate" : "2021-04-09T08:35:40Z"
+          },
+          "properties" : {
+            "firstname" : "John",
+            "lastname" : "Doe",
+            "email" : "john.doe_007@example.com",
+            "administrator" : false,
+            "forceSecAuth" : false,
+            "secAuthActive" : false,
+            "active" : true,
+            "s3CanonicalUserId" : "a8fd7365c8d8eb2d60906d46f38c0bdc"
+          },
+          "entities" : {
+            "owns" : {
+              "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd/owns",
+              "type" : "collection",
+              "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd/owns"
+            },
+            "groups" : {
+              "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd/groups",
+              "type" : "collection",
+              "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd/groups"
+            },
+            "s3Keys" : {
+              "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd/s3keys",
+              "type" : "collection",
+              "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd/s3keys"
+            }
+          }
+        }
+  recorded_at: Fri, 09 Apr 2021 08:35:43 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/0f4effda-d239-44d0-b18a-4090c3bff4f0/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 09 Apr 2021 08:35:43 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '600'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "0f4effda-d239-44d0-b18a-4090c3bff4f0/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/0f4effda-d239-44d0-b18a-4090c3bff4f0/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd",
+                "type" : "user",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Fri, 09 Apr 2021 08:35:43 GMT
+- request:
     method: get
     uri: https://api.ionos.com/cloudapi/v5/um/users?depth=3
     body:
@@ -22,7 +185,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 09 Apr 2021 08:35:42 GMT
+      - Fri, 09 Apr 2021 08:35:44 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Type:
@@ -217,7 +380,7 @@ http_interactions:
               "firstname" : "John",
               "lastname" : "Doe",
               "email" : "john.doe_007@example.com",
-              "administrator" : true,
+              "administrator" : false,
               "forceSecAuth" : false,
               "secAuthActive" : false,
               "active" : true,
@@ -250,7 +413,7 @@ http_interactions:
                   },
                   "properties" : {
                     "secretKey" : "TEBw0dmHaf9p9RDO10qUf6Rg5oYQ1lRQLXonPFUD",
-                    "active" : true
+                    "active" : false
                   }
                 } ]
               }
@@ -512,8 +675,8 @@ http_interactions:
             "type" : "user",
             "href" : "https://api.ionos.com/cloudapi/v5/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0",
             "metadata" : {
-              "etag" : "7efeab7139f91861cfe2f2dedd3e3e75",
-              "lastLogin" : "2021-04-09T08:35:41Z",
+              "etag" : "e43539d924c1627b6305ea79a3c94203",
+              "lastLogin" : "2021-04-09T08:35:43Z",
               "createdDate" : "2020-12-17T15:23:11Z"
             },
             "properties" : {
@@ -1622,5 +1785,5 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Fri, 09 Apr 2021 08:35:42 GMT
+  recorded_at: Fri, 09 Apr 2021 08:35:45 GMT
 recorded_with: VCR 6.0.0

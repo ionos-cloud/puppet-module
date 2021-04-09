@@ -112,7 +112,7 @@ Puppet::Type.type(:nic).provide(:v1) do
 
     nic = PuppetX::Profitbricks::Helper::nic_object_from_hash(resource, datacenter_id)
 
-    puts "Creating a new NIC #{nic.to_hash}."
+    Puppet.info "Creating a new NIC #{nic.to_hash}."
 
     nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
     PuppetX::Profitbricks::Helper::wait_request(headers)

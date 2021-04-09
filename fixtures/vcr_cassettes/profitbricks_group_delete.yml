@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: https://api.ionos.com/cloudapi/v5/um/users
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v5/um/groups/0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6
     body:
-      encoding: UTF-8
-      string: '{"properties":{"firstname":"John","lastname":"Doe","email":"john.doe_007@example.com","administrator":"true","forceSecAuth":"false","password":"Secrete.Password.001"}}'
+      encoding: US-ASCII
+      string: ''
     headers:
       User-Agent:
       - ionos-cloud-sdk-ruby/v5
@@ -22,17 +22,15 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Fri, 09 Apr 2021 08:35:41 GMT
+      - Fri, 09 Apr 2021 08:20:39 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '556'
-      Content-Type:
-      - application/json
+      - '0'
       Etag:
-      - 37a6259cc0c1dae299a7866489dff0bd
+      - e2b535a996dbfb1d9f6df1715ebcf525
       Location:
-      - https://api.ionos.com/cloudapi/v5/requests/8c922491-4358-4248-bd68-ae9136c5c325/status
+      - https://api.ionos.com/cloudapi/v5/requests/7381c639-6f67-428a-a01d-d6932acf6088/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -53,31 +51,11 @@ http_interactions:
       - 'true'
     body:
       encoding: UTF-8
-      string: |
-        {
-          "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd",
-          "type" : "user",
-          "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd",
-          "metadata" : {
-            "etag" : "37a6259cc0c1dae299a7866489dff0bd",
-            "lastLogin" : null,
-            "createdDate" : "2021-04-09T08:35:41Z"
-          },
-          "properties" : {
-            "firstname" : "John",
-            "lastname" : "Doe",
-            "email" : "john.doe_007@example.com",
-            "administrator" : true,
-            "forceSecAuth" : false,
-            "secAuthActive" : false,
-            "active" : true,
-            "s3CanonicalUserId" : null
-          }
-        }
-  recorded_at: Fri, 09 Apr 2021 08:35:41 GMT
+      string: ''
+  recorded_at: Fri, 09 Apr 2021 08:20:39 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/requests/8c922491-4358-4248-bd68-ae9136c5c325/status
+    uri: https://api.ionos.com/cloudapi/v5/requests/7381c639-6f67-428a-a01d-d6932acf6088/status
     body:
       encoding: US-ASCII
       string: ''
@@ -97,11 +75,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 09 Apr 2021 08:35:41 GMT
+      - Fri, 09 Apr 2021 08:20:39 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '600'
+      - '602'
       Content-Type:
       - application/json
       Etag:
@@ -128,22 +106,22 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "8c922491-4358-4248-bd68-ae9136c5c325/status",
+          "id" : "7381c639-6f67-428a-a01d-d6932acf6088/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v5/requests/8c922491-4358-4248-bd68-ae9136c5c325/status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/7381c639-6f67-428a-a01d-d6932acf6088/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "b45813a1-a402-4a82-a58e-c073a9a2f0fd",
-                "type" : "user",
-                "href" : "https://api.ionos.com/cloudapi/v5/um/users/b45813a1-a402-4a82-a58e-c073a9a2f0fd"
+                "id" : "0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6",
+                "type" : "group",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 09 Apr 2021 08:35:41 GMT
+  recorded_at: Fri, 09 Apr 2021 08:20:39 GMT
 recorded_with: VCR 6.0.0

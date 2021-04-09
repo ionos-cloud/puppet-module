@@ -62,6 +62,7 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
 
   def groups=(value)
     sync_groups(@property_hash[:id], @property_hash[:groups], value)
+    @property_hash[:groups] = value
   end
 
   def exists?
@@ -117,7 +118,7 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
       force_sec_auth: @property_hash[:force_sec_auth],
     }
 
-    puts "Updating user #{@property_hash[:email]} with #{changes}"
+    Puppet.info "Updating user #{@property_hash[:email]} with #{changes}"
 
     new_user = Ionoscloud::User.new(properties: Ionoscloud::UserProperties.new(**user_properties.merge(changes)))
 
@@ -129,8 +130,8 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
     to_wait = []
 
     target_groups.each do |group|
-      unless existing_groups.include? group
-        puts "Adding user #{user_id} to group #{group}"
+      unless !existing_groups.nil? && existing_groups.include?(group)
+        Puppet.info "Adding user #{user_id} to group #{group}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_post_with_http_info(
           PuppetX::Profitbricks::Helper::group_from_name(group).id,
@@ -139,11 +140,11 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
 
         to_wait << headers
       end
-    end
+    end unless target_groups.nil?
     
     existing_groups.each do |group|
-      unless target_groups.include? group
-        puts "Removing user #{user_id} from group #{group}"
+      unless !target_groups.nil? && target_groups.include?(group)
+        Puppet.info "Removing user #{user_id} from group #{group}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_delete_with_http_info(
           PuppetX::Profitbricks::Helper::group_from_name(group).id,
@@ -152,7 +153,7 @@ Puppet::Type.type(:profitbricks_user).provide(:v1) do
 
         to_wait << headers
       end
-    end
+    end unless existing_groups.nil?
 
 
     to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }

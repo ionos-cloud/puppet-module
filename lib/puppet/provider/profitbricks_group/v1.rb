@@ -156,7 +156,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
       create_pcc: @property_hash[:create_pcc],
     }
 
-    puts "Updating group #{@property_hash[:name]} with #{changes}"
+    Puppet.info "Updating group #{@property_hash[:name]} with #{changes}"
 
     new_group = Ionoscloud::Group.new(properties: Ionoscloud::GroupProperties.new(**group_properties.merge(changes)))
 
@@ -168,8 +168,8 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     to_wait = []
 
     target_members.each do |user|
-      unless existing_members.include? user
-        puts "Adding user #{user} to group #{group_id}"
+      unless !existing_members.nil? && existing_members.include?(user)
+        Puppet.info "Adding user #{user} to group #{group_id}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_post_with_http_info(
           group_id,
@@ -181,8 +181,8 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     end unless target_members.nil?
 
     existing_members.each do |user|
-      unless target_members.include? user
-        puts "Removing user #{user} from group #{group_id}"
+      unless !target_members.nil? && target_members.include?(user)
+        Puppet.info "Removing user #{user} from group #{group_id}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_delete_with_http_info(
           group_id,

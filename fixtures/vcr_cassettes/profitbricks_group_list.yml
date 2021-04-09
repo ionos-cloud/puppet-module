@@ -22,7 +22,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 08 Apr 2021 15:10:09 GMT
+      - Fri, 09 Apr 2021 08:20:38 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Type:
@@ -55,36 +55,6 @@ http_interactions:
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v5/um/groups",
           "items" : [ {
-            "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360",
-            "type" : "group",
-            "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360",
-            "properties" : {
-              "name" : "Puppet Module Test",
-              "createDataCenter" : true,
-              "createSnapshot" : true,
-              "reserveIp" : true,
-              "accessActivityLog" : true,
-              "createPcc" : false,
-              "s3Privilege" : false,
-              "createBackupUnit" : false,
-              "createInternetAccess" : false,
-              "createK8sCluster" : false
-            },
-            "entities" : {
-              "users" : {
-                "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360/users",
-                "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/users",
-                "items" : [ ]
-              },
-              "resources" : {
-                "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360/resources",
-                "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/resources",
-                "items" : [ ]
-              }
-            }
-          }, {
             "id" : "cb77f47d-4646-4b9b-8ac2-016706ee885a",
             "type" : "group",
             "href" : "https://api.ionos.com/cloudapi/v5/um/groups/cb77f47d-4646-4b9b-8ac2-016706ee885a",
@@ -183,6 +153,66 @@ http_interactions:
                 "id" : "cb77f47d-4646-4b9b-8ac2-016706ee885a/resources",
                 "type" : "collection",
                 "href" : "https://api.ionos.com/cloudapi/v5/um/groups/cb77f47d-4646-4b9b-8ac2-016706ee885a/resources",
+                "items" : [ ]
+              }
+            }
+          }, {
+            "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360",
+            "type" : "group",
+            "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360",
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "createDataCenter" : false,
+              "createSnapshot" : true,
+              "reserveIp" : true,
+              "accessActivityLog" : true,
+              "createPcc" : false,
+              "s3Privilege" : false,
+              "createBackupUnit" : false,
+              "createInternetAccess" : false,
+              "createK8sCluster" : false
+            },
+            "entities" : {
+              "users" : {
+                "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360/users",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/users",
+                "items" : [ ]
+              },
+              "resources" : {
+                "id" : "fee98c66-1bd9-4384-8231-e0fd7e2fa360/resources",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/resources",
+                "items" : [ ]
+              }
+            }
+          }, {
+            "id" : "0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6",
+            "type" : "group",
+            "href" : "https://api.ionos.com/cloudapi/v5/um/groups/0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6",
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "createDataCenter" : true,
+              "createSnapshot" : true,
+              "reserveIp" : true,
+              "accessActivityLog" : true,
+              "createPcc" : false,
+              "s3Privilege" : false,
+              "createBackupUnit" : false,
+              "createInternetAccess" : false,
+              "createK8sCluster" : false
+            },
+            "entities" : {
+              "users" : {
+                "id" : "0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6/users",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6/users",
+                "items" : [ ]
+              },
+              "resources" : {
+                "id" : "0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6/resources",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/0b766ddd-0f3a-48fe-b735-45bbf9cc1fd6/resources",
                 "items" : [ ]
               }
             }
@@ -452,5 +482,5 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Thu, 08 Apr 2021 15:10:09 GMT
+  recorded_at: Fri, 09 Apr 2021 08:20:38 GMT
 recorded_with: VCR 6.0.0
