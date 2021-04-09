@@ -137,12 +137,14 @@ Puppet::Type.type(:server).provide(:v1) do
     PuppetX::Profitbricks::Helper::sync_volumes(
       @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
     )
+    @property_hash[:volumes] = value
   end
 
   def nics=(value)
     PuppetX::Profitbricks::Helper::sync_nics(
       @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true,
     )
+    @property_hash[:nics] = value
   end
 
   def exists?

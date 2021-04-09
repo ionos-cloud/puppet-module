@@ -233,9 +233,9 @@ module PuppetX
       def self.sync_firewallrules(datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules, wait = false)
         return [] unless !target_firewallrules.nil?
 
-        existing_names = existing_firewallrules.map { |firewallrule| firewallrule[:name] }
+        existing_names = existing_firewallrules.nil? ? [] : existing_firewallrules.map { |firewallrule| firewallrule[:name] }
 
-        to_delete = existing_firewallrules.map { |firewallrule| firewallrule[:id] }
+        to_delete = existing_firewallrules.nil? ? [] : existing_firewallrules.map { |firewallrule| firewallrule[:id] }
         to_wait = []
         to_wait_create = []
 
