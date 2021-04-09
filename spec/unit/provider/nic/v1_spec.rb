@@ -39,7 +39,7 @@ describe provider_class do
     it 'should update NIC' do
       VCR.use_cassette('nic_update') do
         @provider.dhcp = false
-        @provider.ips = ['208.94.36.99', '208.94.36.101']
+        @provider.ips = ['158.222.102.161', '158.222.102.164']
         @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
@@ -47,7 +47,7 @@ describe provider_class do
         end
         expect(updated_instance.dhcp).to eq(false)
         expect(updated_instance.ips.length).to eq(2)
-        expect(updated_instance.ips).to include('208.94.36.99', '208.94.36.101')
+        expect(updated_instance.ips).to include('158.222.102.161', '158.222.102.164')
       end
     end
 
