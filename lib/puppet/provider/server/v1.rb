@@ -134,6 +134,7 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def volumes=(value)
+    puts ['update volume', @property_hash[:volumes], value].to_s
     PuppetX::Profitbricks::Helper::sync_volumes(
       @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
     )

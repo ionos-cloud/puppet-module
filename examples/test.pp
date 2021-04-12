@@ -26,14 +26,16 @@ server { 'frontend2' :
   cores => 1,
   datacenter_name => 'myDataCenter2',
   ram => 1024,
-  nics => [
+  volumes => [
     {
-      name => 'public',
-      dhcp => true,
-      lan => 'private',
-      nat => false,
-      ips => ['158.222.102.161', '158.222.102.164'],
+      name => 'volume1',
+      volume_type => 'SSD',
+      size => 10,
+      image_alias => 'debian:latest',
+      image_password => 'parola123',
     },
+  ],
+  nics => [
     {
       name => 'private',
       dhcp => true,
@@ -55,13 +57,6 @@ server { 'frontend2' :
         }
       ]
     },
-    {
-      name => 'private2',
-      dhcp => true,
-      lan => 'public',
-      nat => false,
-      ips => ['158.222.102.161', '158.222.102.164'],
-    }
   ]
 },
 

@@ -87,9 +87,9 @@ module PuppetX
       end
 
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
-        existing_names = existing_volumes.map { |volume| volume[:name] }
+        existing_names = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:name] }
     
-        to_detach = existing_volumes.map { |volume| volume[:id] }
+        to_detach = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:id] }
         to_wait = []
         to_wait_create = []
     
@@ -103,7 +103,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              Puppet.info "Attaching #{target_volume['id']} to server"
+              puts "Attaching #{target_volume['id']} to server"
               _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
                 datacenter_id, server_id, id: target_volume['id'],
               )
@@ -120,7 +120,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              Puppet.info "Creating volume #{target_volume} from server"
+              puts "Creating volume #{target_volume} from server"
     
               volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(
                 datacenter_id, volume_object_from_hash(target_volume),
@@ -132,7 +132,7 @@ module PuppetX
         end
     
         to_detach.each do |volume_id|
-          Puppet.info "Detaching #{volume_id} from server"
+          puts "Detaching #{volume_id} from server"
           _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_delete_with_http_info(
             datacenter_id, server_id, volume_id,
           )
@@ -140,7 +140,7 @@ module PuppetX
         end
     
         to_wait_create.each do |headers, volume_id|
-          Puppet.info "Attaching #{volume_id} to server"
+          puts "Attaching #{volume_id} to server"
           wait_request(headers)
           _, _, new_headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
             datacenter_id, server_id, id: volume_id,
@@ -172,9 +172,9 @@ module PuppetX
       end
 
       def self.sync_nics(datacenter_id, server_id, existing_nics, target_nics, wait = false)
-        existing_names = existing_nics.map { |nic| nic[:name] }
+        existing_names = existing_nics.nil? ? [] : existing_nics.map { |nic| nic[:name] }
     
-        to_delete = existing_nics.map { |nic| nic[:id] }
+        to_delete = existing_nics.nil? ? [] : existing_nics.map { |nic| nic[:id] }
         to_wait = []
         to_wait_create = []
     
