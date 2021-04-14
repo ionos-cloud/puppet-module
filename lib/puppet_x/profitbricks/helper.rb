@@ -1,4 +1,3 @@
-require 'profitbricks'
 require 'ionoscloud'
 
 
@@ -6,19 +5,19 @@ module PuppetX
   module Profitbricks
     class Helper
       def self.profitbricks_config(depth = nil)
-        ProfitBricks.configure do |config|
-          config.username = ENV['PROFITBRICKS_USERNAME']
-          config.password = ENV['PROFITBRICKS_PASSWORD']
-          config.timeout = 600
+        # ProfitBricks.configure do |config|
+        #   config.username = ENV['PROFITBRICKS_USERNAME']
+        #   config.password = ENV['PROFITBRICKS_PASSWORD']
+        #   config.timeout = 600
 
-          config.depth = depth unless depth.nil?
+        #   config.depth = depth unless depth.nil?
 
-          url = ENV['PROFITBRICKS_API_URL']
-          config.url = url unless url.nil? || url.empty?
+        #   url = ENV['PROFITBRICKS_API_URL']
+        #   config.url = url unless url.nil? || url.empty?
 
-          config.headers = Hash.new
-          config.headers['User-Agent'] = "Puppet/#{Puppet.version}"
-        end
+        #   config.headers = Hash.new
+        #   config.headers['User-Agent'] = "Puppet/#{Puppet.version}"
+        # end
         Ionoscloud.configure do |config|
           config.username = ENV['PROFITBRICKS_USERNAME']
           config.password = ENV['PROFITBRICKS_PASSWORD']
@@ -103,7 +102,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              puts "Attaching #{target_volume['id']} to server"
+              Puppet.info "Attaching #{target_volume['id']} to server"
               _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
                 datacenter_id, server_id, id: target_volume['id'],
               )
@@ -120,7 +119,7 @@ module PuppetX
     
               to_detach.delete(existing_volume[:id])
             else
-              puts "Creating volume #{target_volume} from server"
+              Puppet.info "Creating volume #{target_volume} from server"
     
               volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(
                 datacenter_id, volume_object_from_hash(target_volume),
@@ -132,7 +131,7 @@ module PuppetX
         end
     
         to_detach.each do |volume_id|
-          puts "Detaching #{volume_id} from server"
+          Puppet.info "Detaching #{volume_id} from server"
           _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_delete_with_http_info(
             datacenter_id, server_id, volume_id,
           )
@@ -140,7 +139,7 @@ module PuppetX
         end
     
         to_wait_create.each do |headers, volume_id|
-          puts "Attaching #{volume_id} to server"
+          Puppet.info "Attaching #{volume_id} to server"
           wait_request(headers)
           _, _, new_headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
             datacenter_id, server_id, id: volume_id,

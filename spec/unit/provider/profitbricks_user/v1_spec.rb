@@ -8,7 +8,7 @@ describe provider_class do
       @resource = Puppet::Type.type(:profitbricks_user).new(
         firstname: 'John',
         lastname: 'Doe',
-        email: 'john.doe_007@example.com',
+        email: 'john.doe_008@example.com',
         password: 'Secrete.Password.001',
         administrator: true
       )
@@ -17,14 +17,14 @@ describe provider_class do
 
     it 'should be an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Profitbricks_user::ProviderV1
-      expect(@provider.name).to eq('john.doe_007@example.com')
+      expect(@provider.name).to eq('john.doe_008@example.com')
     end
 
     it 'should create profitbricks_user' do
       VCR.use_cassette('profitbricks_user_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('john.doe_007@example.com')
+        expect(@provider.name).to eq('john.doe_008@example.com')
       end
     end
 
@@ -42,7 +42,7 @@ describe provider_class do
         @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_007@example.com'
+          updated_instance = instance if instance.email == 'john.doe_008@example.com'
         end
         expect(updated_instance.administrator).to eq(false)
       end
@@ -53,7 +53,7 @@ describe provider_class do
         @provider.groups = ['Puppet Module Test']
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_007@example.com'
+          updated_instance = instance if instance.email == 'john.doe_008@example.com'
         end
         expect(updated_instance.groups).to eq(['Puppet Module Test'])
       end
@@ -64,7 +64,7 @@ describe provider_class do
         @provider.groups = []
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_007@example.com'
+          updated_instance = instance if instance.email == 'john.doe_008@example.com'
         end
         expect(updated_instance.groups).to eq([])
       end

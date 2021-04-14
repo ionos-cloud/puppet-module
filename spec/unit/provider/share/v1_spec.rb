@@ -6,7 +6,7 @@ describe provider_class do
   context 'share operations' do
     before(:all) do
       @resource = Puppet::Type.type(:share).new(
-        name: '38486675-0110-478e-9079-e515242cd35b',
+        name: 'bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d',
         group_name: 'Puppet Module Test',
         edit_privilege: true,
         share_privilege: true
@@ -16,14 +16,14 @@ describe provider_class do
 
     it 'should be an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Share::ProviderV1
-      expect(@provider.name).to eq('38486675-0110-478e-9079-e515242cd35b')
+      expect(@provider.name).to eq('bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d')
     end
 
     it 'should add share' do
       VCR.use_cassette('share_add') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('38486675-0110-478e-9079-e515242cd35b')
+        expect(@provider.name).to eq('bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d')
       end
     end
 
@@ -41,7 +41,7 @@ describe provider_class do
         @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == '38486675-0110-478e-9079-e515242cd35b'
+          updated_instance = instance if instance.name == 'bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d'
         end
         expect(updated_instance.edit_privilege).to eq(false)
       end

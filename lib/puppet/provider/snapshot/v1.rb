@@ -1,7 +1,7 @@
 require 'puppet_x/profitbricks/helper'
 
 Puppet::Type.type(:snapshot).provide(:v1) do
-  confine feature: :profitbricks
+  # confine feature: :profitbricks
 
   mk_resource_methods
 

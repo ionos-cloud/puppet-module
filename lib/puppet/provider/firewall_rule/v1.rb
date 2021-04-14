@@ -1,7 +1,7 @@
 require 'puppet_x/profitbricks/helper'
 
 Puppet::Type.type(:firewall_rule).provide(:v1) do
-  confine feature: :profitbricks
+  # confine feature: :profitbricks
 
   mk_resource_methods
 
@@ -144,5 +144,9 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     PuppetX::Profitbricks::Helper::update_firewallrule(
       @property_hash[:datacenter_id], @property_hash[:server_id],@property_hash[:nic_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true,
     )
+
+    [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code].each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
+    end
   end
 end

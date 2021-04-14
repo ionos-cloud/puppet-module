@@ -16,9 +16,9 @@ describe provider_class do
 
       vol1 = Hash.new
       vol1['name'] = 'Puppet Module Test'
-      vol1['size'] = 100
+      vol1['size'] = 15
       vol1['bus'] = 'VIRTIO'
-      vol1['volume_type'] = 'SSD'
+      vol1['volume_type'] = 'HDD'
       vol1['availability_zone'] = 'AUTO'
       vol1['image_alias'] = 'ubuntu:latest'
       vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
@@ -82,80 +82,80 @@ describe provider_class do
       end
     end
 
-    # it 'should list server instances' do
-    #   VCR.use_cassette('server_list') do
-    #     instances = provider_class.instances
-    #     expect(instances.length).to be > 0
-    #     expect(instances[0]).to be_an_instance_of Puppet::Type::Server::ProviderV1
-    #   end
-    # end
+    it 'should list server instances' do
+      VCR.use_cassette('server_list') do
+        instances = provider_class.instances
+        expect(instances.length).to be > 0
+        expect(instances[0]).to be_an_instance_of Puppet::Type::Server::ProviderV1
+      end
+    end
 
-    # it 'should update boot volume' do
-    #   VCR.use_cassette('server_update_boot_volume') do
-    #     @provider2.boot_volume = 'Puppet Module Test 2'
-    #     @provider2.flush
-    #     updated_instance = nil
-    #     provider_class.instances.each do |instance|
-    #       updated_instance = instance if instance.name == 'Puppet Module Test 2'
-    #     end
-    #     expect(updated_instance.boot_volume[:name]).to eq('Puppet Module Test 2')
-    #   end
-    # end
+    it 'should update boot volume' do
+      VCR.use_cassette('server_update_boot_volume') do
+        @provider2.boot_volume = 'Puppet Module Test 2'
+        @provider2.flush
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.boot_volume[:name]).to eq('Puppet Module Test 2')
+      end
+    end
 
-    # it 'should update RAM' do
-    #   VCR.use_cassette('server_update_ram') do
-    #     @provider2.ram = 2048
-    #     @provider2.flush
-    #     updated_instance = nil
-    #     provider_class.instances.each do |instance|
-    #       updated_instance = instance if instance.name == 'Puppet Module Test 2'
-    #     end
-    #     expect(updated_instance.ram).to eq(2048)
-    #   end
-    # end
+    it 'should update RAM' do
+      VCR.use_cassette('server_update_ram') do
+        @provider2.ram = 2048
+        @provider2.flush
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.ram).to eq(2048)
+      end
+    end
 
-    # it 'should update cores' do
-    #   VCR.use_cassette('server_update_cores') do
-    #     @provider2.cores = 2
-    #     @provider2.flush
-    #     updated_instance = nil
-    #     provider_class.instances.each do |instance|
-    #       updated_instance = instance if instance.name == 'Puppet Module Test 2'
-    #     end
-    #     expect(updated_instance.cores).to eq(2)
-    #   end
-    # end
+    it 'should update cores' do
+      VCR.use_cassette('server_update_cores') do
+        @provider2.cores = 2
+        @provider2.flush
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.cores).to eq(2)
+      end
+    end
 
-    # it 'should update CPU family' do
-    #   VCR.use_cassette('server_update_cpu_family') do
-    #     @provider2.cpu_family = 'AMD_OPTERON'
-    #     @provider2.flush
-    #     updated_instance = nil
-    #     provider_class.instances.each do |instance|
-    #       updated_instance = instance if instance.name == 'Puppet Module Test 2'
-    #     end
-    #     expect(updated_instance.cpu_family).to eq('AMD_OPTERON')
-    #   end
-    # end
+    it 'should update CPU family' do
+      VCR.use_cassette('server_update_cpu_family') do
+        @provider2.cpu_family = 'AMD_OPTERON'
+        @provider2.flush
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.cpu_family).to eq('AMD_OPTERON')
+      end
+    end
 
-    # it 'should update availability zone' do
-    #   VCR.use_cassette('server_update_availabilty_zone') do
-    #     @provider1.availability_zone = 'AUTO'
-    #     @provider1.flush
-    #     updated_instance = nil
-    #     provider_class.instances.each do |instance|
-    #       updated_instance = instance if instance.name == 'Puppet Module Test'
-    #     end
-    #     expect(updated_instance.availability_zone).to eq('AUTO')
-    #   end
-    # end
+    it 'should update availability zone' do
+      VCR.use_cassette('server_update_availabilty_zone') do
+        @provider1.availability_zone = 'AUTO'
+        @provider1.flush
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test'
+        end
+        expect(updated_instance.availability_zone).to eq('AUTO')
+      end
+    end
 
     it 'should update server volumes' do
       VCR.use_cassette('server_update_volumes') do
         volumes = [
           {
             'name' => 'volume1',
-            'volume_type' => 'SSD',
+            'volume_type' => 'HDD',
             'size' => 15,
             'image_alias' => 'debian:latest',
             'image_password' => 'parola123',
@@ -179,7 +179,7 @@ describe provider_class do
         expect(updated_instance.volumes[0][:name]).to eq('volume2')
         expect(updated_instance.volumes[0][:size]).to eq(10)
 
-        @provider1.volumes = []
+        updated_instance.volumes = []
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test'
@@ -193,8 +193,8 @@ describe provider_class do
         volumes = [
           {
             'name' => 'Puppet Module Test',
-            'volume_type' => 'SSD',
-            'size' => 110,
+            'volume_type' => 'HDD',
+            'size' => 20,
             'image_alias' => 'debian:latest',
             'image_password' => 'parola123',
           },
@@ -222,35 +222,98 @@ describe provider_class do
       end
     end
 
-    # it 'should stop server' do
-    #   VCR.use_cassette('server_stop') do
-    #     expect(@provider2.running?).to be true
-    #     expect(@provider2.stop).to be_truthy
-    #     expect(@provider2.stopped?).to be true
-    #   end
-    # end
+    it 'should update server nics' do
+      VCR.use_cassette('server_update_nics') do
+        nics = [
+          {
+            'name' => 'Puppet Module Test 2',
+            'dhcp' => false,
+            'lan' => 'Puppet Module Test',
+            'nat' => false,
+            'firewall_active' => true,
+            'firewall_rules' => [
+              {
+                'name' => 'SSH2',
+                'protocol' => 'TCP',
+                'port_range_start' => 22,
+                'port_range_end' => 22,
+              },
+              {
+                'name' => 'HTTP2',
+                'protocol' => 'TCP',
+                'port_range_start' => 65,
+                'port_range_end' => 80
+              }
+            ]
+          },
+          {
+            'name' => 'Puppet Module Test 3',
+            'dhcp' => true,
+            'lan' => 'Puppet Module Test',
+            'nat' => false,
+            'firewall_active' => false,
+          },
+        ]
+        provider_class.instances.each do |instance|
+          @provider2 = instance if instance.name == 'Puppet Module Test 2'
+        end
+        @provider2.nics = nics
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.nics.length).to eq(2)
+        expect(updated_instance.nics[0][:name]).to eq('Puppet Module Test 3')
+        expect(updated_instance.nics[0][:dhcp]).to eq(true)
+        expect(updated_instance.nics[0][:nat]).to eq(false)
+        expect(updated_instance.nics[0][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[0][:firewall_active]).to eq(false)
+        expect(updated_instance.nics[0][:firewall_rules]).to eq([])
 
-    # it 'should start server' do
-    #   VCR.use_cassette('server_start') do
-    #     expect(@provider2.running?).to be false
-    #     expect(@provider2.create).to be_truthy
-    #     expect(@provider2.running?).to be true
-    #   end
-    # end
+        expect(updated_instance.nics[1][:name]).to eq('Puppet Module Test 2')
+        expect(updated_instance.nics[1][:dhcp]).to eq(false)
+        expect(updated_instance.nics[1][:nat]).to eq(false)
+        expect(updated_instance.nics[1][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[1][:firewall_active]).to eq(true)
+        expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
+        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('HTTP2')
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(65)
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(80)
+        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('SSH2')
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(22)
+      end
+    end
 
-    # it 'should restart server' do
-    #   VCR.use_cassette('server_restart') do
-    #     expect(@provider2.running?).to be true
-    #     expect(@provider2.restart).to be_truthy
-    #     expect(@provider2.running?).to be true
-    #   end
-    # end
+    it 'should stop server' do
+      VCR.use_cassette('server_stop') do
+        expect(@provider2.running?).to be true
+        expect(@provider2.stop).to be_truthy
+        expect(@provider2.stopped?).to be true
+      end
+    end
 
-    # it 'should delete server' do
-    #   VCR.use_cassette('server_delete') do
-    #     expect(@provider2.destroy).to be_truthy
-    #     expect(@provider2.exists?).to be false
-    #   end
-    # end
+    it 'should start server' do
+      VCR.use_cassette('server_start') do
+        expect(@provider2.running?).to be false
+        expect(@provider2.create).to be_truthy
+        expect(@provider2.running?).to be true
+      end
+    end
+
+    it 'should restart server' do
+      VCR.use_cassette('server_restart') do
+        expect(@provider2.running?).to be true
+        expect(@provider2.restart).to be_truthy
+        expect(@provider2.running?).to be true
+      end
+    end
+
+    it 'should delete server' do
+      VCR.use_cassette('server_delete') do
+        expect(@provider2.destroy).to be_truthy
+        expect(@provider2.exists?).to be false
+      end
+    end
   end
 end
