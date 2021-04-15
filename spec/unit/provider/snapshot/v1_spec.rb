@@ -9,7 +9,7 @@ describe provider_class do
         name: 'Puppet Module Test',
         description: 'Puppet Module test snapshot',
         volume: 'Puppet Module Test',
-        datacenter: 'Puppet Module Test'
+        datacenter: 'Puppet Module Test',
       )
       @provider = provider_class.new(@resource)
     end

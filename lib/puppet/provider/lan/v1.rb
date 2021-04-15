@@ -86,6 +86,7 @@ Puppet::Type.type(:lan).provide(:v1) do
       properties: Ionoscloud::LanProperties.new(
         name: resource[:name],
         public: resource[:public] || false,
+        # ip_failover:
       ),
     )
 

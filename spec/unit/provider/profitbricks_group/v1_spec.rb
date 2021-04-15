@@ -10,7 +10,12 @@ describe provider_class do
         create_data_center: true,
         create_snapshot: true,
         reserve_ip: true,
-        access_activity_log: true
+        access_activity_log: true,
+        s3_privilege: true,
+        create_backup_unit: true,
+        create_internet_access: true,
+        create_k8s_cluster: true,
+        create_pcc: true,
       )
       @provider = provider_class.new(@resource)
     end
