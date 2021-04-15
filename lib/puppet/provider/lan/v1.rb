@@ -86,13 +86,21 @@ Puppet::Type.type(:lan).provide(:v1) do
       properties: Ionoscloud::LanProperties.new(
         name: resource[:name],
         public: resource[:public] || false,
-        # ip_failover:
       ),
     )
 
     datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_post_with_http_info(datacenter_id, lan)
     PuppetX::Profitbricks::Helper::wait_request(headers)
+
+    if resource[:ip_failover]
+      ip_failover_changes = { ip_failover: resource[:ip_failover].map { |ip_failover| Ionoscloud::IPFailover.new(ip: ip_failover['ip'], nic_uuid: ip_failover['nic_uuid']) } }
+      
+      lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
+        resource[:datacenter_id], lan.id, Ionoscloud::LanProperties.new(**ip_failover_changes),
+      )
+      PuppetX::Profitbricks::Helper::wait_request(headers)
+    end
 
     Puppet.info("Creating a new LAN called #{name}.")
     @property_hash[:ensure] = :present

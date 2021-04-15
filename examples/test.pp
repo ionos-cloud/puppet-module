@@ -39,27 +39,45 @@ server { 'frontend2' :
     {
       name => 'private',
       dhcp => true,
-      lan => 'private',
+      lan => 'foartenou',
       nat => false,
       firewall_active => true,
+      ips => ['158.222.102.161'],
       firewall_rules => [
         { 
-          name => 'SSH',
+          name => 'SSH2',
           protocol => 'TCP',
           port_range_start => 22,
           port_range_end => 22,
         },
         { 
-          name => 'HTTP',
+          name => 'HTTP2',
           protocol => 'TCP',
           port_range_start => 65,
           port_range_end => 80
+        },
+        { 
+          name => 'ICMP2',
+          protocol => 'ICMP',
+          icmp_type => 123,
+          icmp_code => 165,
         }
       ]
     },
   ]
 },
 
+lan { 'foartenou' :
+  ensure          => present,
+  public          => true,
+  datacenter_name => 'myDataCenter2',
+  ip_failover => [
+    {
+      'ip' => '158.222.102.161',
+      'nic_uuid' => '15378569-84bc-49a1-942f-55001f535e7b',
+    }
+  ]
+},
 # nic { 'testnic':
 #   ensure          => present,
 #   datacenter_name   => 'myDataCenter2',

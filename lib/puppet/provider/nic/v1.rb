@@ -74,7 +74,7 @@ Puppet::Type.type(:nic).provide(:v1) do
         }.delete_if { |_k, v| v.nil? }
       end,
       name: instance.properties.name,
-      ensure: :present
+      ensure: :present,
     }
   end
 

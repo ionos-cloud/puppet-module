@@ -58,7 +58,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:icmp_type) do
     desc 'Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The ICMP type must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s
@@ -68,7 +70,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:icmp_code) do
     desc 'Defines the allowed code (from 0 to 254) if protocol ICMP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The ICMP code must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s

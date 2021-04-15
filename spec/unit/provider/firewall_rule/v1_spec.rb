@@ -16,6 +16,16 @@ describe provider_class do
         port_range_end: 22
       )
       @provider = provider_class.new(@resource)
+      @resource2 = Puppet::Type.type(:firewall_rule).new(
+        name: 'ICMP',
+        nic: 'Puppet Module Test',
+        datacenter_name: 'Puppet Module Test',
+        server_name: 'Puppet Module Test',
+        protocol: 'ICMP',
+        icmp_code: 152,
+        icmp_type: 87,
+      )
+      @provider2 = provider_class.new(@resource2)
     end
 
     it 'should be an instance of the ProviderV1' do
@@ -27,6 +37,9 @@ describe provider_class do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
         expect(@provider.name).to eq('SSH')
+        expect(@provider2.create).to be_truthy
+        expect(@provider2.exists?).to be true
+        expect(@provider2.name).to eq('ICMP')
       end
     end
 
@@ -54,6 +67,8 @@ describe provider_class do
       VCR.use_cassette('firewall_rule_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
+        expect(@provider2.destroy).to be_truthy
+        expect(@provider2.exists?).to be false
       end
     end
   end
