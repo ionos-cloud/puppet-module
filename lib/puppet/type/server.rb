@@ -1,5 +1,8 @@
 require 'puppet/parameter/boolean'
 
+require 'puppet_x/profitbricks/helper'
+
+
 Puppet::Type.newtype(:server) do
   @doc = 'Type representing a ProfitBricks server.'
 
@@ -120,18 +123,17 @@ Puppet::Type.newtype(:server) do
     desc 'A list of volumes to associate with the server.'
     validate do |value|
       volumes = value.is_a?(Array) ? value : [value]
-      fail('A single volume is supported at this time') unless volumes.count <= 1
       volumes.each do |volume|
-        ['name', 'size', 'volume_type'].each do |key|
-          fail("Volume must include #{key}") unless value.keys.include?(key)
+        if !volume.keys.include?('id')
+          ['name', 'size', 'volume_type'].each do |key|
+            fail("Volume must include #{key}") unless volume.keys.include?(key)
+          end
         end
       end
     end
 
     def insync?(is)
-      existing_volumes = is.collect { |volume| volume[:name] } 
-      specified_volumes = should.collect { |volume| volume['name'] }
-      existing_volumes.to_set == specified_volumes.to_set
+      PuppetX::Profitbricks::Helper::objects_match(is, should, [:size])
     end
   end
 
@@ -160,9 +162,15 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      existing_nics = is.collect { |nic| nic[:name] }
-      specified_nics = should.collect { |nic| nic['name'] }
-      existing_nics.to_set == specified_nics.to_set
+      block = lambda {
+        |existing_object, target_object|
+        PuppetX::Profitbricks::Helper::objects_match(
+          existing_object[:firewall_rules],
+          target_object['firewall_rules'],
+          [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
+        )
+      }
+      PuppetX::Profitbricks::Helper::objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
     end
   end
 
