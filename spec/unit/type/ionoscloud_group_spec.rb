@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-type_class = Puppet::Type.type(:profitbricks_group)
+type_class = Puppet::Type.type(:ionoscloud_group)
 
 describe type_class do
   let :params do

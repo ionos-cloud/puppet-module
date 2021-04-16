@@ -1,6 +1,6 @@
 require 'puppet/parameter/boolean'
 
-Puppet::Type.newtype(:profitbricks_group) do
+Puppet::Type.newtype(:ionoscloud_group) do
   @doc = 'Type representing a ProfitBricks group.'
 
   ensurable
@@ -103,7 +103,7 @@ Puppet::Type.newtype(:profitbricks_group) do
   end
 
   newproperty(:members, array_matching: :all) do
-    desc 'The profitbricks users associated with the group.'
+    desc 'The ionoscloud users associated with the group.'
 
     def insync?(is)
       if is.is_a? Array

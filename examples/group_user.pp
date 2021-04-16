@@ -1,6 +1,6 @@
 $group_name = 'operators'
 
-profitbricks_group { $group_name :
+ionoscloud_group { $group_name :
   ensure              => present,
   create_data_center   => true,
   create_snapshot     => true,
@@ -8,7 +8,7 @@ profitbricks_group { $group_name :
   access_activity_log => false
 } ->
 
-profitbricks_user { 'operator.abc@mydomain.org' :
+ionoscloud_user { 'operator.abc@mydomain.org' :
   ensure        => present,
   firstname     => 'John',
   lastname      => 'Doe',

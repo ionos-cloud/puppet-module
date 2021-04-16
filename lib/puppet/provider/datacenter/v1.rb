@@ -1,17 +1,17 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:datacenter).provide(:v1) do
-  # confine feature: :profitbricks
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     datacenters = []
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.each do |dc|
       # Ignore data centers if name is not defined.
@@ -41,13 +41,13 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def description=(value)
     Puppet.info("Updating data center '#{resource[:name]}' description.")
 
-    datacenter = PuppetX::Profitbricks::Helper::datacenter_from_name(name)
+    datacenter = PuppetX::IonoscloudX::Helper::datacenter_from_name(name)
     changes = Ionoscloud::DatacenterProperties.new(
       description: value,
     )
 
     datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_patch_with_http_info(datacenter.id, changes)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
   end
 
   def exists?
@@ -66,7 +66,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
       ),
     )
     datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_post_with_http_info(datacenter)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     @property_hash[:ensure] = :present
   end
@@ -74,9 +74,9 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def destroy
     Puppet.info("Deleting data center #{resource[:name]}.")
 
-    datacenter = PuppetX::Profitbricks::Helper::datacenter_from_name(resource[:name])
+    datacenter = PuppetX::IonoscloudX::Helper::datacenter_from_name(resource[:name])
     _, _, headers = Ionoscloud::DataCenterApi.new.datacenters_delete_with_http_info(datacenter.id)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     @property_hash[:ensure] = :absent
   end

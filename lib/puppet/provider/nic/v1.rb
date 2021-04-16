@@ -1,12 +1,12 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:nic).provide(:v1) do
-  # confine feature: :profitbricks
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     super(*args)
     @property_flush = {}
   end
@@ -104,18 +104,18 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def create
-    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = resource[:server_id]
     unless server_id
-      server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], datacenter_id).id
+      server_id = PuppetX::IonoscloudX::Helper::server_from_name(resource[:server_name], datacenter_id).id
     end
 
-    nic = PuppetX::Profitbricks::Helper::nic_object_from_hash(resource, datacenter_id)
+    nic = PuppetX::IonoscloudX::Helper::nic_object_from_hash(resource, datacenter_id)
 
     Puppet.info "Creating a new NIC #{nic.to_hash}."
 
     nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     Puppet.info("Created a new nic named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -128,12 +128,12 @@ Puppet::Type.type(:nic).provide(:v1) do
     _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id],
     )
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
   def flush
-    PuppetX::Profitbricks::Helper::update_nic(
+    PuppetX::IonoscloudX::Helper::update_nic(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true,
     )
 

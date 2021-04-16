@@ -1,7 +1,7 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:firewall_rule).provide(:v1) do
-  # confine feature: :profitbricks
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
@@ -12,11 +12,11 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def self.client
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
 
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       firewall_rules = []
@@ -108,9 +108,9 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def create
-    firewall_rule = PuppetX::Profitbricks::Helper::firewallrule_object_from_hash(resource)
-    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    server_id = resource[:server_id] ? resource[:server_id] : PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], datacenter_id).id
+    firewall_rule = PuppetX::IonoscloudX::Helper::firewallrule_object_from_hash(resource)
+    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    server_id = resource[:server_id] ? resource[:server_id] : PuppetX::IonoscloudX::Helper::server_from_name(resource[:server_name], datacenter_id).id
     nic = Ionoscloud::NicApi.new.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find { |nic| nic.properties.name == resource[:nic] }
 
     fail "Nic named '#{resource[:nic]}' cannot be found." unless nic
@@ -118,7 +118,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     firewall_rule, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
       datacenter_id, server_id, nic.id, firewall_rule,
     )
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     Puppet.info("Creating firewall rule '#{resource[:name]}'.")
     @property_hash[:ensure] = :present
@@ -135,13 +135,13 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id],
     )
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     @property_hash[:ensure] = :absent
   end
 
   def flush
-    PuppetX::Profitbricks::Helper::update_firewallrule(
+    PuppetX::IonoscloudX::Helper::update_firewallrule(
       @property_hash[:datacenter_id], @property_hash[:server_id],@property_hash[:nic_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true,
     )
 

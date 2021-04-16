@@ -56,7 +56,7 @@ Puppet::Type.newtype(:share) do
     end
   end
 
-  autorequire(:profitbricks_group) do
+  autorequire(:ionoscloud_group) do
     self[:group_name]
   end
 end

@@ -1,6 +1,6 @@
 ## Puppet Module
 
-Version: profitbricks-puppet v1.6.0
+Version: ionoscloud-puppet v1.6.0
 
 ## Table of Contents
 
@@ -22,8 +22,8 @@ Version: profitbricks-puppet v1.6.0
     * [Firewall Rule Resource](#firewall-rule-resource)
     * [IP Block Resource](#ip-block-resource)
     * [Snapshot Resource](#snapshot-resource)
-    * [ProfitBricks Group Resource](#profitbricks-group-resource)
-    * [ProfitBricks User Resource](#profitbricks-user-resource)
+    * [ProfitBricks Group Resource](#ionoscloud-group-resource)
+    * [ProfitBricks User Resource](#ionoscloud-user-resource)
     * [Share Resource](#share-resource)
     * [Image Resource](#image-resource)
     * [Location Resource](#location-resource)
@@ -36,17 +36,17 @@ Version: profitbricks-puppet v1.6.0
 
 The ProfitBricks Puppet module allows a multi-server cloud environment using ProfitBricks resources to be deployed automatically from a Puppet manifest file.
 
-This module utilizes the ProfitBricks [Cloud API](https://devops.profitbricks.com/api/cloud/) via the [ProfitBricks Ruby SDK](https://devops.profitbricks.com/libraries/ruby/) to manage resources within a virtual data center. A Puppet manifest file can be used to describe the desired infrastructure configuration including networks, servers, CPU cores, memory, and their relationships as well as states. That infrastructure can then be easily and automatically deployed using Puppet.
+This module utilizes the ProfitBricks [Cloud API](https://devops.ionoscloud.com/api/cloud/) via the [ProfitBricks Ruby SDK](https://devops.ionoscloud.com/libraries/ruby/) to manage resources within a virtual data center. A Puppet manifest file can be used to describe the desired infrastructure configuration including networks, servers, CPU cores, memory, and their relationships as well as states. That infrastructure can then be easily and automatically deployed using Puppet.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up for a ProfitBricks account](https://devops.profitbricks.com/signup). The credentials you establish during sign-up will be used to authenticate against the ProfitBricks Cloud API.
+Before you begin you will need to have [signed-up for a ProfitBricks account](https://devops.ionoscloud.com/signup). The credentials you establish during sign-up will be used to authenticate against the ProfitBricks Cloud API.
 
 ### Requirements
 
 * Puppet 4.2.x or greater
 * Ruby 2.0 or greater
-* ProfitBricks Ruby SDK (profitbricks-sdk-ruby)
+* ProfitBricks Ruby SDK (ionoscloud-sdk-ruby)
 * ProfitBricks account
 
 ## Installation
@@ -57,11 +57,11 @@ For users who already have a system with Puppet and Ruby installed, the followin
 
 1. Install the ProfitBricks Ruby SDK using `gem`.
 
-        gem install profitbricks-sdk-ruby
+        gem install ionoscloud-sdk-ruby
 
 2. Install the module.
 
-        puppet module install profitbricks-profitbricks
+        puppet module install ionoscloud-ionoscloud
 
 3. Set the environment variables for authentication.
 
@@ -70,9 +70,9 @@ For users who already have a system with Puppet and Ruby installed, the followin
 
     Setting the ProfitBricks API URL is optional.
 
-        export PROFITBRICKS_API_URL="https://api.profitbricks.com/cloudapi/v4"
+        export PROFITBRICKS_API_URL="https://api.ionoscloud.com/cloudapi/v4"
 
-A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *profitbricks-ruby-sdk* library but it is not available to the Ruby install that Puppet is actually using.
+A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *ionoscloud-ruby-sdk* library but it is not available to the Ruby install that Puppet is actually using.
 
 To demonstrate this on a CentOS 7 server, these steps could be followed.
 
@@ -86,11 +86,11 @@ To demonstrate this on a CentOS 7 server, these steps could be followed.
 
 2. Install the ProfitBricks Ruby SDK using `gem`. **Note:** We are supplying the full path to the `gem` binary.
 
-        /opt/puppetlabs/puppet/bin/gem install profitbricks-sdk-ruby
+        /opt/puppetlabs/puppet/bin/gem install ionoscloud-sdk-ruby
 
 3. Install the Puppet module. **Note:** We are supplying the full path to the `puppet` binary.
 
-        /opt/puppetlabs/puppet/bin/puppet module install profitbricks-profitbricks
+        /opt/puppetlabs/puppet/bin/puppet module install ionoscloud-ionoscloud
 
 4. Set the environment variables for authentication.
 
@@ -188,7 +188,7 @@ The following example will describe deploying a new server with public Internet 
 
 **Note:** the value for `$datacenter_id` needs to be set to a valid virtual data center UUID that your account credentials are allowed to access. There are a couple of ways to get the UUID of a virtual data center. You can make a GET request against the Cloud API using a command-line tool such as `curl`, use an application such Postman, or one of various browser plugins for working with REST APIs.
 
-The [ProfitBricks CLI](https://devops.profitbricks.com/tools/cli/) may be helpful as the command: `profitbricks datacenter list` will return a list of available virtual data centers.
+The [ProfitBricks CLI](https://devops.ionoscloud.com/tools/cli/) may be helpful as the command: `ionoscloud datacenter list` will return a list of available virtual data centers.
 
 It is also possible to get the UUID from inside the ProfitBricks Data Center Designer (DCD). If you log in and hover over one of your virtual data centers listed under "My Data Centers", a tooltip appears that contains the UUID.
 
@@ -572,7 +572,7 @@ Share resources can have the following properties set.
 Image resource provider can be used only to obtain a single resource or list all available ProfitBricks images.
 
 ```
-puppet resource image [profitbricks_image_name]
+puppet resource image [ionoscloud_image_name]
 ```
 
 
@@ -581,15 +581,15 @@ puppet resource image [profitbricks_image_name]
 Location resource provider can be used only to obtain a single resource or list all available ProfitBricks locations.
 
 ```
-puppet resource location [profitbricks_location_name]
+puppet resource location [ionoscloud_location_name]
 ```
 
 
 ## Support
 
-* Consult the [ProfitBricks Cloud API](https://devops.profitbricks.com/api/cloud/) documentation.
-* Ask a question or discuss this module by visiting the [ProfitBricks DevOps Central](https://devops.profitbricks.com/community) community.
-* Report an [issue in the GitHub project repository](https://github.com/profitbricks/profitbricks-puppet/issues).
+* Consult the [ProfitBricks Cloud API](https://devops.ionoscloud.com/api/cloud/) documentation.
+* Ask a question or discuss this module by visiting the [ProfitBricks DevOps Central](https://devops.ionoscloud.com/community) community.
+* Report an [issue in the GitHub project repository](https://github.com/ionoscloud/ionoscloud-puppet/issues).
 
 ## Testing
 
@@ -620,19 +620,19 @@ You can bypass `rake` and run a single test using `rspec` and supplying a path t
 
 These instructions would only be necessary if you want to build the module yourself rather than use a pre-built one. You **DO NOT** need to do this if you followed the [installation instructions](#installation) above.
 
-Clone the repository from [GitHub : profitbricks-puppet](https://github.com/profitbricks/profitbricks-puppet).
+Clone the repository from [GitHub : ionoscloud-puppet](https://github.com/ionoscloud/ionoscloud-puppet).
 
 Run the following from the repository directory.
 
-    cd profitbricks-puppet
+    cd ionoscloud-puppet
     puppet module build
-    puppet module install -f pkg/profitbricks-profitbricks-[version].tar.gz
+    puppet module install -f pkg/ionoscloud-ionoscloud-[version].tar.gz
 
 Notes: [version] should be replaced with the module version built. For example, 1.5.0.
 
 ## Contributing
 
-1. Fork it (`https://github.com/profitbricks/profitbricks-puppet/fork`).
+1. Fork it (`https://github.com/ionoscloud/ionoscloud-puppet/fork`).
 2. Create your feature branch (`git checkout -b my-new-feature`).
 3. Commit your changes (`git commit -am 'Add some feature'`).
 4. Push to the branch (`git push origin my-new-feature`).
