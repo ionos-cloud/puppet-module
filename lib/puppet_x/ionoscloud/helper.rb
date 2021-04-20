@@ -6,8 +6,8 @@ module PuppetX
     class Helper
       def self.ionoscloud_config(depth = nil)
         Ionoscloud.configure do |config|
-          config.username = ENV['IONOSCLOUD_USERNAME']
-          config.password = ENV['IONOSCLOUD_PASSWORD']
+          config.username = ENV['IONOS_USERNAME']
+          config.password = ENV['IONOS_PASSWORD']
         end
       end
 
@@ -70,6 +70,14 @@ module PuppetX
         user = Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.find { |user| user.properties.email == user_email }
         fail "User with email '#{user_email}' cannot be found." unless user
         user
+      end
+
+      def self.backup_unit_from_name(backup_unit_name)
+        backup_units = Ionoscloud::BackupUnitApi.new.backupunits_get(depth: 1)
+
+        backup_unit = backup_units.items.find { |backup_unit| backup_unit.properties.name == backup_unit_name }
+        fail "Backup unit named '#{backup_unit_name}' cannot be found." unless backup_unit
+        backup_unit
       end
 
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)

@@ -78,6 +78,13 @@ lan { 'foartenou' :
     }
   ]
 },
+
+backup_unit { 'myBackupUnit' :
+  ensure      => present,
+  password    => 'parola123',
+  email    => 'a2@a.com',
+},
+
 # nic { 'testnic':
 #   ensure          => present,
 #   datacenter_name   => 'myDataCenter2',
