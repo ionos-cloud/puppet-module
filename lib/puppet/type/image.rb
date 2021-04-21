@@ -1,7 +1,11 @@
 Puppet::Type.newtype(:image) do
   @doc = 'Type representing a ProfitBricks image.'
 
-  newparam(:id, namevar: true) do
+  newparam(:name, namevar: true) do
+    desc 'The name of the image.'
+  end
+
+  newproperty(:id) do
     desc 'The ID of the image.'
 
     def insync?(is)

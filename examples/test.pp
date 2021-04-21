@@ -69,14 +69,8 @@ server { 'frontend2' :
 
 lan { 'foartenou' :
   ensure          => present,
-  public          => true,
+  public          => false,
   datacenter_name => 'myDataCenter2',
-  ip_failover => [
-    {
-      'ip' => '158.222.102.161',
-      'nic_uuid' => '15378569-84bc-49a1-942f-55001f535e7b',
-    }
-  ]
 },
 
 backup_unit { 'myBackupUnit' :

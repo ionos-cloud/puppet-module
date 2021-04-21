@@ -29,6 +29,13 @@ Puppet::Type.newtype(:lan) do
     end
   end
 
+  newproperty(:pcc) do
+    desc 'Set the name of the PCC to which the LAN is to be attached.'
+    validate do |value|
+      raise ArgumentError, 'The LAN name must be a String.' unless value.is_a?(String)
+    end
+  end
+
   newproperty(:ip_failover, array_matching: :all) do
     desc 'IP failover group.'
 

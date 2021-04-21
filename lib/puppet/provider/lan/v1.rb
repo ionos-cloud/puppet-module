@@ -36,6 +36,7 @@ Puppet::Type.type(:lan).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
+    pcc_name = instance.properties.pcc.nil? ? nil : Ionoscloud::PrivateCrossConnectApi.new.pccs_find_by_id(instance.properties.pcc).properties.name
     {
       id: instance.id,
       datacenter_id: datacenter.id,
@@ -43,12 +44,17 @@ Puppet::Type.type(:lan).provide(:v1) do
       name: instance.properties.name,
       ip_failover: instance.properties.ip_failover.map { |el| el = el.to_hash; el[:nic_uuid] = el.delete :nicUuid; el.transform_keys(&:to_s) },
       public: instance.properties.public,
+      pcc: pcc_name,
       ensure: :present,
     }
   end
 
   def public=(value)
     @property_flush[:public] = value
+  end
+
+  def pcc=(value)
+    @property_flush[:pcc] = value
   end
 
   def ip_failover=(value)
@@ -62,11 +68,15 @@ Puppet::Type.type(:lan).provide(:v1) do
   end
 
   def flush
-    changeable_properties = [:public, :ip_failover]
+    changeable_properties = [:public, :ip_failover, :pcc]
     changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten(1) ].delete_if { |_k, v| v.nil? }
 
     if !changes.empty?
       Puppet.info("Updating Lan '#{name}', #{changes.keys.to_s}.")
+
+      puts ['da', changes[:pcc], changes[:pcc].class].to_s
+
+      changes[:pcc] = PuppetX::IonoscloudX::Helper::pcc_from_name(changes[:pcc]).id unless changes[:pcc].nil?
       changes = Ionoscloud::LanProperties.new(**changes)
 
       lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
@@ -86,6 +96,7 @@ Puppet::Type.type(:lan).provide(:v1) do
       properties: Ionoscloud::LanProperties.new(
         name: resource[:name],
         public: resource[:public] || false,
+        pcc: resource[:pcc],
       ),
     )
 

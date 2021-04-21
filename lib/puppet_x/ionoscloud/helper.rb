@@ -80,6 +80,14 @@ module PuppetX
         backup_unit
       end
 
+      def self.pcc_from_name(pcc_name)
+        pccs = Ionoscloud::PrivateCrossConnectApi.new.pccs_get(depth: 1)
+
+        pcc = pccs.items.find { |pcc| pcc.properties.name == pcc_name }
+        fail "PCC named '#{pcc_name}' cannot be found." unless pcc
+        pcc
+      end
+
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
         existing_names = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:name] }
     

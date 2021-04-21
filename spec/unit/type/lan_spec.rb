@@ -16,6 +16,7 @@ describe type_class do
       :datacenter_id,
       :datacenter_name,
       :public,
+      :pcc,
       :ip_failover
     ]
   end
