@@ -71,6 +71,7 @@ lan { 'foartenou' :
   ensure          => present,
   public          => false,
   datacenter_name => 'myDataCenter2',
+  pcc             => 'test2',
 },
 
 backup_unit { 'myBackupUnit' :

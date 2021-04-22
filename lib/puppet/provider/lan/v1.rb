@@ -74,10 +74,18 @@ Puppet::Type.type(:lan).provide(:v1) do
     if !changes.empty?
       Puppet.info("Updating Lan '#{name}', #{changes.keys.to_s}.")
 
-      puts ['da', changes[:pcc], changes[:pcc].class].to_s
+      if changes[:pcc]
+        if changes[:pcc] == 'nil'
+          changes[:pcc] = nil
+        else
+          changes[:pcc] = PuppetX::IonoscloudX::Helper::pcc_from_name(changes[:pcc]).id
+        end
+      end 
 
-      changes[:pcc] = PuppetX::IonoscloudX::Helper::pcc_from_name(changes[:pcc]).id unless changes[:pcc].nil?
-      changes = Ionoscloud::LanProperties.new(**changes)
+      if changes[:ip_failover]
+        changes[:ipFailover] = changes[:ip_failover]
+        changes.delete(:ip_failover)
+      end
 
       lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
         @property_hash[:datacenter_id], @property_hash[:id], changes,
