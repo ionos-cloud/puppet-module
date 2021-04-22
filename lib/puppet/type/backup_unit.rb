@@ -28,4 +28,12 @@ Puppet::Type.newtype(:backup_unit) do
       true
     end
   end
+
+  newproperty(:id) do
+    desc 'The Backup Unit ID.'
+
+    def insync?(is)
+      true
+    end
+  end
 end

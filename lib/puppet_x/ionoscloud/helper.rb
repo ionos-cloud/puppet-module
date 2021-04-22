@@ -388,6 +388,67 @@ module PuppetX
         []
       end
 
+      def self.peers_sync(existing_objects, target_objects, pcc_id, wait = true)
+        existing = Marshal.load(Marshal.dump(existing_objects))
+
+        headers_list = []
+  
+        target_objects.each do |target_object|
+          existing_object = existing_objects.find do
+            |object|
+            (
+              ((object[:name] == target_object['name']) || (object[:id] == target_object['id'])) && 
+              ((object[:datacenter_name] == target_object['datacenter_name']) || (object[:datacenter_id] == target_object['datacenter_id']))
+            )
+          end
+          if existing_object
+            existing.delete(existing_object)
+          else
+            datacenter_id = resolve_datacenter_id(target_object['datacenter_id'], target_object['datacenter_name'])
+            peer_id = target_object['id'] ? target_object['id'] : PuppetX::IonoscloudX::Helper::lan_from_name(target_object['name'], datacenter_id).id
+
+            puts "Adding LAN #{peer_id} to PCC #{pcc_id}"
+            _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
+            headers_list << headers
+          end
+        end
+
+        existing.each do |peer|
+          puts "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
+          _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
+          headers_list << headers
+        end
+
+        if wait
+          headers_list.each { |headers| wait_request(headers) }
+          return []
+        else
+          return headers_list
+        end
+      end
+
+      def self.peers_match(existing_objects, target_objects)
+        return true if target_objects.nil?
+        return false unless existing_objects.length == target_objects.length
+   
+        existing = Marshal.load(Marshal.dump(existing_objects))
+  
+        target_objects.each do |target_object|
+          existing_object = existing_objects.find do
+            |object|
+            (
+              ((object[:name] == target_object['name']) || (object[:id] == target_object['id'])) && 
+              ((object[:datacenter_name] == target_object['datacenter_name']) || (object[:datacenter_id] == target_object['datacenter_id']))
+            )
+          end
+          return false unless existing_object
+  
+          existing.delete(existing_object)
+        end
+  
+        return existing.empty?
+      end
+
       def self.objects_match(existing_objects, target_objects, fields_to_check)
         return true if target_objects.nil?
         return false unless existing_objects.length == target_objects.length

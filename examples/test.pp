@@ -67,11 +67,21 @@ server { 'frontend2' :
   ]
 },
 
+pcc { 'noulpcc' :
+  ensure => present,
+  description => 'descriere',
+  peers => [
+    {
+      name => 'lanuldeporumb',
+      datacenter_name => 'myDataCenter2'
+    }
+  ]
+},
+
 lan { 'foartenou' :
   ensure          => present,
   public          => false,
   datacenter_name => 'myDataCenter2',
-  pcc             => 'test2',
 },
 
 backup_unit { 'myBackupUnit' :
