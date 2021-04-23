@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-type_class = Puppet::Type.type(:backup_unit)
+type_class = Puppet::Type.type(:s3_key)
 
 describe type_class do
   let :params do
@@ -11,10 +11,10 @@ describe type_class do
 
   let :properties do
     [
-      :ensure,
-      :id,
-      :email,
-      :password,
+      :user_id,
+      :user_email,
+      :secret_key,
+      :active,
     ]
   end
 
@@ -34,13 +34,5 @@ describe type_class do
     expect {
       type_class.new({ })
     }.to raise_error(Puppet::Error, 'Title or name must be provided')
-  end
-
-  it 'should support :present as a value to :ensure' do
-    type_class.new(:name => 'testbackup', :ensure => :present, :email => 'dummy', :password => 'dummy')
-  end
-
-  it 'should support :absent as a value to :ensure' do
-    type_class.new(:name => 'testbackup', :ensure => :absent)
   end
 end

@@ -68,6 +68,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
     PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     @property_hash[:ensure] = :present
+    @property_hash[:id] = backup_unit.id
   end
 
   def destroy

@@ -55,13 +55,13 @@ describe provider_class do
     it 'should update NIC firewallrules' do
       VCR.use_cassette('nic_update_firewallrules') do
         firewall_rules = [
-          { 
+          {
             'name' => 'SSH',
             'protocol' => 'TCP',
             'port_range_start' => 22,
             'port_range_end' => 22,
           },
-          { 
+          {
             'name' => 'HTTP',
             'protocol' => 'TCP',
             'port_range_start' => 65,

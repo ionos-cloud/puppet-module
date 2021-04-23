@@ -407,14 +407,14 @@ module PuppetX
             datacenter_id = resolve_datacenter_id(target_object['datacenter_id'], target_object['datacenter_name'])
             peer_id = target_object['id'] ? target_object['id'] : PuppetX::IonoscloudX::Helper::lan_from_name(target_object['name'], datacenter_id).id
 
-            puts "Adding LAN #{peer_id} to PCC #{pcc_id}"
+            Puppet.info "Adding LAN #{peer_id} to PCC #{pcc_id}"
             _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
             headers_list << headers
           end
         end
 
         existing.each do |peer|
-          puts "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
+          Puppet.info "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
           _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
           headers_list << headers
         end
