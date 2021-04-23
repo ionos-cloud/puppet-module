@@ -12,6 +12,7 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
   
   def self.instances
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       nics = []
       # Ignore data center if name is not defined.
