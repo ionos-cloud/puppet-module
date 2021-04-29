@@ -1,3 +1,4 @@
+require 'ionoscloud'
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'webmock/rspec'
 require 'vcr'
@@ -10,9 +11,17 @@ VCR.configure do |config|
   config.before_record do |rec|
     filter_headers(rec, 'Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=')
 
-    uuid_regex = %r{/requests/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
-    rec.ignore! if uuid_regex.match?(rec.request.uri) && ['QUEUED', 'RUNNING'].include?(JSON.parse(rec.response.body)['metadata']['status'])
+    request_url_regex = %r{/requests/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    rec.ignore! if request_url_regex.match?(rec.request.uri) && ['QUEUED', 'RUNNING'].include?(JSON.parse(rec.response.body)['metadata']['status'])
+
+    k8s_cluster_url_regex = %r{/k8s/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    rec.ignore! if rec.request.method == :get && k8s_cluster_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?(JSON.parse(rec.response.body)['metadata']['state'])
   end
+end
+
+Ionoscloud.configure do |config|
+  config.username = ENV['IONOS_USERNAME']
+  config.password = ENV['IONOS_PASSWORD']
 end
 
 def filter_headers(rec, pattern, placeholder)
@@ -21,5 +30,12 @@ def filter_headers(rec, pattern, placeholder)
     sensitive_data.each do |key, _value|
       headers[key] = placeholder
     end
+  end
+end
+
+def wait_cluster_active(cluster_id)
+  Ionoscloud::ApiClient.new.wait_for do
+    cluster = Ionoscloud::KubernetesApi.new.k8s_find_by_cluster_id(cluster_id)
+    cluster.metadata.state == 'ACTIVE'
   end
 end

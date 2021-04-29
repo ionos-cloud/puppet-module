@@ -1,4 +1,46 @@
 
+# [
+#   datacenter { 'myDataCenterPcc1' :
+#   ensure      => absent,
+#   location    => 'us/las',
+# },
+#   datacenter { 'myDataCenterPcc2' :
+#   ensure      => absent,
+#   location    => 'us/las',
+# },
+# lan { 'private' :
+#   ensure => absent,
+#   public => false,
+#   datacenter_name => 'myDataCenterPcc1',
+#   pcc => 'newpcc',
+# },
+# lan { 'private2' :
+#   ensure => absent,
+#   public => false,
+#   datacenter_name => 'myDataCenterPcc1',
+#   pcc => 'nil',
+# },
+# lan { 'private3' :
+#   ensure => absent,
+#   public => false,
+#   datacenter_name => 'myDataCenterPcc2',
+#   pcc => 'nil',
+# },
+# pcc { 'newpcc' :
+#   ensure => absent,
+#   description => 'descriere',
+  # peers => [
+  #   {
+  #     name => 'private',
+  #     datacenter_name => 'myDataCenterPcc1'
+  #   },
+  #   {
+  #     name => 'private2',
+  #     datacenter_name => 'myDataCenterPcc1'
+  #   },
+  # ]
+# },
+# ]
 [
   datacenter { 'myDataCenter2' :
   ensure      => present,
@@ -67,65 +109,13 @@ server { 'frontend2' :
   ]
 },
 
-pcc { 'noulpcc' :
-  ensure => present,
-  description => 'descriere',
-  peers => [
-    {
-      name => 'lanuldeporumb',
-      datacenter_name => 'myDataCenter2'
-    }
-  ]
-},
 
-lan { 'foartenou' :
-  ensure          => present,
-  public          => false,
-  datacenter_name => 'myDataCenter2',
-},
-
-backup_unit { 'myBackupUnit' :
+k8s_cluster { 'myCluster' :
   ensure      => present,
-  password    => 'parola123',
-  email    => 'a2@a.com',
+  k8s_version    => '1.18.15',
+  maintenance_day    => 'Sunday',
+  maintenance_time    => '14:53:54Z',
 },
-
-# nic { 'testnic':
-#   ensure          => present,
-#   datacenter_name   => 'myDataCenter2',
-#   server_name => 'frontend2',
-#   nat => false,
-#   dhcp => true,
-#   lan => 'public',
-#   firewall_active => true,
-#   firewall_rules => [
-#     { 
-#       name => 'SSH',
-#       protocol => 'TCP',
-#       port_range_start => 22,
-#       port_range_end => 22
-#     },
-#     { 
-#       name => 'HTTP',
-#       protocol => 'TCP',
-#       port_range_start => 78,
-#       port_range_end => 80
-#     },
-#   ]
-# },
-
-# firewall_rule { 'HTTP2':
-#   ensure           => present,
-#   datacenter_name  => 'myDataCenter2',
-#   server_name      => 'frontend2',
-#   nic              => 'testnic',
-#   protocol         => 'TCP',
-#   port_range_start => 81,
-#   port_range_end   => 83,
-#   source_mac       => '12:47:e9:b1:77:b4',
-#   source_ip        => '10.81.12.122',
-#   target_ip        => '10.81.12.126',
-# },
 
 # volume { 'testvolume' :
 #   ensure            => absent,

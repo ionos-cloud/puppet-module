@@ -88,6 +88,21 @@ module PuppetX
         pcc
       end
 
+      def self.cluster_from_name(cluster_name)
+        clusters = Ionoscloud::KubernetesApi.new.k8s_get(depth: 1)
+        cluster = clusters.items.find { |cluster| cluster.properties.name == cluster_name }
+        fail "K8s cluster named '#{cluster_name}' cannot be found." unless cluster
+        cluster
+      end
+
+      def self.resolve_cluster_id(cluster_id, cluster_name)
+        return cluster_id unless cluster_id.nil? || cluster_id.empty?
+        unless cluster_name.nil? || cluster_name.empty?
+          return cluster_from_name(cluster_name).id
+        end
+        fail "Cluster ID or name must be provided."
+      end
+
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
         existing_names = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:name] }
     

@@ -59,36 +59,36 @@ Puppet::Type.type(:k8s_node).provide(:v1) do
   end
 
   def exists?
-    Puppet.info("Checking if NIC #{resource[:name]} exists.")
+    Puppet.info("Checking if K8S Node #{resource[:name]} exists.")
     @property_hash[:ensure] == :present
   end
 
-  def create
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    server_id = resource[:server_id]
-    unless server_id
-      server_id = PuppetX::IonoscloudX::Helper::server_from_name(resource[:server_name], datacenter_id).id
-    end
+  # def create
+  #   datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+  #   server_id = resource[:server_id]
+  #   unless server_id
+  #     server_id = PuppetX::IonoscloudX::Helper::server_from_name(resource[:server_name], datacenter_id).id
+  #   end
 
-    nic = PuppetX::IonoscloudX::Helper::nic_object_from_hash(resource, datacenter_id)
+  #   nic = PuppetX::IonoscloudX::Helper::nic_object_from_hash(resource, datacenter_id)
 
-    Puppet.info "Creating a new NIC #{nic.to_hash}."
+  #   Puppet.info "Creating a new NIC #{nic.to_hash}."
 
-    nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+  #   nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
+  #   PuppetX::IonoscloudX::Helper::wait_request(headers)
 
-    Puppet.info("Created a new nic named #{resource[:name]}.")
-    @property_hash[:ensure] = :present
-    @property_hash[:datacenter_id] = datacenter_id
-    @property_hash[:server_id] = server_id
-    @property_hash[:id] = nic.id
-  end
+  #   Puppet.info("Created a new nic named #{resource[:name]}.")
+  #   @property_hash[:ensure] = :present
+  #   @property_hash[:datacenter_id] = datacenter_id
+  #   @property_hash[:server_id] = server_id
+  #   @property_hash[:id] = nic.id
+  # end
 
-  def destroy
-    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
-      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id],
-    )
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
-    @property_hash[:ensure] = :absent
-  end
+  # def destroy
+  #   _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+  #     @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id],
+  #   )
+  #   PuppetX::IonoscloudX::Helper::wait_request(headers)
+  #   @property_hash[:ensure] = :absent
+  # end
 end
