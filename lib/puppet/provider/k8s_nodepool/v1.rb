@@ -81,12 +81,24 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_flush[:k8s_version] = value
   end
 
+  def node_count=(value)
+    @property_flush[:node_count] = value
+  end
+
   def maintenance_day=(value)
     @property_flush[:maintenance_day] = value
   end
 
   def maintenance_time=(value)
     @property_flush[:maintenance_time] = value
+  end
+
+  def min_node_count=(value)
+    @property_flush[:min_node_count] = value
+  end
+
+  def max_node_count=(value)
+    @property_flush[:max_node_count] = value
   end
 
   def create
@@ -104,9 +116,9 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       cpu_family: resource[:cpu_family],
       cores_count: resource[:cores_count],
       ram_size: resource[:ram_size],
-      storage_type: resource[:storage_type],
+      storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
-      availability_zone: resource[:availability_zone],
+      availability_zone: resource[:availability_zone].to_s,
     }.delete_if { |_k, v| v.nil? }
 
     if resource[:maintenance_day] && resource[:maintenance_time]
@@ -123,13 +135,13 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       )
     end
 
-    nodepool = Ionoscloud::KubernetesNodepool.new(
-      properties: Ionoscloud::KubernetesNodepoolProperties.new(
+    nodepool = Ionoscloud::KubernetesNodePool.new(
+      properties: Ionoscloud::KubernetesNodePoolProperties.new(
         **nodepool_properties,
       ),
     )
 
-    nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_post_with_http_info(nodepool)
+    nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_post_with_http_info(cluster_id, nodepool)
     PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     Puppet.info("Created a new K8s Npdepool named #{resource[:name]}.")
@@ -139,17 +151,14 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   end
 
   def flush
+    datacenter_id = resource[:datacenter_id]
+    if @property_flush[:datacenter_id] || @property_flush[:datacenter_name]
+      datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(@property_flush[:datacenter_id], @property_flush[:datacenter_name])
+    end
+
     nodepool_properties = {
-      name: @property_flush[:name] || @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
-      datacenter_id: @property_flush[:datacenter_id] || @property_hash[:datacenter_id],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
-      cpu_family: @property_flush[:cpu_family] || @property_hash[:cpu_family],
-      cores_count: @property_flush[:cores_count] || @property_hash[:cores_count],
-      ram_size: @property_flush[:ram_size] || @property_hash[:ram_size],
-      storage_type: @property_flush[:storage_type] || @property_hash[:storage_type],
-      storage_size: @property_flush[:storage_size] || @property_hash[:storage_size],
-      availability_zone: @property_flush[:availability_zone] || @property_hash[:availability_zone],
       maintenance_window: Ionoscloud::KubernetesMaintenanceWindow.new(
         day_of_the_week: @property_flush[:maintenance_day] || @property_hash[:maintenance_day],
         time: @property_flush[:maintenance_time] || @property_hash[:maintenance_time],
@@ -160,9 +169,8 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ),
     }
 
-    new_k8s_nodepool = Ionoscloud::KubernetesNodepool.new(properties: Ionoscloud::KubernetesNodepoolProperties.new(nodepool_properties))
-    k8s_nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
-
+    new_k8s_nodepool = Ionoscloud::KubernetesNodePool.new(properties: Ionoscloud::KubernetesNodePoolProperties.new(nodepool_properties))
+    k8s_nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
     PuppetX::IonoscloudX::Helper::wait_request(headers)
   end
 
