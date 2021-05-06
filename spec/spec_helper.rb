@@ -1,4 +1,3 @@
-require 'profitbricks'
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'webmock/rspec'
 require 'vcr'
@@ -10,6 +9,9 @@ VCR.configure do |config|
 
   config.before_record do |rec|
     filter_headers(rec, 'Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=')
+
+    uuid_regex = %r{/requests/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    rec.ignore! if uuid_regex.match?(rec.request.uri) && ['QUEUED', 'RUNNING'].include?(JSON.parse(rec.response.body)['metadata']['status'])
   end
 end
 

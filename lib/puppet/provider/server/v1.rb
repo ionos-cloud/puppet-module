@@ -1,17 +1,18 @@
 require 'puppet_x/profitbricks/helper'
 
 Puppet::Type.type(:server).provide(:v1) do
-  confine feature: :profitbricks
+  # confine feature: :profitbricks
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config()
+    PuppetX::Profitbricks::Helper::profitbricks_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
+    PuppetX::Profitbricks::Helper::profitbricks_config
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       servers = []
       # Ignore data center if name is not defined.
@@ -77,7 +78,7 @@ Puppet::Type.type(:server).provide(:v1) do
       state = :present
     end
 
-    boot_volume_name = ''
+    boot_volume_name = boot_volume_id = ''
     unless instance.properties.boot_volume.nil?
       boot_volume_id = instance.properties.boot_volume.id
       instance.entities.volumes.items.map do |volume|
@@ -85,7 +86,7 @@ Puppet::Type.type(:server).provide(:v1) do
       end
     end
 
-    config = {
+    {
       id: instance.id,
       datacenter_id: datacenter.id,
       datacenter_name: datacenter.properties.name,
@@ -94,7 +95,10 @@ Puppet::Type.type(:server).provide(:v1) do
       cpu_family: instance.properties.cpu_family,
       ram: instance.properties.ram,
       availability_zone: instance.properties.availability_zone,
-      boot_volume: boot_volume_name,
+      boot_volume: {
+        id: boot_volume_id,
+        name: boot_volume_name,
+      },
       ensure: state,
       volumes: volumes,
       nics: nics,
@@ -118,23 +122,29 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def boot_volume=(value)
-    volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
-      @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
-    ).items.find { |volume| volume.properties.name == value }
-    fail "Volume #{value} not found" unless volume
-    @property_flush[:boot_volume] = volume.id
+    if !PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+      volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
+        @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
+      ).items.find { |volume| volume.properties.name == value }
+      fail "Volume #{value} not found" unless volume
+      @property_flush[:boot_volume] = { id: volume.id }
+    else
+      @property_flush[:boot_volume] = { id: value }
+    end
   end
 
   def volumes=(value)
     PuppetX::Profitbricks::Helper::sync_volumes(
       @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
     )
+    @property_hash[:volumes] = value
   end
 
   def nics=(value)
     PuppetX::Profitbricks::Helper::sync_nics(
       @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true,
     )
+    @property_hash[:nics] = value
   end
 
   def exists?
@@ -157,35 +167,49 @@ Puppet::Type.type(:server).provide(:v1) do
     if stopped?
       restart
     else
+      datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+
       server = Ionoscloud::Server.new(
         properties: Ionoscloud::ServerProperties.new(
-          name: resource[:name],
+          name: resource[:name].to_s,
           cores: resource[:cores],
-          cpu_family: resource[:cpu_family],
+          cpu_family: resource[:cpu_family].to_s,
           ram: resource[:ram],
           availability_zone: resource[:availability_zone].to_s,
-          boot_volume: resource[:boot_volume],
         ),
         entities: Ionoscloud::ServerEntities.new(
           volumes: Ionoscloud::Volumes.new(
-            items: volume_object_array_from_hashes(resource[:volumes]),
+            items: PuppetX::Profitbricks::Helper::volume_object_array_from_hashes(resource[:volumes]),
           ),
           nics: Ionoscloud::Nics.new(
-            items: nic_object_array_from_hashes(resource[:nics]),
+            items: PuppetX::Profitbricks::Helper::nic_object_array_from_hashes(resource[:nics], datacenter_id),
           ),
         ),
       )
-
-      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(
-        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-        server,
-      )
+      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(datacenter_id, server)
       PuppetX::Profitbricks::Helper::wait_request(headers)
+
+      if resource[:boot_volume] && resource[:volumes]
+        if PuppetX::Profitbricks::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+          boot_volume_id = resource[:boot_volume].to_s
+        else
+          volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(datacenter_id, server.id, depth: 1).items.find do
+            |volume|
+            volume.properties.name == resource[:boot_volume].to_s
+          end
+          boot_volume_id = volume.id
+        end
+        
+        changes = Ionoscloud::ServerProperties.new(boot_volume: { id: boot_volume_id })
+        server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server.id, changes)
+
+        PuppetX::Profitbricks::Helper::wait_request(headers)
+      end
 
       Puppet.info("Server '#{name}' has been created.")
       @property_hash[:ensure] = :present
-
       @property_hash[:id] = server.id
+      @property_hash[:datacenter_id] = datacenter_id
     end
   end
 
@@ -202,6 +226,10 @@ Puppet::Type.type(:server).provide(:v1) do
       server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
 
       PuppetX::Profitbricks::Helper::wait_request(headers)
+
+      changeable_properties.each do |property|
+        @property_hash[property] = @property_flush[property] if @property_flush[property]
+      end
     end
   end
 

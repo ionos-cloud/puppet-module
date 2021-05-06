@@ -103,6 +103,10 @@ Puppet::Type.newtype(:server) do
     validate do |value|
       raise ArgumentError, 'The volume type must be a String.' unless value.is_a?(String)
     end
+
+    def insync?(is)
+      is[:name] == should || is[:id] == should
+    end
   end
 
   newproperty(:licence_type) do

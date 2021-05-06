@@ -7,10 +7,15 @@ describe provider_class do
     before(:all) do
       @resource = Puppet::Type.type(:profitbricks_group).new(
         name: 'Puppet Module Test',
-        create_datacenter: true,
+        create_data_center: true,
         create_snapshot: true,
         reserve_ip: true,
-        access_activity_log: true
+        access_activity_log: true,
+        s3_privilege: true,
+        create_backup_unit: true,
+        create_internet_access: true,
+        create_k8s_cluster: true,
+        create_pcc: true,
       )
       @provider = provider_class.new(@resource)
     end
@@ -38,12 +43,13 @@ describe provider_class do
 
     it 'should update profitbricks_group' do
       VCR.use_cassette('profitbricks_group_update') do
-        @provider.create_datacenter = false
+        @provider.create_data_center = false
+        @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test'
         end
-        expect(updated_instance.create_datacenter).to eq(false)
+        expect(updated_instance.create_data_center).to eq(false)
       end
     end
 

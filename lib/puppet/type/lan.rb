@@ -33,10 +33,11 @@ Puppet::Type.newtype(:lan) do
     desc 'IP failover group.'
 
     def insync?(is)
+      comp = lambda { |a, b| (a['ip'] != b['ip'] ? a['ip'] <=> b['ip'] :a['nicUuid'] <=> b['nic_uuid']) }
       if is.is_a? Array
-        return is.sort == should.sort
+        is.sort(&comp) == should.sort(&comp)
       else
-        return is == should
+        is == should
       end
     end
   end

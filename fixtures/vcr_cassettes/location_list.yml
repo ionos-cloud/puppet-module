@@ -2,80 +2,104 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.profitbricks.com/cloudapi/v4/locations?depth=1
+    uri: https://api.ionos.com/cloudapi/v5/locations?depth=1
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - profitbricks-ruby-sdk/4.0.1 Puppet/4.5.1
+      - ionos-cloud-sdk-ruby/v5
       Content-Type:
       - application/json
+      Accept:
+      - application/json
       Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
   response:
     status:
       code: 200
       message: OK
     headers:
       Date:
-      - Mon, 06 Nov 2017 10:59:00 GMT
+      - Wed, 14 Apr 2021 09:29:29 GMT
       Server:
-      - Apache/2.4.10 (Debian)
-      X-Ratelimit-Remaining:
-      - '299'
-      X-Ratelimit-Burst:
-      - '300'
-      X-Ratelimit-Limit:
-      - '600'
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '4671'
       Content-Type:
       - application/json
-      Strict-Transport-Security:
-      - max-age=15768000
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
     body:
-      encoding: ASCII-8BIT
+      encoding: UTF-8
       string: |
         {
           "id" : "locations",
           "type" : "collection",
-          "href" : "https://api.profitbricks.com/cloudapi/v4/locations",
+          "href" : "https://api.ionos.com/cloudapi/v5/locations",
           "items" : [ {
-            "id" : "de/fkb",
-            "type" : "location",
-            "href" : "https://api.profitbricks.com/cloudapi/v4/locations/de/fkb",
-            "properties" : {
-              "name" : "karlsruhe",
-              "features" : [ "SSD", "MULTIPLE_CPU" ],
-              "imageAliases" : [ "centos:6_iso", "opensuse:latest", "opensuse:42.3_iso", "debian:8_iso", "centos:7", "centos:7_iso", "clonezilla:latest_iso", "fedora:25_iso", "grml:latest_iso", "opensuse:13.2_iso", "debian:9", "debian:latest", "opensuse:42.2_iso", "fedora:25", "fedora:latest", "windows:2008r2", "windows:latest", "ubuntu:14.04_iso", "ubuntu:17.04_iso", "zenloadbalancer:latest_iso", "mssql:2012_trial_iso", "windows:virtiodriver_iso", "windows:2008r2_iso", "windows:2012r2_iso", "windows:2013_recovery_iso", "windows:2016_iso", "windows:2012r2", "windows:2016", "gparted:latest_iso", "clearos:latest_iso", "ubuntu:16.04_iso", "debian:9_iso", "centos:6", "fedora:26_iso", "centos:latest", "debian:7", "debian:8", "debian:testing", "ubuntu:14.04", "ubuntu:16.04", "ubuntu:latest", "opensuse:13.2" ]
-            }
-          }, {
             "id" : "de/fra",
             "type" : "location",
-            "href" : "https://api.profitbricks.com/cloudapi/v4/locations/de/fra",
+            "href" : "https://api.ionos.com/cloudapi/v5/locations/de/fra",
             "properties" : {
               "name" : "frankfurt",
-              "features" : [ "SSD", "MULTIPLE_CPU" ],
-              "imageAliases" : [ "centos:6_iso", "opensuse:42.3_iso", "centos:6", "centos:7", "centos:latest", "debian:7", "gparted:latest_iso", "clonezilla:latest_iso", "fedora:25_iso", "grml:latest_iso", "opensuse:13.2_iso", "opensuse:42.2_iso", "fedora:25", "fedora:latest", "ubuntu:14.04_iso", "debian:8", "windows:latest", "ubuntu:latest", "clearos:latest_iso", "debian:9", "ubuntu:17.04_iso", "zenloadbalancer:latest_iso", "mssql:2012_trial_iso", "windows:virtiodriver_iso", "windows:2008r2_iso", "windows:2012r2_iso", "windows:2013_recovery_iso", "windows:2016_iso", "debian:latest", "windows:2008r2", "windows:2016", "centos:7_iso", "ubuntu:16.04_iso", "windows:2012r2", "debian:8_iso", "debian:9_iso", "fedora:26_iso", "debian:testing", "ubuntu:14.04", "ubuntu:16.04", "opensuse:13.2", "opensuse:latest" ]
+              "features" : [ "SSD" ],
+              "imageAliases" : [ "windows:2019", "centos:8", "ubuntu:20.10_iso", "gparted:latest_iso", "mssql:2016_trial_iso", "ubuntu:latest_iso", "windows:virtiodriver_iso", "centos:7_iso", "debian:8", "ubuntu:20.04_iso", "mssql:2017_trial_iso", "mssql:2012_trial_iso", "debian:10_iso", "windows:2012r2_iso", "windows:2016_iso", "ubuntu:18.04_iso", "windows:2016", "ubuntu:20.04", "windows:latest", "centos:7", "debian:latest_iso", "debian:testing", "ubuntu:18.04", "windows:recovery_iso", "ubuntu:16.04_iso", "centos:6_iso", "centos:latest_iso", "windows:2012r2", "ubuntu:19.10", "centos:latest", "ubuntu:latest", "centos:8_iso", "debian:latest", "debian:9", "ubuntu:16.04", "windows:2019_iso", "debian:10", "centos:6" ]
             }
           }, {
             "id" : "us/las",
             "type" : "location",
-            "href" : "https://api.profitbricks.com/cloudapi/v4/locations/us/las",
+            "href" : "https://api.ionos.com/cloudapi/v5/locations/us/las",
             "properties" : {
               "name" : "lasvegas",
-              "features" : [ "SSD", "MULTIPLE_CPU" ],
-              "imageAliases" : [ "centos:6_iso", "opensuse:latest", "opensuse:42.3_iso", "windows:2016", "debian:7", "clearos:latest_iso", "fedora:25_iso", "grml:latest_iso", "opensuse:13.2_iso", "windows:2008r2", "opensuse:42.2_iso", "windows:2012r2", "opensuse:13.2", "centos:7", "centos:latest", "ubuntu:14.04_iso", "debian:testing", "windows:latest", "fedora:25", "ubuntu:14.04", "gparted:latest_iso", "debian:9", "debian:latest", "ubuntu:17.04_iso", "zenloadbalancer:latest_iso", "mssql:2012_trial_iso", "windows:virtiodriver_iso", "windows:2008r2_iso", "windows:2012r2_iso", "windows:2013_recovery_iso", "windows:2016_iso", "centos:6", "centos:7_iso", "clonezilla:latest_iso", "ubuntu:16.04_iso", "debian:8_iso", "debian:9_iso", "fedora:26_iso", "debian:8", "fedora:latest", "ubuntu:16.04", "ubuntu:latest" ]
+              "features" : [ "SSD" ],
+              "imageAliases" : [ "windows:virtiodriver_iso", "centos:8", "ubuntu:20.04", "centos:6_iso", "mssql:2016_trial_iso", "windows:2012r2", "ubuntu:latest_iso", "ubuntu:18.04", "debian:latest", "mssql:2012_trial_iso", "mssql:2017_trial_iso", "windows:2012r2_iso", "windows:2016_iso", "gparted:latest_iso", "windows:2016", "ubuntu:latest", "windows:recovery_iso", "windows:latest", "ubuntu:19.10", "ubuntu:16.04_iso", "centos:7_iso", "debian:8", "debian:9", "debian:testing", "debian:latest_iso", "ubuntu:18.04_iso", "ubuntu:20.10_iso", "windows:2019_iso", "centos:latest", "centos:8_iso", "centos:6", "debian:10_iso", "centos:latest_iso", "windows:2019", "centos:7", "debian:10", "ubuntu:20.04_iso", "ubuntu:16.04" ]
             }
           }, {
             "id" : "us/ewr",
             "type" : "location",
-            "href" : "https://api.profitbricks.com/cloudapi/v4/locations/us/ewr",
+            "href" : "https://api.ionos.com/cloudapi/v5/locations/us/ewr",
             "properties" : {
               "name" : "newark",
-              "features" : [ "SSD", "MULTIPLE_CPU" ],
-              "imageAliases" : [ "centos:6_iso", "opensuse:13.2", "opensuse:latest", "windows:2012r2", "opensuse:42.3_iso", "windows:2016", "debian:9_iso", "fedora:26_iso", "centos:latest", "clonezilla:latest_iso", "ubuntu:16.04_iso", "fedora:25_iso", "grml:latest_iso", "opensuse:13.2_iso", "debian:9", "debian:latest", "fedora:latest", "ubuntu:14.04", "windows:2008r2", "opensuse:42.2_iso", "centos:6", "debian:7", "ubuntu:14.04_iso", "debian:testing", "gparted:latest_iso", "ubuntu:17.04_iso", "zenloadbalancer:latest_iso", "mssql:2012_trial_iso", "windows:virtiodriver_iso", "windows:2008r2_iso", "windows:2012r2_iso", "windows:2013_recovery_iso", "windows:2016_iso", "centos:7_iso", "clearos:latest_iso", "windows:latest", "debian:8_iso", "centos:7", "debian:8", "fedora:25", "ubuntu:16.04", "ubuntu:latest" ]
+              "features" : [ "SSD" ],
+              "imageAliases" : [ "centos:7", "ubuntu:20.10_iso", "debian:10", "centos:8_iso", "ubuntu:16.04", "ubuntu:20.04", "ubuntu:18.04_iso", "mssql:2016_trial_iso", "ubuntu:18.04", "debian:latest", "ubuntu:latest", "ubuntu:16.04_iso", "centos:latest_iso", "mssql:2017_trial_iso", "mssql:2012_trial_iso", "windows:2012r2_iso", "windows:2016_iso", "gparted:latest_iso", "windows:2019", "windows:latest", "debian:latest_iso", "windows:virtiodriver_iso", "ubuntu:19.10", "centos:6_iso", "debian:8", "ubuntu:latest_iso", "windows:recovery_iso", "windows:2016", "windows:2019_iso", "ubuntu:20.04_iso", "centos:8", "centos:6", "windows:2012r2", "centos:latest", "debian:9", "debian:testing", "centos:7_iso", "debian:10_iso" ]
+            }
+          }, {
+            "id" : "de/txl",
+            "type" : "location",
+            "href" : "https://api.ionos.com/cloudapi/v5/locations/de/txl",
+            "properties" : {
+              "name" : "berlin",
+              "features" : [ "SSD" ],
+              "imageAliases" : [ "windows:2012r2", "windows:latest", "ubuntu:18.04_iso", "gparted:latest_iso", "ubuntu:latest_iso", "windows:2016", "centos:latest_iso", "ubuntu:18.04", "mssql:2017_trial_iso", "ubuntu:16.04_iso", "windows:recovery_iso", "windows:2012r2_iso", "ubuntu:20.10_iso", "ubuntu:latest", "centos:8_iso", "debian:10_iso", "debian:8", "debian:latest_iso", "centos:7", "centos:8", "windows:2016_iso", "windows:virtiodriver_iso", "windows:2019_iso", "ubuntu:19.10", "debian:testing", "ubuntu:16.04", "mssql:2016_trial_iso", "ubuntu:20.04_iso", "centos:latest", "centos:6", "windows:2019", "ubuntu:20.04", "debian:10", "debian:latest", "debian:9", "centos:6_iso", "centos:7_iso" ]
+            }
+          }, {
+            "id" : "gb/lhr",
+            "type" : "location",
+            "href" : "https://api.ionos.com/cloudapi/v5/locations/gb/lhr",
+            "properties" : {
+              "name" : "london",
+              "features" : [ "SSD" ],
+              "imageAliases" : [ "ubuntu:20.10_iso", "ubuntu:16.04", "ubuntu:latest", "centos:6", "windows:virtiodriver_iso", "ubuntu:19.10", "ubuntu:16.04_iso", "windows:2012r2_iso", "ubuntu:18.04_iso", "ubuntu:20.04", "centos:latest_iso", "gparted:latest_iso", "windows:recovery_iso", "windows:2012r2", "debian:8", "centos:8", "centos:latest", "debian:9", "debian:latest_iso", "mssql:2017_trial_iso", "mssql:2016_trial_iso", "debian:10_iso", "debian:10", "debian:testing", "windows:2016", "windows:2019", "windows:latest", "centos:7", "centos:8_iso", "centos:6_iso", "centos:7_iso", "ubuntu:20.04_iso", "windows:2016_iso", "windows:2019_iso", "ubuntu:latest_iso", "ubuntu:18.04", "debian:latest" ]
             }
           } ]
         }
-    http_version: 
-  recorded_at: Mon, 06 Nov 2017 10:58:59 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Wed, 14 Apr 2021 09:29:29 GMT
+recorded_with: VCR 6.0.0

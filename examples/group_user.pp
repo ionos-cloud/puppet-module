@@ -2,7 +2,7 @@ $group_name = 'operators'
 
 profitbricks_group { $group_name :
   ensure              => present,
-  create_datacenter   => true,
+  create_data_center   => true,
   create_snapshot     => true,
   reserve_ip          => true,
   access_activity_log => false

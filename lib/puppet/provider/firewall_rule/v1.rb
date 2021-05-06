@@ -1,33 +1,34 @@
 require 'puppet_x/profitbricks/helper'
 
 Puppet::Type.type(:firewall_rule).provide(:v1) do
-  confine feature: :profitbricks
+  # confine feature: :profitbricks
 
   mk_resource_methods
 
   def initialize(*args)
     self.class.client
     super(*args)
+    @property_flush = {}
   end
 
   def self.client
-    PuppetX::Profitbricks::Helper::profitbricks_config(5)
+    PuppetX::Profitbricks::Helper::profitbricks_config
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config(5)
+    PuppetX::Profitbricks::Helper::profitbricks_config
 
-    Datacenter.list.map do |datacenter|
-      rules = []
-      unless datacenter.properties['name'].nil? || datacenter.properties['name'].empty?
-        Server.list(datacenter.id).map do |server|
-          unless server.properties['name'].nil? || server.properties['name'].empty?
-            server.entities['nics']['items'].map do |nic|
-              unless nic['properties']['name'].nil? || nic['properties']['name'].empty?
-                nic['entities']['firewallrules']['items'].map do |rule|
-                  unless rule['properties']['name'].nil? || rule['properties']['name'].empty?
-                    hash = instance_to_hash(rule, nic, server, datacenter)
-                    rules << new(hash)
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
+      firewall_rules = []
+      # Ignore data center if name is not defined.
+      unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
+        Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
+          unless server.properties.name.nil? || server.properties.name.empty?
+            server.entities.nics.items.map do |nic|
+              unless nic.properties.name.nil? || nic.properties.name.empty?
+                nic.entities.firewallrules.items.map do |firewall_rule|
+                  unless firewall_rule.properties.name.nil? || firewall_rule.properties.name.empty?
+                    firewall_rules << new(instance_to_hash(firewall_rule, nic, server, datacenter))
                   end
                 end
               end
@@ -35,7 +36,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
           end
         end
       end
-      rules
+      firewall_rules
     end.flatten
   end
 
@@ -51,26 +52,26 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     end
   end
 
-  def self.instance_to_hash(rule, nic, server, datacenter)
-    config = {
-      id: rule['id'],
+  def self.instance_to_hash(firewall_rule, nic, server, datacenter)
+    {
+      id: firewall_rule.id,
       datacenter_id: datacenter.id,
-      datacenter_name: datacenter.properties['name'],
+      datacenter_name: datacenter.properties.name,
       server_id: server.id,
-      server_name: server.properties['name'],
-      nic: nic['properties']['name'],
-      source_mac: rule['properties']['sourceMac'],
-      source_ip: rule['properties']['sourceIp'],
-      target_ip: rule['properties']['targetIp'],
-      port_range_start: rule['properties']['portRangeStart'],
-      port_range_end: rule['properties']['portRangeEnd'],
-      icmp_type: rule['properties']['icmpType'],
-      icmp_code: rule['properties']['icmpCode'],
-      protocol: rule['properties']['protocol'],
-      name: rule['properties']['name'],
-      ensure: :present
+      server_name: server.properties.name,
+      nic_id: nic.id,
+      nic: nic.properties.name,
+      source_mac: firewall_rule.properties.source_mac,
+      source_ip: firewall_rule.properties.source_ip,
+      target_ip: firewall_rule.properties.target_ip,
+      port_range_start: firewall_rule.properties.port_range_start,
+      port_range_end: firewall_rule.properties.port_range_end,
+      icmp_type: firewall_rule.properties.icmp_type,
+      icmp_code: firewall_rule.properties.icmp_code,
+      protocol: firewall_rule.properties.protocol,
+      name: firewall_rule.properties.name,
+      ensure: :present,
     }
-    config
   end
 
   def exists?
@@ -79,156 +80,73 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def icmp_code=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: value
-    )
-    Puppet.info("Updating icmp code for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:icmp_code] = value
   end
 
   def icmp_type=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: value,
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating icmp type for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:icmp_type] = value
   end
 
   def port_range_start=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: value,
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating port range start for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:port_range_start] = value
   end
 
   def port_range_end=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: value,
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating port range end for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:port_range_end] = value
   end
 
   def source_mac=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: value,
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating source mac for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:source_mac] = value
   end
 
   def source_ip=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: value,
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating source IP for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:source_ip] = value
   end
 
   def target_ip=(value)
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-    fwrule.update(
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: value,
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
-    )
-    Puppet.info("Updating target IP for firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    @property_flush[:target_ip] = value
   end
 
   def create
-    dc_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    firewall_rule = PuppetX::Profitbricks::Helper::firewallrule_object_from_hash(resource)
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    server_id = resource[:server_id] ? resource[:server_id] : PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], datacenter_id).id
+    nic = Ionoscloud::NicApi.new.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find { |nic| nic.properties.name == resource[:nic] }
 
-    server_id = resource[:server_id]
-    unless server_id
-      server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], dc_id).id
-    end
+    fail "Nic named '#{resource[:nic]}' cannot be found." unless nic
 
-    nic = NIC.list(dc_id, server_id).find { |nic| nic.properties['name'] == resource[:nic] }
-
-    fwrule = nic.create_firewall_rule(
-      name: name,
-      protocol: resource[:protocol],
-      sourceMac: resource[:source_mac],
-      sourceIp: resource[:source_ip],
-      targetIp: resource[:target_ip],
-      portRangeStart: resource[:port_range_start],
-      portRangeEnd: resource[:port_range_end],
-      icmpType: resource[:icmp_type],
-      icmpCode: resource[:icmp_code]
+    firewall_rule, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+      datacenter_id, server_id, nic.id, firewall_rule,
     )
+    PuppetX::Profitbricks::Helper::wait_request(headers)
 
-    Puppet.info("Creating firewall rule '#{name}'.")
-    fwrule.wait_for { ready? }
+    Puppet.info("Creating firewall rule '#{resource[:name]}'.")
     @property_hash[:ensure] = :present
+
+    @property_hash[:datacenter_id] = datacenter_id 
+    @property_hash[:server_id] = server_id 
+    @property_hash[:nic_id] = nic.id 
+    @property_hash[:id] = firewall_rule.id
   end
 
   def destroy
-    fwrule = resolve_fwrule(resource[:name], resource[:nic])
-
     Puppet.info("Deleting firewall rule #{name}.")
-    fwrule.delete
-    fwrule.wait_for { ready? }
+    
+    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id],
+    )
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
     @property_hash[:ensure] = :absent
   end
 
-  private
+  def flush
+    PuppetX::Profitbricks::Helper::update_firewallrule(
+      @property_hash[:datacenter_id], @property_hash[:server_id],@property_hash[:nic_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true,
+    )
 
-  def resolve_fwrule(fw_name, nic_name)
-    dc_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    server_id = resource[:server_id]
-    unless server_id
-      server_id = PuppetX::Profitbricks::Helper::server_from_name(resource[:server_name], dc_id).id
+    [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code].each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
-
-    nic = NIC.list(dc_id, server_id).find { |nic| nic.properties['name'] == nic_name }
-    Firewall.list(dc_id, server_id, nic.id).find { |rule| rule.properties['name'] == fw_name }
   end
 end

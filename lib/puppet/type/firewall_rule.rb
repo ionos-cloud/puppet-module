@@ -34,7 +34,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:port_range_start) do
     desc 'Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The target Port must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s
@@ -44,7 +46,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:port_range_end) do
     desc 'Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The target Port must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s
@@ -54,7 +58,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:icmp_type) do
     desc 'Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The ICMP type must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s
@@ -64,7 +70,9 @@ Puppet::Type.newtype(:firewall_rule) do
   newproperty(:icmp_code) do
     desc 'Defines the allowed code (from 0 to 254) if protocol ICMP is chosen.'
 
-    munge &:to_s
+    validate do |value|
+      raise ArgumentError, 'The ICMP code must be an Integer.' unless value.is_a?(Integer)
+    end
 
     def insync?(is)
       is.to_s == should.to_s

@@ -1,33 +1,9 @@
 
 [
-#   datacenter { 'myDataCenter' :
-#   ensure      => present,
-#   location    => 'us/las',
-# },
   datacenter { 'myDataCenter2' :
   ensure      => present,
   location    => 'us/las',
 },
-
-# server { 'worker1' :
-#   ensure => present,
-#   cores => 1,
-#   datacenter_name => 'myDataCenter',
-#   ram => 512,
-# },
-
-# server { 'worker2' :
-#   ensure => present,
-#   cores => 1,
-#   datacenter_name => 'myDataCenter',
-#   ram => 512,
-# },
-# server { 'worker3' :
-#   ensure => present,
-#   cores => 1,
-#   datacenter_name => 'myDataCenter2',
-#   ram => 512,
-# },
 lan { 'private' :
   ensure => present,
   public => false,
@@ -36,13 +12,14 @@ lan { 'private' :
 lan { 'public' :
   ensure => present,
   public => true,
-  datacenter_name => 'myDataCenter2'
+  datacenter_name => 'myDataCenter2',
 },
 
-# server { 'frontend' :
-#   ensure => absent,
-#   datacenter_name => 'myDataCenter2',
-# }
+lan { 'nou' :
+  ensure          => present,
+  public          => true,
+  datacenter_name => 'myDataCenter2',
+},
 
 server { 'frontend2' :
   ensure => present,
@@ -50,32 +27,25 @@ server { 'frontend2' :
   datacenter_name => 'myDataCenter2',
   ram => 1024,
   volumes => [
-    { 
-      name => 'data2',
-      size => 10,
-      bus => 'VIRTIO',
+    {
+      name => 'volume1',
       volume_type => 'SSD',
-      image_alias => 'ubuntu:latest',
-      image_password => 'secretpassword2015',
-      availability_zone => 'AUTO',
+      size => 10,
+      image_alias => 'debian:latest',
+      image_password => 'parola123',
     },
   ],
   nics => [
     {
-      name => 'public',
-      dhcp => true,
-      lan => 'public',
-      nat => false,
-    },
-    {
       name => 'private',
-      dhcp => false,
-      lan => 'public',
+      dhcp => true,
+      lan => 'foartenou',
       nat => false,
       firewall_active => true,
+      ips => ['158.222.102.161'],
       firewall_rules => [
         { 
-          name => 'SSH',
+          name => 'SSH2',
           protocol => 'TCP',
           port_range_start => 22,
           port_range_end => 22,
@@ -85,27 +55,117 @@ server { 'frontend2' :
           protocol => 'TCP',
           port_range_start => 65,
           port_range_end => 80
+        },
+        { 
+          name => 'ICMP2',
+          protocol => 'ICMP',
+          icmp_type => 123,
+          icmp_code => 165,
         }
       ]
     },
+  ]
+},
+
+lan { 'foartenou' :
+  ensure          => present,
+  public          => true,
+  datacenter_name => 'myDataCenter2',
+  ip_failover => [
     {
-      name => 'private2',
-      dhcp => true,
-      lan => 'public',
-      nat => false,
+      'ip' => '158.222.102.161',
+      'nic_uuid' => '15378569-84bc-49a1-942f-55001f535e7b',
     }
   ]
-}
+},
+# nic { 'testnic':
+#   ensure          => present,
+#   datacenter_name   => 'myDataCenter2',
+#   server_name => 'frontend2',
+#   nat => false,
+#   dhcp => true,
+#   lan => 'public',
+#   firewall_active => true,
+#   firewall_rules => [
+#     { 
+#       name => 'SSH',
+#       protocol => 'TCP',
+#       port_range_start => 22,
+#       port_range_end => 22
+#     },
+#     { 
+#       name => 'HTTP',
+#       protocol => 'TCP',
+#       port_range_start => 78,
+#       port_range_end => 80
+#     },
+#   ]
+# },
 
-# server { 'frontend' :
-#   ensure => absent,
-#   datacenter_name => 'myDataCenter2',
+# firewall_rule { 'HTTP2':
+#   ensure           => present,
+#   datacenter_name  => 'myDataCenter2',
+#   server_name      => 'frontend2',
+#   nic              => 'testnic',
+#   protocol         => 'TCP',
+#   port_range_start => 81,
+#   port_range_end   => 83,
+#   source_mac       => '12:47:e9:b1:77:b4',
+#   source_ip        => '10.81.12.122',
+#   target_ip        => '10.81.12.126',
+# },
+
+# volume { 'testvolume' :
+#   ensure            => absent,
+#   datacenter_name   => 'myDataCenter2',
+#   size              => 15,
+#   volume_type       => 'SSD',
+#   licence_type      => 'LINUX',
+#   image_alias       => 'debian:latest',
+#   image_password    => 'secretpassword2015',
+#   availability_zone => 'AUTO',
+# },
+
+# snapshot { 'PPTestSnapshot' :
+#   ensure     => present,
+#   datacenter => 'myDataCenter2',
+#   volume     => 'testvolume',
+#   description => 'ceva',
+#   restore => false,
+# },
+
+# ipblock { 'puppet_demo':
+#   ensure     => present,
+#   location   => 'us/ewr',
+#   size       => 2
+# },
+
+# profitbricks_user { 'john.doe.00712@example.com' :
+#   ensure        => present,
+#   firstname     => 'John2',
+#   lastname      => 'Doe2',
+#   password      => 'Secrete.Password.007',
+#   administrator => false,
+#   groups        => ['Puppet Module Test', 'Puppet Module Test 2'],
+# },
+# profitbricks_group { 'Puppet Test 2' :
+#   ensure              => present,
+#   create_data_center  => true,
+#   create_snapshot     => false,
+#   reserve_ip          => false,
+#   access_activity_log => true,
+#   s3_privilege        => true,
+#   create_backup_unit  => true,
+#   create_internet_access => true,
+#   create_k8s_cluster        => true,
+#   create_pcc  => true,
+#   members             => ['john.doe.0071@example.com']
+# },
+
+# share { '1ca85771-5c86-476e-b86b-803223352370' :
+#   ensure          => present,
+#   edit_privilege  => false,
+#   share_privilege => true,
+#   group_name      => 'Puppet Test 2'
 # }
-# datacenter { 'myDataCenter' :
-#   description => 'test nou 2 22 '
-# },
-
-# datacenter { 'myDataCenter' :
-#   ensure      => absent,
-# },
 ]

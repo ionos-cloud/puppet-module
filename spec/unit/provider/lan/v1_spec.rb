@@ -51,6 +51,7 @@ describe provider_class do
     it 'should update public property of the LAN' do
       VCR.use_cassette('lan_update') do
         @provider2.public = false
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'

@@ -522,7 +522,7 @@ ProfitBricks group resource exposes the following properties.
 | --- | :-: | --- | --- |
 | name | **yes** | string | The name of the group. |
 | ensure | **yes** | string | The desired state of the group resource, `present` or `absent`. |
-| create_datacenter | no | boolean | Indicates if the group is allowed to create virtual data centers. |
+| create_data_center | no | boolean | Indicates if the group is allowed to create virtual data centers. |
 | create_snapshot | no | boolean | Indicates if the group is allowed to create snapshots. |
 | reserve_ip | no | boolean | Indicates if the group is allowed to reserve IP addresses. |
 | access_activity_log | no | boolean | Indicates if the group is allowed to access the activity log. |

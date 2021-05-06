@@ -1,31 +1,23 @@
 require 'puppet_x/profitbricks/helper'
 
 Puppet::Type.type(:volume).provide(:v1) do
-  confine feature: :profitbricks
+  # confine feature: :profitbricks
 
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
-    super(*args)
-  end
-
-  def self.client
     PuppetX::Profitbricks::Helper::profitbricks_config
+    super(*args)
   end
 
   def self.instances
     PuppetX::Profitbricks::Helper::profitbricks_config
-
-    Datacenter.list.map do |datacenter|
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       volumes = []
       # Ignore data center if name is not defined.
-      unless datacenter.properties['name'].nil? || datacenter.properties['name'].empty?
-        Volume.list(datacenter.id).each do |vol|
-          unless vol.properties['name'].nil? || vol.properties['name'].empty?
-            hash = instance_to_hash(vol, datacenter)
-            volumes << new(hash)
-          end
+      unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
+        Ionoscloud::VolumeApi.new.datacenters_volumes_get(datacenter.id, depth: 1).items.each do |volume|
+          volumes << new(instance_to_hash(volume, datacenter))
         end
       end
       volumes
@@ -43,20 +35,19 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def self.instance_to_hash(instance, datacenter)
-    config = {
+    {
       id: instance.id,
-      datacenter_id: instance.datacenterId,
-      datacenter_name: datacenter.properties['name'],
-      name: instance.properties['name'],
-      size: instance.properties['size'],
-      volume_type: instance.properties['type'],
-      bus: instance.properties['bus'],
-      image_id: instance.properties['image'],
-      licence_type: instance.properties['licenceType'],
-      availability_zone: instance.properties['availabilityZone'],
-      ensure: :present
+      datacenter_id: datacenter.id,
+      datacenter_name: datacenter.properties.name,
+      name: instance.properties.name,
+      size: Integer(instance.properties.size),
+      volume_type: instance.properties.type,
+      bus: instance.properties.bus,
+      image_id: instance.properties.image,
+      licence_type: instance.properties.licence_type,
+      availability_zone: instance.properties.availability_zone,
+      ensure: :present,
     }
-    config
   end
 
   def exists?
@@ -65,66 +56,30 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def size=(value)
-    if @property_hash[:size] > value
-      fail "Decreasing size of the volume is not allowed."
-    else
-      volume = volume_from_name(resource[:name],
-        PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
-
-      Puppet.info("Resizing volume #{name}.")
-      volume.update(size: value)
-      volume.wait_for { ready? }
-
-      @property_hash[:size] = value
-    end
+    PuppetX::Profitbricks::Helper::update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
+    @property_hash[:size] = value
   end
 
   def create
-    volume = Volume.create(
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]),
-      name: name,
-      availabilityZone: resource[:availability_zone],
-      image: resource[:image_id],
-      imageAlias: resource[:image_alias],
-      bus: resource[:bus],
-      type: resource[:volume_type],
-      size: resource[:size],
-      licenceType: resource[:licence_type],
-      imagePassword: resource[:image_password],
-      sshKeys: resource[:ssh_keys]
-    )
+    volume = PuppetX::Profitbricks::Helper::volume_object_from_hash(resource)
 
-    begin
-      volume.wait_for { ready? }
-    rescue StandardError
-      request = request_error(volume)
-      if request['status'] == 'FAILED'
-        fail "Failed to create volume: #{request['message']}"
-      end
-    end
+    Puppet.info "Creating a new volume #{volume.to_hash}."
 
-    Puppet.info("Created a new volume named #{name}.")
+    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+
+    volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(datacenter_id, volume)
+    PuppetX::Profitbricks::Helper::wait_request(headers)
+
+    Puppet.info("Created a new volume named #{resource[:name]}.")
     @property_hash[:ensure] = :present
-    @property_hash[:size] = resource[:size]
+    @property_hash[:datacenter_id] = datacenter_id
+    @property_hash[:id] = volume.id
+    @property_hash[:size] = Integer(volume.properties.size)
   end
 
   def destroy
-    volume = volume_from_name(resource[:name],
-      PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name]))
-
-    Puppet.info("Deleting volume #{name}.")
-    volume.delete
-    volume.wait_for { ready? }
+    _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
+    PuppetX::Profitbricks::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
-  end
-
-  private
-
-  def request_error(instance)
-    Request.get(instance.requestId).status.metadata if instance.requestId
-  end
-
-  def volume_from_name(name, datacenter_id)
-    Volume.list(datacenter_id).find { |volume| volume.properties['name'] == name }
   end
 end

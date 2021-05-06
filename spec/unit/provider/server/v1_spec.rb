@@ -16,9 +16,9 @@ describe provider_class do
 
       vol1 = Hash.new
       vol1['name'] = 'Puppet Module Test'
-      vol1['size'] = 100
+      vol1['size'] = 15
       vol1['bus'] = 'VIRTIO'
-      vol1['volume_type'] = 'SSD'
+      vol1['volume_type'] = 'HDD'
       vol1['availability_zone'] = 'AUTO'
       vol1['image_alias'] = 'ubuntu:latest'
       vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
@@ -66,7 +66,7 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Server::ProviderV1
     end
 
-     it 'should create ProfitBricks server with minimum params' do
+    it 'should create ProfitBricks server with minimum params' do
       VCR.use_cassette('server_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -74,7 +74,7 @@ describe provider_class do
       end
     end
 
-     it 'should create composite server' do
+    it 'should create composite server' do
       VCR.use_cassette('server_create_composite') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
@@ -98,7 +98,7 @@ describe provider_class do
         provider_class.instances.each do |instance|
           updated_instance = instance if instance.name == 'Puppet Module Test 2'
         end
-        expect(updated_instance.boot_volume).to eq('Puppet Module Test 2')
+        expect(updated_instance.boot_volume[:name]).to eq('Puppet Module Test 2')
       end
     end
 
@@ -147,6 +147,141 @@ describe provider_class do
           updated_instance = instance if instance.name == 'Puppet Module Test'
         end
         expect(updated_instance.availability_zone).to eq('AUTO')
+      end
+    end
+
+    it 'should update server volumes' do
+      VCR.use_cassette('server_update_volumes') do
+        volumes = [
+          {
+            'name' => 'volume1',
+            'volume_type' => 'HDD',
+            'size' => 15,
+            'image_alias' => 'debian:latest',
+            'image_password' => 'parola123',
+          },
+          {
+            'name' => 'volume2',
+            'volume_type' => 'HDD',
+            'size' => 10,
+            'image_alias' => 'ubuntu:latest',
+            'image_password' => 'parola123',
+          },
+        ]
+        @provider1.volumes = volumes
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test'
+        end
+        expect(updated_instance.volumes.length).to eq(2)
+        expect(updated_instance.volumes[1][:name]).to eq('volume1')
+        expect(updated_instance.volumes[1][:size]).to eq(15)
+        expect(updated_instance.volumes[0][:name]).to eq('volume2')
+        expect(updated_instance.volumes[0][:size]).to eq(10)
+
+        updated_instance.volumes = []
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test'
+        end
+        expect(updated_instance.volumes.length).to eq(0)
+      end
+    end
+
+    it 'should update server volumes 2' do
+      VCR.use_cassette('server_update_volumes2') do
+        volumes = [
+          {
+            'name' => 'Puppet Module Test',
+            'volume_type' => 'HDD',
+            'size' => 20,
+            'image_alias' => 'debian:latest',
+            'image_password' => 'parola123',
+          },
+          {
+            'name' => 'Puppet Module Test 3',
+            'volume_type' => 'HDD',
+            'size' => 10,
+            'image_alias' => 'ubuntu:latest',
+            'image_password' => 'parola123',
+          },
+        ]
+        provider_class.instances.each do |instance|
+          @provider2 = instance if instance.name == 'Puppet Module Test 2'
+        end
+        @provider2.volumes = volumes
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.volumes.length).to eq(2)
+        expect(updated_instance.volumes[0][:name]).to eq('Puppet Module Test 3')
+        expect(updated_instance.volumes[0][:size]).to eq(10)
+        expect(updated_instance.volumes[1][:name]).to eq('Puppet Module Test')
+        expect(updated_instance.volumes[1][:size]).to eq(110)
+      end
+    end
+
+    it 'should update server nics' do
+      VCR.use_cassette('server_update_nics') do
+        nics = [
+          {
+            'name' => 'Puppet Module Test 2',
+            'dhcp' => false,
+            'lan' => 'Puppet Module Test',
+            'nat' => false,
+            'firewall_active' => true,
+            'firewall_rules' => [
+              {
+                'name' => 'SSH2',
+                'protocol' => 'TCP',
+                'port_range_start' => 22,
+                'port_range_end' => 22,
+              },
+              {
+                'name' => 'HTTP2',
+                'protocol' => 'TCP',
+                'port_range_start' => 65,
+                'port_range_end' => 80
+              }
+            ]
+          },
+          {
+            'name' => 'Puppet Module Test 3',
+            'dhcp' => true,
+            'lan' => 'Puppet Module Test',
+            'nat' => false,
+            'firewall_active' => false,
+          },
+        ]
+        provider_class.instances.each do |instance|
+          @provider2 = instance if instance.name == 'Puppet Module Test 2'
+        end
+        @provider2.nics = nics
+        updated_instance = nil
+        provider_class.instances.each do |instance|
+          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+        end
+        expect(updated_instance.nics.length).to eq(2)
+        expect(updated_instance.nics[0][:name]).to eq('Puppet Module Test 3')
+        expect(updated_instance.nics[0][:dhcp]).to eq(true)
+        expect(updated_instance.nics[0][:nat]).to eq(false)
+        expect(updated_instance.nics[0][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[0][:firewall_active]).to eq(false)
+        expect(updated_instance.nics[0][:firewall_rules]).to eq([])
+
+        expect(updated_instance.nics[1][:name]).to eq('Puppet Module Test 2')
+        expect(updated_instance.nics[1][:dhcp]).to eq(false)
+        expect(updated_instance.nics[1][:nat]).to eq(false)
+        expect(updated_instance.nics[1][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[1][:firewall_active]).to eq(true)
+        expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
+        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('HTTP2')
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(65)
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(80)
+        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('SSH2')
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(22)
       end
     end
 

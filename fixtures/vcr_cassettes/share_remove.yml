@@ -2,40 +2,126 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.profitbricks.com/cloudapi/v4/um/groups/b903838d-6384-4b81-b682-695068e50e48/shares/b9c6cb26-6100-4ba3-803a-caf75267068a?depth=2
+    uri: https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/shares/bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - profitbricks-ruby-sdk/4.0.1 Puppet/4.5.1
+      - ionos-cloud-sdk-ruby/v5
       Content-Type:
       - application/json
+      Accept:
+      - application/json
       Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
   response:
     status:
       code: 202
       message: Accepted
     headers:
       Date:
-      - Mon, 06 Nov 2017 21:56:23 GMT
+      - Wed, 14 Apr 2021 12:56:36 GMT
       Server:
-      - Apache/2.4.10 (Debian)
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
       Location:
-      - https://api.profitbricks.com/cloudapi/v4/requests/6666723f-1b46-4e17-b9d9-8733a09d727f/status
-      X-Ratelimit-Remaining:
-      - '49'
+      - https://api.ionos.com/cloudapi/v5/requests/b4b386db-0fbb-45ba-87ef-062ca9c6603a/status
+      X-Frame-Options:
+      - SAMEORIGIN
       X-Ratelimit-Burst:
       - '50'
       X-Ratelimit-Limit:
       - '120'
-      Content-Length:
-      - '0'
-      Strict-Transport-Security:
-      - max-age=15768000
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
     body:
-      encoding: ASCII-8BIT
+      encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Mon, 06 Nov 2017 21:56:23 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Wed, 14 Apr 2021 12:56:36 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/b4b386db-0fbb-45ba-87ef-062ca9c6603a/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 14 Apr 2021 12:56:36 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '649'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "b4b386db-0fbb-45ba-87ef-062ca9c6603a/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/b4b386db-0fbb-45ba-87ef-062ca9c6603a/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d",
+                "type" : "resource",
+                "href" : "https://api.ionos.com/cloudapi/v5/um/groups/fee98c66-1bd9-4384-8231-e0fd7e2fa360/shares/bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Wed, 14 Apr 2021 12:56:36 GMT
+recorded_with: VCR 6.0.0
