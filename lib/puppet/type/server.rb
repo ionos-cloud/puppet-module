@@ -1,6 +1,6 @@
 require 'puppet/parameter/boolean'
 
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 
 Puppet::Type.newtype(:server) do
@@ -137,7 +137,7 @@ Puppet::Type.newtype(:server) do
     end
 
     def insync?(is)
-      PuppetX::Profitbricks::Helper::objects_match(is, should, [:size])
+      PuppetX::IonoscloudX::Helper::objects_match(is, should, [:size])
     end
   end
 
@@ -168,13 +168,13 @@ Puppet::Type.newtype(:server) do
     def insync?(is)
       block = lambda {
         |existing_object, target_object|
-        PuppetX::Profitbricks::Helper::objects_match(
+        PuppetX::IonoscloudX::Helper::objects_match(
           existing_object[:firewall_rules],
           target_object['firewall_rules'],
           [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
         )
       }
-      PuppetX::Profitbricks::Helper::objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
+      PuppetX::IonoscloudX::Helper::objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
     end
   end
 

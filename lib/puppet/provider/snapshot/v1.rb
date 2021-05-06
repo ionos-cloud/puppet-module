@@ -1,18 +1,18 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:snapshot).provide(:v1) do
-  # confine feature: :profitbricks
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     snapshots = []
     Ionoscloud::SnapshotApi.new.snapshots_get(depth: 1).items.each do |snapshot|
       snapshots << new(instance_to_hash(snapshot))
@@ -59,7 +59,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
       datacenter_id, volume_id, { snapshot_id: @property_hash[:id] },
     )
     Puppet.info("Restoring snapshot '#{name}' onto volume '#{resource[:volume]}'...")
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
   end
 
   def description=(value)
@@ -133,7 +133,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
         licence_type: resource[:licence_type],
       },
     )
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     Puppet.info("Created new snapshot '#{name}'.")
     @property_hash[:ensure] = :present
@@ -156,7 +156,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
 
       server, _, headers = Ionoscloud::SnapshotApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
 
-      PuppetX::Profitbricks::Helper::wait_request(headers)
+      PuppetX::IonoscloudX::Helper::wait_request(headers)
 
       changeable_properties.each do |property|
         @property_hash[property] = @property_flush[property] if @property_flush[property]
@@ -167,19 +167,19 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   def destroy
     Puppet.info("Deleting snapshot '#{name}'...")
     _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_delete_with_http_info(@property_hash[:id])
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
   private
 
   def get_datacenter_id(datacenter_id_or_name)
-    return datacenter_id_or_name if PuppetX::Profitbricks::Helper.validate_uuid_format(datacenter_id_or_name)
-    PuppetX::Profitbricks::Helper::resolve_datacenter_id(nil, datacenter_id_or_name)
+    return datacenter_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(datacenter_id_or_name)
+    PuppetX::IonoscloudX::Helper::resolve_datacenter_id(nil, datacenter_id_or_name)
   end
 
   def get_volume_id(datacenter_id, volume_id_or_name)
-    return volume_id_or_name if PuppetX::Profitbricks::Helper.validate_uuid_format(volume_id_or_name)
-    PuppetX::Profitbricks::Helper::volume_from_name(volume_id_or_name, datacenter_id).id
+    return volume_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(volume_id_or_name)
+    PuppetX::IonoscloudX::Helper::volume_from_name(volume_id_or_name, datacenter_id).id
   end
 end

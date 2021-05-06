@@ -140,7 +140,7 @@ lan { 'foartenou' :
 #   size       => 2
 # },
 
-# profitbricks_user { 'john.doe.00712@example.com' :
+# ionoscloud_user { 'john.doe.00712@example.com' :
 #   ensure        => present,
 #   firstname     => 'John2',
 #   lastname      => 'Doe2',
@@ -148,7 +148,7 @@ lan { 'foartenou' :
 #   administrator => false,
 #   groups        => ['Puppet Module Test', 'Puppet Module Test 2'],
 # },
-# profitbricks_group { 'Puppet Test 2' :
+# ionoscloud_group { 'Puppet Test 2' :
 #   ensure              => present,
 #   create_data_center  => true,
 #   create_snapshot     => false,

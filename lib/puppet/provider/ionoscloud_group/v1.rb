@@ -1,18 +1,18 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
-Puppet::Type.type(:profitbricks_group).provide(:v1) do
-  # confine feature: :profitbricks
+Puppet::Type.type(:ionoscloud_group).provide(:v1) do
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
 
     groups = []
     Ionoscloud::UserManagementApi.new.um_groups_get(depth: 3).items.each do |group|
@@ -88,7 +88,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
   end
 
   def exists?
-    Puppet.info("Checking if profitbricks group #{name} exists.")
+    Puppet.info("Checking if ionoscloud group #{name} exists.")
     @property_hash[:ensure] == :present
   end
 
@@ -109,9 +109,9 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     )
 
     group, _, headers = Ionoscloud::UserManagementApi.new.um_groups_post_with_http_info(group)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
-    Puppet.info("Created new profitbricks group #{name}.")
+    Puppet.info("Created new ionoscloud group #{name}.")
     @property_hash[:ensure] = :present
     @property_hash[:id] = group.id
     @property_hash[:name] = group.properties.name
@@ -131,7 +131,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
   def destroy
     Puppet.info("Deleting Group #{name}...")
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_delete_with_http_info(@property_hash[:id])
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
@@ -161,7 +161,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     new_group = Ionoscloud::Group.new(properties: Ionoscloud::GroupProperties.new(**group_properties.merge(changes)))
 
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_put_with_http_info(@property_hash[:id], new_group)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
   end
 
   def sync_members(group_id, existing_members, target_members)
@@ -173,7 +173,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_post_with_http_info(
           group_id,
-          { id: PuppetX::Profitbricks::Helper::user_from_email(user).id },
+          { id: PuppetX::IonoscloudX::Helper::user_from_email(user).id },
         )
 
         to_wait << headers
@@ -186,7 +186,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_delete_with_http_info(
           group_id,
-          PuppetX::Profitbricks::Helper::user_from_email(user).id,
+          PuppetX::IonoscloudX::Helper::user_from_email(user).id,
         )
 
         to_wait << headers
@@ -194,7 +194,7 @@ Puppet::Type.type(:profitbricks_group).provide(:v1) do
     end unless existing_members.nil?
 
 
-    to_wait.each { |headers| PuppetX::Profitbricks::Helper::wait_request(headers) }
+    to_wait.each { |headers| PuppetX::IonoscloudX::Helper::wait_request(headers) }
   end
 
 end

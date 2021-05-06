@@ -2,25 +2,12 @@ require 'ionoscloud'
 
 
 module PuppetX
-  module Profitbricks
+  module IonoscloudX
     class Helper
-      def self.profitbricks_config(depth = nil)
-        # ProfitBricks.configure do |config|
-        #   config.username = ENV['PROFITBRICKS_USERNAME']
-        #   config.password = ENV['PROFITBRICKS_PASSWORD']
-        #   config.timeout = 600
-
-        #   config.depth = depth unless depth.nil?
-
-        #   url = ENV['PROFITBRICKS_API_URL']
-        #   config.url = url unless url.nil? || url.empty?
-
-        #   config.headers = Hash.new
-        #   config.headers['User-Agent'] = "Puppet/#{Puppet.version}"
-        # end
+      def self.ionoscloud_config(depth = nil)
         Ionoscloud.configure do |config|
-          config.username = ENV['PROFITBRICKS_USERNAME']
-          config.password = ENV['PROFITBRICKS_PASSWORD']
+          config.username = ENV['IONOSCLOUD_USERNAME']
+          config.password = ENV['IONOSCLOUD_PASSWORD']
         end
       end
 

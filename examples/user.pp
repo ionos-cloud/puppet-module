@@ -1,4 +1,4 @@
-profitbricks_user { 'john.doe.007@example.com' :
+ionoscloud_user { 'john.doe.007@example.com' :
   ensure        => present,
   firstname     => 'John',
   lastname      => 'Doe',

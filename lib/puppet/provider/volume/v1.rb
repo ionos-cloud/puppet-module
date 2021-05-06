@@ -1,17 +1,17 @@
-require 'puppet_x/profitbricks/helper'
+require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:volume).provide(:v1) do
-  # confine feature: :profitbricks
+  # confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::Profitbricks::Helper::profitbricks_config
+    PuppetX::IonoscloudX::Helper::ionoscloud_config
     Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
       volumes = []
       # Ignore data center if name is not defined.
@@ -56,19 +56,19 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def size=(value)
-    PuppetX::Profitbricks::Helper::update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
+    PuppetX::IonoscloudX::Helper::update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
     @property_hash[:size] = value
   end
 
   def create
-    volume = PuppetX::Profitbricks::Helper::volume_object_from_hash(resource)
+    volume = PuppetX::IonoscloudX::Helper::volume_object_from_hash(resource)
 
     Puppet.info "Creating a new volume #{volume.to_hash}."
 
-    datacenter_id = PuppetX::Profitbricks::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
     volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(datacenter_id, volume)
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
 
     Puppet.info("Created a new volume named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -79,7 +79,7 @@ Puppet::Type.type(:volume).provide(:v1) do
 
   def destroy
     _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
-    PuppetX::Profitbricks::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper::wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 end

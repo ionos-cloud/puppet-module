@@ -1,6 +1,5 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
-gem 'profitbricks-sdk-ruby', '3.0.2'
 gem 'ionoscloud', '~> 5.0'
 
 # Find a location or specific version for a gem. place_or_version can be a
