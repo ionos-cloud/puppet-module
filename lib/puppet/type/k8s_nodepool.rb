@@ -151,9 +151,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     desc 'The list of additional private LANs attached to worker nodes.'
 
     def insync?(is)
-      # PuppetX::IonoscloudX::Helper::peers_match(is, should)
-      puts [is, should].to_s
-      false
+      is.sort == should.sort
     end
   end
 

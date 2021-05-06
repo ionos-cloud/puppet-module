@@ -63,51 +63,51 @@ lan { 'nou' :
   datacenter_name => 'myDataCenter2',
 },
 
-server { 'frontend2' :
-  ensure => present,
-  cores => 1,
-  datacenter_name => 'myDataCenter2',
-  ram => 1024,
-  volumes => [
-    {
-      name => 'volume1',
-      volume_type => 'SSD',
-      size => 10,
-      image_alias => 'debian:latest',
-      image_password => 'parola123',
-    },
-  ],
-  nics => [
-    {
-      name => 'private',
-      dhcp => true,
-      lan => 'foartenou',
-      nat => false,
-      firewall_active => true,
-      ips => ['158.222.102.161'],
-      firewall_rules => [
-        { 
-          name => 'SSH2',
-          protocol => 'TCP',
-          port_range_start => 22,
-          port_range_end => 22,
-        },
-        { 
-          name => 'HTTP2',
-          protocol => 'TCP',
-          port_range_start => 65,
-          port_range_end => 80
-        },
-        { 
-          name => 'ICMP2',
-          protocol => 'ICMP',
-          icmp_type => 123,
-          icmp_code => 165,
-        }
-      ]
-    },
-  ]
-},
+# server { 'frontend2' :
+#   ensure => present,
+#   cores => 1,
+#   datacenter_name => 'myDataCenter2',
+#   ram => 1024,
+#   volumes => [
+#     {
+#       name => 'volume1',
+#       volume_type => 'SSD',
+#       size => 10,
+#       image_alias => 'debian:latest',
+#       image_password => 'parola123',
+#     },
+#   ],
+#   nics => [
+#     {
+#       name => 'private',
+#       dhcp => true,
+#       lan => 'foartenou',
+#       nat => false,
+#       firewall_active => true,
+#       ips => ['158.222.102.161'],
+#       firewall_rules => [
+#         { 
+#           name => 'SSH2',
+#           protocol => 'TCP',
+#           port_range_start => 22,
+#           port_range_end => 22,
+#         },
+#         { 
+#           name => 'HTTP2',
+#           protocol => 'TCP',
+#           port_range_start => 65,
+#           port_range_end => 80
+#         },
+#         { 
+#           name => 'ICMP2',
+#           protocol => 'ICMP',
+#           icmp_type => 123,
+#           icmp_code => 165,
+#         }
+#       ]
+#     },
+#   ]
+# },
 k8s_cluster { 'myCluster' :
   ensure      => present,
   k8s_version    => '1.18.15',
@@ -118,7 +118,7 @@ k8s_nodepool { 'nodepool_test' :
   cluster_name => 'test',
   datacenter_name => 'myDataCenter2',
   ensure      => present,
-  k8s_version    => '1.18.15',
+  k8s_version    => '1.18.5',
   maintenance_day    => 'Sunday',
   maintenance_time    => '13:53:00Z',
   node_count    => 1,
@@ -127,6 +127,42 @@ k8s_nodepool { 'nodepool_test' :
   ram_size  => 2048,
   storage_type    => 'SSD',
   storage_size    => 10,
+  min_node_count    => 1,
+  max_node_count    => 2,
+  availability_zone => 'AUTO',
+},
+k8s_nodepool { 'nodepool_test2' :
+  cluster_name => 'test',
+  datacenter_name => 'myDataCenter2',
+  ensure      => absent,
+  k8s_version    => '1.18.9',
+  maintenance_day    => 'Sunday',
+  maintenance_time    => '13:53:00Z',
+  node_count    => 1,
+  cores_count    => 1,
+  cpu_family    => 'INTEL_XEON',
+  ram_size  => 2048,
+  storage_type    => 'SSD',
+  storage_size    => 10,
+  lans => [4, 7, 5],
+  min_node_count    => 1,
+  max_node_count    => 1,
+  availability_zone => 'AUTO',
+},
+k8s_nodepool { 'nodepool_test3' :
+  cluster_name => 'test',
+  datacenter_name => 'myDataCenter2',
+  ensure      => present,
+  k8s_version    => '1.18.5',
+  maintenance_day    => 'Sunday',
+  maintenance_time    => '13:53:00Z',
+  node_count    => 1,
+  cores_count    => 1,
+  cpu_family    => 'INTEL_XEON',
+  ram_size  => 2048,
+  storage_type    => 'SSD',
+  storage_size    => 10,
+  lans => [4],
   min_node_count    => 1,
   max_node_count    => 1,
   availability_zone => 'AUTO',

@@ -18,7 +18,9 @@ Puppet::Type.type(:lan).provide(:v1) do
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
         Ionoscloud::LanApi.new.datacenters_lans_get(datacenter.id, depth: 1).items.each do |lan|
-          lans << new(instance_to_hash(lan, datacenter))
+          unless lan.properties.name.nil? || lan.properties.name.empty?
+            lans << new(instance_to_hash(lan, datacenter))
+          end
         end
       end
       lans

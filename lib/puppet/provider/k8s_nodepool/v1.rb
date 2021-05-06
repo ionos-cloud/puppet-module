@@ -53,6 +53,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ram_size: instance.properties.ram_size,
       storage_type: instance.properties.storage_type,
       storage_size: instance.properties.storage_size,
+      lans: instance.properties.lans.map { |el| el.id },
       availability_zone: instance.properties.availability_zone,
       k8s_version: instance.properties.k8s_version,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
@@ -101,6 +102,10 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_flush[:max_node_count] = value
   end
 
+  def lans=(value)
+    @property_flush[:lans] = value
+  end
+
   def create
     cluster_id = PuppetX::IonoscloudX::Helper::resolve_cluster_id(resource[:cluster_id], resource[:cluster_name])
     datacenter_id = nil
@@ -119,6 +124,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
       availability_zone: resource[:availability_zone].to_s,
+      lans: resource[:lans].nil? ? nil : resource[:lans].map { |el| { id: el } },
     }.delete_if { |_k, v| v.nil? }
 
     if resource[:maintenance_day] && resource[:maintenance_time]
@@ -148,10 +154,14 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_hash[:ensure] = :present
     @property_hash[:id] = nodepool.id
     @property_hash[:cluster_id] = cluster_id
+    @property_hash[:datacenter_id] = datacenter_id
   end
 
   def flush
-    datacenter_id = resource[:datacenter_id]
+    if @property_flush.empty?
+      return
+    end
+    datacenter_id = @property_hash[:datacenter_id]
     if @property_flush[:datacenter_id] || @property_flush[:datacenter_name]
       datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(@property_flush[:datacenter_id], @property_flush[:datacenter_name])
     end
@@ -159,6 +169,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     nodepool_properties = {
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
+      lans: @property_flush[:lans].nil? ? nil : @property_flush[:lans].map { |el| { id: el } },
       maintenance_window: Ionoscloud::KubernetesMaintenanceWindow.new(
         day_of_the_week: @property_flush[:maintenance_day] || @property_hash[:maintenance_day],
         time: @property_flush[:maintenance_time] || @property_hash[:maintenance_time],

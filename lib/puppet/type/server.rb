@@ -1,6 +1,6 @@
 require 'puppet/parameter/boolean'
 
-require 'puppet_x/ionoscloud/helper'
+require_relative '../../puppet_x/ionoscloud/helper'
 
 
 Puppet::Type.newtype(:server) do
