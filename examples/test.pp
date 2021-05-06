@@ -46,6 +46,9 @@
   ensure      => present,
   location    => 'us/las',
 },
+  datacenter { 'myDataCenter3' :
+  ensure      => present,
+},
 lan { 'private' :
   ensure => present,
   public => false,
