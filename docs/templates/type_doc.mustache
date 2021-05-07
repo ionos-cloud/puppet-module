@@ -2,27 +2,38 @@
 
 {{{description}}}
 
-```text
-{{banner}}
-```
+## Parameters:
 
-## Available options:
+| Name | Required | Description |
+| :--- | :-: | :--- |
+{{#parameters}}
+| {{name}} | {{required}} | {{{doc}}} |
+{{/parameters}}
 
-### Required options:
+## Properties:
 
-{{#required_options}}
+| Name | Required | Description | Default Value |
+| :--- | :-: | :--- | :--- |
+{{#properties}}
+| {{name}} | {{required}} | {{{doc}}} | {{default_value}} |
+{{/properties}}
+***
+
+
+### Changeable properties:
+
+{{#changeable_properties.length}}
+{{#changeable_properties}}
 * {{.}}
-{{/required_options}}
+{{/changeable_properties}}
+{{/changeable_properties.length}}
+{{^changeable_properties.length}}
+No Changeable properties
+{{/changeable_properties.length}}
 
-```text
-{{#options}}
-    {{name}}: {{long}}{{#short}}, {{short}}{{/short}}
-        {{{description}}}{{#required}} (required){{/required}}
 
-{{/options}}
-```
 ## Example
 
 ```text
-{{example}}
+{{{example}}}
 ```

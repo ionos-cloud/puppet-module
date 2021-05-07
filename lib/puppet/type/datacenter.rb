@@ -1,6 +1,7 @@
 
 Puppet::Type.newtype(:datacenter) do
   @doc = 'Type representing a ProfitBricks virtual data center.'
+  @changeable_properties = [:description]
 
   ensurable
 
@@ -33,7 +34,6 @@ Puppet::Type.newtype(:datacenter) do
     desc 'The data center location.'
     isrequired
     validate do |value|
-      puts ['loc', value].to_s
       fail('Data center location must be set') if value == ''
       fail('Data center location must be a String') unless value.is_a?(String)
     end
