@@ -1,7 +1,5 @@
 # Introduction
 
-![CI](https://github.com/ionos-cloud/knife-ionos-cloud/workflows/CI/badge.svg) [![Gem Version](https://badge.fury.io/rb/knife-ionoscloud.svg)](https://badge.fury.io/rb/knife-ionoscloud) [![Gitter](https://badges.gitter.im/ionos-cloud/sdk-general.png)](https://gitter.im/ionos-cloud/sdk-general)
-
 ## Overview
 
 The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.
