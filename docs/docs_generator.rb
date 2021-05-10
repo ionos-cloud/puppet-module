@@ -7,13 +7,6 @@ require 'puppet'
 
 $LOAD_PATH << '.'
 
-types = []
-Dir["../lib/puppet/type/*.rb"].each { |file| require file; types << file.split('/')[-1].split('.')[0] }
-puts types.to_s
-
-type = :datacenter
-
-
 
 class Type < Mustache
   self.template_path = './templates'
@@ -41,7 +34,6 @@ class Summary < Mustache
     @types = types || []
   end
 end
-
 
 def generate_type_doc(type)
   puppet_type = Puppet::Type.type(type).new({ name: 'sample' })
@@ -97,4 +89,24 @@ def generate_type_doc(type)
   return type, filename
 end
 
-generate_type_doc(:datacenter)
+all_types = []
+Dir["../lib/puppet/type/*.rb"].each { |file| require file; all_types << file.split('/')[-1].split('.')[0] }
+
+generated_types = []
+
+all_types.each {
+  |type|
+  begin
+    type_name, filename = generate_type_doc(type)
+    generated_types.append({ title: type_name, filename: filename })
+  rescue Exception => exc
+    puts "Could not generate doc for #{type}. Error: #{exc}"
+    # raise exc
+  end
+}
+
+generated_types.sort! { |a, b| a[:title] <=> b[:title] }
+
+File.open('summary.md', 'w') { |f|
+  f.write(Summary.new(generated_types).render,)
+}
