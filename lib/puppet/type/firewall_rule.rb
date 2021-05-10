@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:firewall_rule) do
   @doc = 'Type representing a ProfitBricks firewall rule.'
+  @changeable_properties = [:icmp_code, :icmp_type, :port_range_start, :port_range_end, :source_mac, :source_ip, :target_ip]
 
   ensurable
 

@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:ipblock) do
   @doc = 'Type representing a ProfitBricks IP block.'
+  @changeable_properties = [:firstname, :lastname, :administrator, :force_sec_auth, :groups]
 
   ensurable
 

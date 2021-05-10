@@ -2,6 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:pcc) do
   @doc = 'Type representing a ProfitBricks LAN.'
+  @changeable_properties = [:description, :peers]
 
   newproperty(:ensure) do
     newvalue(:present) do

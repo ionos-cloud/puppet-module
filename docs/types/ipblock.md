@@ -23,7 +23,11 @@ Type representing a ProfitBricks IP block.
 
 ### Changeable properties:
 
-No Changeable properties
+* firstname
+* lastname
+* administrator
+* force_sec_auth
+* groups
 
 
 ## Example

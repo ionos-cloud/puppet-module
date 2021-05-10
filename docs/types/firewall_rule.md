@@ -31,7 +31,13 @@ Type representing a ProfitBricks firewall rule.
 
 ### Changeable properties:
 
-No Changeable properties
+* icmp_code
+* icmp_type
+* port_range_start
+* port_range_end
+* source_mac
+* source_ip
+* target_ip
 
 
 ## Example

@@ -29,7 +29,16 @@ Type representing a ProfitBricks group.
 
 ### Changeable properties:
 
-No Changeable properties
+* create_data_center
+* create_snapshot
+* reserve_ip
+* access_activity_log
+* s3_privilege
+* create_backup_unit
+* create_internet_access
+* create_k8s_cluster
+* create_pcc
+* members
 
 
 ## Example

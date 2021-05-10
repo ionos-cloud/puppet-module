@@ -38,7 +38,13 @@ Type representing a Ionoscloud K8s Nodepool.
 
 ### Changeable properties:
 
-No Changeable properties
+* k8s_version
+* node_count
+* maintenance_day
+* maintenance_time
+* min_node_count
+* max_node_count
+* lans
 
 
 ## Example

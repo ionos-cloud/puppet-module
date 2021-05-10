@@ -22,7 +22,8 @@ Type representing a ProfitBricks LAN.
 
 ### Changeable properties:
 
-No Changeable properties
+* description
+* peers
 
 
 ## Example

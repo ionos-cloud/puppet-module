@@ -28,7 +28,11 @@ Type representing a ProfitBricks network interface.
 
 ### Changeable properties:
 
-No Changeable properties
+* ips
+* lan
+* nat
+* dhcp
+* firewall_rules
 
 
 ## Example

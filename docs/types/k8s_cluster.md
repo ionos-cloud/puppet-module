@@ -24,7 +24,9 @@ Type representing a Ionoscloud K8s Cluster.
 
 ### Changeable properties:
 
-No Changeable properties
+* k8s_version
+* maintenance_day
+* maintenance_time
 
 
 ## Example

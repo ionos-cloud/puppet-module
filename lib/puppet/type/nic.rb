@@ -2,6 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a ProfitBricks network interface.'
+  @changeable_properties = [:ips, :lan, :nat, :dhcp, :firewall_rules]
 
   ensurable
 

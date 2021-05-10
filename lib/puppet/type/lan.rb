@@ -2,6 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:lan) do
   @doc = 'Type representing a ProfitBricks LAN.'
+  @changeable_properties = [:public, :pcc, :ip_failover]
 
   newproperty(:ensure) do
     newvalue(:present) do

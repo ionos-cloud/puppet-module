@@ -30,7 +30,13 @@ Type representing a ProfitBricks server.
 
 ### Changeable properties:
 
-No Changeable properties
+* cores
+* cpu_family
+* ram
+* availability_zone
+* boot_volume
+* volumes
+* nics
 
 
 ## Example

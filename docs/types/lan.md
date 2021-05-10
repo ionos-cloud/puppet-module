@@ -24,7 +24,9 @@ Type representing a ProfitBricks LAN.
 
 ### Changeable properties:
 
-No Changeable properties
+* public
+* pcc
+* ip_failover
 
 
 ## Example

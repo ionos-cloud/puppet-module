@@ -21,7 +21,7 @@ Type representing a Ionoscloud Backup Unit
 
 ### Changeable properties:
 
-No Changeable properties
+* email
 
 
 ## Example

@@ -37,7 +37,19 @@ Type representing a ProfitBricks Snapshot.
 
 ### Changeable properties:
 
-No Changeable properties
+* description
+* cpu_hot_plug
+* cpu_hot_unplug
+* ram_hot_plug
+* ram_hot_unplug
+* nic_hot_plug
+* nic_hot_unplug
+* disc_virtio_hot_plug
+* disc_virtio_hot_unplug
+* disc_scsi_hot_plug
+* disc_scsi_hot_unplug
+* sec_auth_protection
+* licence_type
 
 
 ## Example

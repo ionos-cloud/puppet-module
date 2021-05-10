@@ -29,7 +29,7 @@ Type representing a ProfitBricks storage volume.
 
 ### Changeable properties:
 
-No Changeable properties
+* size
 
 
 ## Example

@@ -23,7 +23,8 @@ Type representing a ProfitBricks shared resource.
 
 ### Changeable properties:
 
-No Changeable properties
+* edit_privilege
+* share_privilege
 
 
 ## Example
