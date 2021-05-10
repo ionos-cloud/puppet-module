@@ -62,11 +62,11 @@ def generate_type_doc(type)
     }
   end
 
-  example = nil
+  example = false
   begin
     example = File.open("../examples/#{type.to_s}.pp").read
-  rescue Exception => e
-    puts e
+  rescue Errno::ENOENT => e
+    puts "No example found for #{type}, still generating."
   end
 
 

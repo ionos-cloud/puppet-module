@@ -1,16 +1,6 @@
-$datacenter_name = 'MyDataCenter'
+$datacenter_name = 'testdc1'
 
-datacenter { $datacenter_name :
-  ensure      => present,
-  location    => 'de/fkb',
-  description => 'my data center desc.'
-}
--> lan { 'public' :
-  ensure          => present,
-  public          => true,
-  datacenter_name => $datacenter_name
-}
--> server { 'worker1' :
+server { 'worker1' :
   ensure          => present,
   cores           => 2,
   datacenter_name => $datacenter_name,

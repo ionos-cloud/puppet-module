@@ -40,6 +40,4 @@ No Changeable properties
 
 ## Example
 
-```text
-
-```
+No example available
