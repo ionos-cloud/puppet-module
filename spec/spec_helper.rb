@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require 'ionoscloud'
-require 'puppetlabs_spec_helper/module_spec_helper'
 require 'webmock/rspec'
 require 'vcr'
 
 RSpec.configure do |config|
   config.mock_with :rspec
 end
+require 'puppetlabs_spec_helper/module_spec_helper'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
