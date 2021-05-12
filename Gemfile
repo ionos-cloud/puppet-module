@@ -16,6 +16,8 @@ end
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
+puts minor_version
+
 gem "ionoscloud", '~> 5.0',     require: true
 
 group :development do
