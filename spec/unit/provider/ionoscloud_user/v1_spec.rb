@@ -10,17 +10,17 @@ describe provider_class do
         lastname: 'Doe',
         email: 'john.doe_008@example.com',
         password: 'Secrete.Password.001',
-        administrator: true
+        administrator: true,
       )
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Ionoscloud_user::ProviderV1
       expect(@provider.name).to eq('john.doe_008@example.com')
     end
 
-    it 'should create ionoscloud_user' do
+    it 'creates ionoscloud_user' do
       VCR.use_cassette('ionoscloud_user_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -28,7 +28,7 @@ describe provider_class do
       end
     end
 
-    it 'should list ionoscloud_user instances' do
+    it 'lists ionoscloud_user instances' do
       VCR.use_cassette('ionoscloud_user_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -36,7 +36,7 @@ describe provider_class do
       end
     end
 
-    it 'should update ionoscloud_user' do
+    it 'updates ionoscloud_user' do
       VCR.use_cassette('ionoscloud_user_update') do
         @provider.administrator = false
         @provider.flush
@@ -48,7 +48,7 @@ describe provider_class do
       end
     end
 
-    it 'should add ionoscloud_user to group' do
+    it 'adds ionoscloud_user to group' do
       VCR.use_cassette('ionoscloud_user_add_to_group') do
         @provider.groups = ['Puppet Module Test']
         updated_instance = nil
@@ -59,7 +59,7 @@ describe provider_class do
       end
     end
 
-    it 'should remove ionoscloud_user from group' do
+    it 'removes ionoscloud_user from group' do
       VCR.use_cassette('ionoscloud_user_remove_from_group') do
         @provider.groups = []
         updated_instance = nil
@@ -70,7 +70,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete ionoscloud_user' do
+    it 'deletes ionoscloud_user' do
       VCR.use_cassette('ionoscloud_user_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

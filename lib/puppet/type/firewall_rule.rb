@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:firewall_rule) do
   @doc = 'Type representing a ProfitBricks firewall rule.'
+  @changeable_properties = [:icmp_code, :icmp_type, :port_range_start, :port_range_end, :source_mac, :source_ip, :target_ip]
 
   ensurable
 
@@ -89,7 +90,7 @@ Puppet::Type.newtype(:firewall_rule) do
       raise ArgumentError, 'The protocol must be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -101,7 +102,7 @@ Puppet::Type.newtype(:firewall_rule) do
       raise ArgumentError, 'The data center ID should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -113,7 +114,7 @@ Puppet::Type.newtype(:firewall_rule) do
       raise ArgumentError, 'The data center name should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -124,7 +125,7 @@ Puppet::Type.newtype(:firewall_rule) do
       raise ArgumentError, 'The server ID must be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -135,7 +136,7 @@ Puppet::Type.newtype(:firewall_rule) do
       raise ArgumentError, 'The server name must be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

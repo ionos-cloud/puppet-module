@@ -1,20 +1,20 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:k8s_cluster).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
-  
-  def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
 
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+  def self.instances
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     k8s_clusters = []
     Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.each do |k8s_cluster|
       # Ignore data centers if name is not defined.
@@ -39,8 +39,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
       state: instance.metadata.state,
-      k8s_nodepools: instance.entities.nodepools.items.map do
-        |nodepool|
+      k8s_nodepools: instance.entities.nodepools.items.map do |nodepool|
         {
           id: nodepool.id,
           name: nodepool.properties.name,
@@ -99,7 +98,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     )
 
     k8s_cluster, _, headers = Ionoscloud::KubernetesApi.new.k8s_post_with_http_info(k8s_cluster)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new K8s Cluster named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -117,13 +116,13 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     }
 
     new_k8s_cluster = Ionoscloud::KubernetesCluster.new(properties: Ionoscloud::KubernetesClusterProperties.new(cluster_properties))
-    k8s_cluster, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    _, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
   end
 
   def destroy
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_delete_with_http_info(@property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 end

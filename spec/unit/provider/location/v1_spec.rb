@@ -4,7 +4,7 @@ provider_class = Puppet::Type.type(:location).provider(:v1)
 
 describe provider_class do
   context 'location operations' do
-    it 'should list location instances' do
+    it 'lists location instances' do
       VCR.use_cassette('location_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0

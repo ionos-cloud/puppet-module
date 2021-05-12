@@ -11,7 +11,7 @@ describe provider_class do
         image_alias: 'ubuntu:latest',
         availability_zone: 'ZONE_3',
         ssh_keys: ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'],
-        datacenter_name: 'Puppet Module Test'
+        datacenter_name: 'Puppet Module Test',
       )
       @provider1 = provider_class.new(@resource1)
 
@@ -23,18 +23,18 @@ describe provider_class do
         image_password: 'secretpassword2015',
         volume_type: 'SSD',
         availability_zone: 'AUTO',
-        datacenter_name: 'Puppet Module Test'
+        datacenter_name: 'Puppet Module Test',
       )
       @provider2 = provider_class.new(@resource2)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider1).to be_an_instance_of Puppet::Type::Volume::ProviderV1
       expect(@provider1.name).to eq('Puppet Module Test')
       expect(@provider2).to be_an_instance_of Puppet::Type::Volume::ProviderV1
     end
 
-    it 'should create ProfitBricks HDD volume' do
+    it 'creates ProfitBricks HDD volume' do
       VCR.use_cassette('volume_create_hdd') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -42,7 +42,7 @@ describe provider_class do
       end
     end
 
-    it 'should create ProfitBricks SSD volume' do
+    it 'creates ProfitBricks SSD volume' do
       VCR.use_cassette('volume_create_ssd') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
@@ -50,7 +50,7 @@ describe provider_class do
       end
     end
 
-    it 'should list volume instances' do
+    it 'lists volume instances' do
       VCR.use_cassette('volume_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -58,7 +58,7 @@ describe provider_class do
       end
     end
 
-    it 'should update volume size' do
+    it 'updates volume size' do
       VCR.use_cassette('volume_update') do
         @provider1.size = 5
         updated_instance = nil
@@ -69,7 +69,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete volume' do
+    it 'deletes volume' do
       VCR.use_cassette('volume_delete') do
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false

@@ -7,24 +7,24 @@ describe provider_class do
     before(:all) do
       @resource1 = Puppet::Type.type(:lan).new(
         datacenter_name: 'Puppet Module Test',
-        name: 'Puppet Module Test'
+        name: 'Puppet Module Test',
       )
       @provider1 = provider_class.new(@resource1)
 
       @resource2 = Puppet::Type.type(:lan).new(
         datacenter_name: 'Puppet Module Test',
         name: 'Puppet Module Test 2',
-        public: true
+        public: true,
       )
       @provider2 = provider_class.new(@resource2)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider1).to be_an_instance_of Puppet::Type::Lan::ProviderV1
       expect(@provider2).to be_an_instance_of Puppet::Type::Lan::ProviderV1
     end
 
-    it 'should create ProfitBricks LAN with minimum params' do
+    it 'creates ProfitBricks LAN with minimum params' do
       VCR.use_cassette('lan_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -32,7 +32,7 @@ describe provider_class do
       end
     end
 
-    it 'should create ProfitBricks LAN with all params' do
+    it 'creates ProfitBricks LAN with all params' do
       VCR.use_cassette('lan_create_all') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
@@ -40,7 +40,7 @@ describe provider_class do
       end
     end
 
-    it 'should list LAN instances' do
+    it 'lists LAN instances' do
       VCR.use_cassette('lan_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -48,7 +48,7 @@ describe provider_class do
       end
     end
 
-    it 'should update public property of the LAN' do
+    it 'updates public property of the LAN' do
       VCR.use_cassette('lan_update') do
         @provider2.public = false
         @provider2.flush
@@ -60,7 +60,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete LAN' do
+    it 'deletes LAN' do
       VCR.use_cassette('lan_delete') do
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false

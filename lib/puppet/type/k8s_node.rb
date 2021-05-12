@@ -17,7 +17,7 @@ Puppet::Type.newtype(:k8s_node) do
   newproperty(:public_ip) do
     desc 'The public IP of the K8s Node.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -25,7 +25,7 @@ Puppet::Type.newtype(:k8s_node) do
   newproperty(:k8s_version) do
     desc 'The K8s version of the K8s Node.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -33,7 +33,7 @@ Puppet::Type.newtype(:k8s_node) do
   newproperty(:state) do
     desc 'She state of the K8s Node.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -44,7 +44,7 @@ Puppet::Type.newtype(:k8s_node) do
       raise ArgumentError, 'The K8s Nodepool ID must be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -55,7 +55,7 @@ Puppet::Type.newtype(:k8s_node) do
       raise ArgumentError, 'The K8s Nodepool name must be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -67,7 +67,7 @@ Puppet::Type.newtype(:k8s_node) do
       raise ArgumentError, 'The K8s Cluster ID should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -79,7 +79,7 @@ Puppet::Type.newtype(:k8s_node) do
       raise ArgumentError, 'The K8s Cluster name should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

@@ -5,7 +5,7 @@ type_class = Puppet::Type.type(:snapshot)
 describe type_class do
   let :params do
     [
-      :name
+      :name,
     ]
   end
 
@@ -29,45 +29,45 @@ describe type_class do
       :disc_virtio_hot_unplug,
       :disc_scsi_hot_plug,
       :disc_scsi_hot_unplug,
-      :licence_type
+      :licence_type,
     ]
   end
 
-  it 'should have expected properties' do
+  it 'has expected properties' do
     properties.each do |property|
       expect(type_class.properties.map(&:name)).to be_include(property)
     end
   end
 
-  it 'should have expected parameters' do
+  it 'has expected parameters' do
     params.each do |param|
       expect(type_class.parameters).to be_include(param)
     end
   end
 
-  it 'should require a name' do
+  it 'requires a name' do
     expect {
       type_class.new({})
     }.to raise_error(Puppet::Error, 'Title or name must be provided')
   end
 
-  it 'should support :present as a value to :ensure' do
-    type_class.new(:name => 'test', :ensure => :present)
+  it 'supports :present as a value to :ensure' do
+    type_class.new(name: 'test', ensure: :present)
   end
 
-  it 'should support :absent as a value to :ensure' do
-    type_class.new(:name => 'test', :ensure => :absent)
+  it 'supports :absent as a value to :ensure' do
+    type_class.new(name: 'test', ensure: :absent)
   end
 
-  it 'should require a datacenter' do
+  it 'requires a datacenter' do
     expect {
-      type_class.new(:name => 'test', :datacenter => true)
-    }.to raise_error(Puppet::ResourceError, /The data center ID\/name should be a String./)
+      type_class.new(name: 'test', datacenter: true)
+    }.to raise_error(Puppet::ResourceError, %r{The data center ID/name should be a String.})
   end
 
-  it 'should require a volume' do
+  it 'requires a volume' do
     expect {
-      type_class.new(:name => 'test', :volume => true)
-    }.to raise_error(Puppet::ResourceError, /The volume ID\/name should be a String./)
+      type_class.new(name: 'test', volume: true)
+    }.to raise_error(Puppet::ResourceError, %r{The volume ID/name should be a String.})
   end
 end

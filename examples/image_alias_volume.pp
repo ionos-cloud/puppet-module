@@ -3,9 +3,8 @@ $datacenter_name = 'My data center'
 datacenter { $datacenter_name :
   ensure   => present,
   location => 'us/ewr'
-} ->
-
-volume { 'centos7vol' :
+}
+-> volume { 'centos7vol' :
   ensure          => present,
   datacenter_name => $datacenter_name,
   image_alias     => 'centos:7',

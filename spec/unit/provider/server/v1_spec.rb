@@ -10,11 +10,11 @@ describe provider_class do
         cores: 1,
         ram: 1024,
         availability_zone: 'ZONE_1',
-        datacenter_name: 'Puppet Module Test'
+        datacenter_name: 'Puppet Module Test',
       )
       @provider1 = provider_class.new(@resource1)
 
-      vol1 = Hash.new
+      vol1 = {}
       vol1['name'] = 'Puppet Module Test'
       vol1['size'] = 15
       vol1['bus'] = 'VIRTIO'
@@ -24,7 +24,7 @@ describe provider_class do
       vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
       vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
-      vol2 = Hash.new
+      vol2 = {}
       vol2['name'] = 'Puppet Module Test 2'
       vol2['size'] = 10
       vol2['bus'] = 'VIRTIO'
@@ -34,14 +34,14 @@ describe provider_class do
       vol2['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
       vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
-      firewall = Hash.new
+      firewall = {}
       firewall['name'] = 'SSH'
       firewall['protocol'] = 'TCP'
       firewall['source_mac'] = '01:23:45:67:89:00'
       firewall['port_range_start'] = 22
       firewall['port_range_end'] = 22
 
-      nic = Hash.new
+      nic = {}
       nic['name'] = 'Puppet Module Test'
       nic['dhcp'] = true
       nic['lan'] = 'Puppet Module Test'
@@ -56,17 +56,17 @@ describe provider_class do
         volumes: [vol1, vol2],
         purge_volumes: true,
         nics: [nic],
-        datacenter_name: 'Puppet Module Test'
+        datacenter_name: 'Puppet Module Test',
       )
       @provider2 = provider_class.new(@resource2)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider1).to be_an_instance_of Puppet::Type::Server::ProviderV1
       expect(@provider2).to be_an_instance_of Puppet::Type::Server::ProviderV1
     end
 
-    it 'should create ProfitBricks server with minimum params' do
+    it 'creates ProfitBricks server with minimum params' do
       VCR.use_cassette('server_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -74,7 +74,7 @@ describe provider_class do
       end
     end
 
-    it 'should create composite server' do
+    it 'creates composite server' do
       VCR.use_cassette('server_create_composite') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
@@ -82,7 +82,7 @@ describe provider_class do
       end
     end
 
-    it 'should list server instances' do
+    it 'lists server instances' do
       VCR.use_cassette('server_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -90,7 +90,7 @@ describe provider_class do
       end
     end
 
-    it 'should update boot volume' do
+    it 'updates boot volume' do
       VCR.use_cassette('server_update_boot_volume') do
         @provider2.boot_volume = 'Puppet Module Test 2'
         @provider2.flush
@@ -102,7 +102,7 @@ describe provider_class do
       end
     end
 
-    it 'should update RAM' do
+    it 'updates RAM' do
       VCR.use_cassette('server_update_ram') do
         @provider2.ram = 2048
         @provider2.flush
@@ -114,7 +114,7 @@ describe provider_class do
       end
     end
 
-    it 'should update cores' do
+    it 'updates cores' do
       VCR.use_cassette('server_update_cores') do
         @provider2.cores = 2
         @provider2.flush
@@ -126,7 +126,7 @@ describe provider_class do
       end
     end
 
-    it 'should update CPU family' do
+    it 'updates CPU family' do
       VCR.use_cassette('server_update_cpu_family') do
         @provider2.cpu_family = 'AMD_OPTERON'
         @provider2.flush
@@ -138,7 +138,7 @@ describe provider_class do
       end
     end
 
-    it 'should update availability zone' do
+    it 'updates availability zone' do
       VCR.use_cassette('server_update_availabilty_zone') do
         @provider1.availability_zone = 'AUTO'
         @provider1.flush
@@ -150,7 +150,7 @@ describe provider_class do
       end
     end
 
-    it 'should update server volumes' do
+    it 'updates server volumes' do
       VCR.use_cassette('server_update_volumes') do
         volumes = [
           {
@@ -188,7 +188,7 @@ describe provider_class do
       end
     end
 
-    it 'should update server volumes 2' do
+    it 'updates server volumes 2' do
       VCR.use_cassette('server_update_volumes2') do
         volumes = [
           {
@@ -222,7 +222,7 @@ describe provider_class do
       end
     end
 
-    it 'should update server nics' do
+    it 'updates server nics' do
       VCR.use_cassette('server_update_nics') do
         nics = [
           {
@@ -243,7 +243,7 @@ describe provider_class do
                 'protocol' => 'TCP',
                 'port_range_start' => 65,
                 'port_range_end' => 80
-              }
+              },
             ]
           },
           {
@@ -285,7 +285,7 @@ describe provider_class do
       end
     end
 
-    it 'should stop server' do
+    it 'stops server' do
       VCR.use_cassette('server_stop') do
         expect(@provider2.running?).to be true
         expect(@provider2.stop).to be_truthy
@@ -293,7 +293,7 @@ describe provider_class do
       end
     end
 
-    it 'should start server' do
+    it 'starts server' do
       VCR.use_cassette('server_start') do
         expect(@provider2.running?).to be false
         expect(@provider2.create).to be_truthy
@@ -301,7 +301,7 @@ describe provider_class do
       end
     end
 
-    it 'should restart server' do
+    it 'restarts server' do
       VCR.use_cassette('server_restart') do
         expect(@provider2.running?).to be true
         expect(@provider2.restart).to be_truthy
@@ -309,7 +309,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete server' do
+    it 'deletes server' do
       VCR.use_cassette('server_delete') do
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false

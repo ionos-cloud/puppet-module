@@ -1,0 +1,44 @@
+# {{name}}
+
+{{{description}}}
+
+## Parameters:
+
+| Name | Required | Description |
+| :--- | :-: | :--- |
+{{#parameters}}
+| {{name}} | {{required}} | {{{doc}}} |
+{{/parameters}}
+
+## Properties:
+
+| Name | Required | Description | Default Value |
+| :--- | :-: | :--- | :--- |
+{{#properties}}
+| {{name}} | {{required}} | {{{doc}}} | {{default_value}} |
+{{/properties}}
+***
+
+
+### Changeable properties:
+
+{{#changeable_properties.length}}
+{{#changeable_properties}}
+* {{.}}
+{{/changeable_properties}}
+{{/changeable_properties.length}}
+{{^changeable_properties.length}}
+No Changeable properties
+{{/changeable_properties.length}}
+
+
+## Example
+
+{{#example}}
+```text
+{{{example}}}
+```
+{{/example}}
+{{^example}}
+No example available
+{{/example}}

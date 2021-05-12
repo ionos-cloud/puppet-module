@@ -1,7 +1,9 @@
+require 'time'
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:k8s_nodepool) do
   @doc = 'Type representing a Ionoscloud K8s Nodepool.'
+  @changeable_properties = [:k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count, :max_node_count, :lans]
 
   ensurable
 
@@ -30,6 +32,15 @@ Puppet::Type.newtype(:k8s_nodepool) do
     desc 'The maintenance time of the K8s Nodepool.'
     validate do |value|
       raise ArgumentError, 'The maintenance time should be a String.' unless value.is_a?(String)
+      begin
+        Time.parse(value)
+      rescue
+        raise ArgumentError, 'The maintenance time is not valid.'
+      end
+    end
+
+    def insync?(is)
+      Time.parse(is) - Time.parse(should) < 15 * 60.0
     end
   end
 
@@ -39,7 +50,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
       raise ArgumentError, 'The datacenter name should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -47,25 +58,34 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:node_count) do
     desc 'The number of nodes in the nodepool.'
     validate do |value|
-      numCores = Integer(value) rescue nil
-      fail('You need to specify the number of nodes per nodepool') if value == ''
-      fail('Node count must be a integer') unless numCores
+      begin
+        Integer(value)
+      rescue
+        raise('Node count must be a integer')
+      end
+      raise('You need to specify the number of nodes per nodepool') if value == ''
     end
   end
 
   newproperty(:min_node_count) do
     desc 'The minimum number of nodes in the nodepool.'
     validate do |value|
-      numCores = Integer(value) rescue nil
-      fail('Minimum node count must be a integer') unless numCores
+      begin
+        Integer(value)
+      rescue
+        raise('Minimum node count must be a integer')
+      end
     end
   end
 
   newproperty(:max_node_count) do
     desc 'The maximum number of nodes in the nodepool.'
     validate do |value|
-      numCores = Integer(value) rescue nil
-      fail('Maximum node count must be a integer') unless numCores
+      begin
+        Integer(value)
+      rescue
+        raise('Maximum node count must be a integer')
+      end
     end
   end
 
@@ -76,12 +96,12 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
     validate do |value|
       unless ['AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE'].include?(value)
-        fail('CPU family must be either "AMD_OPTERON", "INTEL_SKYLAKE" or "INTEL_XEON"')
+        raise('CPU family must be either "AMD_OPTERON", "INTEL_SKYLAKE" or "INTEL_XEON"')
       end
-      fail('CPU family must be a string') unless value.is_a?(String)
+      raise('CPU family must be a string') unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -89,12 +109,15 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:cores_count) do
     desc 'The number of CPU cores assigned to the node.'
     validate do |value|
-      numCores = Integer(value) rescue nil
-      fail('Node must have cores assigned') if value == ''
-      fail('Cores must be a integer') unless numCores
+      begin
+        Integer(value)
+      rescue
+        raise('Cores count must be a integer')
+      end
+      raise('Node must have cores assigned') if value == ''
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -102,12 +125,16 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:ram_size) do
     desc 'The amount of RAM in MB assigned to the node.'
     validate do |value|
-      ram_size = Integer(value) rescue nil
-      fail('Node must have ram assigned') if value == ''
-      fail('Requested Ram size must be set to multiple of 1024MB with a minimum of 2048MB') unless ((ram_size % 1024) == 0 && ram_size >= 2048)
+      begin
+        ram_size = Integer(value)
+      rescue
+        raise('RAM size must be a integer')
+      end
+      raise('Node must have ram assigned') if value == ''
+      raise('Requested Ram size must be set to multiple of 1024MB with a minimum of 2048MB') unless (ram_size % 1024) == 0 && ram_size >= 2048
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -117,7 +144,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     defaultto 'AUTO'
     newvalues('AUTO', 'ZONE_1', 'ZONE_2')
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -131,7 +158,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
       raise ArgumentError, 'The volume type should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -142,7 +169,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
       raise ArgumentError, 'The size of the volume must be an integer.' unless value.is_a?(Integer)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -160,7 +187,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     validate do |value|
       raise ArgumentError, 'The cluster name should be a String.' unless value.is_a?(String)
     end
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -169,34 +196,34 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
   newproperty(:id) do
     desc 'The ID of the K8s Nodepool.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
   newproperty(:datacenter_id) do
     desc 'The datacenter used by the K8s Nodepool.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
   newproperty(:cluster_id) do
     desc 'The ID of the K8s cluster of the K8s Nodepool.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
   newproperty(:state) do
     desc 'She state of the K8s Nodepool.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
   newproperty(:k8s_nodes, array_matching: :all) do
     desc 'A list of K8s nodes that exist in the nodepool.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

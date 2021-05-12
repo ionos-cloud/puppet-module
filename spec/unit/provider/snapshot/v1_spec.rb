@@ -14,12 +14,12 @@ describe provider_class do
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Snapshot::ProviderV1
       expect(@provider.name).to eq('Puppet Module Test')
     end
 
-    it 'should create snapshot' do
+    it 'creates snapshot' do
       VCR.use_cassette('snapshot_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -27,7 +27,7 @@ describe provider_class do
       end
     end
 
-    it 'should list snapshot instances' do
+    it 'lists snapshot instances' do
       VCR.use_cassette('snapshot_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -35,7 +35,7 @@ describe provider_class do
       end
     end
 
-    it 'should update snapshot' do
+    it 'updates snapshot' do
       VCR.use_cassette('snapshot_update') do
         new_desc = 'Puppet Module test snapshot - RENAME'
         @provider.description = new_desc
@@ -48,13 +48,13 @@ describe provider_class do
       end
     end
 
-    it 'should restore snapshot' do
+    it 'restores snapshot' do
       VCR.use_cassette('snapshot_restore') do
         expect(@provider.restore = true).to be_truthy
       end
     end
 
-    it 'should delete snapshot' do
+    it 'deletes snapshot' do
       VCR.use_cassette('snapshot_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

@@ -2,6 +2,10 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:snapshot) do
   @doc = 'Type representing a ProfitBricks Snapshot.'
+  @changeable_properties = [
+    :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug, :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug,
+    :disc_virtio_hot_unplug, :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :sec_auth_protection, :licence_type
+  ]
 
   ensurable
 
@@ -15,7 +19,7 @@ Puppet::Type.newtype(:snapshot) do
   newproperty(:restore) do
     desc 'If true, restore the snapshot onto the volume specified be the volume property.'
     newvalues(:true, :false)
-    def insync?(is)
+    def insync?(_is)
       should.to_s != 'true'
     end
   end
@@ -29,7 +33,7 @@ Puppet::Type.newtype(:snapshot) do
       end
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -43,7 +47,7 @@ Puppet::Type.newtype(:snapshot) do
       end
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -53,7 +57,7 @@ Puppet::Type.newtype(:snapshot) do
   end
 
   newproperty(:sec_auth_protection) do
-    desc "Flag representing if extra protection is enabled on snapshot e.g. Two Factor protection etc."
+    desc 'Flag representing if extra protection is enabled on snapshot e.g. Two Factor protection etc.'
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s
@@ -61,14 +65,14 @@ Puppet::Type.newtype(:snapshot) do
   end
 
   newproperty(:licence_type) do
-    desc "The OS type of this Snapshot"
+    desc 'The OS type of this Snapshot'
     newvalues('LINUX', 'WINDOWS', 'WINDOWS2016', 'UNKNOWN', 'OTHER')
 
     validate do |value|
       raise ArgumentError, 'The license type should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -158,7 +162,7 @@ Puppet::Type.newtype(:snapshot) do
   newproperty(:id) do
     desc "The snapshot's ID."
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -166,7 +170,7 @@ Puppet::Type.newtype(:snapshot) do
   newproperty(:location) do
     desc "The snapshot's location."
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -174,7 +178,7 @@ Puppet::Type.newtype(:snapshot) do
   newproperty(:size) do
     desc 'The size of the snapshot in GB.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

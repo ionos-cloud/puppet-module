@@ -2,11 +2,15 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:ionoscloud_group) do
   @doc = 'Type representing a ProfitBricks group.'
+  @changeable_properties = [
+    :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log, :s3_privilege,
+    :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc, :members
+  ]
 
   ensurable
 
   newparam(:name, namevar: true) do
-    desc "The group name."
+    desc 'The group name.'
     validate do |value|
       raise ArgumentError, 'The name should be a String.' unless value.is_a?(String)
     end
@@ -107,9 +111,9 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
     def insync?(is)
       if is.is_a? Array
-        return is.sort == should.sort
+        is.sort == should.sort
       else
-        return is == should
+        is == should
       end
     end
   end
@@ -119,7 +123,7 @@ Puppet::Type.newtype(:ionoscloud_group) do
   newproperty(:id) do
     desc 'The group ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

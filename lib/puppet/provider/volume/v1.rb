@@ -1,18 +1,18 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:volume).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
       volumes = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
@@ -21,15 +21,14 @@ Puppet::Type.type(:volume).provide(:v1) do
         end
       end
       volumes
-    end.flatten
+    }.flatten
   end
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if (resource = resources[prov.name])
-        if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
-          resource.provider = prov
-        end
+      next unless (resource = resources[prov.name])
+      if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
+        resource.provider = prov
       end
     end
   end
@@ -56,19 +55,19 @@ Puppet::Type.type(:volume).provide(:v1) do
   end
 
   def size=(value)
-    PuppetX::IonoscloudX::Helper::update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
+    PuppetX::IonoscloudX::Helper.update_volume(@property_hash[:datacenter_id], @property_hash[:id], @property_hash, { 'size' => value }, true)
     @property_hash[:size] = value
   end
 
   def create
-    volume = PuppetX::IonoscloudX::Helper::volume_object_from_hash(resource)
+    volume = PuppetX::IonoscloudX::Helper.volume_object_from_hash(resource)
 
     Puppet.info "Creating a new volume #{volume.to_hash}."
 
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
     volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(datacenter_id, volume)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new volume named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -79,7 +78,7 @@ Puppet::Type.type(:volume).provide(:v1) do
 
   def destroy
     _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 end

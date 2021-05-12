@@ -1,19 +1,19 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:lan).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
       lans = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
@@ -24,15 +24,14 @@ Puppet::Type.type(:lan).provide(:v1) do
         end
       end
       lans
-    end.flatten
+    }.flatten
   end
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if (resource = resources[prov.name])
-        if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
-          resource.provider = prov
-        end
+      next unless (resource = resources[prov.name])
+      if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
+        resource.provider = prov
       end
     end
   end
@@ -44,7 +43,11 @@ Puppet::Type.type(:lan).provide(:v1) do
       datacenter_id: datacenter.id,
       datacenter_name: datacenter.properties.name,
       name: instance.properties.name,
-      ip_failover: instance.properties.ip_failover.map { |el| el = el.to_hash; el[:nic_uuid] = el.delete :nicUuid; el.transform_keys(&:to_s) },
+      ip_failover: instance.properties.ip_failover.map do |el|
+        el = el.to_hash
+        el[:nic_uuid] = el.delete :nicUuid
+        el.transform_keys(&:to_s)
+      end,
       public: instance.properties.public,
       pcc: pcc_name,
       ensure: :present,
@@ -71,33 +74,33 @@ Puppet::Type.type(:lan).provide(:v1) do
 
   def flush
     changeable_properties = [:public, :ip_failover, :pcc]
-    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten(1) ].delete_if { |_k, v| v.nil? }
+    changes = Hash[ *changeable_properties.flat_map { |property| [ property, @property_flush[property] ] } ].delete_if { |_k, v| v.nil? }
 
-    if !changes.empty?
-      Puppet.info("Updating Lan '#{name}', #{changes.keys.to_s}.")
+    return if changes.empty?
 
-      if changes[:pcc]
-        if changes[:pcc] == 'nil'
-          changes[:pcc] = nil
-        else
-          changes[:pcc] = PuppetX::IonoscloudX::Helper::pcc_from_name(changes[:pcc]).id
-        end
-      end 
+    Puppet.info("Updating Lan '#{name}', #{changes.keys}.")
 
-      if changes[:ip_failover]
-        changes[:ipFailover] = changes[:ip_failover]
-        changes.delete(:ip_failover)
-      end
+    if changes[:pcc]
+      changes[:pcc] = if changes[:pcc] == 'nil'
+                        nil
+                      else
+                        PuppetX::IonoscloudX::Helper.pcc_from_name(changes[:pcc]).id
+                      end
+    end
 
-      lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
-        @property_hash[:datacenter_id], @property_hash[:id], changes,
-      )
+    if changes[:ip_failover]
+      changes[:ipFailover] = changes[:ip_failover]
+      changes.delete(:ip_failover)
+    end
 
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+    _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
+      @property_hash[:datacenter_id], @property_hash[:id], changes
+    )
 
-      changeable_properties.each do |property|
-        @property_hash[property] = @property_flush[property] if @property_flush[property]
-      end
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
   end
 
@@ -110,17 +113,17 @@ Puppet::Type.type(:lan).provide(:v1) do
       ),
     )
 
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_post_with_http_info(datacenter_id, lan)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     if resource[:ip_failover]
       ip_failover_changes = { ip_failover: resource[:ip_failover].map { |ip_failover| Ionoscloud::IPFailover.new(ip: ip_failover['ip'], nic_uuid: ip_failover['nic_uuid']) } }
-      
+
       lan, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(
-        resource[:datacenter_id], lan.id, Ionoscloud::LanProperties.new(**ip_failover_changes),
+        resource[:datacenter_id], lan.id, Ionoscloud::LanProperties.new(**ip_failover_changes)
       )
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+      PuppetX::IonoscloudX::Helper.wait_request(headers)
     end
 
     Puppet.info("Creating a new LAN called #{name}.")
@@ -131,7 +134,7 @@ Puppet::Type.type(:lan).provide(:v1) do
 
   def destroy
     _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_delete_with_http_info(@property_hash[:datacenter_id], @property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
   end

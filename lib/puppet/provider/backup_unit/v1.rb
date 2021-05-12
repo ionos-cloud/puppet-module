@@ -1,17 +1,17 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:backup_unit).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     backup_units = []
     Ionoscloud::BackupUnitApi.new.backupunits_get(depth: 1).items.each do |backup_unit|
       # Ignore backup units if name is not defined.
@@ -44,7 +44,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
     backup_unit = Ionoscloud::BackupUnitProperties.new(email: value)
 
     backup_unit, _, headers = Ionoscloud::BackupUnitApi.new.backupunits_patch_with_http_info(@property_hash[:id], backup_unit)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:email] = backup_unit.properties.email
   end
@@ -65,7 +65,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
       ),
     )
     backup_unit, _, headers = Ionoscloud::BackupUnitApi.new.backupunits_post_with_http_info(backup_unit)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :present
     @property_hash[:id] = backup_unit.id
@@ -73,9 +73,9 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
 
   def destroy
     Puppet.info("Deleting backup unit #{resource[:name]}.")
-    
+
     _, _, headers = Ionoscloud::BackupUnitApi.new.backupunits_delete_with_http_info(@property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
   end

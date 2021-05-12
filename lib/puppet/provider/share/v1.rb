@@ -1,22 +1,22 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:share).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
 
-    Ionoscloud::UserManagementApi.new.um_groups_get(depth: 2).items.map do |group|
+    Ionoscloud::UserManagementApi.new.um_groups_get(depth: 2).items.map { |group|
       shares = []
-      resources = Hash.new
+      resources = {}
       group.entities.resources.items.map do |resource|
         resources[resource.id] = resource.type
       end
@@ -26,15 +26,14 @@ Puppet::Type.type(:share).provide(:v1) do
         end
       end
       shares
-    end.flatten
+    }.flatten
   end
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if (resource = resources[prov.name])
-        if resource[:group_id] == prov.group_id || resource[:group_name] == prov.group_name
-          resource.provider = prov
-        end
+      next unless (resource = resources[prov.name])
+      if resource[:group_id] == prov.group_id || resource[:group_name] == prov.group_name
+        resource.provider = prov
       end
     end
   end
@@ -72,14 +71,14 @@ Puppet::Type.type(:share).provide(:v1) do
       ),
     )
 
-    group_id = PuppetX::IonoscloudX::Helper::resolve_group_id(resource[:group_id], resource[:group_name])
+    group_id = PuppetX::IonoscloudX::Helper.resolve_group_id(resource[:group_id], resource[:group_name])
 
-    share, _, headers  = Ionoscloud::UserManagementApi.new.um_groups_shares_post_with_http_info(
+    share, _, headers = Ionoscloud::UserManagementApi.new.um_groups_shares_post_with_http_info(
       group_id,
       resource[:name],
       share,
     )
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Added share #{share.id}.")
     @property_hash[:ensure] = :present
@@ -88,30 +87,30 @@ Puppet::Type.type(:share).provide(:v1) do
   end
 
   def flush
-    unless @property_flush.empty?
-      share = Ionoscloud::GroupShare.new(
-        properties: Ionoscloud::GroupShareProperties.new(
-          edit_privilege: (@property_flush[:edit_privilege].nil? ? @property_hash[:edit_privilege] : @property_flush[:edit_privilege]),
-          share_privilege: (@property_flush[:share_privilege].nil? ? @property_hash[:share_privilege] : @property_flush[:share_privilege]),
-        ),
-      )
+    return if @property_flush.empty?
 
-      share, _, headers  = Ionoscloud::UserManagementApi.new.um_groups_shares_put_with_http_info(
-        PuppetX::IonoscloudX::Helper::resolve_group_id(@property_hash[:group_id],  @property_hash[:group_name]),
-        @property_hash[:name],
-        share,
-      )
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+    share = Ionoscloud::GroupShare.new(
+      properties: Ionoscloud::GroupShareProperties.new(
+        edit_privilege: (@property_flush[:edit_privilege].nil? ? @property_hash[:edit_privilege] : @property_flush[:edit_privilege]),
+        share_privilege: (@property_flush[:share_privilege].nil? ? @property_hash[:share_privilege] : @property_flush[:share_privilege]),
+      ),
+    )
 
-      @property_hash[:edit_privilege] = share.properties.edit_privilege
-      @property_hash[:share_privilege] = share.properties.share_privilege
-    end
+    share, _, headers = Ionoscloud::UserManagementApi.new.um_groups_shares_put_with_http_info(
+      PuppetX::IonoscloudX::Helper.resolve_group_id(@property_hash[:group_id], @property_hash[:group_name]),
+      @property_hash[:name],
+      share,
+    )
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    @property_hash[:edit_privilege] = share.properties.edit_privilege
+    @property_hash[:share_privilege] = share.properties.share_privilege
   end
 
   def destroy
-    group_id = PuppetX::IonoscloudX::Helper::resolve_group_id(@property_hash[:group_id], @property_hash[:group_name])
+    group_id = PuppetX::IonoscloudX::Helper.resolve_group_id(@property_hash[:group_id], @property_hash[:group_name])
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_shares_delete_with_http_info(group_id, @property_hash[:name])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     Puppet.info("Removing share #{@property_hash[:name]}.")
     @property_hash[:ensure] = :absent
   end

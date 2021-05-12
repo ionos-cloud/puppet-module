@@ -10,7 +10,7 @@ Puppet::Type.newtype(:location) do
   newproperty(:id) do
     desc 'The ID of the location.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -18,7 +18,7 @@ Puppet::Type.newtype(:location) do
   newproperty(:features, array_matching: :all) do
     desc 'A list of features available at the location.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -26,7 +26,7 @@ Puppet::Type.newtype(:location) do
   newproperty(:image_aliases, array_matching: :all) do
     desc 'A list of image aliases available at the location.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

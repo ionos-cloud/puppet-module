@@ -13,11 +13,11 @@ describe provider_class do
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Backup_unit::ProviderV1
     end
 
-    it 'should create Ionoscloud backup unit with minimum params' do
+    it 'creates Ionoscloud backup unit with minimum params' do
       VCR.use_cassette('backupunit_create_min') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -25,7 +25,7 @@ describe provider_class do
       end
     end
 
-    it 'should list backup unit instances' do
+    it 'lists backup unit instances' do
       VCR.use_cassette('backupunit_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -33,7 +33,7 @@ describe provider_class do
       end
     end
 
-    it 'should update backup unit email' do
+    it 'updates backup unit email' do
       VCR.use_cassette('backupunit_update') do
         new_email = 'new_email@email.email'
         @provider.email = new_email
@@ -45,7 +45,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete backup unit' do
+    it 'deletes backup unit' do
       VCR.use_cassette('backupunit_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

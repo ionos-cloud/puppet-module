@@ -1,19 +1,19 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:server).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map do |datacenter|
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
       servers = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
@@ -22,15 +22,14 @@ Puppet::Type.type(:server).provide(:v1) do
         end
       end
       servers
-    end.flatten
+    }.flatten
   end
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if (resource = resources[prov.name])
-        if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
-          resource.provider = prov
-        end
+      next unless (resource = resources[prov.name])
+      if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
+        resource.provider = prov
       end
     end
   end
@@ -54,8 +53,7 @@ Puppet::Type.type(:server).provide(:v1) do
         nat: nic.properties.nat,
         lan: lan.properties.name,
         firewall_active: nic.properties.firewall_active,
-        firewall_rules: nic.entities.firewallrules.items.map do
-          |firewall_rule|
+        firewall_rules: nic.entities.firewallrules.items.map do |firewall_rule|
           {
             id: firewall_rule.id,
             name: firewall_rule.properties.name,
@@ -72,11 +70,11 @@ Puppet::Type.type(:server).provide(:v1) do
     end
 
     instance_state = instance.properties.vm_state
-    if ['SHUTOFF', 'SHUTDOWN', 'CRASHED'].include?(instance_state)
-      state = :stopped
-    else
-      state = :present
-    end
+    state = if ['SHUTOFF', 'SHUTDOWN', 'CRASHED'].include?(instance_state)
+              :stopped
+            else
+              :present
+            end
 
     boot_volume_name = boot_volume_id = ''
     unless instance.properties.boot_volume.nil?
@@ -122,11 +120,11 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def boot_volume=(value)
-    if !PuppetX::IonoscloudX::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+    if !PuppetX::IonoscloudX::Helper.validate_uuid_format(resource[:boot_volume].to_s)
       volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(
-        @property_hash[:datacenter_id], @property_hash[:id], depth: 1,
+        @property_hash[:datacenter_id], @property_hash[:id], depth: 1
       ).items.find { |volume| volume.properties.name == value }
-      fail "Volume #{value} not found" unless volume
+      raise "Volume #{value} not found" unless volume
       @property_flush[:boot_volume] = { id: volume.id }
     else
       @property_flush[:boot_volume] = { id: value }
@@ -134,15 +132,15 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def volumes=(value)
-    PuppetX::IonoscloudX::Helper::sync_volumes(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
+    PuppetX::IonoscloudX::Helper.sync_volumes(
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true
     )
     @property_hash[:volumes] = value
   end
 
   def nics=(value)
-    PuppetX::IonoscloudX::Helper::sync_nics(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true,
+    PuppetX::IonoscloudX::Helper.sync_nics(
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true
     )
     @property_hash[:nics] = value
   end
@@ -167,7 +165,7 @@ Puppet::Type.type(:server).provide(:v1) do
     if stopped?
       restart
     else
-      datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+      datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
       server = Ionoscloud::Server.new(
         properties: Ionoscloud::ServerProperties.new(
@@ -179,31 +177,30 @@ Puppet::Type.type(:server).provide(:v1) do
         ),
         entities: Ionoscloud::ServerEntities.new(
           volumes: Ionoscloud::Volumes.new(
-            items: PuppetX::IonoscloudX::Helper::volume_object_array_from_hashes(resource[:volumes]),
+            items: PuppetX::IonoscloudX::Helper.volume_object_array_from_hashes(resource[:volumes]),
           ),
           nics: Ionoscloud::Nics.new(
-            items: PuppetX::IonoscloudX::Helper::nic_object_array_from_hashes(resource[:nics], datacenter_id),
+            items: PuppetX::IonoscloudX::Helper.nic_object_array_from_hashes(resource[:nics], datacenter_id),
           ),
         ),
       )
       server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_post_with_http_info(datacenter_id, server)
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+      PuppetX::IonoscloudX::Helper.wait_request(headers)
 
       if resource[:boot_volume] && resource[:volumes]
-        if PuppetX::IonoscloudX::Helper::validate_uuid_format(resource[:boot_volume].to_s)
+        if PuppetX::IonoscloudX::Helper.validate_uuid_format(resource[:boot_volume].to_s)
           boot_volume_id = resource[:boot_volume].to_s
         else
-          volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(datacenter_id, server.id, depth: 1).items.find do
-            |volume|
+          volume = Ionoscloud::ServerApi.new.datacenters_servers_volumes_get(datacenter_id, server.id, depth: 1).items.find do |volume|
             volume.properties.name == resource[:boot_volume].to_s
           end
           boot_volume_id = volume.id
         end
-        
+
         changes = Ionoscloud::ServerProperties.new(boot_volume: { id: boot_volume_id })
         server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server.id, changes)
 
-        PuppetX::IonoscloudX::Helper::wait_request(headers)
+        PuppetX::IonoscloudX::Helper.wait_request(headers)
       end
 
       Puppet.info("Server '#{name}' has been created.")
@@ -215,33 +212,33 @@ Puppet::Type.type(:server).provide(:v1) do
 
   def flush
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
-    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
-    
-    if !changes.empty?
-      Puppet.info("Updating server '#{name}', #{changes.keys.to_s}.")
-      datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-      server_id = PuppetX::IonoscloudX::Helper::server_from_name(name, datacenter_id).id
-      changes = Ionoscloud::ServerProperties.new(**changes)
+    changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
-      server, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
+    return if changes.empty?
 
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+    Puppet.info("Updating server '#{name}', #{changes.keys}.")
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    server_id = PuppetX::IonoscloudX::Helper.server_from_name(name, datacenter_id).id
+    changes = Ionoscloud::ServerProperties.new(**changes)
 
-      changeable_properties.each do |property|
-        @property_hash[property] = @property_flush[property] if @property_flush[property]
-      end
+    _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_patch_with_http_info(datacenter_id, server_id, changes)
+
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
   end
 
   def restart
     Puppet.info("Restarting server #{name}")
 
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_reboot_post_with_http_info(
-      datacenter_id, PuppetX::IonoscloudX::Helper::server_from_name(name, datacenter_id).id,
+      datacenter_id, PuppetX::IonoscloudX::Helper.server_from_name(name, datacenter_id).id
     )
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
-      
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
     @property_hash[:ensure] = :present
   end
 
@@ -249,24 +246,24 @@ Puppet::Type.type(:server).provide(:v1) do
     create unless exists?
     Puppet.info("Stopping server #{name}")
 
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_stop_post_with_http_info(
-      datacenter_id, PuppetX::IonoscloudX::Helper::server_from_name(name, datacenter_id).id,
+      datacenter_id, PuppetX::IonoscloudX::Helper.server_from_name(name, datacenter_id).id
     )
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :stopped
   end
 
   def destroy
-    datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
-    server_id = PuppetX::IonoscloudX::Helper::server_from_name(resource[:name], datacenter_id).id
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    server_id = PuppetX::IonoscloudX::Helper.server_from_name(resource[:name], datacenter_id).id
     destroy_volumes(datacenter_id, server_id) if !resource[:purge_volumes].nil? && resource[:purge_volumes].to_s == 'true'
 
     Puppet.info("Deleting server #{name}.")
 
     _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_delete_with_http_info(datacenter_id, server_id)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
   end
@@ -285,6 +282,6 @@ Puppet::Type.type(:server).provide(:v1) do
       headers_list << headers
     end
 
-    headers_list.each { |headers| PuppetX::IonoscloudX::Helper::wait_request(headers) }
+    headers_list.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
   end
 end

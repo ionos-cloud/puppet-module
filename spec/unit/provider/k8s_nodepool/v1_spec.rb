@@ -27,11 +27,11 @@ describe provider_class do
       @cluster_id = '11542490-57e3-4995-9335-c84368b12b63'
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::K8s_nodepool::ProviderV1
     end
 
-    it 'should create ProfitBricks k8s nodepool with minimum params' do
+    it 'creates ProfitBricks k8s nodepool with minimum params' do
       VCR.use_cassette('k8s_nodepool_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -40,7 +40,7 @@ describe provider_class do
       end
     end
 
-    it 'should list k8s nodepool instances' do
+    it 'lists k8s nodepool instances' do
       VCR.use_cassette('k8s_nodepool_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -48,7 +48,7 @@ describe provider_class do
       end
     end
 
-    it 'should update k8s nodepool' do
+    it 'updates k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_update') do
         new_version = '1.18.9'
         new_node_count = 2
@@ -69,7 +69,7 @@ describe provider_class do
       end
     end
 
-    it 'should update k8s nodepool 2' do
+    it 'updates k8s nodepool 2' do
       VCR.use_cassette('k8s_nodepool_update2') do
         new_lans = [3]
         my_instance = nil
@@ -87,7 +87,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete k8s nodepool' do
+    it 'deletes k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

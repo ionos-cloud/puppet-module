@@ -13,7 +13,7 @@ describe provider_class do
         protocol: 'TCP',
         source_mac: '01:23:45:67:89:00',
         port_range_start: 22,
-        port_range_end: 22
+        port_range_end: 22,
       )
       @provider = provider_class.new(@resource)
       @resource2 = Puppet::Type.type(:firewall_rule).new(
@@ -28,11 +28,11 @@ describe provider_class do
       @provider2 = provider_class.new(@resource2)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Firewall_rule::ProviderV1
     end
 
-    it 'should create ProfitBricks firewall rule' do
+    it 'creates ProfitBricks firewall rule' do
       VCR.use_cassette('firewall_rule_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -43,7 +43,7 @@ describe provider_class do
       end
     end
 
-    it 'should list firewall rules' do
+    it 'lists firewall rules' do
       VCR.use_cassette('firewall_rule_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -51,7 +51,7 @@ describe provider_class do
       end
     end
 
-    it 'should update firewall rule' do
+    it 'updates firewall rule' do
       VCR.use_cassette('firewall_rule_update') do
         @provider.target_ip = '10.81.12.124'
         @provider.flush
@@ -63,7 +63,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete firewall rule' do
+    it 'deletes firewall rule' do
       VCR.use_cassette('firewall_rule_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
