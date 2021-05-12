@@ -32,8 +32,8 @@ group :development do
   gem 'vcr', '~> 6.0',     require: true
 end
 group :system_tests do
-  gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby]
-  gem "puppet-module-win-system-r#{minor_version}", '~> 1.0',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby] if minor_version.to_s != '3.0'
+  gem "puppet-module-win-system-r#{minor_version}", '~> 1.0',   require: false, platforms: [:mswin, :mingw, :x64_mingw] if minor_version.to_s != '3.0'
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
