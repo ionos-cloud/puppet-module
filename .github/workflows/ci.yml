@@ -24,15 +24,22 @@ jobs:
         uses: ruby/setup-ruby@v1.61.1
         with:
           ruby-version: ${{ matrix.ruby-version }}
+      
+      - name: Install PDK
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-focal.deb
+          sudo dpkg -i puppet-tools-release-focal.deb
+          sudo apt-get update
+          sudo apt-get install pdk
 
-      - name: Install Rubocop
-        run: gem install rubocop
+      - name: Install dependecies
+        run: bundle install
 
-      - name: Run Rubocop
-        run: rubocop
-
-      - name: Install the knife plugin
-        run: bundle
+      - name: Run validate module
+        run: pdk validate
 
       - name: Run the tests
-        run: rspec
+        run: pdk test unit
+
+      - name: Try to build the package
+        run: pdk build
