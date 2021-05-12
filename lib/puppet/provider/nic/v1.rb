@@ -1,7 +1,7 @@
 require 'puppet_x/ionoscloud/helper'
 
 Puppet::Type.type(:nic).provide(:v1) do
-  # confine feature: :ionoscloud
+  confine feature: :ionoscloud
 
   mk_resource_methods
 

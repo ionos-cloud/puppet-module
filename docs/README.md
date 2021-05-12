@@ -36,7 +36,7 @@ For users who already have a system with Puppet and Ruby installed, the followin
         export IONOS_USERNAME="user@example.com"
         export IONOS_PASSWORD="secretpassword"
 
-A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *ionoscloud-ruby-sdk* library but it is not available to the Ruby install that Puppet is actually using.
+A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *ionoscloud* library but it is not available to the Ruby install that Puppet is actually using.
 
 To demonstrate this on a CentOS 7 server, these steps could be followed.
 

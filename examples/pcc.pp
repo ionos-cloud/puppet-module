@@ -16,4 +16,4 @@ pcc { 'newpcc' :
       datacenter_name => $datacenter2_name,
     },
   ]
-},
+}

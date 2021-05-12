@@ -1,3 +1,4 @@
+require 'time'
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:k8s_nodepool) do
@@ -31,6 +32,15 @@ Puppet::Type.newtype(:k8s_nodepool) do
     desc 'The maintenance time of the K8s Nodepool.'
     validate do |value|
       raise ArgumentError, 'The maintenance time should be a String.' unless value.is_a?(String)
+      begin
+        Time.parse(value)
+      rescue => exception
+        raise ArgumentError, 'The maintenance time is not valid.'
+      end
+    end
+
+    def insync?(is)
+      Time.parse(is) - Time.parse(should) < 15 * 60.0
     end
   end
 
