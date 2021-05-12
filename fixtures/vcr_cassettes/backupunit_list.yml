@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/backupunits?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v5
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 23 Apr 2021 11:58:42 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '2279'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "backupunits",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/backupunits",
+          "items" : [ {
+            "id" : "762f5dee-588d-40ed-a65e-d0fac1ff901d",
+            "type" : "backupunit",
+            "href" : "https://api.ionos.com/cloudapi/v5/backupunits/762f5dee-588d-40ed-a65e-d0fac1ff901d",
+            "metadata" : {
+              "etag" : "44a631bb0e7ac4e5ccad5eee05278cf8",
+              "createdDate" : "2021-04-23T11:58:41Z",
+              "createdBy" : "radu-ionut.mocanu@ionos.com",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-23T11:58:41Z",
+              "lastModifiedBy" : "radu-ionut.mocanu@ionos.com",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Puppet Module Test",
+              "email" : "email@email.email"
+            }
+          }, {
+            "id" : "d8e4662a-210f-4c1e-be21-7eb3fa258def",
+            "type" : "backupunit",
+            "href" : "https://api.ionos.com/cloudapi/v5/backupunits/d8e4662a-210f-4c1e-be21-7eb3fa258def",
+            "metadata" : {
+              "etag" : "2dd1a51814b00a8be0dc2f839837d356",
+              "createdDate" : "2021-04-19T14:27:22Z",
+              "createdBy" : "radu-ionut.mocanu@ionos.com",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-20T08:58:12Z",
+              "lastModifiedBy" : "radu-ionut.mocanu@ionos.com",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "myBackupUnit",
+              "email" : "a2@a.com"
+            }
+          }, {
+            "id" : "18ddcf30-567d-42e1-811f-458577d471e8",
+            "type" : "backupunit",
+            "href" : "https://api.ionos.com/cloudapi/v5/backupunits/18ddcf30-567d-42e1-811f-458577d471e8",
+            "metadata" : {
+              "etag" : "2bed0653a1a04247f322b31d1c759b14",
+              "createdDate" : "2021-02-19T13:26:11Z",
+              "createdBy" : "radu-ionut.mocanu@ionos.com",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-02-19T13:26:11Z",
+              "lastModifiedBy" : "radu-ionut.mocanu@ionos.com",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "test",
+              "email" : "a@a.com"
+            }
+          } ]
+        }
+  recorded_at: Fri, 23 Apr 2021 11:58:41 GMT
+recorded_with: VCR 6.0.0

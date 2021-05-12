@@ -5,8 +5,6 @@ Puppet::Type.newtype(:image) do
     desc 'The name of the image.'
   end
 
-  # read-only properties
-
   newproperty(:id) do
     desc 'The ID of the image.'
 

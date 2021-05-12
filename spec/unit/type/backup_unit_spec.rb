@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-type_class = Puppet::Type.type(:lan)
+type_class = Puppet::Type.type(:backup_unit)
 
 describe type_class do
   let :params do
     [
-      :name
+      :name,
     ]
   end
 
@@ -13,11 +13,8 @@ describe type_class do
     [
       :ensure,
       :id,
-      :datacenter_id,
-      :datacenter_name,
-      :public,
-      :pcc,
-      :ip_failover
+      :email,
+      :password,
     ]
   end
 
@@ -35,20 +32,15 @@ describe type_class do
 
   it 'should require a name' do
     expect {
-      type_class.new({})
+      type_class.new({ })
     }.to raise_error(Puppet::Error, 'Title or name must be provided')
   end
 
   it 'should support :present as a value to :ensure' do
-    type_class.new(:name => 'sample', :ensure => :present)
+    type_class.new(:name => 'testbackup', :ensure => :present, :email => 'dummy', :password => 'dummy')
   end
 
   it 'should support :absent as a value to :ensure' do
-    type_class.new(:name => 'sample', :ensure => :absent)
-  end
-
-  it 'should default public to false' do
-    lan = type_class.new(:name => 'sample')
-    expect(lan[:public]).to eq(:false)
+    type_class.new(:name => 'testbackup', :ensure => :absent)
   end
 end

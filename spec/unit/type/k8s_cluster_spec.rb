@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-type_class = Puppet::Type.type(:lan)
+type_class = Puppet::Type.type(:k8s_cluster)
 
 describe type_class do
   let :params do
@@ -11,13 +11,11 @@ describe type_class do
 
   let :properties do
     [
-      :ensure,
+      :k8s_version,
+      :maintenance_day,
+      :maintenance_time,
       :id,
-      :datacenter_id,
-      :datacenter_name,
-      :public,
-      :pcc,
-      :ip_failover
+      :k8s_nodepools,
     ]
   end
 
@@ -45,10 +43,5 @@ describe type_class do
 
   it 'should support :absent as a value to :ensure' do
     type_class.new(:name => 'sample', :ensure => :absent)
-  end
-
-  it 'should default public to false' do
-    lan = type_class.new(:name => 'sample')
-    expect(lan[:public]).to eq(:false)
   end
 end

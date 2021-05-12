@@ -6,8 +6,8 @@ module PuppetX
     class Helper
       def self.ionoscloud_config(depth = nil)
         Ionoscloud.configure do |config|
-          config.username = ENV['IONOSCLOUD_USERNAME']
-          config.password = ENV['IONOSCLOUD_PASSWORD']
+          config.username = ENV['IONOS_USERNAME']
+          config.password = ENV['IONOS_PASSWORD']
         end
       end
 
@@ -70,6 +70,37 @@ module PuppetX
         user = Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.find { |user| user.properties.email == user_email }
         fail "User with email '#{user_email}' cannot be found." unless user
         user
+      end
+
+      def self.backup_unit_from_name(backup_unit_name)
+        backup_units = Ionoscloud::BackupUnitApi.new.backupunits_get(depth: 1)
+
+        backup_unit = backup_units.items.find { |backup_unit| backup_unit.properties.name == backup_unit_name }
+        fail "Backup unit named '#{backup_unit_name}' cannot be found." unless backup_unit
+        backup_unit
+      end
+
+      def self.pcc_from_name(pcc_name)
+        pccs = Ionoscloud::PrivateCrossConnectApi.new.pccs_get(depth: 1)
+
+        pcc = pccs.items.find { |pcc| pcc.properties.name == pcc_name }
+        fail "PCC named '#{pcc_name}' cannot be found." unless pcc
+        pcc
+      end
+
+      def self.cluster_from_name(cluster_name)
+        clusters = Ionoscloud::KubernetesApi.new.k8s_get(depth: 1)
+        cluster = clusters.items.find { |cluster| cluster.properties.name == cluster_name }
+        fail "K8s cluster named '#{cluster_name}' cannot be found." unless cluster
+        cluster
+      end
+
+      def self.resolve_cluster_id(cluster_id, cluster_name)
+        return cluster_id unless cluster_id.nil? || cluster_id.empty?
+        unless cluster_name.nil? || cluster_name.empty?
+          return cluster_from_name(cluster_name).id
+        end
+        fail "Cluster ID or name must be provided."
       end
 
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
@@ -370,6 +401,67 @@ module PuppetX
       def self.nic_object_array_from_hashes(nics, datacenter_id)
         return nics.map { |nic| nic_object_from_hash(nic, datacenter_id) } unless nics.nil?
         []
+      end
+
+      def self.peers_sync(existing_objects, target_objects, pcc_id, wait = true)
+        existing = Marshal.load(Marshal.dump(existing_objects))
+
+        headers_list = []
+  
+        target_objects.each do |target_object|
+          existing_object = existing_objects.find do
+            |object|
+            (
+              ((object[:name] == target_object['name']) || (object[:id] == target_object['id'])) && 
+              ((object[:datacenter_name] == target_object['datacenter_name']) || (object[:datacenter_id] == target_object['datacenter_id']))
+            )
+          end
+          if existing_object
+            existing.delete(existing_object)
+          else
+            datacenter_id = resolve_datacenter_id(target_object['datacenter_id'], target_object['datacenter_name'])
+            peer_id = target_object['id'] ? target_object['id'] : PuppetX::IonoscloudX::Helper::lan_from_name(target_object['name'], datacenter_id).id
+
+            Puppet.info "Adding LAN #{peer_id} to PCC #{pcc_id}"
+            _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
+            headers_list << headers
+          end
+        end
+
+        existing.each do |peer|
+          Puppet.info "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
+          _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
+          headers_list << headers
+        end
+
+        if wait
+          headers_list.each { |headers| wait_request(headers) }
+          return []
+        else
+          return headers_list
+        end
+      end
+
+      def self.peers_match(existing_objects, target_objects)
+        return true if target_objects.nil?
+        return false unless existing_objects.length == target_objects.length
+   
+        existing = Marshal.load(Marshal.dump(existing_objects))
+  
+        target_objects.each do |target_object|
+          existing_object = existing_objects.find do
+            |object|
+            (
+              ((object[:name] == target_object['name']) || (object[:id] == target_object['id'])) && 
+              ((object[:datacenter_name] == target_object['datacenter_name']) || (object[:datacenter_id] == target_object['datacenter_id']))
+            )
+          end
+          return false unless existing_object
+  
+          existing.delete(existing_object)
+        end
+  
+        return existing.empty?
       end
 
       def self.objects_match(existing_objects, target_objects, fields_to_check)
