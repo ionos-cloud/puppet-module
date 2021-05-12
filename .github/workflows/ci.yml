@@ -1,0 +1,38 @@
+# CI workflow 
+
+name: CI
+
+on:
+    workflow_dispatch:
+    pull_request:
+      types: [ assigned, opened, synchronize, reopened ]
+    push:
+      branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [ 2.6, 2.7, 3.0 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.61.1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+
+      - name: Install Rubocop
+        run: gem install rubocop
+
+      - name: Run Rubocop
+        run: rubocop
+
+      - name: Install the knife plugin
+        run: bundle
+
+      - name: Run the tests
+        run: rspec

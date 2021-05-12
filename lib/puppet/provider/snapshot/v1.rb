@@ -6,13 +6,13 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     snapshots = []
     Ionoscloud::SnapshotApi.new.snapshots_get(depth: 1).items.each do |snapshot|
       snapshots << new(instance_to_hash(snapshot))
@@ -50,16 +50,16 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     }
   end
 
-  def restore=(value)
+  def restore=(_value)
     # restore setter is only invoked on restore => true
     datacenter_id = get_datacenter_id(resource[:datacenter])
     volume_id = get_volume_id(datacenter_id, resource[:volume])
 
     _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_restore_snapshot_post_with_http_info(
-      datacenter_id, volume_id, { snapshot_id: @property_hash[:id] },
+      datacenter_id, volume_id, { snapshot_id: @property_hash[:id] }
     )
     Puppet.info("Restoring snapshot '#{name}' onto volume '#{resource[:volume]}'...")
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
   end
 
   def description=(value)
@@ -123,7 +123,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     datacenter_id = get_datacenter_id(resource[:datacenter])
     volume_id = get_volume_id(datacenter_id, resource[:volume])
 
-    snapshot, _, headers  = Ionoscloud::VolumeApi.new.datacenters_volumes_create_snapshot_post_with_http_info(
+    snapshot, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_create_snapshot_post_with_http_info(
       datacenter_id,
       volume_id,
       {
@@ -133,7 +133,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
         licence_type: resource[:licence_type],
       },
     )
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created new snapshot '#{name}'.")
     @property_hash[:ensure] = :present
@@ -144,30 +144,30 @@ Puppet::Type.type(:snapshot).provide(:v1) do
 
   def flush
     changeable_properties = [
-      :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug, 
-      :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug, 
-      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type,
+      :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug,
+      :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug,
+      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type
     ]
-    changes = Hash[ *changeable_properties.collect { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
-    
-    if !changes.empty?
-      Puppet.info("Updating snapshot '#{name}', #{changes.keys.to_s}.")
-      changes = Ionoscloud::SnapshotProperties.new(**changes)
+    changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
-      server, _, headers = Ionoscloud::SnapshotApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
+    return if changes.empty?
 
-      PuppetX::IonoscloudX::Helper::wait_request(headers)
+    Puppet.info("Updating snapshot '#{name}', #{changes.keys}.")
+    changes = Ionoscloud::SnapshotProperties.new(**changes)
 
-      changeable_properties.each do |property|
-        @property_hash[property] = @property_flush[property] if @property_flush[property]
-      end
+    _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
+
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
   end
 
   def destroy
     Puppet.info("Deleting snapshot '#{name}'...")
     _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_delete_with_http_info(@property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
@@ -175,11 +175,11 @@ Puppet::Type.type(:snapshot).provide(:v1) do
 
   def get_datacenter_id(datacenter_id_or_name)
     return datacenter_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(datacenter_id_or_name)
-    PuppetX::IonoscloudX::Helper::resolve_datacenter_id(nil, datacenter_id_or_name)
+    PuppetX::IonoscloudX::Helper.resolve_datacenter_id(nil, datacenter_id_or_name)
   end
 
   def get_volume_id(datacenter_id, volume_id_or_name)
     return volume_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(volume_id_or_name)
-    PuppetX::IonoscloudX::Helper::volume_from_name(volume_id_or_name, datacenter_id).id
+    PuppetX::IonoscloudX::Helper.volume_from_name(volume_id_or_name, datacenter_id).id
   end
 end

@@ -16,7 +16,7 @@ Puppet::Type.newtype(:datacenter) do
   newproperty(:description) do
     desc 'The data center description.'
     validate do |value|
-      fail('Data center description must be a String') unless value.is_a?(String)
+      raise('Data center description must be a String') unless value.is_a?(String)
     end
   end
 
@@ -25,7 +25,7 @@ Puppet::Type.newtype(:datacenter) do
   newproperty(:id) do
     desc 'The data center ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -34,11 +34,11 @@ Puppet::Type.newtype(:datacenter) do
     desc 'The data center location.'
     isrequired
     validate do |value|
-      fail('Data center location must be set') if value == ''
-      fail('Data center location must be a String') unless value.is_a?(String)
+      raise('Data center location must be set') if value == ''
+      raise('Data center location must be a String') unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

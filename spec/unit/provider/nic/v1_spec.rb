@@ -11,16 +11,16 @@ describe provider_class do
         dhcp: true,
         datacenter_name: 'Puppet Module Test',
         server_name: 'Puppet Module Test',
-        firewall_active: true
+        firewall_active: true,
       )
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Nic::ProviderV1
     end
 
-    it 'should create ProfitBricks NIC' do
+    it 'creates ProfitBricks NIC' do
       VCR.use_cassette('nic_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -28,7 +28,7 @@ describe provider_class do
       end
     end
 
-    it 'should list NIC instances' do
+    it 'lists NIC instances' do
       VCR.use_cassette('nic_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -36,7 +36,7 @@ describe provider_class do
       end
     end
 
-    it 'should update NIC' do
+    it 'updates NIC' do
       VCR.use_cassette('nic_update') do
         @provider.dhcp = false
         @provider.ips = ['158.222.102.161', '158.222.102.164']
@@ -52,7 +52,7 @@ describe provider_class do
       end
     end
 
-    it 'should update NIC firewallrules' do
+    it 'updates NIC firewallrules' do
       VCR.use_cassette('nic_update_firewallrules') do
         firewall_rules = [
           {
@@ -85,7 +85,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete NIC' do
+    it 'deletes NIC' do
       VCR.use_cassette('nic_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

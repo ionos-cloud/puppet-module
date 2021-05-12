@@ -9,7 +9,7 @@ Puppet::Type.newtype(:share) do
   newparam(:name, namevar: true) do
     desc 'The ID of the resource to share.'
     validate do |value|
-      fail('The ID should be a String') unless value.is_a?(String)
+      raise('The ID should be a String') unless value.is_a?(String)
     end
   end
 
@@ -34,7 +34,7 @@ Puppet::Type.newtype(:share) do
   newproperty(:group_id) do
     desc 'The ID of the group where the share will be available.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -42,7 +42,7 @@ Puppet::Type.newtype(:share) do
   newproperty(:group_name) do
     desc 'The name of the group where the share will be available.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -52,7 +52,7 @@ Puppet::Type.newtype(:share) do
   newproperty(:type) do
     desc 'The type of the shared resource.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

@@ -17,14 +17,14 @@ Puppet::Type.newtype(:pcc) do
   newparam(:name, namevar: true) do
     desc 'The name of the PCC.'
     validate do |value|
-      fail('The name should be a String') unless value.is_a?(String)
+      raise('The name should be a String') unless value.is_a?(String)
     end
   end
 
   newparam(:description) do
     desc 'The description of the PCC.'
     validate do |value|
-      fail('The description should be a String') unless value.is_a?(String)
+      raise('The description should be a String') unless value.is_a?(String)
     end
   end
 
@@ -32,7 +32,7 @@ Puppet::Type.newtype(:pcc) do
     desc 'The list of peers connected to the PCC.'
 
     def insync?(is)
-      PuppetX::IonoscloudX::Helper::peers_match(is, should)
+      PuppetX::IonoscloudX::Helper.peers_match(is, should)
     end
   end
 
@@ -41,7 +41,7 @@ Puppet::Type.newtype(:pcc) do
   newproperty(:id) do
     desc 'The PCC ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -49,7 +49,7 @@ Puppet::Type.newtype(:pcc) do
   newproperty(:connectable_datacenters, array_matching: :all) do
     desc 'The datacenters from which you may connect to this PCC.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

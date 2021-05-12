@@ -2,7 +2,6 @@ require 'puppet/parameter/boolean'
 
 require_relative '../../puppet_x/ionoscloud/helper'
 
-
 Puppet::Type.newtype(:server) do
   @doc = 'Type representing a ProfitBricks server.'
   @changeable_properties = [:cores, :cpu_family, :ram, :availability_zone, :boot_volume, :volumes, :nics]
@@ -40,15 +39,15 @@ Puppet::Type.newtype(:server) do
   newparam(:name, namevar: true) do
     desc 'The name of the server.'
     validate do |value|
-      fail('Server must have a name') if value == ''
-      fail('Name should be a String') unless value.is_a?(String)
+      raise('Server must have a name') if value == ''
+      raise('Name should be a String') unless value.is_a?(String)
     end
   end
 
   newproperty(:datacenter_id) do
     desc 'The virtual data center where the server will reside.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -56,7 +55,7 @@ Puppet::Type.newtype(:server) do
   newproperty(:datacenter_name) do
     desc 'The name of the virtual data center where the server will reside.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -64,9 +63,12 @@ Puppet::Type.newtype(:server) do
   newproperty(:cores) do
     desc 'The number of CPU cores assigned to the server.'
     validate do |value|
-      numCores = Integer(value) rescue nil
-      fail('Server must have cores assigned') if value == ''
-      fail('Cores must be a integer') unless numCores
+      begin
+        Integer(value)
+      rescue
+        raise('Cores must be a integer')
+      end
+      raise('Server must have cores assigned') if value == ''
     end
   end
 
@@ -77,18 +79,22 @@ Puppet::Type.newtype(:server) do
 
     validate do |value|
       unless ['AMD_OPTERON', 'INTEL_XEON'].include?(value)
-        fail('CPU family must be either "AMD_OPTERON" or "INTEL_XEON"')
+        raise('CPU family must be either "AMD_OPTERON" or "INTEL_XEON"')
       end
-      fail('CPU family must be a string') unless value.is_a?(String)
+      raise('CPU family must be a string') unless value.is_a?(String)
     end
   end
 
   newproperty(:ram) do
     desc 'The amount of RAM in MB assigned to the server.'
     validate do |value|
-      ram = Integer(value) rescue nil
-      fail('Server must have ram assigned') if value == ''
-      fail('RAM must be a multiple of 256 MB') unless (ram % 256) == 0
+      ram = begin
+              Integer(value)
+            rescue
+              nil
+            end
+      raise('Server must have ram assigned') if value == ''
+      raise('RAM must be a multiple of 256 MB') unless (ram % 256) == 0
     end
   end
 
@@ -119,26 +125,25 @@ Puppet::Type.newtype(:server) do
     desc 'A boolean which indicates if the NIC will perform Network Address Translation.'
     defaultto :false
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
-  newproperty(:volumes, :array_matching => :all) do
+  newproperty(:volumes, array_matching: :all) do
     desc 'A list of volumes to associate with the server.'
     validate do |value|
       volumes = value.is_a?(Array) ? value : [value]
       volumes.each do |volume|
-        if !volume.keys.include?('id')
-          ['name', 'size', 'volume_type'].each do |key|
-            fail("Volume must include #{key}") unless volume.keys.include?(key)
-          end
+        next if volume.keys.include?('id')
+        ['name', 'size', 'volume_type'].each do |key|
+          raise("Volume must include #{key}") unless volume.keys.include?(key)
         end
       end
     end
 
     def insync?(is)
-      PuppetX::IonoscloudX::Helper::objects_match(is, should, [:size])
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:size])
     end
   end
 
@@ -147,35 +152,34 @@ Puppet::Type.newtype(:server) do
     defaultto :false
     newvalues(:true, :false)
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
-  newproperty(:nics, :array_matching => :all) do
+  newproperty(:nics, array_matching: :all) do
     desc 'A list of network interfaces associated with the server.'
     validate do |value|
       nics = value.is_a?(Array) ? value : [value]
       nics.each do |nic|
         ['name', 'dhcp', 'lan'].each do |key|
-          fail("NIC must include #{key}") unless value.keys.include?(key)
+          raise("NIC must include #{key}") unless value.keys.include?(key)
         end
         if nic.key?('ips')
-          fail('NIC "ips" must be an Array') unless nic['ips'].is_a?(Array)
+          raise('NIC "ips" must be an Array') unless nic['ips'].is_a?(Array)
         end
       end
     end
 
     def insync?(is)
-      block = lambda {
-        |existing_object, target_object|
-        PuppetX::IonoscloudX::Helper::objects_match(
+      block = ->(existing_object, target_object) {
+        PuppetX::IonoscloudX::Helper.objects_match(
           existing_object[:firewall_rules],
           target_object['firewall_rules'],
           [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
         )
       }
-      PuppetX::IonoscloudX::Helper::objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
     end
   end
 

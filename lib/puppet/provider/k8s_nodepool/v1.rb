@@ -6,27 +6,27 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
-  
-  def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
 
-    Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.map do |k8s_cluster|
-        nodepools = []
-        # Ignore data center if name is not defined.
-        unless k8s_cluster.properties.name.nil? || k8s_cluster.properties.name.empty?
-          Ionoscloud::KubernetesApi.new.k8s_nodepools_get(k8s_cluster.id, depth: 1).items.each do |nodepool|
-            unless nodepool.properties.name.nil? || nodepool.properties.name.empty?
-                nodes = Ionoscloud::KubernetesApi.new.k8s_nodepools_nodes_get(k8s_cluster.id, nodepool.id, depth: 1)
-                nodepools << new(instance_to_hash(nodepool, k8s_cluster, nodes))
-            end
+  def self.instances
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+
+    Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.map { |k8s_cluster|
+      nodepools = []
+      # Ignore data center if name is not defined.
+      unless k8s_cluster.properties.name.nil? || k8s_cluster.properties.name.empty?
+        Ionoscloud::KubernetesApi.new.k8s_nodepools_get(k8s_cluster.id, depth: 1).items.each do |nodepool|
+          unless nodepool.properties.name.nil? || nodepool.properties.name.empty?
+            nodes = Ionoscloud::KubernetesApi.new.k8s_nodepools_nodes_get(k8s_cluster.id, nodepool.id, depth: 1)
+            nodepools << new(instance_to_hash(nodepool, k8s_cluster, nodes))
           end
         end
-        nodepools
-      end.flatten
+      end
+      nodepools
+    }.flatten
   end
 
   def self.prefetch(resources)
@@ -58,8 +58,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       k8s_version: instance.properties.k8s_version,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
-      k8s_nodes: nodes.items.map do
-        |node|
+      k8s_nodes: nodes.items.map do |node|
         {
           id: node.id,
           name: node.properties.name,
@@ -107,10 +106,10 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   end
 
   def create
-    cluster_id = PuppetX::IonoscloudX::Helper::resolve_cluster_id(resource[:cluster_id], resource[:cluster_name])
+    cluster_id = PuppetX::IonoscloudX::Helper.resolve_cluster_id(resource[:cluster_id], resource[:cluster_name])
     datacenter_id = nil
     if resource[:datacenter_id] || resource[:datacenter_name]
-      datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+      datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     end
 
     nodepool_properties = {
@@ -148,7 +147,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     )
 
     nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_post_with_http_info(cluster_id, nodepool)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new K8s Npdepool named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -160,10 +159,6 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   def flush
     if @property_flush.empty?
       return
-    end
-    datacenter_id = @property_hash[:datacenter_id]
-    if @property_flush[:datacenter_id] || @property_flush[:datacenter_name]
-      datacenter_id = PuppetX::IonoscloudX::Helper::resolve_datacenter_id(@property_flush[:datacenter_id], @property_flush[:datacenter_name])
     end
 
     nodepool_properties = {
@@ -181,13 +176,13 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     }
 
     new_k8s_nodepool = Ionoscloud::KubernetesNodePool.new(properties: Ionoscloud::KubernetesNodePoolProperties.new(nodepool_properties))
-    k8s_nodepool, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    _, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
   end
 
   def destroy
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_delete_with_http_info(@property_hash[:cluster_id], @property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 end

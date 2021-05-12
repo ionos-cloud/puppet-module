@@ -4,7 +4,7 @@ provider_class = Puppet::Type.type(:k8s_node).provider(:v1)
 
 describe provider_class do
   context 'k8s node operations' do
-    it 'should list k8s_node instances' do
+    it 'lists k8s_node instances' do
       VCR.use_cassette('k8s_node_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0

@@ -17,7 +17,7 @@ Puppet::Type.newtype(:lan) do
   newparam(:name, namevar: true) do
     desc 'The name of the LAN.'
     validate do |value|
-      fail('The name should be a String') unless value.is_a?(String)
+      raise('The name should be a String') unless value.is_a?(String)
     end
   end
 
@@ -33,7 +33,7 @@ Puppet::Type.newtype(:lan) do
   newproperty(:pcc) do
     desc 'Set the name of the PCC to which the LAN is to be attached.'
     validate do |value|
-      fail('The PCC name should be a String') unless value.is_a?(String)
+      raise('The PCC name should be a String') unless value.is_a?(String)
     end
     def insync?(is)
       if should == 'nil'
@@ -48,7 +48,7 @@ Puppet::Type.newtype(:lan) do
     desc 'IP failover group.'
 
     def insync?(is)
-      comp = lambda { |a, b| (a['ip'] != b['ip'] ? a['ip'] <=> b['ip'] : a['nicUuid'] <=> b['nic_uuid']) }
+      comp = ->(a, b) { (a['ip'] != b['ip'] ? a['ip'] <=> b['ip'] : a['nicUuid'] <=> b['nic_uuid']) }
       if is.is_a? Array
         is.sort(&comp) == should.sort(&comp)
       else
@@ -62,7 +62,7 @@ Puppet::Type.newtype(:lan) do
   newproperty(:id) do
     desc 'The LAN ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -70,7 +70,7 @@ Puppet::Type.newtype(:lan) do
   newproperty(:datacenter_id) do
     desc 'The ID of the virtual data center where the LAN will reside.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -78,7 +78,7 @@ Puppet::Type.newtype(:lan) do
   newproperty(:datacenter_name) do
     desc 'The name of the virtual data center where the LAN will reside.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

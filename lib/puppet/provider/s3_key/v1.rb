@@ -6,13 +6,13 @@ Puppet::Type.type(:s3_key).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
-    Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.map do |user|
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
+    Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.map { |user|
       s3_keys = []
       # Ignore user if email is not defined.
       unless user.properties.email.nil? || user.properties.email.empty?
@@ -21,7 +21,7 @@ Puppet::Type.type(:s3_key).provide(:v1) do
         end
       end
       s3_keys
-    end.flatten
+    }.flatten
   end
 
   def self.instance_to_hash(instance, user)

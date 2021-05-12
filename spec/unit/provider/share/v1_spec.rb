@@ -9,17 +9,17 @@ describe provider_class do
         name: 'bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d',
         group_name: 'Puppet Module Test',
         edit_privilege: true,
-        share_privilege: true
+        share_privilege: true,
       )
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Share::ProviderV1
       expect(@provider.name).to eq('bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d')
     end
 
-    it 'should add share' do
+    it 'adds share' do
       VCR.use_cassette('share_add') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -27,7 +27,7 @@ describe provider_class do
       end
     end
 
-    it 'should list share instances' do
+    it 'lists share instances' do
       VCR.use_cassette('share_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -35,7 +35,7 @@ describe provider_class do
       end
     end
 
-    it 'should update share' do
+    it 'updates share' do
       VCR.use_cassette('share_update') do
         @provider.edit_privilege = false
         @provider.flush
@@ -47,7 +47,7 @@ describe provider_class do
       end
     end
 
-    it 'should remove share' do
+    it 'removes share' do
       VCR.use_cassette('share_remove') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

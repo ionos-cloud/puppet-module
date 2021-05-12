@@ -18,7 +18,7 @@ Puppet::Type.newtype(:volume) do
       if value.length < 8 || value.length > 50
         raise ArgumentError, 'The image password must contain at least 8 and no more than 50 characters.'
       end
-      unless value =~ /^[0-9A-Za-z]+$/
+      unless %r{^[0-9A-Za-z]+$}.match?(value)
         raise ArgumentError, 'Only [a-z][A-Z][0-9] characters are allowed for the image password.'
       end
     end
@@ -53,7 +53,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The image ID should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -66,7 +66,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The availability zone should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -80,7 +80,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The bus type should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -94,7 +94,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The volume type should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -107,7 +107,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The license type should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -119,7 +119,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The data center ID should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -131,7 +131,7 @@ Puppet::Type.newtype(:volume) do
       raise ArgumentError, 'The data center name should be a String.' unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

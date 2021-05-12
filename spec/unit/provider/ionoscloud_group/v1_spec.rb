@@ -20,12 +20,12 @@ describe provider_class do
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Ionoscloud_group::ProviderV1
       expect(@provider.name).to eq('Puppet Module Test')
     end
 
-    it 'should create ionoscloud_group' do
+    it 'creates ionoscloud_group' do
       VCR.use_cassette('ionoscloud_group_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -33,7 +33,7 @@ describe provider_class do
       end
     end
 
-    it 'should list ionoscloud_group instances' do
+    it 'lists ionoscloud_group instances' do
       VCR.use_cassette('ionoscloud_group_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -41,7 +41,7 @@ describe provider_class do
       end
     end
 
-    it 'should update ionoscloud_group' do
+    it 'updates ionoscloud_group' do
       VCR.use_cassette('ionoscloud_group_update') do
         @provider.create_data_center = false
         @provider.flush
@@ -53,7 +53,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete ionoscloud_group' do
+    it 'deletes ionoscloud_group' do
       VCR.use_cassette('ionoscloud_group_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

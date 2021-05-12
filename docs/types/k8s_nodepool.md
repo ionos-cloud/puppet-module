@@ -70,6 +70,6 @@ k8s_nodepool { 'nodepool_test' :
   max_node_count    => 2,
   availability_zone => 'AUTO',
   lans              => [4, 7, 5],
-},
+}
 
 ```

@@ -8,7 +8,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:id) do
     desc 'The ID of the image.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -16,7 +16,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:description) do
     desc "The image's description."
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -24,7 +24,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:location) do
     desc "The image's location."
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -32,7 +32,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:size) do
     desc 'The size of the image in GB.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -40,7 +40,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:cpu_hot_plug) do
     desc 'Indicates CPU hot plug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -48,7 +48,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:cpu_hot_unplug) do
     desc 'Indicates CPU hot unplug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -56,7 +56,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:ram_hot_plug) do
     desc 'Indicates memory hot plug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -64,7 +64,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:ram_hot_unplug) do
     desc 'Indicates memory hot unplug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -72,7 +72,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:nic_hot_plug) do
     desc 'Indicates NIC hot plug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -80,7 +80,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:nic_hot_unplug) do
     desc 'Indicates NIC hot unplug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -88,7 +88,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:disc_virtio_hot_plug) do
     desc 'Indicates VirtIO drive hot plug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -96,7 +96,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:disc_virtio_hot_unplug) do
     desc 'Indicates VirtIO drive hot unplug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -104,7 +104,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:disc_scsi_hot_plug) do
     desc 'Indicates SCSI drive hot plug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -112,7 +112,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:disc_scsi_hot_unplug) do
     desc 'Indicates SCSI drive hot unplug capability.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -120,7 +120,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:public) do
     desc 'Indicates if the image is part of the public repository.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -128,7 +128,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:image_type) do
     desc 'The type of image.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -136,7 +136,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:licence_type) do
     desc 'The license type of the image.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -144,7 +144,7 @@ Puppet::Type.newtype(:image) do
   newproperty(:image_aliases, array_matching: :all) do
     desc 'A list of image aliases available at the image.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

@@ -59,9 +59,9 @@ Puppet::Type.newtype(:ionoscloud_user) do
 
     def insync?(is)
       if is.is_a? Array
-        return is.sort == should.sort
+        is.sort == should.sort
       else
-        return is == should
+        is == should
       end
     end
   end
@@ -71,7 +71,7 @@ Puppet::Type.newtype(:ionoscloud_user) do
   newproperty(:id) do
     desc 'The user ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

@@ -6,13 +6,13 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper::ionoscloud_config
+    PuppetX::IonoscloudX::Helper.ionoscloud_config
 
     groups = []
     Ionoscloud::UserManagementApi.new.um_groups_get(depth: 3).items.each do |group|
@@ -109,7 +109,7 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     )
 
     group, _, headers = Ionoscloud::UserManagementApi.new.um_groups_post_with_http_info(group)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created new ionoscloud group #{name}.")
     @property_hash[:ensure] = :present
@@ -131,16 +131,16 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
   def destroy
     Puppet.info("Deleting Group #{name}...")
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_delete_with_http_info(@property_hash[:id])
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
 
   def flush
     changeable_fields = [
-      :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log, 
-      :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc,
+      :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log,
+      :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc
     ]
-    changes = Hash[*changeable_fields.collect {|v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
+    changes = Hash[*changeable_fields.map { |v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
 
     group_properties = {
@@ -161,40 +161,40 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     new_group = Ionoscloud::Group.new(properties: Ionoscloud::GroupProperties.new(**group_properties.merge(changes)))
 
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_put_with_http_info(@property_hash[:id], new_group)
-    PuppetX::IonoscloudX::Helper::wait_request(headers)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
   end
 
   def sync_members(group_id, existing_members, target_members)
     to_wait = []
 
-    target_members.each do |user|
-      unless !existing_members.nil? && existing_members.include?(user)
+    unless target_members.nil?
+      target_members.each do |user|
+        next if !existing_members.nil? && existing_members.include?(user)
         Puppet.info "Adding user #{user} to group #{group_id}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_post_with_http_info(
           group_id,
-          { id: PuppetX::IonoscloudX::Helper::user_from_email(user).id },
+          { id: PuppetX::IonoscloudX::Helper.user_from_email(user).id },
         )
 
         to_wait << headers
       end
-    end unless target_members.nil?
+    end
 
-    existing_members.each do |user|
-      unless !target_members.nil? && target_members.include?(user)
+    unless existing_members.nil?
+      existing_members.each do |user|
+        next if !target_members.nil? && target_members.include?(user)
         Puppet.info "Removing user #{user} from group #{group_id}"
 
         _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_delete_with_http_info(
           group_id,
-          PuppetX::IonoscloudX::Helper::user_from_email(user).id,
+          PuppetX::IonoscloudX::Helper.user_from_email(user).id,
         )
 
         to_wait << headers
       end
-    end unless existing_members.nil?
+    end
 
-
-    to_wait.each { |headers| PuppetX::IonoscloudX::Helper::wait_request(headers) }
+    to_wait.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
   end
-
 end

@@ -17,7 +17,7 @@ Puppet::Type.newtype(:backup_unit) do
     desc 'The e-mail address you want assigned to the backup unit.'
     isrequired
     validate do |value|
-      fail('the Backup Unit email must be a String') unless value.is_a?(String)
+      raise('the Backup Unit email must be a String') unless value.is_a?(String)
     end
   end
 
@@ -25,10 +25,10 @@ Puppet::Type.newtype(:backup_unit) do
     desc 'Alphanumeric password you want assigned to the backup unit.'
     isrequired
     validate do |value|
-      fail('the Backup Unit password must be a String') unless value.is_a?(String)
+      raise('the Backup Unit password must be a String') unless value.is_a?(String)
     end
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
@@ -36,7 +36,7 @@ Puppet::Type.newtype(:backup_unit) do
   newproperty(:id) do
     desc 'The Backup Unit ID.'
 
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

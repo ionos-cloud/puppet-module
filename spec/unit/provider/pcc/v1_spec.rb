@@ -12,17 +12,17 @@ describe provider_class do
           {
             'name' => 'Puppet Module Test',
             'datacenter_name' => 'Puppet Module Test',
-          }
-        ]
+          },
+        ],
       )
       @provider = provider_class.new(@resource)
     end
 
-    it 'should be an instance of the ProviderV1' do
+    it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Pcc::ProviderV1
     end
 
-    it 'should create Ionoscloud PCC' do
+    it 'creates Ionoscloud PCC' do
       VCR.use_cassette('pcc_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
@@ -30,7 +30,7 @@ describe provider_class do
       end
     end
 
-    it 'should list PCC instances' do
+    it 'lists PCC instances' do
       VCR.use_cassette('pcc_list') do
         instances = provider_class.instances
         expect(instances.length).to be > 0
@@ -38,7 +38,7 @@ describe provider_class do
       end
     end
 
-    it 'should update PCC' do
+    it 'updates PCC' do
       VCR.use_cassette('pcc_update') do
         new_description = 'new_description'
         @provider.description = new_description
@@ -50,7 +50,7 @@ describe provider_class do
       end
     end
 
-    it 'should update PCC peers' do
+    it 'updates PCC peers' do
       VCR.use_cassette('pcc_update_peers') do
         peers = []
         my_instance = nil
@@ -71,7 +71,7 @@ describe provider_class do
       end
     end
 
-    it 'should delete PCC' do
+    it 'deletes PCC' do
       VCR.use_cassette('pcc_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false

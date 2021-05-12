@@ -34,7 +34,7 @@ Puppet::Type.newtype(:k8s_cluster) do
       raise ArgumentError, 'The maintenance time should be a String.' unless value.is_a?(String)
       begin
         Time.parse(value)
-      rescue => exception
+      rescue
         raise ArgumentError, 'The maintenance time is not valid.'
       end
     end
@@ -48,21 +48,21 @@ Puppet::Type.newtype(:k8s_cluster) do
 
   newproperty(:id) do
     desc 'The ID of the K8s Cluster.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
   newproperty(:state) do
     desc 'She state of the K8s Cluster.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
 
   newproperty(:k8s_nodepools, array_matching: :all) do
     desc 'A list of K8s nodepool that exist in the cluster.'
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end
