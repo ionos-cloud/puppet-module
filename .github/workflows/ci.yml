@@ -14,16 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: [ 2.6, 2.7, 3.0]
+        puppet-version: [ 5, 6, 7]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.61.1
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
       
       - name: Install PDK
         run: |
@@ -32,17 +27,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install pdk
 
-      - name: Install dependecies
-        run: bundle install
-
       - name: Run validate module
         run: pdk validate
 
       - name: Run the tests
-        run: |
-          pdk test unit
-          pdk bundle exec rake spec
-          bundle exec rake spec
+        run: pdk test unit
 
       - name: Try to build the package
         run: pdk build
