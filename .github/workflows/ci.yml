@@ -26,11 +26,7 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
       
       - name: Install PDK
-        run: |
-          wget https://apt.puppet.com/puppet-tools-release-focal.deb
-          sudo dpkg -i puppet-tools-release-focal.deb
-          sudo apt-get update
-          sudo apt-get install pdk
+        run: gem install pdk
 
       - name: Install dependecies
         run: bundle install
