@@ -27,9 +27,10 @@ jobs:
       
       - name: Install PDK
         run: |
-          gem install pdk
-          gem list pdk
-          pdk convert --noop
+          wget https://apt.puppet.com/puppet-tools-release-focal.deb
+          sudo dpkg -i puppet-tools-release-focal.deb
+          sudo apt-get update
+          sudo apt-get install pdk
 
       - name: Install dependecies
         run: bundle install
@@ -38,7 +39,10 @@ jobs:
         run: pdk validate
 
       - name: Run the tests
-        run: pdk test unit
+        run: |
+          pdk test unit
+          pdk bundle exec rake spec
+          bundle exec rake spec
 
       - name: Try to build the package
         run: pdk build
