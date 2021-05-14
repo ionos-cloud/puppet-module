@@ -12,27 +12,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby-version: [ 2.6, 2.7, 3.0 ]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Install PDK
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-focal.deb
+          sudo dpkg -i puppet-tools-release-focal.deb
+          sudo apt-get update
+          sudo apt-get install pdk
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.61.1
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
+      - name: Run validate module
+        run: pdk validate
 
-      - name: Install Rubocop
-        run: gem install rubocop
+      - name: Run the tests Puppet 5
+        run: pdk test unit --puppet-version=5
 
-      - name: Run Rubocop
-        run: rubocop
+      - name: Run the tests Puppet 6
+        run: pdk test unit --puppet-version=6
 
-      - name: Install the knife plugin
-        run: bundle
+      - name: Run the tests Puppet 7
+        run: pdk test unit --puppet-version=7
 
-      - name: Run the tests
-        run: rspec
+      - name: Try to build the package
+        run: pdk build

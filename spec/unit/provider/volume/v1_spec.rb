@@ -5,6 +5,7 @@ provider_class = Puppet::Type.type(:volume).provider(:v1)
 describe provider_class do
   context 'volume operations' do
     before(:all) do
+      puts RUBY_VERSION
       @resource1 = Puppet::Type.type(:volume).new(
         name: 'Puppet Module Test',
         size: 3,
