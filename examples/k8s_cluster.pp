@@ -1,4 +1,4 @@
-k8s_cluster { 'myCluster' :
+k8s_cluster { 'myClustertest' :
   ensure           => present,
   k8s_version      => '1.18.15',
   maintenance_day  => 'Sunday',

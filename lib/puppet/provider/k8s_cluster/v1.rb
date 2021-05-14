@@ -13,8 +13,6 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
 
   def self.instances
     PuppetX::IonoscloudX::Helper.ionoscloud_config
-
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     k8s_clusters = []
     Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.each do |k8s_cluster|
       # Ignore data centers if name is not defined.
@@ -82,7 +80,15 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     cluster_properties = {
       name: resource[:name],
       k8s_version: resource[:k8s_version],
+      public: (resource[:public] == :true),
     }
+
+    if !(resource[:public] == :true)
+      if resource[:gateway_ip].nil?
+        fail 'If public is set to false then gateway_ip must be set!'
+      end
+      cluster_properties[:gateway_ip] = resource[:gateway_ip]
+    end
 
     if resource[:maintenance_day] && resource[:maintenance_time]
       cluster_properties[:maintenance_window] = Ionoscloud::KubernetesMaintenanceWindow.new(
@@ -91,8 +97,8 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       )
     end
 
-    k8s_cluster = Ionoscloud::KubernetesCluster.new(
-      properties: Ionoscloud::KubernetesClusterProperties.new(
+    k8s_cluster = Ionoscloud::KubernetesClusterForPost.new(
+      properties: Ionoscloud::KubernetesClusterPropertiesForPost.new(
         **cluster_properties,
       ),
     )
@@ -115,7 +121,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       ),
     }
 
-    new_k8s_cluster = Ionoscloud::KubernetesCluster.new(properties: Ionoscloud::KubernetesClusterProperties.new(cluster_properties))
+    new_k8s_cluster = Ionoscloud::KubernetesClusterForPut.new(properties: Ionoscloud::KubernetesClusterPropertiesForPut.new(cluster_properties))
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
   end

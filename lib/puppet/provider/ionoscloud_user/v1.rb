@@ -71,8 +71,8 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
   end
 
   def create
-    user = Ionoscloud::User.new(
-      properties: Ionoscloud::UserProperties.new(
+    user = Ionoscloud::UserPost.new(
+      properties: Ionoscloud::UserPropertiesPost.new(
         firstname: resource[:firstname],
         lastname: resource[:lastname],
         email: resource[:email],
@@ -113,14 +113,13 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
       firstname: @property_hash[:firstname],
       lastname: @property_hash[:lastname],
       email: @property_hash[:email],
-      password: @property_hash[:password],
       administrator: @property_hash[:administrator],
       force_sec_auth: @property_hash[:force_sec_auth],
     }
 
     Puppet.info "Updating user #{@property_hash[:email]} with #{changes}"
 
-    new_user = Ionoscloud::User.new(properties: Ionoscloud::UserProperties.new(**user_properties.merge(changes)))
+    new_user = Ionoscloud::UserPut.new(properties: Ionoscloud::UserPropertiesPut.new(**user_properties.merge(changes)))
 
     _, _, headers = Ionoscloud::UserManagementApi.new.um_users_put_with_http_info(@property_hash[:id], new_user)
     PuppetX::IonoscloudX::Helper.wait_request(headers)

@@ -1,3 +1,4 @@
+require 'ipaddr'
 require 'time'
 require 'puppet/parameter/boolean'
 
@@ -18,6 +19,23 @@ Puppet::Type.newtype(:k8s_cluster) do
     desc 'The K8s version of the K8s Cluster.'
     validate do |value|
       raise ArgumentError, 'The K8s version should be a String.' unless value.is_a?(String)
+    end
+  end
+
+  newproperty(:public) do
+    desc 'The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.'
+    defaultto :true
+    newvalues(:true, :false)
+    def insync?(is)
+      true
+    end
+  end
+
+  newproperty(:gateway_ip) do
+    desc 'The IP address of the gateway used by the cluster. This is mandatory when `public` is set to `false` and should not be provided otherwise.'
+    validate do |value|
+      raise ArgumentError, 'The gateway IP should be a String.' unless value.is_a?(String)
+      IPAddr.new value
     end
   end
 
