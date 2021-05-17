@@ -58,6 +58,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       k8s_version: instance.properties.k8s_version,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
+      available_upgrade_versions: instance.properties.available_upgrade_versions,
       k8s_nodes: nodes.items.map do |node|
         {
           id: node.id,

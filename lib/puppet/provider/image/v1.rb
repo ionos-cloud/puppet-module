@@ -42,6 +42,7 @@ Puppet::Type.type(:image).provide(:v1) do
       image_type: instance.properties.image_type,
       licence_type: instance.properties.licence_type,
       image_aliases: instance.properties.image_aliases,
+      cloud_init: instance.properties.cloud_init,
     }
   end
 end

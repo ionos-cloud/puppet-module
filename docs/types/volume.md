@@ -21,6 +21,7 @@ Type representing a ProfitBricks storage volume.
 | availability_zone | No | The availability zone of where the volume will reside.   | AUTO |
 | bus | No | The bus type of the volume.  Valid values are `VIRTIO`, `IDE`.  | VIRTIO |
 | volume_type | No | The volume type.  Valid values are `HDD`, `SSD`.  | HDD |
+| user_data | No | The cloud-init configuration for the volume as base64 encoded string. The property is immutable and is only allowed to be set on a new volume creation. It is mandatory to provide either 'public image' or 'imageAlias' that has cloud-init compatibility in conjunction with this property.   | - |
 | licence_type | No | The license type of the volume.  Valid values are `LINUX`, `WINDOWS`, `WINDOWS2016`, `UNKNOWN`, `OTHER`.  | - |
 | datacenter_id | No | The ID of the virtual data center where the volume will reside.   | - |
 | datacenter_name | No | The name of the virtual data center where the volume will reside.   | - |

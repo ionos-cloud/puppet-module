@@ -117,6 +117,14 @@ Puppet::Type.newtype(:image) do
     end
   end
 
+  newproperty(:cloud_init) do
+    desc 'Indicates Cloud init compatibility.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:public) do
     desc 'Indicates if the image is part of the public repository.'
 

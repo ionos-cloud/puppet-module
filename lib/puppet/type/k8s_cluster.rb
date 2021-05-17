@@ -84,4 +84,18 @@ Puppet::Type.newtype(:k8s_cluster) do
       true
     end
   end
+
+  newproperty(:available_upgrade_versions, array_matching: :all) do
+    desc 'List of available versions for upgrading the cluster.'
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:viable_node_pool_versions, array_matching: :all) do
+    desc 'List of versions that may be used for node pools under this cluster.'
+    def insync?(_is)
+      true
+    end
+  end
 end

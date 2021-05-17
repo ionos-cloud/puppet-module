@@ -25,6 +25,7 @@ describe type_class do
       :disc_virtio_hot_unplug,
       :disc_scsi_hot_plug,
       :disc_scsi_hot_unplug,
+      :cloud_init,
       :public,
       :image_type,
       :image_aliases,

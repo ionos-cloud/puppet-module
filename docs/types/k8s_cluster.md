@@ -14,6 +14,8 @@ Type representing a Ionoscloud K8s Cluster.
 | :--- | :-: | :--- | :--- |
 | ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
 | k8s_version | No | The K8s version of the K8s Cluster.   | - |
+| public | No | The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.  Valid values are `true`, `false`.  | true |
+| gateway_ip | No | The IP address of the gateway used by the cluster. This is mandatory when `public` is set to `false` and should not be provided otherwise.   | - |
 | maintenance_day | No | The maintenance day of the K8s Cluster.   | - |
 | maintenance_time | No | The maintenance time of the K8s Cluster.   | - |
 | id | No | The ID of the K8s Cluster.   | - |
@@ -32,7 +34,7 @@ Type representing a Ionoscloud K8s Cluster.
 ## Example
 
 ```text
-k8s_cluster { 'myCluster' :
+k8s_cluster { 'myClustertest' :
   ensure           => present,
   k8s_version      => '1.18.15',
   maintenance_day  => 'Sunday',

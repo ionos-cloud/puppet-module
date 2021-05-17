@@ -309,7 +309,14 @@ module PuppetX
           size: volume['size'],
           bus: volume['bus'],
           type: volume['volume_type'] || 'HDD',
+          user_data: volume['user_data'],
           availability_zone: volume['availability_zone'],
+          cpu_hot_plug: volume['cpu_hot_plug'],
+          ram_hot_plug: volume['ram_hot_plug'],
+          nic_hot_plug: volume['nic_hot_plug'],
+          nic_hot_unplug: volume['nic_hot_unplug'],
+          disc_virtio_hot_plug: volume['disc_virtio_hot_plug'],
+          disc_virtio_hot_unplug: volume['disc_virtio_hot_unplug'],
         }
 
         if volume['image_password'] && !volume['image_password'].empty?

@@ -28,6 +28,7 @@ group :development do
   gem "puppet-module-win-dev-r#{minor_version}", '~> 1.0',       require: false, platforms: [:mswin, :mingw, :x64_mingw] if minor_version != '3.0'
   gem 'webmock', '~> 3.12', '>= 3.12.2',     require: true
   gem 'vcr', '~> 6.0',     require: true
+  gem 'mustache', '~> 1.0',     require: true
 end
 group :system_tests do
   gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby] if minor_version != '3.0'

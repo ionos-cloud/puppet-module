@@ -20,13 +20,13 @@ Puppet::Type.newtype(:datacenter) do
     end
   end
 
-  # read-only properties
+  newproperty(:sec_auth_protection) do
+    desc 'Boolean value representing if the data center requires extra protection e.g. two factor protection.'
+    defaultto :false
+    newvalues(:true, :false)
 
-  newproperty(:id) do
-    desc 'The data center ID.'
-
-    def insync?(_is)
-      true
+    def insync?(is)
+      is.to_s == should.to_s
     end
   end
 
@@ -37,6 +37,32 @@ Puppet::Type.newtype(:datacenter) do
       raise('Data center location must be set') if value == ''
       raise('Data center location must be a String') unless value.is_a?(String)
     end
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  # read-only properties
+
+  newproperty(:version) do
+    desc 'The data center version.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:features, array_matching: :all) do
+    desc 'List of features supported by the location this data center is part of.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:id) do
+    desc 'The data center ID.'
 
     def insync?(_is)
       true

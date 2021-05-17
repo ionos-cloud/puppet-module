@@ -182,6 +182,13 @@ Puppet::Type.newtype(:k8s_nodepool) do
     end
   end
 
+  newproperty(:available_upgrade_versions, array_matching: :all) do
+    desc 'List of available versions for upgrading the node pool.'
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:cluster_name) do
     desc 'The name of the K8s used by the K8s Nodepool.'
     validate do |value|

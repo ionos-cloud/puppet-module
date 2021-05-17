@@ -63,4 +63,12 @@ Puppet::Type.newtype(:ipblock) do
       true
     end
   end
+
+  newproperty(:ip_consumers, array_matching: :all) do
+    desc 'Read-Only attribute. Lists consumption detail of an individual ip'
+
+    def insync?(_is)
+      true
+    end
+  end
 end

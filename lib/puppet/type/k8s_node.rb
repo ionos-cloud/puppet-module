@@ -30,6 +30,14 @@ Puppet::Type.newtype(:k8s_node) do
     end
   end
 
+  newproperty(:private_ip) do
+    desc 'The private IP of the K8s Node.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:state) do
     desc 'She state of the K8s Node.'
 

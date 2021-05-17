@@ -37,6 +37,8 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
       state: instance.metadata.state,
+      available_upgrade_versions: instance.properties.available_upgrade_versions,
+      viable_node_pool_versions: instance.properties.viable_node_pool_versions,
       k8s_nodepools: instance.entities.nodepools.items.map do |nodepool|
         {
           id: nodepool.id,

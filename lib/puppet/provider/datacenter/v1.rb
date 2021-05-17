@@ -8,6 +8,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def initialize(*args)
     PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
+    @property_flush = {}
   end
 
   def self.instances
@@ -34,21 +35,19 @@ Puppet::Type.type(:datacenter).provide(:v1) do
       name: instance.properties.name,
       description: instance.properties.description,
       location: instance.properties.location,
+      version: instance.properties.version,
+      sec_auth_protection: instance.properties.sec_auth_protection,
+      features: instance.properties.features,
       ensure: :present,
     }
   end
 
+  def sec_auth_protection=(value)
+    @property_flush[:sec_auth_protection] = value
+  end
+
   def description=(value)
-    Puppet.info("Updating data center '#{resource[:name]}' description.")
-
-    datacenter = PuppetX::IonoscloudX::Helper.datacenter_from_name(name)
-    changes = Ionoscloud::DatacenterProperties.new(
-      description: value,
-    )
-
-    datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_patch_with_http_info(datacenter.id, changes)
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
-    @property_hash[:description] = datacenter.properties.description
+    @property_flush[:description] = value
   end
 
   def exists?
@@ -71,6 +70,22 @@ Puppet::Type.type(:datacenter).provide(:v1) do
 
     @property_hash[:ensure] = :present
     @property_hash[:id] = datacenter.id
+  end
+
+  def flush
+    changeable_properties = [:description, :sec_auth_protection]
+    changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
+
+    return if changes.empty?
+
+    changes = Ionoscloud::DatacenterProperties.new(**changes)
+
+    _, _, headers = Ionoscloud::DataCenterApi.new.datacenters_patch_with_http_info(@property_hash[:id], changes)
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
+    end
   end
 
   def destroy

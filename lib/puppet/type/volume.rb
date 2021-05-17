@@ -99,6 +99,21 @@ Puppet::Type.newtype(:volume) do
     end
   end
 
+  newproperty(:user_data) do
+    desc "The cloud-init configuration for the volume as base64 encoded string. "\
+    "The property is immutable and is only allowed to be set on a new volume creation. "\
+    "It is mandatory to provide either 'public image' or 'imageAlias' that has cloud-init "\
+    "compatibility in conjunction with this property."
+
+    validate do |value|
+      raise ArgumentError, 'The user data should be a String.' unless value.is_a?(String)
+    end
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:licence_type) do
     desc 'The license type of the volume.'
     newvalues('LINUX', 'WINDOWS', 'WINDOWS2016', 'UNKNOWN', 'OTHER')
@@ -106,6 +121,76 @@ Puppet::Type.newtype(:volume) do
     validate do |value|
       raise ArgumentError, 'The license type should be a String.' unless value.is_a?(String)
     end
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:device_number) do
+    desc "The LUN ID of the storage volume. Null for volumes not mounted to any VM"
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:backupunit_id) do
+    desc "The uuid of the Backup Unit that user has access to. The property is immutable and is "\
+    "only allowed to be set on a new volume creation. It is mandatory to provide either 'public image' "\
+    "or 'imageAlias' in conjunction with this property."
+
+    validate do |value|
+      raise ArgumentError, 'The backupunit_id should be a String.' unless value.is_a?(String)
+    end
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:cpu_hot_plug) do
+    desc 'Indicates CPU hot plug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:ram_hot_plug) do
+    desc 'Indicates memory hot plug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:nic_hot_plug) do
+    desc 'Indicates NIC hot plug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:nic_hot_unplug) do
+    desc 'Indicates NIC hot unplug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:disc_virtio_hot_plug) do
+    desc 'Indicates VirtIO drive hot plug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:disc_virtio_hot_unplug) do
+    desc 'Indicates VirtIO drive hot unplug capability.'
 
     def insync?(_is)
       true
