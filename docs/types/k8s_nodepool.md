@@ -27,6 +27,7 @@ Type representing a Ionoscloud K8s Nodepool.
 | storage_type | No | The volume type.  Valid values are `HDD`, `SSD`.  | HDD |
 | storage_size | No | The size of the volume in GB.   | - |
 | lans | No | The list of additional private LANs attached to worker nodes.   | - |
+| available_upgrade_versions | No | List of available versions for upgrading the node pool.   | - |
 | cluster_name | No | The name of the K8s used by the K8s Nodepool.   | - |
 | id | No | The ID of the K8s Nodepool.   | - |
 | datacenter_id | No | The datacenter used by the K8s Nodepool.   | - |

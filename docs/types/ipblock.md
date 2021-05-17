@@ -18,6 +18,7 @@ Type representing a ProfitBricks IP block.
 | id | No | The IP block's ID.   | - |
 | created_by | No | The user who created the IP block.   | - |
 | ips | No | The IPs allocated to the IP block.   | - |
+| ip_consumers | No | Read-Only attribute. Lists consumption detail of an individual ip   | - |
 ***
 
 

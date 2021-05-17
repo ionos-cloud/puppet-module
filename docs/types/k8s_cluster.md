@@ -21,6 +21,8 @@ Type representing a Ionoscloud K8s Cluster.
 | id | No | The ID of the K8s Cluster.   | - |
 | state | No | She state of the K8s Cluster.   | - |
 | k8s_nodepools | No | A list of K8s nodepool that exist in the cluster.   | - |
+| available_upgrade_versions | No | List of available versions for upgrading the cluster.   | - |
+| viable_node_pool_versions | No | List of versions that may be used for node pools under this cluster.   | - |
 ***
 
 
