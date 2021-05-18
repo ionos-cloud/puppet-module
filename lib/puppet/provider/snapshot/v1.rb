@@ -144,6 +144,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     changeable_properties = [
       :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug,
       :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug,
@@ -163,6 +164,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 
   def destroy

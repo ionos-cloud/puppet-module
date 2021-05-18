@@ -114,6 +114,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     cluster_properties = {
       name: @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
@@ -126,6 +127,11 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     new_k8s_cluster = Ionoscloud::KubernetesClusterForPut.new(properties: Ionoscloud::KubernetesClusterPropertiesForPut.new(cluster_properties))
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    [:k8s_version, :maintenance_day, :maintenance_time].each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
+    end
+    @property_flush = {}
   end
 
   def destroy

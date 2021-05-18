@@ -88,6 +88,7 @@ Puppet::Type.type(:share).provide(:v1) do
 
   def flush
     return if @property_flush.empty?
+    return if @property_flush.empty?
 
     share = Ionoscloud::GroupShare.new(
       properties: Ionoscloud::GroupShareProperties.new(
@@ -105,6 +106,7 @@ Puppet::Type.type(:share).provide(:v1) do
 
     @property_hash[:edit_privilege] = share.properties.edit_privilege
     @property_hash[:share_privilege] = share.properties.share_privilege
+    @property_flush = {}
   end
 
   def destroy

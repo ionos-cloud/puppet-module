@@ -137,6 +137,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     PuppetX::IonoscloudX::Helper.update_firewallrule(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true
     )

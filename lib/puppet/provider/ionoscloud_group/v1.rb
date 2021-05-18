@@ -136,11 +136,12 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
   end
 
   def flush
-    changeable_fields = [
+    return if @property_flush.empty?
+    changeable_properties = [
       :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log,
       :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc
     ]
-    changes = Hash[*changeable_fields.map { |v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
+    changes = Hash[*changeable_properties.map { |v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
 
     group_properties = {
@@ -162,6 +163,11 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
 
     _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_put_with_http_info(@property_hash[:id], new_group)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    changeable_properties.each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
+    end
+    @property_flush = {}
   end
 
   def sync_members(group_id, existing_members, target_members)

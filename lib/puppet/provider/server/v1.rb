@@ -211,6 +211,7 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
@@ -228,6 +229,7 @@ Puppet::Type.type(:server).provide(:v1) do
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 
   def restart

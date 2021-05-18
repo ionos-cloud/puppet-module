@@ -158,9 +158,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   end
 
   def flush
-    if @property_flush.empty?
-      return
-    end
+    return if @property_flush.empty?
 
     nodepool_properties = {
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
@@ -179,6 +177,11 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     new_k8s_nodepool = Ionoscloud::KubernetesNodePool.new(properties: Ionoscloud::KubernetesNodePoolProperties.new(nodepool_properties))
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    [:k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count, :max_node_count].each do |property|
+      @property_hash[property] = @property_flush[property] if @property_flush[property]
+    end
+    @property_flush = {}
   end
 
   def destroy
