@@ -147,6 +147,20 @@ Puppet::Type.newtype(:server) do
     end
   end
 
+  newproperty(:cdroms, array_matching: :all) do
+    desc 'A list of Cdroms to associate with the server.'
+    validate do |value|
+      cdroms = value.is_a?(Array) ? value : [value]
+      cdroms.each do |cdrom|
+        raise("Cdrom must include 'id'") unless cdrom.keys.include?('id')
+      end
+    end
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [])
+    end
+  end
+
   newproperty(:purge_volumes) do
     desc 'Sets whether attached volumes are removed when server is removed.'
     defaultto :false

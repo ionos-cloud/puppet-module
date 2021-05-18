@@ -43,6 +43,14 @@ Puppet::Type.type(:server).provide(:v1) do
       }
     end
 
+    cdroms = instance.entities.cdroms.items.map do |cdrom|
+      {
+        id: cdrom.id,
+        name: cdrom.properties.name,
+        size: Float(cdrom.properties.size),
+      }
+    end
+
     nics = instance.entities.nics.items.map do |nic|
       lan = Ionoscloud::LanApi.new.datacenters_lans_find_by_id(datacenter.id, nic.properties.lan)
       {
@@ -99,6 +107,7 @@ Puppet::Type.type(:server).provide(:v1) do
       },
       ensure: state,
       volumes: volumes,
+      cdroms: cdroms,
       nics: nics,
     }
   end
@@ -131,16 +140,23 @@ Puppet::Type.type(:server).provide(:v1) do
     end
   end
 
+  def cdroms=(value)
+    PuppetX::IonoscloudX::Helper.sync_cdroms(
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:cdroms], value, wait: true,
+    )
+    @property_hash[:cdrom] = value
+  end
+
   def volumes=(value)
     PuppetX::IonoscloudX::Helper.sync_volumes(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
     )
     @property_hash[:volumes] = value
   end
 
   def nics=(value)
     PuppetX::IonoscloudX::Helper.sync_nics(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true,
     )
     @property_hash[:nics] = value
   end
@@ -176,6 +192,9 @@ Puppet::Type.type(:server).provide(:v1) do
           availability_zone: resource[:availability_zone].to_s,
         ),
         entities: Ionoscloud::ServerEntities.new(
+          cdroms: Ionoscloud::Cdroms.new(
+            items: PuppetX::IonoscloudX::Helper.cdrom_object_array_from_hashes(resource[:cdroms]),
+          ),
           volumes: Ionoscloud::Volumes.new(
             items: PuppetX::IonoscloudX::Helper.volume_object_array_from_hashes(resource[:volumes]),
           ),

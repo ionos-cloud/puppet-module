@@ -103,6 +103,37 @@ module PuppetX
         raise 'Cluster ID or name must be provided.'
       end
 
+      def self.sync_cdroms(datacenter_id, server_id, existing_cdroms, target_cdroms, wait = false)
+        to_detach = existing_cdroms.nil? ? [] : existing_cdroms.map { |cdrom| cdrom[:id] }
+        to_wait = []
+
+        target_cdroms.each do |target_cdrom|
+          if to_detach.include? target_cdrom['id']
+            to_detach.delete(target_cdrom['id'])
+          else
+            Puppet.info "Attaching #{target_cdrom['id']} to server"
+            _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_post_with_http_info(
+              datacenter_id, server_id, id: target_cdrom['id'],
+            )
+
+            to_wait << headers
+          end
+        end
+
+        to_detach.each do |cdrom_id|
+          Puppet.info "Detaching #{cdrom_id} from server"
+          _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_delete_with_http_info(
+            datacenter_id, server_id, cdrom_id,
+          )
+          to_wait << headers
+        end
+
+        return to_wait unless wait
+
+        to_wait.each { |headers| wait_request(headers) }
+        []
+      end
+
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
         existing_names = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:name] }
 
@@ -174,7 +205,7 @@ module PuppetX
 
       def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
         changes = Hash[*[:size].map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
-        return nil unless !changes.empty?
+        return nil if changes.empty?
 
         raise 'Decreasing size of the volume is not allowed.' unless target['size'] > current[:size]
 
@@ -247,7 +278,7 @@ module PuppetX
       end
 
       def self.sync_firewallrules(datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules, wait = false)
-        return [] unless !target_firewallrules.nil?
+        return [] if target_firewallrules.nil?
 
         existing_names = existing_firewallrules.nil? ? [] : existing_firewallrules.map { |firewallrule| firewallrule[:name] }
 
@@ -290,7 +321,7 @@ module PuppetX
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
         changeable_fields = [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
-        return nil unless !changes.empty?
+        return nil if changes.empty?
 
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
         Puppet.info "Updating Firewall Rule #{current[:name]} with #{changes}"
@@ -298,7 +329,7 @@ module PuppetX
         _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
           datacenter_id, server_id, nic_id, firewallrule_id, changes
         )
-        wait_request(headers) unless !wait
+        wait_request(headers) if wait
 
         headers
       end
@@ -340,6 +371,12 @@ module PuppetX
             **(volume_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
         )
+      end
+
+      def self.cdrom_object_array_from_hashes(cdroms)
+        return [] if cdroms.nil?
+
+        cdroms.map { |cdrom| Ionoscloud::Image.new(id: cdrom['id']) }
       end
 
       def self.nic_object_from_hash(nic, datacenter_id)
@@ -387,7 +424,7 @@ module PuppetX
       end
 
       def self.volume_object_array_from_hashes(volumes)
-        return [] unless !volumes.nil?
+        return [] if volumes.nil?
 
         volumes.map do |volume|
           if volume['id'].nil?

@@ -20,6 +20,7 @@ describe type_class do
       :ram,
       :availability_zone,
       :licence_type,
+      :cdroms,
       :volumes,
       :purge_volumes,
       :nics,
