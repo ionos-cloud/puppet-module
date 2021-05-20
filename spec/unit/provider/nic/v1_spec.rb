@@ -20,7 +20,7 @@ describe provider_class do
       expect(@provider).to be_an_instance_of Puppet::Type::Nic::ProviderV1
     end
 
-    it 'creates ProfitBricks NIC' do
+    it 'creates IonosCloud NIC' do
       VCR.use_cassette('nic_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true

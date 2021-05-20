@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:volume) do
-  @doc = 'Type representing a ProfitBricks storage volume.'
+  @doc = 'Type representing a IonosCloud storage volume.'
   @changeable_properties = [:size]
 
   ensurable

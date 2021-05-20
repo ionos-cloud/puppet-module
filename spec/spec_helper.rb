@@ -12,7 +12,7 @@ require 'puppetlabs_spec_helper/module_spec_helper'
 VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock
-  config.filter_sensitive_data('username') { ENV['PROFITBRICKS_USERNAME'] }
+  config.filter_sensitive_data('username') { ENV['IONOS_USERNAME'] }
 
   config.before_record do |rec|
     filter_headers(rec, 'Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=')

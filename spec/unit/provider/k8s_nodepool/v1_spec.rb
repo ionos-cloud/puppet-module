@@ -31,7 +31,7 @@ describe provider_class do
       expect(@provider).to be_an_instance_of Puppet::Type::K8s_nodepool::ProviderV1
     end
 
-    it 'creates ProfitBricks k8s nodepool with minimum params' do
+    it 'creates IonosCloud k8s nodepool with minimum params' do
       VCR.use_cassette('k8s_nodepool_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true

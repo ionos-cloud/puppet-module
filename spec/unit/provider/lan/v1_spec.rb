@@ -24,7 +24,7 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Lan::ProviderV1
     end
 
-    it 'creates ProfitBricks LAN with minimum params' do
+    it 'creates IonosCloud LAN with minimum params' do
       VCR.use_cassette('lan_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -32,7 +32,7 @@ describe provider_class do
       end
     end
 
-    it 'creates ProfitBricks LAN with all params' do
+    it 'creates IonosCloud LAN with all params' do
       VCR.use_cassette('lan_create_all') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true

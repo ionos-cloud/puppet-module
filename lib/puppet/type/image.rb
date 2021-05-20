@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:image) do
-  @doc = 'Type representing a ProfitBricks image.'
+  @doc = 'Type representing a IonosCloud image.'
 
   newparam(:name, namevar: true) do
     desc 'The name of the image.'

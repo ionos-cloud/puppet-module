@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:share) do
-  @doc = 'Type representing a ProfitBricks shared resource.'
+  @doc = 'Type representing a IonosCloud shared resource.'
   @changeable_properties = [:edit_privilege, :share_privilege]
 
   ensurable

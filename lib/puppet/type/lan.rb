@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:lan) do
-  @doc = 'Type representing a ProfitBricks LAN.'
+  @doc = 'Type representing a IonosCloud LAN.'
   @changeable_properties = [:public, :pcc, :ip_failover]
 
   newproperty(:ensure) do

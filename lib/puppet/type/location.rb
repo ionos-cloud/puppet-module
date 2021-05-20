@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:location) do
-  @doc = 'Type representing a ProfitBricks location.'
+  @doc = 'Type representing a IonosCloud location.'
 
   newparam(:name, namevar: true) do
     desc 'The name of the location.'

@@ -66,7 +66,7 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Server::ProviderV1
     end
 
-    it 'creates ProfitBricks server with minimum params' do
+    it 'creates IonosCloud server with minimum params' do
       VCR.use_cassette('server_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true

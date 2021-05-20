@@ -32,7 +32,7 @@ describe provider_class do
       expect(@provider).to be_an_instance_of Puppet::Type::Firewall_rule::ProviderV1
     end
 
-    it 'creates ProfitBricks firewall rule' do
+    it 'creates IonosCloud firewall rule' do
       VCR.use_cassette('firewall_rule_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true

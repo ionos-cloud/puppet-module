@@ -34,7 +34,7 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Volume::ProviderV1
     end
 
-    it 'creates ProfitBricks HDD volume' do
+    it 'creates IonosCloud HDD volume' do
       VCR.use_cassette('volume_create_hdd') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -42,7 +42,7 @@ describe provider_class do
       end
     end
 
-    it 'creates ProfitBricks SSD volume' do
+    it 'creates IonosCloud SSD volume' do
       VCR.use_cassette('volume_create_ssd') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true

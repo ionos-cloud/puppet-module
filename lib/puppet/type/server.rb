@@ -3,7 +3,7 @@ require 'puppet/parameter/boolean'
 require_relative '../../puppet_x/ionoscloud/helper'
 
 Puppet::Type.newtype(:server) do
-  @doc = 'Type representing a ProfitBricks server.'
+  @doc = 'Type representing a IonosCloud server.'
   @changeable_properties = [:cores, :cpu_family, :ram, :availability_zone, :boot_volume, :volumes, :nics]
 
   newproperty(:ensure) do
