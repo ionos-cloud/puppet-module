@@ -1,6 +1,6 @@
 # image
 
-Type representing a ProfitBricks image.
+Type representing a IonosCloud image.
 
 ## Parameters:
 

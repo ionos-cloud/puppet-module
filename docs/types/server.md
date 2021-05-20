@@ -1,6 +1,6 @@
 # server
 
-Type representing a ProfitBricks server.
+Type representing a IonosCloud server.
 
 ## Parameters:
 

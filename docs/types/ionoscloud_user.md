@@ -1,6 +1,6 @@
 # ionoscloud_user
 
-Type representing a ProfitBricks user.
+Type representing a IonosCloud user.
 
 ## Parameters:
 

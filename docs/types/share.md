@@ -1,6 +1,6 @@
 # share
 
-Type representing a ProfitBricks shared resource.
+Type representing a IonosCloud shared resource.
 
 ## Parameters:
 

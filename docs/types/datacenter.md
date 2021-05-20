@@ -1,6 +1,6 @@
 # datacenter
 
-Type representing a ProfitBricks virtual data center.
+Type representing a IonosCloud virtual data center.
 
 ## Parameters:
 

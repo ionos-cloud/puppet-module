@@ -1,6 +1,6 @@
 # nic
 
-Type representing a ProfitBricks network interface.
+Type representing a IonosCloud network interface.
 
 ## Parameters:
 

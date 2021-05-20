@@ -1,6 +1,6 @@
 # pcc
 
-Type representing a ProfitBricks LAN.
+Type representing a IonosCloud LAN.
 
 ## Parameters:
 

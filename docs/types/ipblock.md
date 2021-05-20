@@ -1,6 +1,6 @@
 # ipblock
 
-Type representing a ProfitBricks IP block.
+Type representing a IonosCloud IP block.
 
 ## Parameters:
 

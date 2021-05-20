@@ -1,6 +1,6 @@
 # volume
 
-Type representing a ProfitBricks storage volume.
+Type representing a IonosCloud storage volume.
 
 ## Parameters:
 
