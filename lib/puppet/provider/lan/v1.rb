@@ -46,7 +46,7 @@ Puppet::Type.type(:lan).provide(:v1) do
       ip_failover: instance.properties.ip_failover.map do |el|
         el = el.to_hash
         el[:nic_uuid] = el.delete :nicUuid
-        el.transform_keys(&:to_s)
+        JSON.parse(el.to_json)
       end,
       public: instance.properties.public,
       pcc: pcc_name,
