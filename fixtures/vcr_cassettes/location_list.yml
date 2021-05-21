@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v5
+      - OpenAPI-Generator/5.1.0/ruby
       Content-Type:
       - application/json
       Accept:
@@ -22,11 +22,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 14 Apr 2021 09:29:29 GMT
+      - Fri, 21 May 2021 15:01:44 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '4671'
+      - '4855'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -48,7 +48,7 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
     body:
-      encoding: UTF-8
+      encoding: ASCII-8BIT
       string: |
         {
           "id" : "locations",
@@ -60,8 +60,8 @@ http_interactions:
             "href" : "https://api.ionos.com/cloudapi/v5/locations/de/fra",
             "properties" : {
               "name" : "frankfurt",
-              "features" : [ "SSD" ],
-              "imageAliases" : [ "windows:2019", "centos:8", "ubuntu:20.10_iso", "gparted:latest_iso", "mssql:2016_trial_iso", "ubuntu:latest_iso", "windows:virtiodriver_iso", "centos:7_iso", "debian:8", "ubuntu:20.04_iso", "mssql:2017_trial_iso", "mssql:2012_trial_iso", "debian:10_iso", "windows:2012r2_iso", "windows:2016_iso", "ubuntu:18.04_iso", "windows:2016", "ubuntu:20.04", "windows:latest", "centos:7", "debian:latest_iso", "debian:testing", "ubuntu:18.04", "windows:recovery_iso", "ubuntu:16.04_iso", "centos:6_iso", "centos:latest_iso", "windows:2012r2", "ubuntu:19.10", "centos:latest", "ubuntu:latest", "centos:8_iso", "debian:latest", "debian:9", "ubuntu:16.04", "windows:2019_iso", "debian:10", "centos:6" ]
+              "features" : [ "SSD_STORAGE_ZONING", "SSD" ],
+              "imageAliases" : [ "ubuntu:20.04", "windows:2012r2", "ubuntu:20.10_iso", "centos:8", "debian:latest", "gparted:latest_iso", "mssql:2016_trial_iso", "ubuntu:latest_iso", "centos:7_iso", "windows:2012r2_iso", "debian:8", "ubuntu:20.04_iso", "mssql:2017_trial_iso", "mssql:2012_trial_iso", "debian:10_iso", "debian:9", "ubuntu:18.04_iso", "windows:2019_iso", "centos:7", "centos:latest", "debian:latest_iso", "ubuntu:18.04", "ubuntu:latest", "windows:2016_iso", "windows:recovery_iso", "ubuntu:16.04_iso", "windows:latest", "debian:testing", "ubuntu:16.04", "centos:6_iso", "centos:latest_iso", "ubuntu:19.10", "mssql:2019_trial_iso", "centos:8_iso", "windows:2016", "windows:2019", "centos:6", "windows:virtiodriver_iso", "debian:10" ]
             }
           }, {
             "id" : "us/las",
@@ -69,8 +69,8 @@ http_interactions:
             "href" : "https://api.ionos.com/cloudapi/v5/locations/us/las",
             "properties" : {
               "name" : "lasvegas",
-              "features" : [ "SSD" ],
-              "imageAliases" : [ "windows:virtiodriver_iso", "centos:8", "ubuntu:20.04", "centos:6_iso", "mssql:2016_trial_iso", "windows:2012r2", "ubuntu:latest_iso", "ubuntu:18.04", "debian:latest", "mssql:2012_trial_iso", "mssql:2017_trial_iso", "windows:2012r2_iso", "windows:2016_iso", "gparted:latest_iso", "windows:2016", "ubuntu:latest", "windows:recovery_iso", "windows:latest", "ubuntu:19.10", "ubuntu:16.04_iso", "centos:7_iso", "debian:8", "debian:9", "debian:testing", "debian:latest_iso", "ubuntu:18.04_iso", "ubuntu:20.10_iso", "windows:2019_iso", "centos:latest", "centos:8_iso", "centos:6", "debian:10_iso", "centos:latest_iso", "windows:2019", "centos:7", "debian:10", "ubuntu:20.04_iso", "ubuntu:16.04" ]
+              "features" : [ "SSD_STORAGE_ZONING", "SSD" ],
+              "imageAliases" : [ "ubuntu:latest", "mssql:2019_trial_iso", "windows:2019", "windows:2016_iso", "windows:2019_iso", "centos:6_iso", "debian:9", "mssql:2016_trial_iso", "ubuntu:latest_iso", "windows:2016", "centos:7", "mssql:2012_trial_iso", "centos:8", "mssql:2017_trial_iso", "gparted:latest_iso", "windows:recovery_iso", "ubuntu:19.10", "ubuntu:16.04_iso", "centos:7_iso", "debian:8", "debian:10", "debian:latest_iso", "ubuntu:18.04_iso", "ubuntu:20.10_iso", "ubuntu:20.04", "windows:2012r2_iso", "centos:8_iso", "centos:latest", "windows:2012r2", "centos:6", "debian:latest", "debian:testing", "ubuntu:18.04", "debian:10_iso", "centos:latest_iso", "windows:virtiodriver_iso", "ubuntu:16.04", "windows:latest", "ubuntu:20.04_iso" ]
             }
           }, {
             "id" : "us/ewr",
@@ -79,7 +79,7 @@ http_interactions:
             "properties" : {
               "name" : "newark",
               "features" : [ "SSD" ],
-              "imageAliases" : [ "centos:7", "ubuntu:20.10_iso", "debian:10", "centos:8_iso", "ubuntu:16.04", "ubuntu:20.04", "ubuntu:18.04_iso", "mssql:2016_trial_iso", "ubuntu:18.04", "debian:latest", "ubuntu:latest", "ubuntu:16.04_iso", "centos:latest_iso", "mssql:2017_trial_iso", "mssql:2012_trial_iso", "windows:2012r2_iso", "windows:2016_iso", "gparted:latest_iso", "windows:2019", "windows:latest", "debian:latest_iso", "windows:virtiodriver_iso", "ubuntu:19.10", "centos:6_iso", "debian:8", "ubuntu:latest_iso", "windows:recovery_iso", "windows:2016", "windows:2019_iso", "ubuntu:20.04_iso", "centos:8", "centos:6", "windows:2012r2", "centos:latest", "debian:9", "debian:testing", "centos:7_iso", "debian:10_iso" ]
+              "imageAliases" : [ "windows:2012r2", "windows:2016_iso", "ubuntu:20.10_iso", "windows:2019_iso", "centos:8_iso", "centos:8", "ubuntu:18.04_iso", "ubuntu:16.04", "mssql:2016_trial_iso", "ubuntu:16.04_iso", "centos:latest_iso", "mssql:2017_trial_iso", "centos:latest", "gparted:latest_iso", "ubuntu:20.04", "windows:2012r2_iso", "debian:latest_iso", "ubuntu:19.10", "centos:6_iso", "debian:8", "ubuntu:latest_iso", "windows:recovery_iso", "ubuntu:18.04", "ubuntu:20.04_iso", "windows:2016", "centos:6", "windows:virtiodriver_iso", "centos:7", "windows:2019", "debian:latest", "ubuntu:latest", "mssql:2019_trial_iso", "centos:7_iso", "debian:10_iso", "debian:10", "debian:9", "windows:latest", "debian:testing" ]
             }
           }, {
             "id" : "de/txl",
@@ -87,8 +87,8 @@ http_interactions:
             "href" : "https://api.ionos.com/cloudapi/v5/locations/de/txl",
             "properties" : {
               "name" : "berlin",
-              "features" : [ "SSD" ],
-              "imageAliases" : [ "windows:2012r2", "windows:latest", "ubuntu:18.04_iso", "gparted:latest_iso", "ubuntu:latest_iso", "windows:2016", "centos:latest_iso", "ubuntu:18.04", "mssql:2017_trial_iso", "ubuntu:16.04_iso", "windows:recovery_iso", "windows:2012r2_iso", "ubuntu:20.10_iso", "ubuntu:latest", "centos:8_iso", "debian:10_iso", "debian:8", "debian:latest_iso", "centos:7", "centos:8", "windows:2016_iso", "windows:virtiodriver_iso", "windows:2019_iso", "ubuntu:19.10", "debian:testing", "ubuntu:16.04", "mssql:2016_trial_iso", "ubuntu:20.04_iso", "centos:latest", "centos:6", "windows:2019", "ubuntu:20.04", "debian:10", "debian:latest", "debian:9", "centos:6_iso", "centos:7_iso" ]
+              "features" : [ "SSD_STORAGE_ZONING", "SSD" ],
+              "imageAliases" : [ "ubuntu:latest", "windows:2012r2_iso", "windows:2019_iso", "ubuntu:18.04_iso", "windows:virtiodriver_iso", "debian:9", "gparted:latest_iso", "ubuntu:latest_iso", "mssql:2019_trial_iso", "centos:latest_iso", "windows:2016_iso", "mssql:2017_trial_iso", "ubuntu:16.04_iso", "debian:testing", "windows:recovery_iso", "ubuntu:20.10_iso", "centos:8_iso", "debian:10_iso", "debian:8", "debian:latest_iso", "ubuntu:20.04", "ubuntu:19.10", "centos:7", "debian:10", "mssql:2016_trial_iso", "ubuntu:20.04_iso", "windows:2016", "centos:6", "centos:8", "windows:latest", "debian:latest", "ubuntu:16.04", "ubuntu:18.04", "windows:2012r2", "windows:2019", "centos:6_iso", "centos:7_iso", "centos:latest" ]
             }
           }, {
             "id" : "gb/lhr",
@@ -96,10 +96,10 @@ http_interactions:
             "href" : "https://api.ionos.com/cloudapi/v5/locations/gb/lhr",
             "properties" : {
               "name" : "london",
-              "features" : [ "SSD" ],
-              "imageAliases" : [ "ubuntu:20.10_iso", "ubuntu:16.04", "ubuntu:latest", "centos:6", "windows:virtiodriver_iso", "ubuntu:19.10", "ubuntu:16.04_iso", "windows:2012r2_iso", "ubuntu:18.04_iso", "ubuntu:20.04", "centos:latest_iso", "gparted:latest_iso", "windows:recovery_iso", "windows:2012r2", "debian:8", "centos:8", "centos:latest", "debian:9", "debian:latest_iso", "mssql:2017_trial_iso", "mssql:2016_trial_iso", "debian:10_iso", "debian:10", "debian:testing", "windows:2016", "windows:2019", "windows:latest", "centos:7", "centos:8_iso", "centos:6_iso", "centos:7_iso", "ubuntu:20.04_iso", "windows:2016_iso", "windows:2019_iso", "ubuntu:latest_iso", "ubuntu:18.04", "debian:latest" ]
+              "features" : [ "SSD_STORAGE_ZONING", "SSD" ],
+              "imageAliases" : [ "windows:2016_iso", "ubuntu:20.10_iso", "centos:6", "ubuntu:19.10", "centos:latest", "ubuntu:16.04_iso", "ubuntu:16.04", "ubuntu:latest", "ubuntu:20.04", "ubuntu:18.04_iso", "windows:2012r2_iso", "windows:2019_iso", "centos:latest_iso", "gparted:latest_iso", "windows:recovery_iso", "mssql:2019_trial_iso", "debian:8", "debian:latest_iso", "debian:10", "mssql:2017_trial_iso", "mssql:2016_trial_iso", "debian:10_iso", "debian:latest", "centos:8_iso", "centos:6_iso", "centos:7_iso", "ubuntu:20.04_iso", "windows:2016", "windows:latest", "centos:8", "debian:9", "debian:testing", "ubuntu:18.04", "ubuntu:latest_iso", "windows:2012r2", "windows:2019", "windows:virtiodriver_iso", "centos:7" ]
             }
           } ]
         }
-  recorded_at: Wed, 14 Apr 2021 09:29:29 GMT
+  recorded_at: Fri, 21 May 2021 15:01:45 GMT
 recorded_with: VCR 6.0.0

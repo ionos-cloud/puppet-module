@@ -197,6 +197,14 @@ Puppet::Type.newtype(:server) do
     end
   end
 
+  newproperty(:id) do
+    desc 'The server ID.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   autorequire(:lan) do
     if self[:datacenter_id]
       self[:datacenter_id]

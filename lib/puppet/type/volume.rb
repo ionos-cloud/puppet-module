@@ -221,6 +221,14 @@ Puppet::Type.newtype(:volume) do
     end
   end
 
+  newproperty(:id) do
+    desc 'The volume ID.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   autorequire(:datacenter) do
     self[:datacenter_name]
   end

@@ -63,6 +63,8 @@ describe provider_class do
 
     it 'deletes data center' do
       VCR.use_cassette('datacenter_delete') do
+        expect(@provider1.destroy).to be_truthy
+        expect(@provider1.exists?).to be false
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false
       end

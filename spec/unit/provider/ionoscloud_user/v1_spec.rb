@@ -5,26 +5,38 @@ provider_class = Puppet::Type.type(:ionoscloud_user).provider(:v1)
 describe provider_class do
   context 'ionoscloud_user operations' do
     before(:all) do
-      @resource = Puppet::Type.type(:ionoscloud_user).new(
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'john.doe_008@example.com',
-        password: 'Secrete.Password.001',
-        administrator: true,
-      )
-      @provider = provider_class.new(@resource)
+      VCR.use_cassette('ionoscloud_user_prepare') do
+        @email = "johnf2c9f7a96c14ef08d20f796d0ebc5ed@doe.com"
+        @group_name = 'puppet_module_test6f2c9f7a96c14ef08d20f796d0ebc5ed'
+        create_group(@group_name)
+
+        @resource = Puppet::Type.type(:ionoscloud_user).new(
+          firstname: 'John',
+          lastname: 'Doe',
+          email: @email,
+          password: 'Secrete.Password.001',
+          administrator: true,
+        )
+        @provider = provider_class.new(@resource)
+      end
+    end
+
+    after(:all) do
+      VCR.use_cassette('ionoscloud_user_cleanup') do
+        delete_group(@group_name)
+      end
     end
 
     it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Ionoscloud_user::ProviderV1
-      expect(@provider.name).to eq('john.doe_008@example.com')
+      expect(@provider.name).to eq(@email)
     end
 
     it 'creates ionoscloud_user' do
       VCR.use_cassette('ionoscloud_user_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('john.doe_008@example.com')
+        expect(@provider.name).to eq(@email)
       end
     end
 
@@ -42,7 +54,7 @@ describe provider_class do
         @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_008@example.com'
+          updated_instance = instance if instance.email == @email
         end
         expect(updated_instance.administrator).to eq(false)
       end
@@ -50,12 +62,12 @@ describe provider_class do
 
     it 'adds ionoscloud_user to group' do
       VCR.use_cassette('ionoscloud_user_add_to_group') do
-        @provider.groups = ['Puppet Module Test']
+        @provider.groups = [@group_name]
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_008@example.com'
+          updated_instance = instance if instance.email == @email
         end
-        expect(updated_instance.groups).to eq(['Puppet Module Test'])
+        expect(updated_instance.groups).to eq([@group_name])
       end
     end
 
@@ -64,7 +76,7 @@ describe provider_class do
         @provider.groups = []
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.email == 'john.doe_008@example.com'
+          updated_instance = instance if instance.email == @email
         end
         expect(updated_instance.groups).to eq([])
       end

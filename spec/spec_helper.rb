@@ -3,6 +3,7 @@
 require 'ionoscloud'
 require 'webmock/rspec'
 require 'vcr'
+require 'securerandom'
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -56,4 +57,143 @@ def wait_nodepool_active(cluster_id, nodepool_id)
     cluster = Ionoscloud::KubernetesApi.new.k8s_nodepools_find_by_id(cluster_id, nodepool_id)
     cluster.metadata.state == 'ACTIVE'
   end
+end
+
+def create_cluster(cluster_name)
+  @cluster_provider = Puppet::Type.type(:k8s_cluster).provider(:v1).new(
+    Puppet::Type.type(:k8s_cluster).new(
+      name: cluster_name,
+      k8s_version: '1.18.5',
+      maintenance_day: 'Sunday',
+      maintenance_time: '14:53:00Z',
+    ),
+  )
+
+  unless @cluster_provider.exists?
+    @cluster_provider.create
+    wait_cluster_active(@cluster_provider.id)
+  end
+  @cluster_provider.id
+end
+
+def create_datacenter(datacenter_name)
+  @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
+    Puppet::Type.type(:datacenter).new(
+      name: datacenter_name,
+      location: 'us/las',
+      description: 'Puppet Module test description',
+    ),
+  )
+  @datacenter_provider.create unless @datacenter_provider.exists?
+  @datacenter_provider.id
+end
+
+def create_server(datacenter_name, server_name)
+  @server_provider = Puppet::Type.type(:server).provider(:v1).new(
+    Puppet::Type.type(:server).new(
+      name: server_name,
+      cores: 1,
+      ram: 1024,
+      availability_zone: 'ZONE_1',
+      datacenter_name: datacenter_name,
+    ),
+  )
+  @server_provider.create unless @server_provider.exists?
+  @server_provider.id
+end
+
+def create_nic(datacenter_name, server_name, lan_name, nic_name)
+  @nic_provider = Puppet::Type.type(:nic).provider(:v1).new(
+    Puppet::Type.type(:nic).new(
+      name: nic_name,
+      dhcp: true,
+      firewall_active: true,
+      server_name: server_name,
+      lan: lan_name,
+      datacenter_name: datacenter_name,
+    ),
+  )
+  @nic_provider.create unless @nic_provider.exists?
+  @nic_provider.id
+end
+
+def create_volume(datacenter_name, volume_name)
+  @volume_provider = Puppet::Type.type(:volume).provider(:v1).new(
+    Puppet::Type.type(:volume).new(
+      name: volume_name,
+      size: 100,
+      licence_type: 'WINDOWS2016',
+      image_alias: 'ubuntu:latest',
+      image_password: 'secretpassword2015',
+      volume_type: 'SSD',
+      availability_zone: 'AUTO',
+      datacenter_name: datacenter_name,
+    ),
+  )
+  @volume_provider.create unless @volume_provider.exists?
+  @volume_provider.id
+end
+
+def create_private_lan(datacenter_name, lan_name)
+  @lan_provider = Puppet::Type.type(:lan).provider(:v1).new(
+    Puppet::Type.type(:lan).new(
+      name: lan_name,
+      public: false,
+      datacenter_name: datacenter_name,
+    ),
+  )
+  @lan_provider.create unless @lan_provider.exists?
+  @lan_provider.id
+end
+
+def create_public_lan(datacenter_name, lan_name)
+  @lan_provider = Puppet::Type.type(:lan).provider(:v1).new(
+    Puppet::Type.type(:lan).new(
+      name: lan_name,
+      public: true,
+      datacenter_name: datacenter_name,
+    ),
+  )
+  @lan_provider.create unless @lan_provider.exists?
+  @lan_provider.id
+end
+
+def create_group(group_name)
+  @group_provider = Puppet::Type.type(:ionoscloud_group).provider(:v1).new(
+    Puppet::Type.type(:ionoscloud_group).new(
+      name: group_name,
+      create_data_center: true,
+      create_snapshot: true,
+      reserve_ip: true,
+      access_activity_log: true,
+      s3_privilege: true,
+      create_backup_unit: true,
+      create_internet_access: true,
+      create_k8s_cluster: true,
+      create_pcc: true,
+    ),
+  )
+  @group_provider.create unless @group_provider.exists?
+  @group_provider.id
+end
+
+def delete_group(group_name)
+  @group_provider = Puppet::Type.type(:ionoscloud_group).provider(:v1).new(
+    Puppet::Type.type(:ionoscloud_group).new(name: group_name),
+  )
+  @group_provider.destroy if @group_provider.exists?
+end
+
+def delete_cluster(cluster_name)
+  @cluster_provider = Puppet::Type.type(:k8s_cluster).provider(:v1).new(
+    Puppet::Type.type(:k8s_cluster).new(name: cluster_name),
+  )
+  @cluster_provider.destroy if @cluster_provider.exists?
+end
+
+def delete_datacenter(datacenter_name)
+  @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
+    Puppet::Type.type(:datacenter).new(name: datacenter_name),
+  )
+  @datacenter_provider.destroy if @datacenter_provider.exists?
 end

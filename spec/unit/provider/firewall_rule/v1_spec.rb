@@ -5,27 +5,46 @@ provider_class = Puppet::Type.type(:firewall_rule).provider(:v1)
 describe provider_class do
   context 'firewall rule operations' do
     before(:all) do
-      @resource = Puppet::Type.type(:firewall_rule).new(
-        name: 'SSH',
-        nic: 'Puppet Module Test',
-        datacenter_name: 'Puppet Module Test',
-        server_name: 'Puppet Module Test',
-        protocol: 'TCP',
-        source_mac: '01:23:45:67:89:00',
-        port_range_start: 22,
-        port_range_end: 22,
-      )
-      @provider = provider_class.new(@resource)
-      @resource2 = Puppet::Type.type(:firewall_rule).new(
-        name: 'ICMP',
-        nic: 'Puppet Module Test',
-        datacenter_name: 'Puppet Module Test',
-        server_name: 'Puppet Module Test',
-        protocol: 'ICMP',
-        icmp_code: 152,
-        icmp_type: 87,
-      )
-      @provider2 = provider_class.new(@resource2)
+      VCR.use_cassette('firewall_rule_prepare') do
+        @datacenter_name = 'puppet_module_test6fqfwqfqqfwfqwfeh4d0ebc5ed'
+        @server_name = 'puppet_module_test6fqfwqfqfwqfh4d0ebc5ed'
+        @lan_name = 'puppet_module_test6fqfwqfqfqfqwfwqh4d0ebc5ed'
+        @nic_name = 'puppet_module_test6fqfwqffqwfwqfqeh4d0ebc5ed'
+
+        create_datacenter(@datacenter_name)
+        create_server(@datacenter_name, @server_name)
+        create_private_lan(@datacenter_name, @lan_name)
+        create_nic(@datacenter_name, @server_name, @lan_name, @nic_name)
+
+
+        @resource = Puppet::Type.type(:firewall_rule).new(
+          name: 'SSH',
+          nic: @nic_name,
+          datacenter_name: @datacenter_name,
+          server_name: @server_name,
+          protocol: 'TCP',
+          source_mac: '01:23:45:67:89:00',
+          port_range_start: 22,
+          port_range_end: 22,
+        )
+        @provider = provider_class.new(@resource)
+        @resource2 = Puppet::Type.type(:firewall_rule).new(
+          name: 'ICMP',
+          nic: @nic_name,
+          datacenter_name: @datacenter_name,
+          server_name: @server_name,
+          protocol: 'ICMP',
+          icmp_code: 152,
+          icmp_type: 87,
+        )
+        @provider2 = provider_class.new(@resource2)
+      end
+    end
+
+    after(:all) do
+      VCR.use_cassette('firewall_rule_create_cleanup') do
+        delete_datacenter(@datacenter_name)
+      end
     end
 
     it 'is an instance of the ProviderV1' do
