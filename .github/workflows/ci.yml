@@ -27,12 +27,6 @@ jobs:
       - name: Run validate module
         run: pdk validate
 
-      - name: Run the tests Puppet 4
-        run: pdk test unit --puppet-version=4
-
-      - name: Run the tests Puppet 3
-        run: pdk test unit --puppet-version=3
-
       - name: Run the tests Puppet 5
         run: pdk test unit --puppet-version=5
 
