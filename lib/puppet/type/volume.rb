@@ -100,10 +100,10 @@ Puppet::Type.newtype(:volume) do
   end
 
   newproperty(:user_data) do
-    desc "The cloud-init configuration for the volume as base64 encoded string. "\
-    "The property is immutable and is only allowed to be set on a new volume creation. "\
-    "It is mandatory to provide either 'public image' or 'imageAlias' that has cloud-init "\
-    "compatibility in conjunction with this property."
+    desc 'The cloud-init configuration for the volume as base64 encoded string. '\
+    'The property is immutable and is only allowed to be set on a new volume creation. '\
+    'It is mandatory to provide either \'public image\' or \'imageAlias\' that has cloud-init '\
+    'compatibility in conjunction with this property.'
 
     validate do |value|
       raise ArgumentError, 'The user data should be a String.' unless value.is_a?(String)
@@ -128,7 +128,7 @@ Puppet::Type.newtype(:volume) do
   end
 
   newproperty(:device_number) do
-    desc "The LUN ID of the storage volume. Null for volumes not mounted to any VM"
+    desc 'The LUN ID of the storage volume. Null for volumes not mounted to any VM'
 
     def insync?(_is)
       true
@@ -136,9 +136,9 @@ Puppet::Type.newtype(:volume) do
   end
 
   newproperty(:backupunit_id) do
-    desc "The uuid of the Backup Unit that user has access to. The property is immutable and is "\
-    "only allowed to be set on a new volume creation. It is mandatory to provide either 'public image' "\
-    "or 'imageAlias' in conjunction with this property."
+    desc 'The uuid of the Backup Unit that user has access to. The property is immutable and is '\
+    'only allowed to be set on a new volume creation. It is mandatory to provide either \'public image\' '\
+    'or \'imageAlias\' in conjunction with this property.'
 
     validate do |value|
       raise ArgumentError, 'The backupunit_id should be a String.' unless value.is_a?(String)

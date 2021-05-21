@@ -85,9 +85,9 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       public: (resource[:public] == :true),
     }
 
-    if !(resource[:public] == :true)
+    if resource[:public] != :true
       if resource[:gateway_ip].nil?
-        fail 'If public is set to false then gateway_ip must be set!'
+        raise 'If public is set to false then gateway_ip must be set!'
       end
       cluster_properties[:gateway_ip] = resource[:gateway_ip]
     end

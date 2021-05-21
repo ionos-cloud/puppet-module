@@ -16,7 +16,7 @@ server { 'worker1' :
       availability_zone => 'AUTO'
     }
   ],
-  cdroms         => [
+  cdroms          => [
     {
       id => '154011c9-9576-11e8-af82-525400f64d8d',
     }

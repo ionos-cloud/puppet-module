@@ -21,22 +21,27 @@ jobs:
       - name: Unshallow
         run: git fetch --prune --unshallow
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.61.1
-        with:
-          ruby-version: ${{ env.ruby-version }}
+      - name: Install PDK
+        run: |
+          wget https://apt.puppet.com/puppet-tools-release-focal.deb
+          sudo dpkg -i puppet-tools-release-focal.deb
+          sudo apt-get update
+          sudo apt-get install pdk
 
-      - name: Install Rubocop
-        run: gem install rubocop
+      - name: Run validate module
+        run: pdk validate
 
-      - name: Run Rubocop
-        run: rubocop
+      - name: Run the tests Puppet 5
+        run: pdk test unit --puppet-version=5
 
-      - name: Install the knife plugin
-        run: bundle
+      - name: Run the tests Puppet 6
+        run: pdk test unit --puppet-version=6
 
-      - name: Run the tests
-        run: rspec
+      - name: Run the tests Puppet 7
+        run: pdk test unit --puppet-version=7
+
+      - name: Try to build the package
+        run: pdk build
 
       - name: Get the new version
         id: new_version
@@ -48,12 +53,21 @@ jobs:
 
       - name: Check Version
         run: |
-          if [ "${{ steps.new_version.outputs.VERSION }}" != v$(cat lib/knife-ionoscloud/version.rb | grep 'VERSION =' | tr -s ' ' | cut -d ' ' -f 4 | sed 's/^.//;s/.$//') ]; then
-            echo "Tag version does not match the one from version.rb!"
+          if [ "${{ steps.new_version.outputs.VERSION }}" != v$(cat metadata.json | grep '"version":' | tr -s ' ' | cut -d ' ' -f 3 | cut -d '"' -f 2) ]; then
+            echo "Tag version does not match the one from metadata.json!"
             exit 1
           fi
 
-      - name: Create RubyGems release of the Knife plugin
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.61.1
+        with:
+          ruby-version: ${{ env.ruby-version }}          
+
+      - name: Install puppet-blacksmith
+        shell: bash
+        run: gem install puppet-blacksmith
+
+      - name: Create Puppet Forge release of the Puppet module
         shell: bash
         run: |
           mkdir -p ~/.gem
@@ -64,6 +78,6 @@ jobs:
           chmod 0600 ~/.gem/credentials
           gem push $(gem build knife-ionoscloud.gemspec | grep 'File' | tr -s ' ' | cut -d ' ' -f 3)
 
-      - name: Check version and create GitHub branch
-        run: |
-          /usr/bin/bash ./git-versioning.sh ${{ steps.new_version.outputs.VERSION }} ${{ steps.old_version.outputs.VERSION }}
+      # - name: Check version and create GitHub branch
+      #   run: |
+      #     /usr/bin/bash ./git-versioning.sh ${{ steps.new_version.outputs.VERSION }} ${{ steps.old_version.outputs.VERSION }}

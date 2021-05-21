@@ -113,7 +113,7 @@ module PuppetX
           else
             Puppet.info "Attaching #{target_cdrom['id']} to server"
             _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_post_with_http_info(
-              datacenter_id, server_id, id: target_cdrom['id'],
+              datacenter_id, server_id, id: target_cdrom['id']
             )
 
             to_wait << headers
@@ -123,7 +123,7 @@ module PuppetX
         to_detach.each do |cdrom_id|
           Puppet.info "Detaching #{cdrom_id} from server"
           _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_delete_with_http_info(
-            datacenter_id, server_id, cdrom_id,
+            datacenter_id, server_id, cdrom_id
           )
           to_wait << headers
         end

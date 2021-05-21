@@ -26,7 +26,7 @@ Puppet::Type.newtype(:k8s_cluster) do
     desc 'The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.'
     defaultto :true
     newvalues(:true, :false)
-    def insync?(is)
+    def insync?(_is)
       true
     end
   end

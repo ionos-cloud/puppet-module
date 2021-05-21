@@ -142,21 +142,21 @@ Puppet::Type.type(:server).provide(:v1) do
 
   def cdroms=(value)
     PuppetX::IonoscloudX::Helper.sync_cdroms(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:cdroms], value, wait: true,
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:cdroms], value, wait: true
     )
     @property_hash[:cdrom] = value
   end
 
   def volumes=(value)
     PuppetX::IonoscloudX::Helper.sync_volumes(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true,
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:volumes], value, wait: true
     )
     @property_hash[:volumes] = value
   end
 
   def nics=(value)
     PuppetX::IonoscloudX::Helper.sync_nics(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true,
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true
     )
     @property_hash[:nics] = value
   end

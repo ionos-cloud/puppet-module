@@ -148,7 +148,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     changeable_properties = [
       :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug,
       :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug,
-      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type, :sec_auth_protection,
+      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type, :sec_auth_protection
     ]
     changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
