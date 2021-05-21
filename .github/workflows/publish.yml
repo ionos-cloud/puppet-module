@@ -61,7 +61,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.61.1
         with:
-          ruby-version: ${{ env.ruby-version }}          
+          ruby-version: ${{ env.ruby-version }}
 
       - name: Install puppet-blacksmith
         shell: bash
@@ -70,14 +70,14 @@ jobs:
       - name: Create Puppet Forge release of the Puppet module
         shell: bash
         run: |
-          mkdir -p ~/.gem
-          cat << EOF > ~/.gem/credentials
+          cat << EOF > ~/.puppetforge.yml
           ---
-          :rubygems_api_key: ${{ secrets.RUBYGEMS }}
+          url: https://forgeapi.puppetlabs.com
+          username: ${{ secrets.PUPPETFORGE_USERNAME }}
+          password: ${{ secrets.PUPPETFORGE_PASSWORD }}
           EOF
-          chmod 0600 ~/.gem/credentials
-          gem push $(gem build knife-ionoscloud.gemspec | grep 'File' | tr -s ' ' | cut -d ' ' -f 3)
+          rake module:push
 
-      # - name: Check version and create GitHub branch
-      #   run: |
-      #     /usr/bin/bash ./git-versioning.sh ${{ steps.new_version.outputs.VERSION }} ${{ steps.old_version.outputs.VERSION }}
+      - name: Check version and create GitHub branch
+        run: |
+          /usr/bin/bash ./git-versioning.sh ${{ steps.new_version.outputs.VERSION }} ${{ steps.old_version.outputs.VERSION }}
