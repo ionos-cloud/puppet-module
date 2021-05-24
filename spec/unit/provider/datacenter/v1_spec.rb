@@ -24,7 +24,7 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Datacenter::ProviderV1
     end
 
-    it 'creates ProfitBricks data center with minimum params' do
+    it 'creates IonosCloud data center with minimum params' do
       VCR.use_cassette('datacenter_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
@@ -32,7 +32,7 @@ describe provider_class do
       end
     end
 
-    it 'creates ProfitBricks data center with all params' do
+    it 'creates IonosCloud data center with all params' do
       VCR.use_cassette('datacenter_create_all') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
@@ -52,6 +52,7 @@ describe provider_class do
       VCR.use_cassette('datacenter_update') do
         new_desc = 'Puppet Module Test - RENAME'
         @provider2.description = new_desc
+        @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |dc|
           updated_instance = dc if dc.name == 'Puppet Module Test 2'
@@ -62,6 +63,8 @@ describe provider_class do
 
     it 'deletes data center' do
       VCR.use_cassette('datacenter_delete') do
+        expect(@provider1.destroy).to be_truthy
+        expect(@provider1.exists?).to be false
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false
       end

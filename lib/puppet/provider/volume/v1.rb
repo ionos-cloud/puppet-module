@@ -43,8 +43,17 @@ Puppet::Type.type(:volume).provide(:v1) do
       volume_type: instance.properties.type,
       bus: instance.properties.bus,
       image_id: instance.properties.image,
+      user_data: instance.properties.user_data,
       licence_type: instance.properties.licence_type,
+      backupunit_id: instance.properties.backupunit_id,
+      device_number: instance.properties.device_number,
       availability_zone: instance.properties.availability_zone,
+      cpu_hot_plug: instance.properties.cpu_hot_plug,
+      ram_hot_plug: instance.properties.ram_hot_plug,
+      nic_hot_plug: instance.properties.nic_hot_plug,
+      nic_hot_unplug: instance.properties.nic_hot_unplug,
+      disc_virtio_hot_plug: instance.properties.disc_virtio_hot_plug,
+      disc_virtio_hot_unplug: instance.properties.disc_virtio_hot_unplug,
       ensure: :present,
     }
   end

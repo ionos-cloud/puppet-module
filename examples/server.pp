@@ -1,4 +1,4 @@
-$datacenter_name = 'testdc1'
+$datacenter_name = 'TestDataCenter'
 
 server { 'worker1' :
   ensure          => present,
@@ -11,9 +11,14 @@ server { 'worker1' :
       size              => 50,
       bus               => 'VIRTIO',
       volume_type       => 'SSD',
-      image_id          => '7412cec6-e83c-11e6-a994-525400f64d8d',
-      ssh_keys          => [ 'ssh-rsa AAAAB3NzaC1yc2EAA...' ],
+      image_alias       => 'debian:latest',
+      image_password    => 'password',
       availability_zone => 'AUTO'
+    }
+  ],
+  cdroms          => [
+    {
+      id => '154011c9-9576-11e8-af82-525400f64d8d',
     }
   ],
   nics            => [

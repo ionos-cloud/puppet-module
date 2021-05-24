@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v5/datacenters/bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d/lans/2
+    uri: https://api.ionos.com/cloudapi/v5/datacenters/0dc65928-624e-4018-8392-931a4db42f17/lans/1
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v5
+      - OpenAPI-Generator/5.1.0/ruby
       Content-Type:
       - application/json
       Accept:
@@ -22,7 +22,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Wed, 14 Apr 2021 12:36:32 GMT
+      - Fri, 21 May 2021 14:55:01 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -30,7 +30,7 @@ http_interactions:
       Etag:
       - e2b535a996dbfb1d9f6df1715ebcf525
       Location:
-      - https://api.ionos.com/cloudapi/v5/requests/aec1d6a3-1a9d-48ec-9f46-b0dffb5efedf/status
+      - https://api.ionos.com/cloudapi/v5/requests/6f21a0af-af6c-4d21-9875-a302b136ecd6/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -50,18 +50,18 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
     body:
-      encoding: UTF-8
+      encoding: ASCII-8BIT
       string: ''
-  recorded_at: Wed, 14 Apr 2021 12:36:32 GMT
+  recorded_at: Fri, 21 May 2021 14:55:01 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/requests/aec1d6a3-1a9d-48ec-9f46-b0dffb5efedf/status
+    uri: https://api.ionos.com/cloudapi/v5/requests/6f21a0af-af6c-4d21-9875-a302b136ecd6/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v5
+      - OpenAPI-Generator/5.1.0/ruby
       Content-Type:
       - application/json
       Accept:
@@ -75,7 +75,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 14 Apr 2021 12:36:37 GMT
+      - Fri, 21 May 2021 14:55:06 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -106,9 +106,133 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "aec1d6a3-1a9d-48ec-9f46-b0dffb5efedf/status",
+          "id" : "6f21a0af-af6c-4d21-9875-a302b136ecd6/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v5/requests/aec1d6a3-1a9d-48ec-9f46-b0dffb5efedf/status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/6f21a0af-af6c-4d21-9875-a302b136ecd6/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "1",
+                "type" : "lan",
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/0dc65928-624e-4018-8392-931a4db42f17/lans/1"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Fri, 21 May 2021 14:55:06 GMT
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v5/datacenters/0dc65928-624e-4018-8392-931a4db42f17/lans/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/5.1.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Fri, 21 May 2021 14:55:06 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
+      Location:
+      - https://api.ionos.com/cloudapi/v5/requests/9129c95b-e20a-4420-9f1b-4a8d0663275f/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+  recorded_at: Fri, 21 May 2021 14:55:06 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/requests/9129c95b-e20a-4420-9f1b-4a8d0663275f/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/5.1.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 21 May 2021 14:55:12 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '574'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '898'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "9129c95b-e20a-4420-9f1b-4a8d0663275f/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/9129c95b-e20a-4420-9f1b-4a8d0663275f/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
@@ -117,11 +241,11 @@ http_interactions:
               "target" : {
                 "id" : "2",
                 "type" : "lan",
-                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d/lans/2"
+                "href" : "https://api.ionos.com/cloudapi/v5/datacenters/0dc65928-624e-4018-8392-931a4db42f17/lans/2"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Wed, 14 Apr 2021 12:36:37 GMT
+  recorded_at: Fri, 21 May 2021 14:55:12 GMT
 recorded_with: VCR 6.0.0

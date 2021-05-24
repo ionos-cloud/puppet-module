@@ -13,6 +13,7 @@ describe type_class do
     [
       :k8s_version,
       :public_ip,
+      :private_ip,
       :state,
       :nodepool_id,
       :nodepool_name,

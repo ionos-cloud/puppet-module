@@ -36,6 +36,7 @@ Puppet::Type.type(:ipblock).provide(:v1) do
       size: instance.properties.size,
       location: instance.properties.location,
       ips: instance.properties.ips,
+      ip_consumers: instance.properties.ip_consumers,
       ensure: :present,
     }
   end

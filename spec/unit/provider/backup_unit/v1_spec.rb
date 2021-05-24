@@ -5,8 +5,9 @@ provider_class = Puppet::Type.type(:backup_unit).provider(:v1)
 describe provider_class do
   context 'backup unit operations' do
     before(:all) do
+      @backupunit_name = 'puppetmoduletest6f2c9qfwqfqwfqwqw4d0ebc5ed'
       @resource = Puppet::Type.type(:backup_unit).new(
-        name: 'Puppet Module Test',
+        name: @backupunit_name,
         email: 'email@email.email',
         password: 'securepassword123',
       )
@@ -21,7 +22,7 @@ describe provider_class do
       VCR.use_cassette('backupunit_create_min') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('Puppet Module Test')
+        expect(@provider.name).to eq(@backupunit_name)
       end
     end
 
@@ -39,7 +40,7 @@ describe provider_class do
         @provider.email = new_email
         updated_instance = nil
         provider_class.instances.each do |backup_unit|
-          updated_instance = backup_unit if backup_unit.name == 'Puppet Module Test'
+          updated_instance = backup_unit if backup_unit.name == @backupunit_name
         end
         expect(updated_instance.email).to eq(new_email)
       end

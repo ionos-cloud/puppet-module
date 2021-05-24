@@ -1,6 +1,6 @@
 # image
 
-Type representing a ProfitBricks image.
+Type representing a IonosCloud image.
 
 ## Parameters:
 
@@ -26,6 +26,7 @@ Type representing a ProfitBricks image.
 | disc_virtio_hot_unplug | No | Indicates VirtIO drive hot unplug capability.   | - |
 | disc_scsi_hot_plug | No | Indicates SCSI drive hot plug capability.   | - |
 | disc_scsi_hot_unplug | No | Indicates SCSI drive hot unplug capability.   | - |
+| cloud_init | No | Indicates Cloud init compatibility.   | - |
 | public | No | Indicates if the image is part of the public repository.   | - |
 | image_type | No | The type of image.   | - |
 | licence_type | No | The license type of the image.   | - |

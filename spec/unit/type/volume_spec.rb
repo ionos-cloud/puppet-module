@@ -14,6 +14,7 @@ describe type_class do
 
   let :properties do
     [
+      :id,
       :ensure,
       :datacenter_id,
       :datacenter_name,
@@ -23,6 +24,15 @@ describe type_class do
       :bus,
       :volume_type,
       :licence_type,
+      :backupunit_id,
+      :device_number,
+      :user_data,
+      :cpu_hot_plug,
+      :ram_hot_plug,
+      :nic_hot_plug,
+      :nic_hot_unplug,
+      :disc_virtio_hot_plug,
+      :disc_virtio_hot_unplug,
     ]
   end
 

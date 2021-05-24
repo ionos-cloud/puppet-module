@@ -5,60 +5,76 @@ provider_class = Puppet::Type.type(:server).provider(:v1)
 describe provider_class do
   context 'server operations' do
     before(:all) do
-      @resource1 = Puppet::Type.type(:server).new(
-        name: 'Puppet Module Test',
-        cores: 1,
-        ram: 1024,
-        availability_zone: 'ZONE_1',
-        datacenter_name: 'Puppet Module Test',
-      )
-      @provider1 = provider_class.new(@resource1)
+      VCR.use_cassette('server_prepare') do
+        @datacenter_name = 'puppet_module_test6fffqwfqwfqwfgqg5eh4d0ebc5ed'
+        @lan_name = 'puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed'
+        create_datacenter(@datacenter_name)
+        create_private_lan(@datacenter_name, @lan_name)
 
-      vol1 = {}
-      vol1['name'] = 'Puppet Module Test'
-      vol1['size'] = 15
-      vol1['bus'] = 'VIRTIO'
-      vol1['volume_type'] = 'HDD'
-      vol1['availability_zone'] = 'AUTO'
-      vol1['image_alias'] = 'ubuntu:latest'
-      vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
-      vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
+        @server1_name = 'puppet_module_test6ffwegwgwegwwdqw5eh4d0ebc5ed'
+        @server2_name = 'puppet_module_test6ffwgwegwegwegwegewgwh4d0ebc5ed'
 
-      vol2 = {}
-      vol2['name'] = 'Puppet Module Test 2'
-      vol2['size'] = 10
-      vol2['bus'] = 'VIRTIO'
-      vol2['volume_type'] = 'HDD'
-      vol2['availability_zone'] = 'ZONE_3'
-      vol2['image_alias'] = 'ubuntu:latest'
-      vol2['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
-      vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
+        @resource1 = Puppet::Type.type(:server).new(
+          name: @server1_name,
+          cores: 1,
+          ram: 1024,
+          availability_zone: 'ZONE_1',
+          datacenter_name: @datacenter_name,
+        )
+        @provider1 = provider_class.new(@resource1)
 
-      firewall = {}
-      firewall['name'] = 'SSH'
-      firewall['protocol'] = 'TCP'
-      firewall['source_mac'] = '01:23:45:67:89:00'
-      firewall['port_range_start'] = 22
-      firewall['port_range_end'] = 22
+        vol1 = {}
+        vol1['name'] = 'Puppet Module Test'
+        vol1['size'] = 15
+        vol1['bus'] = 'VIRTIO'
+        vol1['volume_type'] = 'HDD'
+        vol1['availability_zone'] = 'AUTO'
+        vol1['image_alias'] = 'ubuntu:latest'
+        vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
+        vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
-      nic = {}
-      nic['name'] = 'Puppet Module Test'
-      nic['dhcp'] = true
-      nic['lan'] = 'Puppet Module Test'
-      nic['nat'] = false
-      nic['firewall_rules'] = [firewall]
+        vol2 = {}
+        vol2['name'] = 'Puppet Module Test 2'
+        vol2['size'] = 10
+        vol2['bus'] = 'VIRTIO'
+        vol2['volume_type'] = 'HDD'
+        vol2['availability_zone'] = 'ZONE_3'
+        vol2['image_alias'] = 'ubuntu:latest'
+        vol2['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
+        vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
 
-      @resource2 = Puppet::Type.type(:server).new(
-        name: 'Puppet Module Test 2',
-        cores: 1,
-        cpu_family: 'INTEL_XEON',
-        ram: 1024,
-        volumes: [vol1, vol2],
-        purge_volumes: true,
-        nics: [nic],
-        datacenter_name: 'Puppet Module Test',
-      )
-      @provider2 = provider_class.new(@resource2)
+        firewall = {}
+        firewall['name'] = 'SSH'
+        firewall['protocol'] = 'TCP'
+        firewall['source_mac'] = '01:23:45:67:89:00'
+        firewall['port_range_start'] = 22
+        firewall['port_range_end'] = 22
+
+        nic = {}
+        nic['name'] = 'Puppet Module Test'
+        nic['dhcp'] = true
+        nic['lan'] = @lan_name
+        nic['nat'] = false
+        nic['firewall_rules'] = [firewall]
+
+        @resource2 = Puppet::Type.type(:server).new(
+          name: @server2_name,
+          cores: 1,
+          cpu_family: 'INTEL_XEON',
+          ram: 1024,
+          volumes: [vol1, vol2],
+          purge_volumes: true,
+          nics: [nic],
+          datacenter_name: @datacenter_name,
+        )
+        @provider2 = provider_class.new(@resource2)
+      end
+    end
+
+    after(:all) do
+      VCR.use_cassette('server_cleanup') do
+        delete_datacenter(@datacenter_name)
+      end
     end
 
     it 'is an instance of the ProviderV1' do
@@ -66,11 +82,11 @@ describe provider_class do
       expect(@provider2).to be_an_instance_of Puppet::Type::Server::ProviderV1
     end
 
-    it 'creates ProfitBricks server with minimum params' do
+    it 'creates IonosCloud server with minimum params' do
       VCR.use_cassette('server_create_min') do
         expect(@provider1.create).to be_truthy
         expect(@provider1.exists?).to be true
-        expect(@provider1.name).to eq('Puppet Module Test')
+        expect(@provider1.name).to eq(@server1_name)
       end
     end
 
@@ -78,7 +94,7 @@ describe provider_class do
       VCR.use_cassette('server_create_composite') do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
-        expect(@provider2.name).to eq('Puppet Module Test 2')
+        expect(@provider2.name).to eq(@server2_name)
       end
     end
 
@@ -96,7 +112,7 @@ describe provider_class do
         @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.boot_volume[:name]).to eq('Puppet Module Test 2')
       end
@@ -108,7 +124,7 @@ describe provider_class do
         @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.ram).to eq(2048)
       end
@@ -120,7 +136,7 @@ describe provider_class do
         @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.cores).to eq(2)
       end
@@ -132,7 +148,7 @@ describe provider_class do
         @provider2.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.cpu_family).to eq('AMD_OPTERON')
       end
@@ -144,7 +160,7 @@ describe provider_class do
         @provider1.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test'
+          updated_instance = instance if instance.name == @server1_name
         end
         expect(updated_instance.availability_zone).to eq('AUTO')
       end
@@ -171,7 +187,7 @@ describe provider_class do
         @provider1.volumes = volumes
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test'
+          updated_instance = instance if instance.name == @server1_name
         end
         expect(updated_instance.volumes.length).to eq(2)
         expect(updated_instance.volumes[1][:name]).to eq('volume1')
@@ -182,7 +198,7 @@ describe provider_class do
         updated_instance.volumes = []
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test'
+          updated_instance = instance if instance.name == @server1_name
         end
         expect(updated_instance.volumes.length).to eq(0)
       end
@@ -207,18 +223,18 @@ describe provider_class do
           },
         ]
         provider_class.instances.each do |instance|
-          @provider2 = instance if instance.name == 'Puppet Module Test 2'
+          @provider2 = instance if instance.name == @server2_name
         end
         @provider2.volumes = volumes
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.volumes.length).to eq(2)
         expect(updated_instance.volumes[0][:name]).to eq('Puppet Module Test 3')
         expect(updated_instance.volumes[0][:size]).to eq(10)
         expect(updated_instance.volumes[1][:name]).to eq('Puppet Module Test')
-        expect(updated_instance.volumes[1][:size]).to eq(110)
+        expect(updated_instance.volumes[1][:size]).to eq(20)
       end
     end
 
@@ -228,7 +244,7 @@ describe provider_class do
           {
             'name' => 'Puppet Module Test 2',
             'dhcp' => false,
-            'lan' => 'Puppet Module Test',
+            'lan' => @lan_name,
             'nat' => false,
             'firewall_active' => true,
             'firewall_rules' => [
@@ -249,39 +265,39 @@ describe provider_class do
           {
             'name' => 'Puppet Module Test 3',
             'dhcp' => true,
-            'lan' => 'Puppet Module Test',
+            'lan' => @lan_name,
             'nat' => false,
             'firewall_active' => false,
           },
         ]
         provider_class.instances.each do |instance|
-          @provider2 = instance if instance.name == 'Puppet Module Test 2'
+          @provider2 = instance if instance.name == @server2_name
         end
         @provider2.nics = nics
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'Puppet Module Test 2'
+          updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.nics.length).to eq(2)
         expect(updated_instance.nics[0][:name]).to eq('Puppet Module Test 3')
         expect(updated_instance.nics[0][:dhcp]).to eq(true)
         expect(updated_instance.nics[0][:nat]).to eq(false)
-        expect(updated_instance.nics[0][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[0][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[0][:firewall_active]).to eq(false)
         expect(updated_instance.nics[0][:firewall_rules]).to eq([])
 
         expect(updated_instance.nics[1][:name]).to eq('Puppet Module Test 2')
         expect(updated_instance.nics[1][:dhcp]).to eq(false)
         expect(updated_instance.nics[1][:nat]).to eq(false)
-        expect(updated_instance.nics[1][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[1][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[1][:firewall_active]).to eq(true)
         expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
-        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('HTTP2')
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(65)
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(80)
-        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('SSH2')
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(22)
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('HTTP2')
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(65)
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(80)
+        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('SSH2')
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(22)
       end
     end
 

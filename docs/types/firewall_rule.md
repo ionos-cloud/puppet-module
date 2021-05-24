@@ -1,6 +1,6 @@
 # firewall_rule
 
-Type representing a ProfitBricks firewall rule.
+Type representing a IonosCloud firewall rule.
 
 ## Parameters:
 

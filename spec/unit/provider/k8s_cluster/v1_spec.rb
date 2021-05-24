@@ -5,9 +5,10 @@ provider_class = Puppet::Type.type(:k8s_cluster).provider(:v1)
 describe provider_class do
   context 'k8s cluster operations' do
     before(:all) do
+      @cluster_name = 'puppet_module_test6fqfwqfqfqwfddsgh5eh4d0ebc5ed'
       @resource = Puppet::Type.type(:k8s_cluster).new(
-        name: 'puppet_module_test',
-        k8s_version: '1.18.15',
+        name: @cluster_name,
+        k8s_version: '1.18.5',
         maintenance_day: 'Sunday',
         maintenance_time: '14:53:00Z',
       )
@@ -18,11 +19,11 @@ describe provider_class do
       expect(@provider).to be_an_instance_of Puppet::Type::K8s_cluster::ProviderV1
     end
 
-    it 'creates ProfitBricks k8s cluster with minimum params' do
+    it 'creates IonosCloud k8s cluster with minimum params' do
       VCR.use_cassette('k8s_cluster_create') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('puppet_module_test')
+        expect(@provider.name).to eq(@cluster_name)
         wait_cluster_active(@provider.id)
       end
     end
@@ -37,17 +38,17 @@ describe provider_class do
 
     it 'updates k8s cluster version' do
       VCR.use_cassette('k8s_cluster_update') do
-        new_version = '1.18.16'
+        new_version = '1.18.9'
         my_instance = nil
         provider_class.instances.each do |cluster|
-          my_instance = cluster if cluster.name == 'puppet_module_test'
+          my_instance = cluster if cluster.name == @cluster_name
         end
         my_instance.k8s_version = new_version
         my_instance.flush
         wait_cluster_active(my_instance.id)
         updated_instance = nil
         provider_class.instances.each do |cluster|
-          updated_instance = cluster if cluster.name == 'puppet_module_test'
+          updated_instance = cluster if cluster.name == @cluster_name
         end
         expect(updated_instance.k8s_version).to eq(new_version)
       end

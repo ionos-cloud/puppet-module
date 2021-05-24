@@ -130,12 +130,14 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     PuppetX::IonoscloudX::Helper.update_nic(
-      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, @property_flush.transform_keys(&:to_s), wait: true
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true
     )
 
     [:firewall_active, :ips, :dhcp, :nat, :lan, :firewall_rules].each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 end

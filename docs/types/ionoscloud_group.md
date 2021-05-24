@@ -1,6 +1,6 @@
 # ionoscloud_group
 
-Type representing a ProfitBricks group.
+Type representing a IonosCloud group.
 
 ## Parameters:
 

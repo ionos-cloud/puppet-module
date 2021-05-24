@@ -43,6 +43,14 @@ Puppet::Type.type(:server).provide(:v1) do
       }
     end
 
+    cdroms = instance.entities.cdroms.items.map do |cdrom|
+      {
+        id: cdrom.id,
+        name: cdrom.properties.name,
+        size: Float(cdrom.properties.size),
+      }
+    end
+
     nics = instance.entities.nics.items.map do |nic|
       lan = Ionoscloud::LanApi.new.datacenters_lans_find_by_id(datacenter.id, nic.properties.lan)
       {
@@ -99,6 +107,7 @@ Puppet::Type.type(:server).provide(:v1) do
       },
       ensure: state,
       volumes: volumes,
+      cdroms: cdroms,
       nics: nics,
     }
   end
@@ -129,6 +138,13 @@ Puppet::Type.type(:server).provide(:v1) do
     else
       @property_flush[:boot_volume] = { id: value }
     end
+  end
+
+  def cdroms=(value)
+    PuppetX::IonoscloudX::Helper.sync_cdroms(
+      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:cdroms], value, wait: true
+    )
+    @property_hash[:cdrom] = value
   end
 
   def volumes=(value)
@@ -176,6 +192,9 @@ Puppet::Type.type(:server).provide(:v1) do
           availability_zone: resource[:availability_zone].to_s,
         ),
         entities: Ionoscloud::ServerEntities.new(
+          cdroms: Ionoscloud::Cdroms.new(
+            items: PuppetX::IonoscloudX::Helper.cdrom_object_array_from_hashes(resource[:cdroms]),
+          ),
           volumes: Ionoscloud::Volumes.new(
             items: PuppetX::IonoscloudX::Helper.volume_object_array_from_hashes(resource[:volumes]),
           ),
@@ -211,6 +230,7 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     changeable_properties = [:ram, :cpu_family, :cores, :availability_zone, :boot_volume]
     changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
@@ -228,6 +248,7 @@ Puppet::Type.type(:server).provide(:v1) do
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 
   def restart

@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:image) do
-  @doc = 'Type representing a ProfitBricks image.'
+  @doc = 'Type representing a IonosCloud image.'
 
   newparam(:name, namevar: true) do
     desc 'The name of the image.'
@@ -111,6 +111,14 @@ Puppet::Type.newtype(:image) do
 
   newproperty(:disc_scsi_hot_unplug) do
     desc 'Indicates SCSI drive hot unplug capability.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:cloud_init) do
+    desc 'Indicates Cloud init compatibility.'
 
     def insync?(_is)
       true

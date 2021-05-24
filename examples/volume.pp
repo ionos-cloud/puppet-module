@@ -5,10 +5,13 @@ datacenter { $datacenter_name :
   location => 'us/las'
 }
 -> volume { 'testvolume' :
-  ensure          => present,
-  datacenter_name => $datacenter_name,
-  image_id        => 'adf0c2e4-e83b-11e6-a994-525400f64d8d',
-  size            => 50,
-  volume_type     => 'SSD',
-  ssh_keys        => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...']
+  ensure            => present,
+  datacenter_name   => $datacenter_name,
+  image_alias       => 'ubuntu:latest',
+  image_password    => 'password',
+  size              => 50,
+  volume_type       => 'SSD',
+  availability_zone => 'AUTO',
+  bus               => 'IDE',
+  cpu_hot_plug      => true,
 }

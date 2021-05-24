@@ -51,6 +51,7 @@ Puppet::Type.type(:k8s_node).provide(:v1) do
       name: instance.properties.name,
       public_ip: instance.properties.public_ip,
       k8s_version: instance.properties.k8s_version,
+      private_ip: instance.properties.private_ip,
       state: instance.metadata.state,
       ensure: :present,
     }

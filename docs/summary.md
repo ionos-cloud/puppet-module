@@ -19,6 +19,7 @@
 * [location](types/location.md)
 * [nic](types/nic.md)
 * [pcc](types/pcc.md)
+* [resource](types/resource.md)
 * [s3_key](types/s3_key.md)
 * [server](types/server.md)
 * [share](types/share.md)

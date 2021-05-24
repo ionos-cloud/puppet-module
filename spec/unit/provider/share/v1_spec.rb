@@ -5,25 +5,39 @@ provider_class = Puppet::Type.type(:share).provider(:v1)
 describe provider_class do
   context 'share operations' do
     before(:all) do
-      @resource = Puppet::Type.type(:share).new(
-        name: 'bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d',
-        group_name: 'Puppet Module Test',
-        edit_privilege: true,
-        share_privilege: true,
-      )
-      @provider = provider_class.new(@resource)
+      VCR.use_cassette('share_prepare') do
+        @datacenter_name = 'puppet_module_test6f2c9f7a96c14sfgddsgh5eh4d0ebc5ed'
+        @group_name = 'puppet_module_test6f2c9f7a96c1sadadasah5eh4d0ebc5ed'
+        @datacenter_id = create_datacenter(@datacenter_name)
+        create_group(@group_name)
+
+        @resource = Puppet::Type.type(:share).new(
+          name: @datacenter_id,
+          group_name: @group_name,
+          edit_privilege: true,
+          share_privilege: true,
+        )
+        @provider = provider_class.new(@resource)
+      end
+    end
+
+    after(:all) do
+      VCR.use_cassette('share_cleanup') do
+        delete_group(@group_name)
+        delete_datacenter(@datacenter_name)
+      end
     end
 
     it 'is an instance of the ProviderV1' do
       expect(@provider).to be_an_instance_of Puppet::Type::Share::ProviderV1
-      expect(@provider.name).to eq('bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d')
+      expect(@provider.name).to eq(@datacenter_id)
     end
 
     it 'adds share' do
       VCR.use_cassette('share_add') do
         expect(@provider.create).to be_truthy
         expect(@provider.exists?).to be true
-        expect(@provider.name).to eq('bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d')
+        expect(@provider.name).to eq(@datacenter_id)
       end
     end
 
@@ -41,7 +55,7 @@ describe provider_class do
         @provider.flush
         updated_instance = nil
         provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == 'bf8aa1ce-1176-4d57-b614-c6ee7c5ab27d'
+          updated_instance = instance if instance.name == @datacenter_id
         end
         expect(updated_instance.edit_privilege).to eq(false)
       end

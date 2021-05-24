@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:ipblock) do
-  @doc = 'Type representing a ProfitBricks IP block.'
+  @doc = 'Type representing a IonosCloud IP block.'
   @changeable_properties = [:firstname, :lastname, :administrator, :force_sec_auth, :groups]
 
   ensurable
@@ -58,6 +58,14 @@ Puppet::Type.newtype(:ipblock) do
 
   newproperty(:ips, array_matching: :all) do
     desc 'The IPs allocated to the IP block.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:ip_consumers, array_matching: :all) do
+    desc 'Read-Only attribute. Lists consumption detail of an individual ip'
 
     def insync?(_is)
       true

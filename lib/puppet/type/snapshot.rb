@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:snapshot) do
-  @doc = 'Type representing a ProfitBricks Snapshot.'
+  @doc = 'Type representing a IonosCloud Snapshot.'
   @changeable_properties = [
     :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug, :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug,
     :disc_virtio_hot_unplug, :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :sec_auth_protection, :licence_type

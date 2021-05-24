@@ -1,6 +1,6 @@
 # location
 
-Type representing a ProfitBricks location.
+Type representing a IonosCloud location.
 
 ## Parameters:
 

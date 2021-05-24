@@ -1,6 +1,6 @@
 # datacenter
 
-Type representing a ProfitBricks virtual data center.
+Type representing a IonosCloud virtual data center.
 
 ## Parameters:
 
@@ -14,8 +14,11 @@ Type representing a ProfitBricks virtual data center.
 | :--- | :-: | :--- | :--- |
 | ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
 | description | No | The data center description.   | - |
-| id | No | The data center ID.   | - |
+| sec_auth_protection | No | Boolean value representing if the data center requires extra protection e.g. two factor protection.  Valid values are `true`, `false`.  | false |
 | location | Yes | The data center location.   | - |
+| version | No | The data center version.   | - |
+| features | No | List of features supported by the location this data center is part of.   | - |
+| id | No | The data center ID.   | - |
 ***
 
 
@@ -28,9 +31,10 @@ Type representing a ProfitBricks virtual data center.
 
 ```text
 datacenter { 'myDataCenter' :
-  ensure      => present,
-  location    => 'de/fra',
-  description => 'test data center'
+  ensure              => present,
+  location            => 'de/fra',
+  description         => 'test data center',
+  sec_auth_protection => false,
 }
 
 ```

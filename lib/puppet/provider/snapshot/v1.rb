@@ -46,6 +46,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
       disc_scsi_hot_plug: instance.properties.disc_scsi_hot_plug,
       disc_scsi_hot_unplug: instance.properties.disc_scsi_hot_unplug,
       licence_type: instance.properties.licence_type,
+      sec_auth_protection: instance.properties.sec_auth_protection,
       ensure: :present,
     }
   end
@@ -107,7 +108,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   end
 
   def sec_auth_protection=(value)
-    @property_flush[:licence_type] = value
+    @property_flush[:sec_auth_protection] = value
   end
 
   def licence_type=(value)
@@ -143,10 +144,11 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     changeable_properties = [
       :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug,
       :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug,
-      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type
+      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type, :sec_auth_protection
     ]
     changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
@@ -162,6 +164,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 
   def destroy

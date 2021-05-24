@@ -1,6 +1,6 @@
 # snapshot
 
-Type representing a ProfitBricks Snapshot.
+Type representing a IonosCloud Snapshot.
 
 ## Parameters:
 

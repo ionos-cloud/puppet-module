@@ -1,6 +1,6 @@
 # server
 
-Type representing a ProfitBricks server.
+Type representing a IonosCloud server.
 
 ## Parameters:
 
@@ -23,8 +23,10 @@ Type representing a ProfitBricks server.
 | licence_type | No | The OS type of the server.  Valid values are `LINUX`, `WINDOWS`, `WINDOWS2016`, `UNKNOWN`, `OTHER`.  | - |
 | nat | No | A boolean which indicates if the NIC will perform Network Address Translation.   | false |
 | volumes | No | A list of volumes to associate with the server.   | - |
+| cdroms | No | A list of Cdroms to associate with the server.   | - |
 | purge_volumes | No | Sets whether attached volumes are removed when server is removed.  Valid values are `true`, `false`.  | false |
 | nics | No | A list of network interfaces associated with the server.   | - |
+| id | No | The server ID.   | - |
 ***
 
 
@@ -42,7 +44,7 @@ Type representing a ProfitBricks server.
 ## Example
 
 ```text
-$datacenter_name = 'testdc1'
+$datacenter_name = 'TestDataCenter'
 
 server { 'worker1' :
   ensure          => present,
@@ -55,9 +57,14 @@ server { 'worker1' :
       size              => 50,
       bus               => 'VIRTIO',
       volume_type       => 'SSD',
-      image_id          => '7412cec6-e83c-11e6-a994-525400f64d8d',
-      ssh_keys          => [ 'ssh-rsa AAAAB3NzaC1yc2EAA...' ],
+      image_alias       => 'debian:latest',
+      image_password    => 'password',
       availability_zone => 'AUTO'
+    }
+  ],
+  cdroms          => [
+    {
+      id => '154011c9-9576-11e8-af82-525400f64d8d',
     }
   ],
   nics            => [

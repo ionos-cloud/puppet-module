@@ -11,6 +11,7 @@ describe type_class do
 
   let :properties do
     [
+      :id,
       :ips,
       :dhcp,
       :lan,

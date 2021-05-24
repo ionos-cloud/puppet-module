@@ -17,6 +17,7 @@ describe type_class do
       :size,
       :created_by,
       :ips,
+      :ip_consumers,
     ]
   end
 

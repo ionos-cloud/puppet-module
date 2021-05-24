@@ -46,7 +46,7 @@ Puppet::Type.type(:lan).provide(:v1) do
       ip_failover: instance.properties.ip_failover.map do |el|
         el = el.to_hash
         el[:nic_uuid] = el.delete :nicUuid
-        el.transform_keys(&:to_s)
+        JSON.parse(el.to_json)
       end,
       public: instance.properties.public,
       pcc: pcc_name,
@@ -73,6 +73,7 @@ Puppet::Type.type(:lan).provide(:v1) do
   end
 
   def flush
+    return if @property_flush.empty?
     changeable_properties = [:public, :ip_failover, :pcc]
     changes = Hash[ *changeable_properties.flat_map { |property| [ property, @property_flush[property] ] } ].delete_if { |_k, v| v.nil? }
 
@@ -102,6 +103,7 @@ Puppet::Type.type(:lan).provide(:v1) do
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
+    @property_flush = {}
   end
 
   def create

@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v5
+      - OpenAPI-Generator/5.1.0/ruby
       Content-Type:
       - application/json
       Accept:
@@ -22,11 +22,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 14 Apr 2021 09:29:28 GMT
+      - Fri, 21 May 2021 14:57:20 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '2548'
+      - '2869'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -48,64 +48,22 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
     body:
-      encoding: UTF-8
+      encoding: ASCII-8BIT
       string: |
         {
           "id" : "ipblocks",
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v5/ipblocks",
           "items" : [ {
-            "id" : "7aa7f85c-ed95-4061-9b05-55b0dcbc8dad",
+            "id" : "e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
             "type" : "ipblock",
-            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/7aa7f85c-ed95-4061-9b05-55b0dcbc8dad",
+            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
             "metadata" : {
-              "etag" : "f25545bf37f611c4e719fc9c22a3b95d",
-              "createdDate" : "2021-04-14T09:29:28Z",
+              "etag" : "dcad7f8a73a8af2b08c2017895e554da",
+              "createdDate" : "2021-05-21T14:57:20Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-04-14T09:29:28Z",
-              "lastModifiedBy" : "username",
-              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "state" : "AVAILABLE"
-            },
-            "properties" : {
-              "ips" : [ "158.222.102.101", "158.222.102.152" ],
-              "location" : "us/las",
-              "size" : 2,
-              "name" : "Puppet Module Test",
-              "ipConsumers" : [ ]
-            }
-          }, {
-            "id" : "03f4a5d1-2f58-4d61-a8cb-8faadf5e8add",
-            "type" : "ipblock",
-            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/03f4a5d1-2f58-4d61-a8cb-8faadf5e8add",
-            "metadata" : {
-              "etag" : "17435fd4337f932ae10887fc54615e64",
-              "createdDate" : "2021-04-05T12:58:29Z",
-              "createdBy" : "username",
-              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-04-05T12:58:29Z",
-              "lastModifiedBy" : "username",
-              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "state" : "AVAILABLE"
-            },
-            "properties" : {
-              "ips" : [ "157.97.105.122", "157.97.105.120" ],
-              "location" : "us/ewr",
-              "size" : 2,
-              "name" : "puppet_demo",
-              "ipConsumers" : [ ]
-            }
-          }, {
-            "id" : "5641d1b0-696f-4105-b2ae-b10a394dc27f",
-            "type" : "ipblock",
-            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/5641d1b0-696f-4105-b2ae-b10a394dc27f",
-            "metadata" : {
-              "etag" : "8368bff4343eca45daaad609b0f7474c",
-              "createdDate" : "2021-03-31T13:13:24Z",
-              "createdBy" : "username",
-              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-03-31T13:13:24Z",
+              "lastModifiedDate" : "2021-05-21T14:57:20Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "state" : "AVAILABLE"
@@ -114,10 +72,61 @@ http_interactions:
               "ips" : [ "158.222.102.164", "158.222.102.161" ],
               "location" : "us/las",
               "size" : 2,
-              "name" : "da",
+              "name" : "puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed",
               "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "e8b42322-0c55-4967-b130-1a31cba1eda6",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/e8b42322-0c55-4967-b130-1a31cba1eda6",
+            "metadata" : {
+              "etag" : "62095b00a69d34548ebeaff9fbc5261b",
+              "createdDate" : "2021-05-20T07:30:50Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-20T07:30:50Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "87.106.115.173", "87.106.115.174", "87.106.115.172" ],
+              "location" : "de/fra",
+              "size" : 3,
+              "name" : "SDKAUTOTEST - create",
+              "ipConsumers" : [ {
+                "ip" : "87.106.115.172",
+                "mac" : null,
+                "nicId" : null,
+                "serverId" : null,
+                "serverName" : null,
+                "datacenterId" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+                "datacenterName" : "SDK AUTO-TEST",
+                "k8sNodePoolUuid" : "113b5e69-996e-4c76-8fce-00bdd6dccef6",
+                "k8sClusterUuid" : null
+              }, {
+                "ip" : "87.106.115.174",
+                "mac" : null,
+                "nicId" : null,
+                "serverId" : null,
+                "serverName" : null,
+                "datacenterId" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+                "datacenterName" : "SDK AUTO-TEST",
+                "k8sNodePoolUuid" : "113b5e69-996e-4c76-8fce-00bdd6dccef6",
+                "k8sClusterUuid" : null
+              }, {
+                "ip" : "87.106.115.173",
+                "mac" : null,
+                "nicId" : null,
+                "serverId" : null,
+                "serverName" : null,
+                "datacenterId" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+                "datacenterName" : "SDK AUTO-TEST",
+                "k8sNodePoolUuid" : "113b5e69-996e-4c76-8fce-00bdd6dccef6",
+                "k8sClusterUuid" : null
+              } ]
             }
           } ]
         }
-  recorded_at: Wed, 14 Apr 2021 09:29:28 GMT
+  recorded_at: Fri, 21 May 2021 14:57:20 GMT
 recorded_with: VCR 6.0.0

@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:ionoscloud_user) do
-  @doc = 'Type representing a ProfitBricks user.'
+  @doc = 'Type representing a IonosCloud user.'
   @changeable_properties = [:firstname, :lastname, :administrator, :force_sec_auth, :groups]
 
   ensurable

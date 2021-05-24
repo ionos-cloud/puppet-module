@@ -15,6 +15,7 @@ Type representing a Ionoscloud network interface.
 | ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
 | public_ip | No | The public IP of the K8s Node.   | - |
 | k8s_version | No | The K8s version of the K8s Node.   | - |
+| private_ip | No | The private IP of the K8s Node.   | - |
 | state | No | She state of the K8s Node.   | - |
 | nodepool_id | No | The K8s Nodepool ID the K8s Node will be attached to.   | - |
 | nodepool_name | No | The K8s Nodepool name the K8s Node will be attached to.   | - |

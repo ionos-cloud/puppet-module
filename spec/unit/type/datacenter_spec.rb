@@ -15,6 +15,9 @@ describe type_class do
       :id,
       :description,
       :location,
+      :sec_auth_protection,
+      :version,
+      :features,
     ]
   end
 

@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v5
+      - OpenAPI-Generator/5.1.0/ruby
       Content-Type:
       - application/json
       Accept:
@@ -22,11 +22,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 14 Apr 2021 09:27:09 GMT
+      - Fri, 21 May 2021 15:06:53 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '3679'
+      - '6112'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -48,31 +48,95 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
     body:
-      encoding: UTF-8
+      encoding: ASCII-8BIT
       string: |
         {
           "id" : "snapshots",
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v5/snapshots",
           "items" : [ {
-            "id" : "8c95afa6-ff05-4cf3-88fb-f4e24b6cbf3a",
+            "id" : "6b988572-b5be-4267-8401-90a82220dfb8",
             "type" : "snapshot",
-            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/8c95afa6-ff05-4cf3-88fb-f4e24b6cbf3a",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/6b988572-b5be-4267-8401-90a82220dfb8",
             "metadata" : {
-              "etag" : "92c01b7107605cff1febafdb40d9405b",
-              "createdDate" : "2021-04-14T09:25:56Z",
+              "etag" : "d09e398d15f3807efa42053f2f4c52eb",
+              "createdDate" : "2021-05-21T14:49:31Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-04-14T09:25:56Z",
+              "lastModifiedDate" : "2021-05-21T14:49:31Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "state" : "AVAILABLE"
             },
             "properties" : {
-              "name" : "Puppet Module Test",
+              "name" : "puppet_module_test04cacda602e04de3b7c41bd099c46558",
               "description" : "Puppet Module test snapshot",
               "location" : "us/las",
-              "size" : 5,
+              "size" : 100,
+              "secAuthProtection" : false,
+              "cpuHotPlug" : true,
+              "cpuHotUnplug" : false,
+              "ramHotPlug" : true,
+              "ramHotUnplug" : false,
+              "nicHotPlug" : true,
+              "nicHotUnplug" : true,
+              "discVirtioHotPlug" : true,
+              "discVirtioHotUnplug" : true,
+              "discScsiHotPlug" : false,
+              "discScsiHotUnplug" : false,
+              "licenceType" : "LINUX"
+            }
+          }, {
+            "id" : "f6539003-4f04-4947-985a-cd57c9a66265",
+            "type" : "snapshot",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/f6539003-4f04-4947-985a-cd57c9a66265",
+            "metadata" : {
+              "etag" : "5af65c8341458dd69a51ec5fe85769f1",
+              "createdDate" : "2021-04-19T08:00:12Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-19T08:00:12Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "nume test",
+              "description" : "Created from \"volume1\" in Data Center \"myDataCenter2\"",
+              "location" : "us/las",
+              "size" : 10,
+              "secAuthProtection" : true,
+              "cpuHotPlug" : true,
+              "cpuHotUnplug" : false,
+              "ramHotPlug" : true,
+              "ramHotUnplug" : false,
+              "nicHotPlug" : true,
+              "nicHotUnplug" : true,
+              "discVirtioHotPlug" : true,
+              "discVirtioHotUnplug" : true,
+              "discScsiHotPlug" : false,
+              "discScsiHotUnplug" : false,
+              "licenceType" : "WINDOWS"
+            }
+          }, {
+            "id" : "93ad1569-e0fc-4fa4-82d8-50349095800d",
+            "type" : "snapshot",
+            "href" : "https://api.ionos.com/cloudapi/v5/snapshots/93ad1569-e0fc-4fa4-82d8-50349095800d",
+            "metadata" : {
+              "etag" : "db55d7899c0a224a7d62149fbc6eda06",
+              "createdDate" : "2021-04-19T07:54:36Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-04-19T07:54:36Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "volume1-Snapshot-2021-04-19T07:54:36Z",
+              "description" : "Created from \"volume1\" in Data Center \"myDataCenter2\"",
+              "location" : "us/las",
+              "size" : 10,
               "secAuthProtection" : false,
               "cpuHotPlug" : true,
               "cpuHotUnplug" : false,
@@ -152,5 +216,5 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Wed, 14 Apr 2021 09:27:09 GMT
+  recorded_at: Fri, 21 May 2021 15:06:53 GMT
 recorded_with: VCR 6.0.0

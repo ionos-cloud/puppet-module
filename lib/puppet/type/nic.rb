@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nic) do
-  @doc = 'Type representing a ProfitBricks network interface.'
+  @doc = 'Type representing a IonosCloud network interface.'
   @changeable_properties = [:ips, :lan, :nat, :dhcp, :firewall_rules]
 
   ensurable
@@ -112,6 +112,14 @@ Puppet::Type.newtype(:nic) do
     validate do |value|
       raise ArgumentError, 'The data center name should be a String.' unless value.is_a?(String)
     end
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:id) do
+    desc 'The NIC ID.'
 
     def insync?(_is)
       true
