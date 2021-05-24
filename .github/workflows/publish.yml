@@ -67,6 +67,10 @@ jobs:
         shell: bash
         run: bundle install
 
+      - name: Install dependencies
+        shell: bash
+        run: bundle install
+
       - name: Install puppet-blacksmith
         shell: bash
         run: gem install puppet-blacksmith
