@@ -1,117 +1,154 @@
-# Ionoscloud
+# Introduction
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
+## Overview
 
-The README template below provides a starting point with details about what
-information to include in your README.
+The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.
 
-## Table of Contents
+This module utilizes the IONOS Cloud [Cloud API](https://devops.ionoscloud.com/api/cloud/) via the [Ionoscloud Ruby SDK](https://github.com/ionos-cloud/sdk-ruby) to manage resources within a virtual data center. A Puppet manifest file can be used to describe the desired infrastructure configuration including networks, servers, CPU cores, memory, and their relationships as well as states. That infrastructure can then be easily and automatically deployed using Puppet.
 
-1. [Description](#description)
-1. [Setup - The basics of getting started with Ionoscloud](#setup)
-    * [What Ionoscloud affects](#what-Ionoscloud-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with Ionoscloud](#beginning-with-Ionoscloud)
-1. [Usage - Configuration options and additional functionality](#usage)
-1. [Limitations - OS compatibility, etc.](#limitations)
-1. [Development - Guide for contributing to the module](#development)
+## Getting Started
 
-## Description
+Before you begin you will need to have [signed-up for a Ionoscloud account](https://devops.ionoscloud.com/signup). The credentials you establish during sign-up will be used to authenticate against the Ionoscloud Cloud API.
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
+### Requirements
 
-This should be a fairly short description helps the user decide if your module
-is what they want.
+* Puppet 4.2.x or greater
+* Ruby 2.0 or greater
+* Ionoscloud Ruby SDK (ionoscloud)
+* Ionoscloud account
 
-## Setup
+## Installation
 
-### What Ionoscloud affects **OPTIONAL**
+There are multiple ways that Puppet and Ruby can be installed on an operating system (OS).
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+For users who already have a system with Puppet and Ruby installed, the following three easy steps should get the Ionoscloud Puppet module working. **Note:** You may need to prefix `sudo` to the commands in steps one and two.
 
-If there's more that they should know about, though, this is the place to
-mention:
+1. Install the Ionoscloud Ruby SDK using `gem`.
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+        gem install ionoscloud
 
-### Setup Requirements **OPTIONAL**
+2. Install the module.
 
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
+        puppet module install ionoscloud-ionoscloud
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+3. Set the environment variables for authentication.
 
-### Beginning with Ionoscloud
+        export IONOS_USERNAME="user@example.com"
+        export IONOS_PASSWORD="secretpassword"
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *ionoscloud* library but it is not available to the Ruby install that Puppet is actually using.
+
+To demonstrate this on a CentOS 7 server, these steps could be followed.
+
+**Note:** You may need to prefix `sudo` to the commands in steps one through three.
+
+1. Install Puppet using the official Puppet Collection.
+
+        rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+
+        yum install puppet-agent
+
+2. Install the Ionoscloud Ruby SDK using `gem`. **Note:** We are supplying the full path to the `gem` binary.
+
+        /opt/puppetlabs/puppet/bin/gem install ionoscloud
+
+3. Install the Puppet module. **Note:** We are supplying the full path to the `puppet` binary.
+
+        /opt/puppetlabs/puppet/bin/puppet module install ionoscloud-ionoscloud
+
+4. Set the environment variables for authentication.
+
+        export IONOS_USERNAME="user@example.com"
+        export IONOS_PASSWORD="secretpassword"
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+A Puppet manifest uses a domain specific language, or DSL. This language allows resources and their states to be declared. Puppet will then build the resources and set the states as described in the manifest. The following snippet describes a simple LAN resource.
 
-## Reference
+    lan { 'public':
+      ensure => present,
+      public => true,
+      datacenter_id => '2dbf0e6b-3430-46fd-befd-6d08acd96557'
+    }
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
+A LAN named `public` will have public Internet access enabled and will reside in the defined virtual data center.
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+**Note**: It is important that resource names be unique within the manifest. This includes both similar and different resource types. For example, a LAN resource named `public` will conflict with a server resource named `public`.
 
-For each element (class, defined type, function, and so on), list:
+To provide a data center ID, you can create a data center within the module as follows:
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+    datacenter { 'myDataCenter' :
+      ensure      => present,
+      location    => 'de/fra',
+      description => 'test data center'
+    }
 
-For example:
+Afterwards, get the data center ID using the puppet resource command:
 
+    puppet resource datacenter [myDataCenter]
+
+which should return output similar to this:
+
+    datacenter { 'myDataCenter':
+      ensure      => 'present',
+      description => 'test data center',
+      id          => '4af72f13-221d-499d-88ea-48713173e12f',
+      location    => 'de/fra',
+    }
+
+The returned *id* value of *4af72f13-221d-499d-88ea-48713173e12f* may be used elsewhere in our manifest to identify this virtual data center.
+
+A data center name can be used instead. You may find this more convenient than using a data center ID. Please refer to the next section for an example.
+
+If you have already created your data center, LAN and server resources, you may connect them with a new NIC resource using their names or IDs.
+
+    $datacenter_name = 'testdc1'
+    $server_name = 'worker1'
+    $lan_name = 'public1'
+
+    nic { 'testnic':
+      datacenter_name   => $datacenter_name,
+      server_name => $server_name,
+      nat => false,
+      dhcp => true,
+      lan => $lan_name,
+      ips => ['78.137.103.102', '78.137.103.103', '78.137.103.104'],
+      firewall_active => true,
+      firewall_rules => [
+        {
+          name => 'SSH',
+          protocol => 'TCP',
+          port_range_start => 22,
+          port_range_end => 22
+        }
+      ]
+    }
+
+**Note**: Using the Ionoscloud Puppet module to manage your Ionoscloud resources ensures uniqueness of the managed instances. The Ionoscloud Cloud API allows the creation of multiple virtual data centers having the same name.
+
+If you attempt to manage LAN and server resources using data center names, the module will throw an error when more than one virtual data center with the same name is detected. The same is true if you attempt to remove virtual data centers by non-unique names.
+
+### Verification
+
+Once you have composed a manifest, it is good to have Puppet validate the syntax. The Puppet accessory `parser` can check for syntax errors. To validate a manifest named `init.pp` run:
+
+    puppet parser validate init.pp
+
+If the manifest validates successfully, no output is returned. If there is an issue, you should get some output indicating what is invalid:
+
+    Error: Could not parse for environment production: Syntax error at '}' at init.pp:8:2
+
+That error message indicates we should take a look at a curly brace located on line 8 column 2 of `init.pp`.
+
+To have puppet go ahead and apply the manifest run:
+
+    puppet apply init.pp
+
+
+### Testing
+
+```text
+$ rspec spec/unit/
 ```
-### `pet::cat`
 
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
-
-## Limitations
-
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
-
-## Development
-
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+Bugs & feature requests can be open on the repository issues: [https://github.com/ionos-cloud/puppet-module/issues/new/choose](https://github.com/ionos-cloud/puppet-module/issues/new/choose)
