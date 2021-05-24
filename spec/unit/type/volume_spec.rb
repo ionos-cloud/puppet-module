@@ -14,6 +14,7 @@ describe type_class do
 
   let :properties do
     [
+      :id,
       :ensure,
       :datacenter_id,
       :datacenter_name,

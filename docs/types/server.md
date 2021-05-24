@@ -26,6 +26,7 @@ Type representing a IonosCloud server.
 | cdroms | No | A list of Cdroms to associate with the server.   | - |
 | purge_volumes | No | Sets whether attached volumes are removed when server is removed.  Valid values are `true`, `false`.  | false |
 | nics | No | A list of network interfaces associated with the server.   | - |
+| id | No | The server ID.   | - |
 ***
 
 

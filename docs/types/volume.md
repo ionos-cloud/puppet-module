@@ -33,6 +33,7 @@ Type representing a IonosCloud storage volume.
 | disc_virtio_hot_unplug | No | Indicates VirtIO drive hot unplug capability.   | - |
 | datacenter_id | No | The ID of the virtual data center where the volume will reside.   | - |
 | datacenter_name | No | The name of the virtual data center where the volume will reside.   | - |
+| id | No | The volume ID.   | - |
 ***
 
 

@@ -23,6 +23,7 @@ Type representing a IonosCloud network interface.
 | server_name | No | The server name the NIC will be attached to.   | - |
 | datacenter_id | No | The ID of the virtual data center where the NIC will reside.   | - |
 | datacenter_name | No | The name of the virtual data center where the NIC will reside.   | - |
+| id | No | The NIC ID.   | - |
 ***
 
 
