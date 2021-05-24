@@ -8,7 +8,7 @@ describe provider_class do
       VCR.use_cassette('lan_prepare') do
         @datacenter_name = 'puppet_module_test6f2c9fasdfwfgwegwedsgh5eh4d0ebc5ed'
         create_datacenter(@datacenter_name)
-        
+
         @lan1_name = 'puppet_module_test6qfwqfqwfqwfqfwddsgh5eh4d0ebc5ed'
         @lan2_name = 'puppet_module_test6f2c9f7a9fqwfqfwqfqwh4d0ebc5ed'
 

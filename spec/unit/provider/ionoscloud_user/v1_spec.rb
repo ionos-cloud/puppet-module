@@ -6,7 +6,7 @@ describe provider_class do
   context 'ionoscloud_user operations' do
     before(:all) do
       VCR.use_cassette('ionoscloud_user_prepare') do
-        @email = "johnf2c9f7a96c14ef08d20f796d0ebc5ed@doe.com"
+        @email = 'johnf2c9f7a96c14ef08d20f796d0ebc5ed@doe.com'
         @group_name = 'puppet_module_test6f2c9f7a96c14ef08d20f796d0ebc5ed'
         create_group(@group_name)
 

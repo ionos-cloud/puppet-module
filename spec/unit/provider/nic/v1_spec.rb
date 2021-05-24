@@ -17,7 +17,7 @@ describe provider_class do
             name: @ipblock_name,
             size: 2,
             location: 'us/las',
-          )
+          ),
         )
         @ipblock_provider.create unless @ipblock_provider.exists?
 

@@ -114,7 +114,6 @@ describe provider_class do
       VCR.use_cassette('k8s_nodepool_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
-        
       end
     end
   end

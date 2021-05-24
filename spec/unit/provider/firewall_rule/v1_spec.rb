@@ -16,7 +16,6 @@ describe provider_class do
         create_private_lan(@datacenter_name, @lan_name)
         create_nic(@datacenter_name, @server_name, @lan_name, @nic_name)
 
-
         @resource = Puppet::Type.type(:firewall_rule).new(
           name: 'SSH',
           nic: @nic_name,
