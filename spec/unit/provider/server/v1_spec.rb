@@ -6,13 +6,13 @@ describe provider_class do
   context 'server operations' do
     before(:all) do
       VCR.use_cassette('server_prepare') do
-        @datacenter_name = random_name
-        @lan_name = random_name
+        @datacenter_name = 'puppet_module_test6fffqwfqwfqwfgqg5eh4d0ebc5ed'
+        @lan_name = 'puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed'
         create_datacenter(@datacenter_name)
         create_private_lan(@datacenter_name, @lan_name)
 
-        @server1_name = random_name
-        @server2_name = random_name
+        @server1_name = 'puppet_module_test6ffwegwgwegwwdqw5eh4d0ebc5ed'
+        @server2_name = 'puppet_module_test6ffwgwegwegwegwegewgwh4d0ebc5ed'
 
         @resource1 = Puppet::Type.type(:server).new(
           name: @server1_name,
@@ -234,7 +234,7 @@ describe provider_class do
         expect(updated_instance.volumes[0][:name]).to eq('Puppet Module Test 3')
         expect(updated_instance.volumes[0][:size]).to eq(10)
         expect(updated_instance.volumes[1][:name]).to eq('Puppet Module Test')
-        expect(updated_instance.volumes[1][:size]).to eq(110)
+        expect(updated_instance.volumes[1][:size]).to eq(20)
       end
     end
 
@@ -282,22 +282,22 @@ describe provider_class do
         expect(updated_instance.nics[0][:name]).to eq('Puppet Module Test 3')
         expect(updated_instance.nics[0][:dhcp]).to eq(true)
         expect(updated_instance.nics[0][:nat]).to eq(false)
-        expect(updated_instance.nics[0][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[0][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[0][:firewall_active]).to eq(false)
         expect(updated_instance.nics[0][:firewall_rules]).to eq([])
 
         expect(updated_instance.nics[1][:name]).to eq('Puppet Module Test 2')
         expect(updated_instance.nics[1][:dhcp]).to eq(false)
         expect(updated_instance.nics[1][:nat]).to eq(false)
-        expect(updated_instance.nics[1][:lan]).to eq('Puppet Module Test')
+        expect(updated_instance.nics[1][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[1][:firewall_active]).to eq(true)
         expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
-        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('HTTP2')
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(65)
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(80)
-        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('SSH2')
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(22)
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('HTTP2')
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(65)
+        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(80)
+        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('SSH2')
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(22)
       end
     end
 

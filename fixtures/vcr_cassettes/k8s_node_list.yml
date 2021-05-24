@@ -22,11 +22,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 21 May 2021 15:07:06 GMT
+      - Mon, 24 May 2021 08:03:10 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '2578'
+      - '3746'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -55,25 +55,57 @@ http_interactions:
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v5/k8s",
           "items" : [ {
-            "id" : "d8bedf22-9d54-4960-873c-3d9f8eb072a5",
+            "id" : "055d9f31-b40e-4800-b761-4c1d9ea38c53",
             "type" : "k8s",
-            "href" : "https://api.ionos.com/cloudapi/v5/k8s/d8bedf22-9d54-4960-873c-3d9f8eb072a5",
+            "href" : "https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53",
             "metadata" : {
-              "etag" : "319e70eb6f592caaca3c962bdcb213ef",
-              "createdDate" : "2021-05-21T15:03:15Z",
+              "etag" : "b70cbeb4f08a7ebdda84cbae9c66aaa3",
+              "createdDate" : "2021-05-21T15:15:17Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-05-21T15:03:15Z",
+              "lastModifiedDate" : "2021-05-21T15:15:17Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "state" : "DEPLOYING"
+              "state" : "ACTIVE"
             },
             "properties" : {
-              "name" : "puppet_module_test6fqfwqfqfqwfddsgh5eh4d0ebc5ed",
+              "name" : "test",
+              "k8sVersion" : "1.20.6",
+              "maintenanceWindow" : {
+                "dayOfTheWeek" : "Wednesday",
+                "time" : "21:08:17Z"
+              },
+              "availableUpgradeVersions" : [ ],
+              "viableNodePoolVersions" : [ "1.19.10", "1.20.6" ],
+              "public" : true
+            },
+            "entities" : {
+              "nodepools" : {
+                "id" : "055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools"
+              }
+            }
+          }, {
+            "id" : "d60c72f5-d505-4922-bcf3-2e97d29850c6",
+            "type" : "k8s",
+            "href" : "https://api.ionos.com/cloudapi/v5/k8s/d60c72f5-d505-4922-bcf3-2e97d29850c6",
+            "metadata" : {
+              "etag" : "74ba441bc9df709b57864e63efe55d6c",
+              "createdDate" : "2021-05-21T15:08:35Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-21T15:08:35Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "ACTIVE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test6fqdqwdqwdqwd5eh4d0ebc5ed",
               "k8sVersion" : "1.18.5",
               "maintenanceWindow" : {
                 "dayOfTheWeek" : "Sunday",
-                "time" : "14:53:00Z"
+                "time" : "14:54:00Z"
               },
               "availableUpgradeVersions" : [ "1.18.9", "1.18.12", "1.18.18", "1.19.10" ],
               "viableNodePoolVersions" : [ "1.18.5", "1.18.9", "1.18.12", "1.18.18" ],
@@ -81,9 +113,9 @@ http_interactions:
             },
             "entities" : {
               "nodepools" : {
-                "id" : "d8bedf22-9d54-4960-873c-3d9f8eb072a5/nodepools",
+                "id" : "d60c72f5-d505-4922-bcf3-2e97d29850c6/nodepools",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v5/k8s/d8bedf22-9d54-4960-873c-3d9f8eb072a5/nodepools"
+                "href" : "https://api.ionos.com/cloudapi/v5/k8s/d60c72f5-d505-4922-bcf3-2e97d29850c6/nodepools"
               }
             }
           }, {
@@ -120,10 +152,10 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Fri, 21 May 2021 15:07:06 GMT
+  recorded_at: Mon, 24 May 2021 08:03:10 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/k8s/d8bedf22-9d54-4960-873c-3d9f8eb072a5/nodepools?depth=1
+    uri: https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools?depth=1
     body:
       encoding: US-ASCII
       string: ''
@@ -143,7 +175,146 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 21 May 2021 15:07:07 GMT
+      - Mon, 24 May 2021 08:03:10 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '1539'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools",
+          "items" : [ {
+            "id" : "a815fb62-4b9a-42c9-931b-17fb475ea232",
+            "type" : "nodepool",
+            "href" : "https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools/a815fb62-4b9a-42c9-931b-17fb475ea232",
+            "metadata" : {
+              "etag" : "794ed80c501da7da4b7a48a975173920",
+              "createdDate" : "2021-05-21T15:44:38Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-21T15:44:38Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "ACTIVE"
+            },
+            "properties" : {
+              "name" : "test",
+              "datacenterId" : "88f232f4-8d17-48d8-8b46-064b8c2c8054",
+              "nodeCount" : 1,
+              "cpuFamily" : "INTEL_SKYLAKE",
+              "coresCount" : 1,
+              "ramSize" : 2048,
+              "availabilityZone" : "AUTO",
+              "storageType" : "HDD",
+              "storageSize" : 10,
+              "k8sVersion" : "1.20.6",
+              "maintenanceWindow" : {
+                "dayOfTheWeek" : "Sunday",
+                "time" : "13:29:39Z"
+              },
+              "autoScaling" : {
+                "minNodeCount" : null,
+                "maxNodeCount" : null
+              },
+              "lans" : [ ],
+              "labels" : { },
+              "annotations" : { },
+              "availableUpgradeVersions" : [ ],
+              "publicIps" : null
+            }
+          } ]
+        }
+  recorded_at: Mon, 24 May 2021 08:03:10 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools/a815fb62-4b9a-42c9-931b-17fb475ea232/nodes?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/5.1.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 24 May 2021 08:03:11 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '741'
+      Content-Type:
+      - application/json
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: '{"id":"a815fb62-4b9a-42c9-931b-17fb475ea232/nodes","type":"collection","href":"https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools/a815fb62-4b9a-42c9-931b-17fb475ea232/nodes","items":[{"id":"93f2ac47-a659-49c2-8229-7121314d87ba","type":"node","href":"https://api.ionos.com/cloudapi/v5/k8s/055d9f31-b40e-4800-b761-4c1d9ea38c53/nodepools/a815fb62-4b9a-42c9-931b-17fb475ea232/nodes/93f2ac47-a659-49c2-8229-7121314d87ba","metadata":{"etag":"7cd47a39f5481dbcbd6d8b22fb966c5e","lastModifiedDate":"2021-05-23T13:29:22Z","state":"READY","createdDate":"2021-05-23T13:29:22Z","lastSoftwareUpdatedDate":"2021-05-23T13:29:19Z"},"properties":{"name":"test-oqbxwisrqh","k8sVersion":"1.20.6","publicIP":"217.160.202.25"}}]}'
+  recorded_at: Mon, 24 May 2021 08:03:11 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v5/k8s/d60c72f5-d505-4922-bcf3-2e97d29850c6/nodepools?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/5.1.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 24 May 2021 08:03:11 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -172,12 +343,12 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "d8bedf22-9d54-4960-873c-3d9f8eb072a5/nodepools",
+          "id" : "d60c72f5-d505-4922-bcf3-2e97d29850c6/nodepools",
           "type" : "collection",
-          "href" : "https://api.ionos.com/cloudapi/v5/k8s/d8bedf22-9d54-4960-873c-3d9f8eb072a5/nodepools",
+          "href" : "https://api.ionos.com/cloudapi/v5/k8s/d60c72f5-d505-4922-bcf3-2e97d29850c6/nodepools",
           "items" : [ ]
         }
-  recorded_at: Fri, 21 May 2021 15:07:07 GMT
+  recorded_at: Mon, 24 May 2021 08:03:11 GMT
 - request:
     method: get
     uri: https://api.ionos.com/cloudapi/v5/k8s/6f180597-b6c6-448c-897c-b04d628f8601/nodepools?depth=1
@@ -200,7 +371,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 21 May 2021 15:07:07 GMT
+      - Mon, 24 May 2021 08:03:11 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -234,5 +405,5 @@ http_interactions:
           "href" : "https://api.ionos.com/cloudapi/v5/k8s/6f180597-b6c6-448c-897c-b04d628f8601/nodepools",
           "items" : [ ]
         }
-  recorded_at: Fri, 21 May 2021 15:07:07 GMT
+  recorded_at: Mon, 24 May 2021 08:03:11 GMT
 recorded_with: VCR 6.0.0

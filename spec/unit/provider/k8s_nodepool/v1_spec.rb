@@ -8,16 +8,16 @@ describe provider_class do
   context 'k8s cluster operations' do
     before(:all) do
       VCR.use_cassette('k8s_nodepool_prepare') do
-        @cluster_name = "puppet_module_test6fqdqwdqwdqwd5eh4d0ebc5ed"
+        @cluster_name = 'puppet_module_testc'
         @cluster_id = create_cluster(@cluster_name)
 
-        @datacenter_name = "puppet_module_test6fqfdqdqwdqdwqgh5eh4d0ebc5ed"
+        @datacenter_name = 'puppet_module_test23523f23f2g2g23g323f3h4d0ebc5ed'
         create_datacenter(@datacenter_name)
 
-        @lan_name = "puppet_module_test6fqfwqfdqdqwdqwdqh4d0ebc5ed"
-        @lan_id = create_private_lan(@datacenter_name)
+        @lan_name = 'puppet_module_test6fqfwqfdqdqwdqwdqh4d0ebc5ed'
+        @lan_id = create_private_lan(@datacenter_name, @lan_name)
 
-        @nodepool_name = "puppet_module_test6fqfwdqwdqwdqwdwq5eh4d0ebc5ed"
+        @nodepool_name = 'puppet_module_test6fqfwdqwdqwdqwdwq5eh4d0ebc5ed'
 
         @resource = Puppet::Type.type(:k8s_nodepool).new(
           name: @nodepool_name,
@@ -42,6 +42,7 @@ describe provider_class do
 
     after(:all) do
       VCR.use_cassette('k8s_nodepool_cleanup') do
+        wait_cluster_active(@cluster_id)
         delete_cluster(@cluster_name)
         delete_datacenter(@datacenter_name)
       end
@@ -76,6 +77,7 @@ describe provider_class do
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name
         end
+        wait_nodepool_active(@cluster_id, @provider.id)
         my_instance.k8s_version = new_version
         my_instance.node_count = new_node_count
         my_instance.flush
@@ -91,11 +93,12 @@ describe provider_class do
 
     it 'updates k8s nodepool 2' do
       VCR.use_cassette('k8s_nodepool_update2') do
-        new_lans = [@lan_id]
+        new_lans = [Integer(@lan_id)]
         my_instance = nil
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name
         end
+        wait_nodepool_active(@cluster_id, @provider.id)
         my_instance.lans = new_lans
         my_instance.flush
         wait_nodepool_active(@cluster_id, @provider.id)
@@ -111,8 +114,7 @@ describe provider_class do
       VCR.use_cassette('k8s_nodepool_delete') do
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
-        nodepool = Ionoscloud::KubernetesApi.new.k8s_nodepools_find_by_id(@cluster_id, @provider.id)
-        expect(nodepool.metadata.state).to eq('DESTROYING')
+        
       end
     end
   end

@@ -22,7 +22,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 24 May 2021 08:17:34 GMT
+      - Mon, 24 May 2021 08:18:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Type:
@@ -408,7 +408,7 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Mon, 24 May 2021 08:17:34 GMT
+  recorded_at: Mon, 24 May 2021 08:18:22 GMT
 - request:
     method: get
     uri: https://api.ionos.com/cloudapi/v5/datacenters/0b71a665-2be7-4b75-bff6-824d383e13ae/servers?depth=1
@@ -431,11 +431,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 24 May 2021 08:17:34 GMT
+      - Mon, 24 May 2021 08:18:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '3808'
+      - '3809'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -468,21 +468,21 @@ http_interactions:
             "type" : "server",
             "href" : "https://api.ionos.com/cloudapi/v5/datacenters/0b71a665-2be7-4b75-bff6-824d383e13ae/servers/e320c32e-f5fb-4f78-9613-209ae2c80c78",
             "metadata" : {
-              "etag" : "ae2043b6287102f816cc81df9218c0ea",
+              "etag" : "a53a350cbd409f9a59e71d9edb06ba94",
               "createdDate" : "2021-05-24T08:04:37Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "lastModifiedDate" : "2021-05-24T08:13:16Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "state" : "INACTIVE"
+              "state" : "AVAILABLE"
             },
             "properties" : {
               "name" : "puppet_module_test6ffwgwegwegwegwegewgwh4d0ebc5ed",
               "cores" : 2,
               "ram" : 2048,
               "availabilityZone" : "AUTO",
-              "vmState" : "SHUTOFF",
+              "vmState" : "RUNNING",
               "bootCdrom" : null,
               "bootVolume" : null,
               "cpuFamily" : "AMD_OPTERON"
@@ -547,7 +547,7 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Mon, 24 May 2021 08:17:34 GMT
+  recorded_at: Mon, 24 May 2021 08:18:22 GMT
 - request:
     method: post
     uri: https://api.ionos.com/cloudapi/v5/datacenters/0b71a665-2be7-4b75-bff6-824d383e13ae/servers/e320c32e-f5fb-4f78-9613-209ae2c80c78/reboot
@@ -570,7 +570,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Mon, 24 May 2021 08:17:34 GMT
+      - Mon, 24 May 2021 08:18:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -578,7 +578,7 @@ http_interactions:
       Etag:
       - e2b535a996dbfb1d9f6df1715ebcf525
       Location:
-      - https://api.ionos.com/cloudapi/v5/requests/ae8e2d9b-f4e4-4742-bc7c-d27011794cf7/status
+      - https://api.ionos.com/cloudapi/v5/requests/278c8b62-ba9e-41e5-9537-3eb7fe858ece/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -600,10 +600,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Mon, 24 May 2021 08:17:34 GMT
+  recorded_at: Mon, 24 May 2021 08:18:22 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/requests/ae8e2d9b-f4e4-4742-bc7c-d27011794cf7/status
+    uri: https://api.ionos.com/cloudapi/v5/requests/278c8b62-ba9e-41e5-9537-3eb7fe858ece/status
     body:
       encoding: US-ASCII
       string: ''
@@ -623,7 +623,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 24 May 2021 08:18:21 GMT
+      - Mon, 24 May 2021 08:18:53 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -654,9 +654,9 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "ae8e2d9b-f4e4-4742-bc7c-d27011794cf7/status",
+          "id" : "278c8b62-ba9e-41e5-9537-3eb7fe858ece/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v5/requests/ae8e2d9b-f4e4-4742-bc7c-d27011794cf7/status",
+          "href" : "https://api.ionos.com/cloudapi/v5/requests/278c8b62-ba9e-41e5-9537-3eb7fe858ece/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
@@ -671,5 +671,5 @@ http_interactions:
             } ]
           }
         }
-  recorded_at: Mon, 24 May 2021 08:18:21 GMT
+  recorded_at: Mon, 24 May 2021 08:18:53 GMT
 recorded_with: VCR 6.0.0

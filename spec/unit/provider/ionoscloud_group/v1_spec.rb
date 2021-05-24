@@ -5,7 +5,7 @@ provider_class = Puppet::Type.type(:ionoscloud_group).provider(:v1)
 describe provider_class do
   context 'ionoscloud_group operations' do
     before(:all) do
-      @group_name = 'puppet_module_test6f2c9f7a96c14ef08d20f796d0ebc5ed'
+      @group_name = 'puppet_module_test6f2c9fqawfqfqfwqff796d0ebc5ed'
       @resource = Puppet::Type.type(:ionoscloud_group).new(
         name: @group_name,
         create_data_center: true,

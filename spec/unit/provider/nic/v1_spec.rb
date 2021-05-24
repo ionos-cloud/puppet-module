@@ -12,13 +12,15 @@ describe provider_class do
 
         @ipblock_name = 'puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed'
 
-        Puppet::Type.type(:ipblock).provider(:v1).new(
+        @ipblock_provider = Puppet::Type.type(:ipblock).provider(:v1).new(
           Puppet::Type.type(:ipblock).new(
             name: @ipblock_name,
             size: 2,
             location: 'us/las',
           )
         )
+        @ipblock_provider.create unless @ipblock_provider.exists?
+
         Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
           @ip_block = instance if instance.name == @ipblock_name
         end
@@ -68,7 +70,6 @@ describe provider_class do
     end
 
     it 'updates NIC' do
-      puts [@ip_block.ips, @ip_block.ips[1]].to_s
       VCR.use_cassette('nic_update') do
         @provider.dhcp = false
         @provider.ips = [@ip_block.ips[0], @ip_block.ips[1]]

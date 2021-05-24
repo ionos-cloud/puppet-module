@@ -62,7 +62,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
   end
 
   def exists?
-    Puppet.info("Checking if NIC #{resource[:name]} exists.")
+    Puppet.info("Checking if K8s cluster #{resource[:name]} exists.")
     @property_hash[:ensure] == :present
   end
 

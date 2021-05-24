@@ -69,10 +69,21 @@ def create_cluster(cluster_name)
     ),
   )
 
-  unless @cluster_provider.exists?
-    @cluster_provider.create
-    wait_cluster_active(@cluster_provider.id)
+  exists = false
+  Puppet::Type.type(:k8s_cluster).provider(:v1).instances.each do
+    |cluster| 
+    if cluster.name == @cluster_provider.name
+      exists = true
+      id = cluster.id
+      wait_cluster_active(id)
+      return id
+    end
   end
+
+  unless exists
+    @cluster_provider.create
+  end
+  wait_cluster_active(@cluster_provider.id)
   @cluster_provider.id
 end
 
