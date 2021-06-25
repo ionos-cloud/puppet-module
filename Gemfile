@@ -16,7 +16,7 @@ end
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
-gem "ionoscloud", '~> 5.0',     require: true
+gem "ionoscloud", '6.0.0.beta.3',     require: true
 
 group :development do
   gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
