@@ -2,7 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a IonosCloud network interface.'
-  @changeable_properties = [:ips, :lan, :nat, :dhcp, :firewall_rules]
+  @changeable_properties = [:ips, :lan, :dhcp, :firewall_rules]
 
   ensurable
 
@@ -39,16 +39,6 @@ Puppet::Type.newtype(:nic) do
     desc 'The LAN name the NIC will sit on.'
     validate do |value|
       raise ArgumentError, 'The LAN name must be a String.' unless value.is_a?(String)
-    end
-  end
-
-  newproperty(:nat) do
-    desc 'A boolean which indicates if the NIC will perform Network Address Translation.'
-    defaultto :false
-    newvalues(:true, :false)
-
-    def insync?(is)
-      is.to_s == should.to_s
     end
   end
 

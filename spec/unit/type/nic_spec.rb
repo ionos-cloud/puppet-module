@@ -15,7 +15,6 @@ describe type_class do
       :ips,
       :dhcp,
       :lan,
-      :nat,
       :firewall_active,
       :firewall_rules,
       :server_id,
@@ -54,10 +53,5 @@ describe type_class do
   it 'defaults volume DHCP to false' do
     volume = type_class.new(name: 'test')
     expect(volume[:dhcp]).to eq(:false)
-  end
-
-  it 'defaults volume NAT to false' do
-    volume = type_class.new(name: 'test')
-    expect(volume[:nat]).to eq(:false)
   end
 end

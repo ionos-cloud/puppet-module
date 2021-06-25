@@ -55,6 +55,7 @@ end
 def wait_nodepool_active(cluster_id, nodepool_id)
   Ionoscloud::ApiClient.new.wait_for do
     cluster = Ionoscloud::KubernetesApi.new.k8s_nodepools_find_by_id(cluster_id, nodepool_id)
+    puts ["cluster state is #{cluster.metadata.state}", cluster.metadata.state, cluster.metadata.state.class].to_s
     cluster.metadata.state == 'ACTIVE'
   end
 end
@@ -131,9 +132,7 @@ def create_volume(datacenter_name, volume_name)
     Puppet::Type.type(:volume).new(
       name: volume_name,
       size: 100,
-      licence_type: 'WINDOWS2016',
-      image_alias: 'ubuntu:latest',
-      image_password: 'secretpassword2015',
+      licence_type: 'LINUX',
       volume_type: 'SSD',
       availability_zone: 'AUTO',
       datacenter_name: datacenter_name,

@@ -16,7 +16,7 @@ Puppet::Type.type(:s3_key).provide(:v1) do
       s3_keys = []
       # Ignore user if email is not defined.
       unless user.properties.email.nil? || user.properties.email.empty?
-        Ionoscloud::UserManagementApi.new.um_users_s3keys_get(user.id, depth: 1).items.each do |s3_key|
+        Ionoscloud::UserS3KeysApi.new.um_users_s3keys_get(user.id, depth: 1).items.each do |s3_key|
           s3_keys << new(instance_to_hash(s3_key, user))
         end
       end

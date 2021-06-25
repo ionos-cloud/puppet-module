@@ -6,7 +6,7 @@ describe provider_class do
   context 'NIC operations' do
     before(:all) do
       VCR.use_cassette('nic_prepare') do
-        @datacenter_name = 'puppet_module_test6ffwedqdqdqwdqw5eh4d0ebc5ed'
+        @datacenter_name = 'puppet_module_test6ffnfqwfqwfqfqwfd0ebc5ed'
         @server_name = 'puppet_module_test6f2c9fwfewfewddsgh5eh4d0ebc5ed'
         @lan_name = 'puppet_module_test6f2cfwefwefwefwf5eh4d0ebc5ed'
 

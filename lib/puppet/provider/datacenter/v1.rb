@@ -14,7 +14,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def self.instances
     PuppetX::IonoscloudX::Helper.ionoscloud_config
     datacenters = []
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.each do |dc|
+    Ionoscloud::DataCentersApi.new.datacenters_get(depth: 1).items.each do |dc|
       # Ignore data centers if name is not defined.
       datacenters << new(instance_to_hash(dc)) unless dc.properties.name.nil? || dc.properties.name.empty?
     end
@@ -65,7 +65,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
         location: resource[:location],
       ),
     )
-    datacenter, _, headers = Ionoscloud::DataCenterApi.new.datacenters_post_with_http_info(datacenter)
+    datacenter, _, headers = Ionoscloud::DataCentersApi.new.datacenters_post_with_http_info(datacenter)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :present
@@ -81,7 +81,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
 
     changes = Ionoscloud::DatacenterProperties.new(**changes)
 
-    _, _, headers = Ionoscloud::DataCenterApi.new.datacenters_patch_with_http_info(@property_hash[:id], changes)
+    _, _, headers = Ionoscloud::DataCentersApi.new.datacenters_patch_with_http_info(@property_hash[:id], changes)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     changeable_properties.each do |property|
@@ -93,7 +93,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
   def destroy
     Puppet.info("Deleting data center #{@property_hash[:name]}.")
 
-    _, _, headers = Ionoscloud::DataCenterApi.new.datacenters_delete_with_http_info(@property_hash[:id])
+    _, _, headers = Ionoscloud::DataCentersApi.new.datacenters_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent

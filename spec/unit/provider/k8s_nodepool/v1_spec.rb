@@ -8,10 +8,10 @@ describe provider_class do
   context 'k8s cluster operations' do
     before(:all) do
       VCR.use_cassette('k8s_nodepool_prepare') do
-        @cluster_name = 'puppet_module_testc'
+        @cluster_name = 'puppet_module_testa'
         @cluster_id = create_cluster(@cluster_name)
 
-        @datacenter_name = 'puppet_module_test23523f23f2g2g23g323f3h4d0ebc5ed'
+        @datacenter_name = 'puppet_module_test23eh4j56fqqwfqfqwfq4d0ebc5ed'
         create_datacenter(@datacenter_name)
 
         @lan_name = 'puppet_module_test6fqfwqfdqdqwdqwdqh4d0ebc5ed'
@@ -72,14 +72,12 @@ describe provider_class do
     it 'updates k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_update') do
         new_version = '1.18.9'
-        new_node_count = 2
         my_instance = nil
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name
         end
         wait_nodepool_active(@cluster_id, @provider.id)
         my_instance.k8s_version = new_version
-        my_instance.node_count = new_node_count
         my_instance.flush
         wait_nodepool_active(@cluster_id, @provider.id)
         updated_instance = nil
@@ -87,12 +85,12 @@ describe provider_class do
           updated_instance = nodepool if nodepool.name == @nodepool_name
         end
         expect(updated_instance.k8s_version).to eq(new_version)
-        expect(updated_instance.node_count).to eq(new_node_count)
       end
     end
 
     it 'updates k8s nodepool 2' do
       VCR.use_cassette('k8s_nodepool_update2') do
+        sleep(10)
         new_lans = [Integer(@lan_id)]
         my_instance = nil
         provider_class.instances.each do |nodepool|

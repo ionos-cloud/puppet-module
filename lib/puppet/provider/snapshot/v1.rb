@@ -14,7 +14,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
   def self.instances
     PuppetX::IonoscloudX::Helper.ionoscloud_config
     snapshots = []
-    Ionoscloud::SnapshotApi.new.snapshots_get(depth: 1).items.each do |snapshot|
+    Ionoscloud::SnapshotsApi.new.snapshots_get(depth: 1).items.each do |snapshot|
       snapshots << new(instance_to_hash(snapshot))
     end
     snapshots.flatten
@@ -56,7 +56,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     datacenter_id = get_datacenter_id(resource[:datacenter])
     volume_id = get_volume_id(datacenter_id, resource[:volume])
 
-    _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_restore_snapshot_post_with_http_info(
+    _, _, headers = Ionoscloud::VolumesApi.new.datacenters_volumes_restore_snapshot_post_with_http_info(
       datacenter_id, volume_id, { snapshot_id: @property_hash[:id] }
     )
     Puppet.info("Restoring snapshot '#{name}' onto volume '#{resource[:volume]}'...")
@@ -124,7 +124,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     datacenter_id = get_datacenter_id(resource[:datacenter])
     volume_id = get_volume_id(datacenter_id, resource[:volume])
 
-    snapshot, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_create_snapshot_post_with_http_info(
+    snapshot, _, headers = Ionoscloud::VolumesApi.new.datacenters_volumes_create_snapshot_post_with_http_info(
       datacenter_id,
       volume_id,
       {
@@ -157,7 +157,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
     Puppet.info("Updating snapshot '#{name}', #{changes.keys}.")
     changes = Ionoscloud::SnapshotProperties.new(**changes)
 
-    _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
+    _, _, headers = Ionoscloud::SnapshotsApi.new.snapshots_patch_with_http_info(@property_hash[:id], changes)
 
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
@@ -169,7 +169,7 @@ Puppet::Type.type(:snapshot).provide(:v1) do
 
   def destroy
     Puppet.info("Deleting snapshot '#{name}'...")
-    _, _, headers = Ionoscloud::SnapshotApi.new.snapshots_delete_with_http_info(@property_hash[:id])
+    _, _, headers = Ionoscloud::SnapshotsApi.new.snapshots_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end

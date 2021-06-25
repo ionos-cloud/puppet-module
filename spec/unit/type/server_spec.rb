@@ -25,7 +25,6 @@ describe type_class do
       :volumes,
       :purge_volumes,
       :nics,
-      :nat,
     ]
   end
 

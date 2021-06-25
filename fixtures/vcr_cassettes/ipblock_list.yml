@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/ipblocks?depth=1
+    uri: https://api.ionos.com/cloudapi/v6/ipblocks?depth=1
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/5.1.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -22,11 +22,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 21 May 2021 14:57:20 GMT
+      - Wed, 26 May 2021 15:06:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '2869'
+      - '5413'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -53,17 +53,80 @@ http_interactions:
         {
           "id" : "ipblocks",
           "type" : "collection",
-          "href" : "https://api.ionos.com/cloudapi/v5/ipblocks",
+          "href" : "https://api.ionos.com/cloudapi/v6/ipblocks",
           "items" : [ {
-            "id" : "e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
+            "id" : "d4480215-cae5-4e7e-a0e2-745ab3dc533d",
             "type" : "ipblock",
-            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
+            "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/d4480215-cae5-4e7e-a0e2-745ab3dc533d",
             "metadata" : {
-              "etag" : "dcad7f8a73a8af2b08c2017895e554da",
-              "createdDate" : "2021-05-21T14:57:20Z",
+              "etag" : "6fc4085ae5e2ccf9a7bb6959d91b90dc",
+              "createdDate" : "2021-05-26T15:06:22Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-05-21T14:57:20Z",
+              "lastModifiedDate" : "2021-05-26T15:06:22Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "158.222.102.243", "158.222.102.242" ],
+              "location" : "us/las",
+              "size" : 2,
+              "name" : "puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed",
+              "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "c325ae94-94af-4046-b6e8-638c8c1a716c",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/c325ae94-94af-4046-b6e8-638c8c1a716c",
+            "metadata" : {
+              "etag" : "39e39db85cda780b0bba828c66f2b3e1",
+              "createdDate" : "2021-05-26T14:45:27Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-26T14:45:27Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "158.222.102.239", "158.222.102.241" ],
+              "location" : "us/las",
+              "size" : 2,
+              "name" : "puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed",
+              "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "0fc170fd-76bb-46fe-b0f5-61f57b1983a9",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/0fc170fd-76bb-46fe-b0f5-61f57b1983a9",
+            "metadata" : {
+              "etag" : "abb7023fcdaa9220ff40afba5c280bf9",
+              "createdDate" : "2021-05-24T08:02:09Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-24T08:02:09Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "ips" : [ "158.222.102.238", "158.222.102.234" ],
+              "location" : "us/las",
+              "size" : 2,
+              "name" : "puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed",
+              "ipConsumers" : [ ]
+            }
+          }, {
+            "id" : "e5395ff2-2f4a-4150-802e-67388b3def14",
+            "type" : "ipblock",
+            "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/e5395ff2-2f4a-4150-802e-67388b3def14",
+            "metadata" : {
+              "etag" : "ab2876577a7fccbbfc39a5b027fcd2e7",
+              "createdDate" : "2021-05-24T07:58:05Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-24T07:58:05Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "state" : "AVAILABLE"
@@ -78,7 +141,7 @@ http_interactions:
           }, {
             "id" : "e8b42322-0c55-4967-b130-1a31cba1eda6",
             "type" : "ipblock",
-            "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/e8b42322-0c55-4967-b130-1a31cba1eda6",
+            "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/e8b42322-0c55-4967-b130-1a31cba1eda6",
             "metadata" : {
               "etag" : "62095b00a69d34548ebeaff9fbc5261b",
               "createdDate" : "2021-05-20T07:30:50Z",
@@ -128,5 +191,5 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Fri, 21 May 2021 14:57:20 GMT
+  recorded_at: Wed, 26 May 2021 15:06:22 GMT
 recorded_with: VCR 6.0.0

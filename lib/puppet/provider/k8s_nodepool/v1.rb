@@ -44,7 +44,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       cluster_id: cluster.id,
       cluster_name: cluster.properties.name,
       datacenter_id: instance.properties.datacenter_id,
-      datacenter_name: Ionoscloud::DataCenterApi.new.datacenters_find_by_id(instance.properties.datacenter_id).properties.name,
+      datacenter_name: Ionoscloud::DataCentersApi.new.datacenters_find_by_id(instance.properties.datacenter_id).properties.name,
       node_count: instance.properties.node_count,
       min_node_count: instance.properties.auto_scaling.min_node_count,
       max_node_count: instance.properties.auto_scaling.max_node_count,

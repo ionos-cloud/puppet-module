@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.ionos.com/cloudapi/v5/ipblocks
+    uri: https://api.ionos.com/cloudapi/v6/ipblocks
     body:
       encoding: UTF-8
       string: '{"properties":{"location":"us/las","size":2,"name":"puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed"}}'
     headers:
       User-Agent:
-      - OpenAPI-Generator/5.1.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -22,7 +22,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Fri, 21 May 2021 14:57:20 GMT
+      - Wed, 26 May 2021 15:06:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -30,9 +30,9 @@ http_interactions:
       Content-Type:
       - application/json
       Etag:
-      - f48bb75cb15be18f75852631b3d37cfb
+      - 2b92ba7d1205b9a6655378c7fee97cf3
       Location:
-      - https://api.ionos.com/cloudapi/v5/requests/24b0fdf9-8c9e-4d82-adfc-a727ed21f7ce/status
+      - https://api.ionos.com/cloudapi/v6/requests/f5b9ab54-ec38-4e2c-a642-90b2773c2b09/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -55,37 +55,37 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
-          "id" : "e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
+          "id" : "d4480215-cae5-4e7e-a0e2-745ab3dc533d",
           "type" : "ipblock",
-          "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/e64e770a-78fc-4c7a-8443-3f3c77ae3b5e",
+          "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/d4480215-cae5-4e7e-a0e2-745ab3dc533d",
           "metadata" : {
-            "etag" : "f48bb75cb15be18f75852631b3d37cfb",
-            "createdDate" : "2021-05-21T14:57:20Z",
+            "etag" : "2b92ba7d1205b9a6655378c7fee97cf3",
+            "createdDate" : "2021-05-26T15:06:22Z",
             "createdBy" : "username",
             "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "lastModifiedDate" : "2021-05-21T14:57:20Z",
+            "lastModifiedDate" : "2021-05-26T15:06:22Z",
             "lastModifiedBy" : "username",
             "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
             "state" : "BUSY"
           },
           "properties" : {
-            "ips" : [ "158.222.102.164", "158.222.102.161" ],
+            "ips" : [ "158.222.102.243", "158.222.102.242" ],
             "location" : "us/las",
             "size" : 2,
             "name" : "puppet_module_test6f2c9fewfewfgddqdqwdqw4d0ebc5ed",
             "ipConsumers" : [ ]
           }
         }
-  recorded_at: Fri, 21 May 2021 14:57:20 GMT
+  recorded_at: Wed, 26 May 2021 15:06:22 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v5/requests/24b0fdf9-8c9e-4d82-adfc-a727ed21f7ce/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/f5b9ab54-ec38-4e2c-a642-90b2773c2b09/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/5.1.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -99,7 +99,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 21 May 2021 14:57:20 GMT
+      - Wed, 26 May 2021 15:06:22 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -130,22 +130,22 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "24b0fdf9-8c9e-4d82-adfc-a727ed21f7ce/status",
+          "id" : "f5b9ab54-ec38-4e2c-a642-90b2773c2b09/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v5/requests/24b0fdf9-8c9e-4d82-adfc-a727ed21f7ce/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/f5b9ab54-ec38-4e2c-a642-90b2773c2b09/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "4a07da12-37f0-435e-b594-e5ff14517058",
+                "id" : "340d0cfa-03e8-41f5-9535-22e4a9a80ba4",
                 "type" : "ipblock",
-                "href" : "https://api.ionos.com/cloudapi/v5/ipblocks/4a07da12-37f0-435e-b594-e5ff14517058"
+                "href" : "https://api.ionos.com/cloudapi/v6/ipblocks/340d0cfa-03e8-41f5-9535-22e4a9a80ba4"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 21 May 2021 14:57:20 GMT
+  recorded_at: Wed, 26 May 2021 15:06:22 GMT
 recorded_with: VCR 6.0.0

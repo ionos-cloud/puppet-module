@@ -15,7 +15,7 @@ Puppet::Type.type(:image).provide(:v1) do
 
     images = []
 
-    Ionoscloud::ImageApi.new.images_get(depth: 1).items.each do |image|
+    Ionoscloud::ImagesApi.new.images_get(depth: 1).items.each do |image|
       images << new(instance_to_hash(image))
     end
     images.flatten

@@ -14,7 +14,7 @@ Puppet::Type.type(:location).provide(:v1) do
     PuppetX::IonoscloudX::Helper.ionoscloud_config
 
     locations = []
-    Ionoscloud::LocationApi.new.locations_get(depth: 1).items.each do |location|
+    Ionoscloud::LocationsApi.new.locations_get(depth: 1).items.each do |location|
       locations << new(instance_to_hash(location))
     end
     locations.flatten

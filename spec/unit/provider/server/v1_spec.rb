@@ -6,7 +6,7 @@ describe provider_class do
   context 'server operations' do
     before(:all) do
       VCR.use_cassette('server_prepare') do
-        @datacenter_name = 'puppet_module_test6fffqwfqwfqwfgqg5eh4d0ebc5ed'
+        @datacenter_name = 'puppet_module_test62rwg34hg3h34h3d0ebc5ed'
         @lan_name = 'puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed'
         create_datacenter(@datacenter_name)
         create_private_lan(@datacenter_name, @lan_name)
@@ -29,9 +29,7 @@ describe provider_class do
         vol1['bus'] = 'VIRTIO'
         vol1['volume_type'] = 'HDD'
         vol1['availability_zone'] = 'AUTO'
-        vol1['image_alias'] = 'ubuntu:latest'
-        vol1['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
-        vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
+        vol1['licence_type'] = 'LINUX'
 
         vol2 = {}
         vol2['name'] = 'Puppet Module Test 2'
@@ -39,9 +37,7 @@ describe provider_class do
         vol2['bus'] = 'VIRTIO'
         vol2['volume_type'] = 'HDD'
         vol2['availability_zone'] = 'ZONE_3'
-        vol2['image_alias'] = 'ubuntu:latest'
-        vol2['image_password'] = 'ghGhghgHGGghgh7GHjjuuyt655656hvvh67hg7gt'
-        vol1['ssh_keys'] = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'
+        vol2['licence_type'] = 'LINUX'
 
         firewall = {}
         firewall['name'] = 'SSH'
@@ -54,7 +50,6 @@ describe provider_class do
         nic['name'] = 'Puppet Module Test'
         nic['dhcp'] = true
         nic['lan'] = @lan_name
-        nic['nat'] = false
         nic['firewall_rules'] = [firewall]
 
         @resource2 = Puppet::Type.type(:server).new(
@@ -173,15 +168,13 @@ describe provider_class do
             'name' => 'volume1',
             'volume_type' => 'HDD',
             'size' => 15,
-            'image_alias' => 'debian:latest',
-            'image_password' => 'parola123',
+            'licence_type' => 'LINUX',
           },
           {
             'name' => 'volume2',
             'volume_type' => 'HDD',
             'size' => 10,
-            'image_alias' => 'ubuntu:latest',
-            'image_password' => 'parola123',
+            'licence_type' => 'LINUX',
           },
         ]
         @provider1.volumes = volumes
@@ -211,15 +204,13 @@ describe provider_class do
             'name' => 'Puppet Module Test',
             'volume_type' => 'HDD',
             'size' => 20,
-            'image_alias' => 'debian:latest',
-            'image_password' => 'parola123',
+            'licence_type' => 'LINUX',
           },
           {
             'name' => 'Puppet Module Test 3',
             'volume_type' => 'HDD',
             'size' => 10,
-            'image_alias' => 'ubuntu:latest',
-            'image_password' => 'parola123',
+            'licence_type' => 'LINUX',
           },
         ]
         provider_class.instances.each do |instance|
@@ -245,7 +236,6 @@ describe provider_class do
             'name' => 'Puppet Module Test 2',
             'dhcp' => false,
             'lan' => @lan_name,
-            'nat' => false,
             'firewall_active' => true,
             'firewall_rules' => [
               {
@@ -266,7 +256,6 @@ describe provider_class do
             'name' => 'Puppet Module Test 3',
             'dhcp' => true,
             'lan' => @lan_name,
-            'nat' => false,
             'firewall_active' => false,
           },
         ]
@@ -281,14 +270,12 @@ describe provider_class do
         expect(updated_instance.nics.length).to eq(2)
         expect(updated_instance.nics[0][:name]).to eq('Puppet Module Test 3')
         expect(updated_instance.nics[0][:dhcp]).to eq(true)
-        expect(updated_instance.nics[0][:nat]).to eq(false)
         expect(updated_instance.nics[0][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[0][:firewall_active]).to eq(false)
         expect(updated_instance.nics[0][:firewall_rules]).to eq([])
 
         expect(updated_instance.nics[1][:name]).to eq('Puppet Module Test 2')
         expect(updated_instance.nics[1][:dhcp]).to eq(false)
-        expect(updated_instance.nics[1][:nat]).to eq(false)
         expect(updated_instance.nics[1][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[1][:firewall_active]).to eq(true)
         expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)

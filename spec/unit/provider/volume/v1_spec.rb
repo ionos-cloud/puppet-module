@@ -6,7 +6,7 @@ describe provider_class do
   context 'volume operations' do
     before(:all) do
       VCR.use_cassette('volume_prepare') do
-        @datacenter_name = 'puppet_module_test6f2c9f7a96c14ef08d20f796d0ebc5ed'
+        @datacenter_name = 'puppet_module_test6f2c9f7a9r21t22g23g0f796d0ebc5ed'
         create_datacenter(@datacenter_name)
 
         @volume1_name = 'puppet_module_test1'
@@ -15,9 +15,8 @@ describe provider_class do
         @resource1 = Puppet::Type.type(:volume).new(
           name: @volume1_name,
           size: 3,
-          image_alias: 'ubuntu:latest',
+          licence_type: 'LINUX',
           availability_zone: 'ZONE_3',
-          ssh_keys: ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...'],
           datacenter_name: @datacenter_name,
         )
         @provider1 = provider_class.new(@resource1)
@@ -25,9 +24,7 @@ describe provider_class do
         @resource2 = Puppet::Type.type(:volume).new(
           name: @volume2_name,
           size: 100,
-          licence_type: 'WINDOWS2016',
-          image_alias: 'ubuntu:latest',
-          image_password: 'secretpassword2015',
+          licence_type: 'LINUX',
           volume_type: 'SSD',
           availability_zone: 'AUTO',
           datacenter_name: @datacenter_name,

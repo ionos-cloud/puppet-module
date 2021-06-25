@@ -6,7 +6,7 @@ describe provider_class do
   context 'firewall rule operations' do
     before(:all) do
       VCR.use_cassette('firewall_rule_prepare') do
-        @datacenter_name = 'puppet_module_test6fqfwqfqqfwfqwfeh4d0ebc5ed'
+        @datacenter_name = 'puppet_module_testubnfctjrfqwfeh4d0ebc5ed'
         @server_name = 'puppet_module_test6fqfwqfqfwqfh4d0ebc5ed'
         @lan_name = 'puppet_module_test6fqfwqfqfqfqwfwqh4d0ebc5ed'
         @nic_name = 'puppet_module_test6fqfwqffqwfwqfqeh4d0ebc5ed'

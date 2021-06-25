@@ -121,15 +121,6 @@ Puppet::Type.newtype(:server) do
     newvalues('LINUX', 'WINDOWS', 'WINDOWS2016', 'UNKNOWN', 'OTHER')
   end
 
-  newproperty(:nat) do
-    desc 'A boolean which indicates if the NIC will perform Network Address Translation.'
-    defaultto :false
-
-    def insync?(_is)
-      true
-    end
-  end
-
   newproperty(:volumes, array_matching: :all) do
     desc 'A list of volumes to associate with the server.'
     validate do |value|
@@ -193,7 +184,7 @@ Puppet::Type.newtype(:server) do
           [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
         )
       }
-      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :ips, :dhcp, :nat, :lan], &block)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :ips, :dhcp, :lan], &block)
     end
   end
 

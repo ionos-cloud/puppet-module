@@ -13,14 +13,14 @@ Puppet::Type.type(:nic).provide(:v1) do
 
   def self.instances
     PuppetX::IonoscloudX::Helper.ionoscloud_config
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    Ionoscloud::DataCentersApi.new.datacenters_get(depth: 1).items.map { |datacenter|
       nics = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter.id, depth: 1).items
+        lans = Ionoscloud::LansApi.new.datacenters_lans_get(datacenter.id, depth: 1).items
 
         unless lans.empty?
-          Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
+          Ionoscloud::ServersApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
             next if server.properties.name.nil? || server.properties.name.empty?
             server.entities.nics.items.map do |nic|
               unless nic.properties.name.nil? || nic.properties.name.empty?
@@ -54,7 +54,6 @@ Puppet::Type.type(:nic).provide(:v1) do
       server_name: server.properties.name,
       lan: lan.properties.name,
       dhcp: instance.properties.dhcp,
-      nat: instance.properties.nat,
       ips: instance.properties.ips,
       firewall_active: instance.properties.firewall_active,
       firewall_rules: instance.entities.firewallrules.items.map do |firewall_rule|
@@ -88,10 +87,6 @@ Puppet::Type.type(:nic).provide(:v1) do
     @property_flush[:lan] = value
   end
 
-  def nat=(value)
-    @property_flush[:nat] = value
-  end
-
   def dhcp=(value)
     @property_flush[:dhcp] = value
   end
@@ -111,7 +106,7 @@ Puppet::Type.type(:nic).provide(:v1) do
 
     Puppet.info "Creating a new NIC #{nic.to_hash}."
 
-    nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
+    nic, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new nic named #{resource[:name]}.")
@@ -122,7 +117,7 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def destroy
-    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+    _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -135,7 +130,7 @@ Puppet::Type.type(:nic).provide(:v1) do
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true
     )
 
-    [:firewall_active, :ips, :dhcp, :nat, :lan, :firewall_rules].each do |property|
+    [:firewall_active, :ips, :dhcp, :lan, :firewall_rules].each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
     @property_flush = {}

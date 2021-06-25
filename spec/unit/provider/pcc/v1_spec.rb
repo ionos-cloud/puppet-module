@@ -6,7 +6,7 @@ describe provider_class do
   context 'PCC operations' do
     before(:all) do
       VCR.use_cassette('pcc_prepare') do
-        @datacenter_name = 'puppet_module_test6f2s23r2r32rh5eh4d0ebc5ed'
+        @datacenter_name = 'puppet_module_test6f2nfctjrfqwfehh4d0ebc5ed'
         @lan_name = 'puppet_module_test6f2c9f7asdadfadddsgh5eh4d0ebc5ed'
 
         create_datacenter(@datacenter_name)
