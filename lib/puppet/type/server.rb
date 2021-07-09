@@ -44,6 +44,27 @@ Puppet::Type.newtype(:server) do
     end
   end
 
+  newproperty(:type) do
+    desc 'The type of the server.'
+    defaultto 'ENTERPRISE'
+    newvalues('ENTERPRISE', 'CUBE')
+
+    validate do |value|
+      unless ['ENTERPRISE', 'CUBE'].include?(value)
+        raise('Server type must be either "ENTERPRISE" or "CUBE"')
+      end
+      raise('Server type must be a string') unless value.is_a?(String)
+    end
+  end
+
+  newproperty(:template_uuid) do
+    desc 'The template UUID of the server, needed for a CUBE server.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:datacenter_id) do
     desc 'The virtual data center where the server will reside.'
 
@@ -75,11 +96,11 @@ Puppet::Type.newtype(:server) do
   newproperty(:cpu_family) do
     desc 'The CPU family of the server.'
     defaultto 'AMD_OPTERON'
-    newvalues('AMD_OPTERON', 'INTEL_XEON')
+    newvalues('AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE')
 
     validate do |value|
-      unless ['AMD_OPTERON', 'INTEL_XEON'].include?(value)
-        raise('CPU family must be either "AMD_OPTERON" or "INTEL_XEON"')
+      unless ['AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE'].include?(value)
+        raise('CPU family must be either "AMD_OPTERON" or "INTEL_XEON" or "INTEL_SKYLAKE"')
       end
       raise('CPU family must be a string') unless value.is_a?(String)
     end
@@ -93,7 +114,6 @@ Puppet::Type.newtype(:server) do
             rescue
               nil
             end
-      raise('Server must have ram assigned') if value == ''
       raise('RAM must be a multiple of 256 MB') unless (ram % 256) == 0
     end
   end
@@ -127,7 +147,7 @@ Puppet::Type.newtype(:server) do
       volumes = value.is_a?(Array) ? value : [value]
       volumes.each do |volume|
         next if volume.keys.include?('id')
-        ['name', 'size', 'volume_type'].each do |key|
+        ['name', 'volume_type'].each do |key|
           raise("Volume must include #{key}") unless volume.keys.include?(key)
         end
       end

@@ -350,21 +350,19 @@ module PuppetX
           disc_virtio_hot_unplug: volume['disc_virtio_hot_unplug'],
           image_password: volume['image_password'],
           ssh_keys: volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']],
+          image: volume['image_id'],
+          licence_type: volume['licence_type'],
+          backupunit_id: volume['backupunit_id'],
         }
 
-        if volume['image_id'] && !volume['image_id'].empty?
-          volume_config[:image] = volume['image_id']
-        elsif volume['licence_type'] && !volume['licence_type'].empty?
-          volume_config[:licence_type] = volume['licence_type']
-        else
-          raise('Volume must have either image_id or licence_type defined.')
-        end
-
-        Ionoscloud::Volume.new(
+        v = Ionoscloud::Volume.new(
           properties: Ionoscloud::VolumeProperties.new(
             **(volume_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
         )
+        puts volume
+        puts v
+        v
       end
 
       def self.cdrom_object_array_from_hashes(cdroms)

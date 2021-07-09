@@ -96,6 +96,7 @@ Puppet::Type.type(:server).provide(:v1) do
       datacenter_id: datacenter.id,
       datacenter_name: datacenter.properties.name,
       name: instance.properties.name,
+      type: instance.properties.type,
       cores: instance.properties.cores,
       cpu_family: instance.properties.cpu_family,
       ram: instance.properties.ram,
@@ -185,10 +186,12 @@ Puppet::Type.type(:server).provide(:v1) do
       server = Ionoscloud::Server.new(
         properties: Ionoscloud::ServerProperties.new(
           name: resource[:name].to_s,
+          type: resource[:type].to_s,
           cores: resource[:cores],
           cpu_family: resource[:cpu_family].to_s,
           ram: resource[:ram],
           availability_zone: resource[:availability_zone].to_s,
+          template_uuid: resource[:template_uuid].to_s,
         ),
         entities: Ionoscloud::ServerEntities.new(
           cdroms: Ionoscloud::Cdroms.new(
