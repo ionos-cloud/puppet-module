@@ -11,13 +11,13 @@ describe provider_class do
         @cluster_name = 'puppet_module_testa'
         @cluster_id = create_cluster(@cluster_name)
 
-        @datacenter_name = 'puppet_module_test23eh4j56fqqwfqfqwfq4d0ebc5ed'
+        @datacenter_name = 'puppet_module_tes24334gvg3v43vg4b390h30'
         create_datacenter(@datacenter_name)
 
-        @lan_name = 'puppet_module_test6fqfwqfdqdqwdqwdqh4d0ebc5ed'
+        @lan_name = 'puppet_module_test62342423f43434qfbc5ed'
         @lan_id = create_private_lan(@datacenter_name, @lan_name)
 
-        @nodepool_name = 'puppet_module_test6fqfwdqwdqwdqwdwq5eh4d0ebc5ed'
+        @nodepool_name = 'puppet_module_test6f23424f343434345wfbc5ed'
 
         @resource = Puppet::Type.type(:k8s_nodepool).new(
           name: @nodepool_name,
@@ -72,31 +72,12 @@ describe provider_class do
     it 'updates k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_update') do
         new_version = '1.18.9'
-        my_instance = nil
-        provider_class.instances.each do |nodepool|
-          my_instance = nodepool if nodepool.name == @nodepool_name
-        end
-        wait_nodepool_active(@cluster_id, @provider.id)
-        my_instance.k8s_version = new_version
-        my_instance.flush
-        wait_nodepool_active(@cluster_id, @provider.id)
-        updated_instance = nil
-        provider_class.instances.each do |nodepool|
-          updated_instance = nodepool if nodepool.name == @nodepool_name
-        end
-        expect(updated_instance.k8s_version).to eq(new_version)
-      end
-    end
-
-    it 'updates k8s nodepool 2' do
-      VCR.use_cassette('k8s_nodepool_update2') do
-        sleep(10)
         new_lans = [Integer(@lan_id)]
         my_instance = nil
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name
         end
-        wait_nodepool_active(@cluster_id, @provider.id)
+        my_instance.k8s_version = new_version
         my_instance.lans = new_lans
         my_instance.flush
         wait_nodepool_active(@cluster_id, @provider.id)
@@ -104,12 +85,15 @@ describe provider_class do
         provider_class.instances.each do |nodepool|
           updated_instance = nodepool if nodepool.name == @nodepool_name
         end
+        expect(updated_instance.k8s_version).to eq(new_version)
         expect(updated_instance.lans).to eq(new_lans)
       end
     end
 
     it 'deletes k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_delete') do
+        sleep(100)
+        wait_nodepool_active(@cluster_id, @provider.id)
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
       end

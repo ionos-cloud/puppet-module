@@ -22,7 +22,10 @@ VCR.configure do |config|
     rec.ignore! if request_url_regex.match?(rec.request.uri) && ['QUEUED', 'RUNNING'].include?(JSON.parse(rec.response.body)['metadata']['status'])
 
     k8s_cluster_url_regex = %r{/k8s/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    k8s_nodepool_url_regex = %r{/k8s/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/nodepools/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+
     rec.ignore! if rec.request.method == :get && k8s_cluster_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
+    rec.ignore! if rec.request.method == :get && k8s_nodepool_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
   end
 end
 
@@ -55,7 +58,6 @@ end
 def wait_nodepool_active(cluster_id, nodepool_id)
   Ionoscloud::ApiClient.new.wait_for do
     cluster = Ionoscloud::KubernetesApi.new.k8s_nodepools_find_by_id(cluster_id, nodepool_id)
-    puts ["cluster state is #{cluster.metadata.state}", cluster.metadata.state, cluster.metadata.state.class].to_s
     cluster.metadata.state == 'ACTIVE'
   end
 end
