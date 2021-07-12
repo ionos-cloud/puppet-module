@@ -92,7 +92,7 @@ def create_datacenter(datacenter_name)
   @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
     Puppet::Type.type(:datacenter).new(
       name: datacenter_name,
-      location: 'us/las',
+      location: 'de/txl',
       description: 'Puppet Module test description',
     ),
   )

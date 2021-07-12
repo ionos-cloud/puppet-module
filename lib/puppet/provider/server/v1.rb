@@ -79,6 +79,8 @@ Puppet::Type.type(:server).provide(:v1) do
     instance_state = instance.properties.vm_state
     state = if ['SHUTOFF', 'SHUTDOWN', 'CRASHED'].include?(instance_state)
               :stopped
+            elsif ['SUSPENDED'].include?(instance_state)
+              :suspended
             else
               :present
             end
@@ -97,6 +99,7 @@ Puppet::Type.type(:server).provide(:v1) do
       datacenter_name: datacenter.properties.name,
       name: instance.properties.name,
       type: instance.properties.type,
+      template_uuid: instance.properties.template_uuid,
       cores: instance.properties.cores,
       cpu_family: instance.properties.cpu_family,
       ram: instance.properties.ram,
@@ -176,23 +179,35 @@ Puppet::Type.type(:server).provide(:v1) do
     [:stopping, :stopped].include? @property_hash[:ensure]
   end
 
+  def suspended?
+    Puppet.info("Checking if server #{name} is suspended")
+    [:suspended].include? @property_hash[:ensure]
+  end
+
   def create
     Puppet.info("Creating a new server called #{name}.")
     if stopped?
       restart
+    elsif suspended?
+      resume
     else
       datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
+      server_properties = {
+        name: resource[:name].to_s,
+        type: resource[:type].to_s,
+        cores: resource[:cores],
+        cpu_family: resource[:cpu_family].to_s,
+        ram: resource[:ram],
+        availability_zone: resource[:availability_zone].to_s,
+      }
+
+      if resource[:template_uuid]
+        server_properties[:template_uuid] = resource[:template_uuid].to_s
+      end
+
       server = Ionoscloud::Server.new(
-        properties: Ionoscloud::ServerProperties.new(
-          name: resource[:name].to_s,
-          type: resource[:type].to_s,
-          cores: resource[:cores],
-          cpu_family: resource[:cpu_family].to_s,
-          ram: resource[:ram],
-          availability_zone: resource[:availability_zone].to_s,
-          template_uuid: resource[:template_uuid].to_s,
-        ),
+        properties: Ionoscloud::ServerProperties.new(**server_properties),
         entities: Ionoscloud::ServerEntities.new(
           cdroms: Ionoscloud::Cdroms.new(
             items: PuppetX::IonoscloudX::Helper.cdrom_object_array_from_hashes(resource[:cdroms]),
@@ -251,6 +266,30 @@ Puppet::Type.type(:server).provide(:v1) do
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
     @property_flush = {}
+  end
+
+  def suspend
+    Puppet.info("Suspending server #{name}")
+
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_suspend_post_with_http_info(
+      datacenter_id, PuppetX::IonoscloudX::Helper.server_from_name(name, datacenter_id).id
+    )
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    @property_hash[:ensure] = :suspended
+  end
+
+  def resume
+    Puppet.info("Resuming server #{name}")
+
+    datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
+    _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_resume_post_with_http_info(
+      datacenter_id, PuppetX::IonoscloudX::Helper.server_from_name(name, datacenter_id).id
+    )
+    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    @property_hash[:ensure] = :running
   end
 
   def restart

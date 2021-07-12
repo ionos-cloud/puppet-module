@@ -1,7 +1,7 @@
 $datacenter_name = 'testare'
 
 server { 'worker1' :
-  ensure          => present,
+  ensure          => suspended,
   type            => 'CUBE',
   datacenter_name => $datacenter_name,
   cpu_family      => 'INTEL_SKYLAKE',

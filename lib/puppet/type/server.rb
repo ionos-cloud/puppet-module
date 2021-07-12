@@ -23,15 +23,21 @@ Puppet::Type.newtype(:server) do
       provider.stop unless provider.stopped?
     end
 
+    newvalue(:suspended) do
+      provider.suspend unless provider.suspended?
+    end
+
     def change_to_s(current, desired)
       current = :running if current == :present
       desired = :running if desired == :present
+      puts [current, desired].to_s
       current == desired ? current : "changed #{current} to #{desired}"
     end
 
     def insync?(is)
       is = :present if is == :running
       is = :stopped if is == :stopping
+      puts [is, should].to_s
       is.to_s == should.to_s
     end
   end

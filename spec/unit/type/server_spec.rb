@@ -25,6 +25,8 @@ describe type_class do
       :volumes,
       :purge_volumes,
       :nics,
+      :template_uuid,
+      :type,
     ]
   end
 
@@ -62,6 +64,10 @@ describe type_class do
     type_class.new(name: 'sample', ensure: :stopped)
   end
 
+  it 'supports :suspended as a value to :ensure' do
+    type_class.new(name: 'sample', ensure: :suspended)
+  end
+
   it 'defaults availability_zone to AUTO' do
     server = type_class.new(name: 'sample')
     expect(server[:availability_zone]).to eq(:AUTO)
@@ -78,14 +84,6 @@ describe type_class do
                        { 'size' => 1 },
                      ] })
     }.to raise_error(Puppet::Error, %r{Volume must include name})
-  end
-
-  it 'if volumes included must include a volume size' do
-    expect {
-      type_class.new({ name: 'sample', volumes: [
-                       { 'name' => 'sample' },
-                     ] })
-    }.to raise_error(Puppet::Error, %r{Volume must include size})
   end
 
   it 'if nics included must include a nic name' do

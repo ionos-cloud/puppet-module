@@ -354,15 +354,11 @@ module PuppetX
           licence_type: volume['licence_type'],
           backupunit_id: volume['backupunit_id'],
         }
-
-        v = Ionoscloud::Volume.new(
+        Ionoscloud::Volume.new(
           properties: Ionoscloud::VolumeProperties.new(
             **(volume_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
         )
-        puts volume
-        puts v
-        v
       end
 
       def self.cdrom_object_array_from_hashes(cdroms)
