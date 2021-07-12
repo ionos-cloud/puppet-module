@@ -18,6 +18,7 @@ describe type_class do
       :sec_auth_protection,
       :version,
       :features,
+      :cpu_architecture,
     ]
   end
 

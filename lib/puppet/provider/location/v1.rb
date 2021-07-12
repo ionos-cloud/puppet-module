@@ -25,6 +25,7 @@ Puppet::Type.type(:location).provide(:v1) do
       id: instance.id,
       name: instance.properties.name,
       features: instance.properties.features,
+      cpu_architecture: instance.properties.cpu_architecture,
       image_aliases: instance.properties.image_aliases,
     }
   end

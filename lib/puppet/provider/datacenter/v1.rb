@@ -38,6 +38,7 @@ Puppet::Type.type(:datacenter).provide(:v1) do
       version: instance.properties.version,
       sec_auth_protection: instance.properties.sec_auth_protection,
       features: instance.properties.features,
+      cpu_architecture: instance.properties.cpu_architecture,
       ensure: :present,
     }
   end

@@ -61,6 +61,14 @@ Puppet::Type.newtype(:datacenter) do
     end
   end
 
+  newproperty(:cpu_architecture, array_matching: :all) do
+    desc 'Array of features and CPU families available in a location.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:id) do
     desc 'The data center ID.'
 

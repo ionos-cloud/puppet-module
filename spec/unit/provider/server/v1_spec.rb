@@ -259,12 +259,6 @@ describe provider_class do
                 'port_range_start' => 22,
                 'port_range_end' => 22,
               },
-              {
-                'name' => 'HTTP2',
-                'protocol' => 'TCP',
-                'port_range_start' => 65,
-                'port_range_end' => 80
-              },
             ]
           },
           {
@@ -293,13 +287,10 @@ describe provider_class do
         expect(updated_instance.nics[1][:dhcp]).to eq(false)
         expect(updated_instance.nics[1][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[1][:firewall_active]).to eq(true)
-        expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
-        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('HTTP2')
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(65)
-        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(80)
-        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('SSH2')
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(22)
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules].length).to eq(1)
+        expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('SSH2')
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(22)
+        expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(22)
       end
     end
 
