@@ -106,6 +106,38 @@ Puppet::Type.newtype(:ionoscloud_group) do
     end
   end
 
+
+  newproperty(:create_flow_log) do
+    desc 'Indicates if the group is allowed to create Flow Logs.'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:access_and_manage_monitoring) do
+    desc 'Indicates if the group is allowed to access and manage monitoring related '\
+    'functionality (access metrics, CRUD on alarms, alarm-actions etc) using Monotoring-as-a-Service (MaaS).'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:access_and_manage_certificates) do
+    desc 'Indicates if the group is allowed to access and manage certificates.'
+    defaultto :false
+    newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
   newproperty(:members, array_matching: :all) do
     desc 'The ionoscloud users associated with the group.'
 

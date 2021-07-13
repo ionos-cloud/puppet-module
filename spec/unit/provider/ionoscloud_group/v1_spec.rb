@@ -17,6 +17,9 @@ describe provider_class do
         create_internet_access: true,
         create_k8s_cluster: true,
         create_pcc: true,
+        create_flow_log: true,
+        access_and_manage_monitoring: true,
+        access_and_manage_certificates: true,
       )
       @provider = provider_class.new(@resource)
     end
