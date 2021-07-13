@@ -12,6 +12,7 @@ describe type_class do
   let :properties do
     [
       :nic,
+      :type,
       :icmp_type,
       :icmp_code,
       :port_range_start,

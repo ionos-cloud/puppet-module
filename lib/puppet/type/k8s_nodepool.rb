@@ -152,7 +152,6 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:storage_type) do
     desc 'The volume type.'
     defaultto 'HDD'
-    newvalues('HDD', 'SSD')
 
     validate do |value|
       raise ArgumentError, 'The volume type should be a String.' unless value.is_a?(String)

@@ -24,13 +24,6 @@ Puppet::Type.newtype(:volume) do
     end
   end
 
-  newparam(:image_alias) do
-    desc 'The image alias. E.g. ubuntu:latest'
-    validate do |value|
-      raise ArgumentError, 'The image alias must be a String.' unless value.is_a?(String)
-    end
-  end
-
   newparam(:ssh_keys, array_matching: :all) do
     desc 'One or more SSH keys to allow access to the volume via SSH.'
     validate do |value|
@@ -88,7 +81,7 @@ Puppet::Type.newtype(:volume) do
   newproperty(:volume_type) do
     desc 'The volume type.'
     defaultto 'HDD'
-    newvalues('HDD', 'SSD')
+    newvalues('HDD')
 
     validate do |value|
       raise ArgumentError, 'The volume type should be a String.' unless value.is_a?(String)
@@ -129,6 +122,14 @@ Puppet::Type.newtype(:volume) do
 
   newproperty(:device_number) do
     desc 'The LUN ID of the storage volume. Null for volumes not mounted to any VM'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:pci_slot) do
+    desc 'The PCI slot number of the storage volume. Null for volumes not mounted to any VM'
 
     def insync?(_is)
       true

@@ -64,6 +64,7 @@ Puppet::Type.type(:server).provide(:v1) do
           {
             id: firewall_rule.id,
             name: firewall_rule.properties.name,
+            type: firewall_rule.properties.type,
             source_mac: firewall_rule.properties.source_mac,
             source_ip: firewall_rule.properties.source_ip,
             target_ip: firewall_rule.properties.target_ip,

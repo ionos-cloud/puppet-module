@@ -319,7 +319,7 @@ module PuppetX
       end
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
-        changeable_fields = [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
+        changeable_fields = [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return nil if changes.empty?
 
@@ -353,6 +353,7 @@ module PuppetX
           image: volume['image_id'],
           licence_type: volume['licence_type'],
           backupunit_id: volume['backupunit_id'],
+          pci_slot: volume['pci_slot'],
         }
         Ionoscloud::Volume.new(
           properties: Ionoscloud::VolumeProperties.new(

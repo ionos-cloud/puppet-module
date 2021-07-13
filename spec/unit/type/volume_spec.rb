@@ -7,7 +7,6 @@ describe type_class do
     [
       :name,
       :image_password,
-      :image_alias,
       :ssh_keys,
     ]
   end

@@ -46,7 +46,7 @@ Puppet::Type.newtype(:nic) do
     desc 'A list of firewall rules associated to the NIC.'
 
     def insync?(is)
-      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code])
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code])
     end
   end
 

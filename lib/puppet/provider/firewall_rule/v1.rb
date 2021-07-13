@@ -66,6 +66,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
       icmp_code: firewall_rule.properties.icmp_code,
       protocol: firewall_rule.properties.protocol,
       name: firewall_rule.properties.name,
+      type: firewall_rule.properties.type,
       ensure: :present,
     }
   end
@@ -101,6 +102,10 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
 
   def target_ip=(value)
     @property_flush[:target_ip] = value
+  end
+
+  def type=(value)
+    @property_flush[:type] = value
   end
 
   def create
@@ -142,7 +147,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true
     )
 
-    [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code].each do |property|
+    [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code].each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
   end

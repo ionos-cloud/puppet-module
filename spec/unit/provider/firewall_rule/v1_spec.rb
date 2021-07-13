@@ -18,6 +18,7 @@ describe provider_class do
 
         @resource = Puppet::Type.type(:firewall_rule).new(
           name: 'SSH',
+          type: 'EGRESS',
           nic: @nic_name,
           datacenter_name: @datacenter_name,
           server_name: @server_name,
@@ -29,6 +30,7 @@ describe provider_class do
         @provider = provider_class.new(@resource)
         @resource2 = Puppet::Type.type(:firewall_rule).new(
           name: 'ICMP',
+          type: 'INGRESS',
           nic: @nic_name,
           datacenter_name: @datacenter_name,
           server_name: @server_name,

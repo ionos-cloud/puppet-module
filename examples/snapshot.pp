@@ -10,7 +10,6 @@ datacenter { $datacenter_name :
   datacenter_name => $datacenter_name,
   size            => 10,
   volume_type     => 'HDD',
-  image_alias     => 'ubuntu:latest',
   ssh_keys        => ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaH...']
 }
 -> snapshot { 'PPTestSnapshot' :
