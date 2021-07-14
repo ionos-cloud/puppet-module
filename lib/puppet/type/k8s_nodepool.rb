@@ -177,7 +177,8 @@ Puppet::Type.newtype(:k8s_nodepool) do
     desc 'The list of additional private LANs attached to worker nodes.'
 
     def insync?(is)
-      is.sort == should.sort
+      comp = ->(a, b) { a['id'] <=> b['id'] }
+      is.sort(&comp) == should.sort(&comp)
     end
   end
 

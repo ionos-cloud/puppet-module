@@ -1,5 +1,5 @@
-$cluster_name = 'cluster_name'
-$datacenter_name = 'datacenter_name'
+$cluster_name = 'puppet_module_testa'
+$datacenter_name = 'testdc1'
 
 k8s_nodepool { 'nodepool_test' :
   ensure            => present,
@@ -17,5 +17,19 @@ k8s_nodepool { 'nodepool_test' :
   min_node_count    => 1,
   max_node_count    => 2,
   availability_zone => 'AUTO',
-  lans              => [4, 7, 5],
+  lans              => [
+    {
+      'id'     => 2,
+      'dhcp'   => true,
+      'routes' => [],
+    },
+    {
+      'id'     => 3,
+      'dhcp'   => true,
+      'routes' => [{
+        'network'   => '1.2.3.4/24',
+        'gatewayIp' => '1.2.3.4',
+      }],
+    },
+  ],
 }
