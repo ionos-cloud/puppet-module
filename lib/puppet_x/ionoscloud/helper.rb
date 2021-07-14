@@ -257,7 +257,7 @@ module PuppetX
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
         firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
 
-        changes = Hash[*[:firewall_active, :ips, :dhcp, :lan].flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*[:firewall_active, :ips, :dhcp, :lan, :firewall_type].flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
 
         if changes.empty?
           firewallrules_headers.each { |headers| wait_request(headers) } if wait
@@ -353,7 +353,6 @@ module PuppetX
           image: volume['image_id'],
           licence_type: volume['licence_type'],
           backupunit_id: volume['backupunit_id'],
-          pci_slot: volume['pci_slot'],
         }
         Ionoscloud::Volume.new(
           properties: Ionoscloud::VolumeProperties.new(

@@ -55,7 +55,10 @@ Puppet::Type.type(:nic).provide(:v1) do
       lan: lan.properties.name,
       dhcp: instance.properties.dhcp,
       ips: instance.properties.ips,
+      firewall_type: instance.properties.firewall_type,
       firewall_active: instance.properties.firewall_active,
+      pci_slot: instance.properties.pci_slot,
+      device_number: instance.properties.device_number,
       firewall_rules: instance.entities.firewallrules.items.map do |firewall_rule|
         {
           id: firewall_rule.id,
@@ -94,6 +97,14 @@ Puppet::Type.type(:nic).provide(:v1) do
 
   def firewall_rules=(value)
     @property_flush[:firewall_rules] = value
+  end
+
+  def firewall_active=(value)
+    @property_flush[:firewall_active] = value
+  end
+
+  def firewall_type=(value)
+    @property_flush[:firewall_type] = value
   end
 
   def create

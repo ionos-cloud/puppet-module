@@ -2,7 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a IonosCloud network interface.'
-  @changeable_properties = [:ips, :lan, :dhcp, :firewall_rules]
+  @changeable_properties = [:ips, :lan, :dhcp, :firewall_active, :firewall_rules, :firewall_type]
 
   ensurable
 
@@ -50,12 +50,35 @@ Puppet::Type.newtype(:nic) do
     end
   end
 
-  # read-only properties
-
   newproperty(:firewall_active) do
     desc 'Indicates the firewall is active.'
     defaultto :false
     newvalues(:true, :false)
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:firewall_type) do
+    desc 'Indicates the firewall is active.'
+    validate do |value|
+      raise ArgumentError, 'The LAN name must be a String.' unless value.is_a?(String)
+    end
+  end
+
+  # read-only properties
+
+  newproperty(:device_number) do
+    desc 'The LUN ID of the storage volume. Null for volumes not mounted to any VM'
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:pci_slot) do
+    desc 'The PCI slot number of the storage volume. Null for volumes not mounted to any VM'
 
     def insync?(_is)
       true
