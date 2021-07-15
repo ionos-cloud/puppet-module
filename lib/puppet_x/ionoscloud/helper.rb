@@ -134,6 +134,36 @@ module PuppetX
         []
       end
 
+      def self.sync_objects(existing, target, aux_args, update_method, create_method, delete_method, wait = false)
+        return [] if target.nil?
+
+        existing_names = existing.nil? ? [] : existing.map { |firewallrule| firewallrule[:name] }
+
+        to_delete = existing.nil? ? [] : existing.map { |firewallrule| firewallrule[:id] }
+        to_wait = []
+
+        target.each do |desired_obj|
+
+          if existing_names.include? desired_obj['name']
+            existing_obj = existing.find { |obj| obj[:name] == desired_obj['name'] }
+            headers = public_send(update_method, *aux_args, existing_obj[:id], existing_obj, desired_obj)
+
+            to_wait += headers unless headers.empty?
+            to_delete.delete(existing_obj[:id])
+          else
+            _, headers = public_send(create_method ,*aux_args, desired_obj)
+            to_wait << headers
+          end
+        end
+
+        to_delete.each do |object_id|
+          to_wait << public_send(delete_method, *aux_args, object_id)
+        end
+
+        to_wait.each { |headers| wait_request(headers) } if wait
+        wait ? [] : to_wait
+      end
+
       def self.sync_volumes(datacenter_id, server_id, existing_volumes, target_volumes, wait = false)
         existing_names = existing_volumes.nil? ? [] : existing_volumes.map { |volume| volume[:name] }
 
@@ -219,43 +249,12 @@ module PuppetX
         headers
       end
 
-      def self.sync_nics(datacenter_id, server_id, existing_nics, target_nics, wait = false)
-        existing_names = existing_nics.nil? ? [] : existing_nics.map { |nic| nic[:name] }
-
-        to_delete = existing_nics.nil? ? [] : existing_nics.map { |nic| nic[:id] }
-        to_wait = []
-
-        target_nics.each do |desired_nic|
-          if existing_names.include? desired_nic['name']
-            existing_nic = existing_nics.find { |volume| volume[:name] == desired_nic['name'] }
-            headers = update_nic(datacenter_id, server_id, existing_nic[:id], existing_nic, desired_nic)
-
-            to_wait += headers unless headers.empty?
-            to_delete.delete(existing_nic[:id])
-          else
-            Puppet.info "Creating NIC #{desired_nic} in server #{server_id}"
-
-            _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_post_with_http_info(
-              datacenter_id, server_id, nic_object_from_hash(desired_nic, datacenter_id)
-            )
-            to_wait << headers
-          end
-        end
-
-        to_delete.each do |nic_id|
-          Puppet.info "Deleting NIC #{nic_id} from server #{server_id}"
-          _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_delete_with_http_info(
-            datacenter_id, server_id, nic_id
-          )
-          to_wait << headers
-        end
-
-        to_wait.each { |headers| wait_request(headers) } if wait
-        wait ? [] : to_wait
-      end
-
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
-        firewallrules_headers = sync_firewallrules(datacenter_id, server_id, nic_id, current[:firewall_rules], target['firewall_rules'])
+
+        firewallrules_headers = sync_objects(
+          current[:firewall_rules], target['firewall_rules'], [datacenter_id, server_id, nic_id],
+          :update_firewallrule, :create_firewallrule, :delete_firewallrule,
+        )
 
         changes = Hash[*[:firewall_active, :ips, :dhcp, :lan, :firewall_type].flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
 
@@ -277,57 +276,62 @@ module PuppetX
         wait ? [] : all_headers
       end
 
-      def self.sync_firewallrules(datacenter_id, server_id, nic_id, existing_firewallrules, target_firewallrules, wait = false)
-        return [] if target_firewallrules.nil?
+      def self.create_nic(datacenter_id, server_id, desired_nic, wait = false)
+        Puppet.info "Creating NIC #{desired_nic}"
 
-        existing_names = existing_firewallrules.nil? ? [] : existing_firewallrules.map { |firewallrule| firewallrule[:name] }
+        nic = nic_object_from_hash(desired_nic, datacenter_id)
 
-        to_delete = existing_firewallrules.nil? ? [] : existing_firewallrules.map { |firewallrule| firewallrule[:id] }
-        to_wait = []
+        nic, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_post_with_http_info(
+          datacenter_id, server_id, nic
+        )
+        wait_request(headers) if wait
 
-        target_firewallrules.each do |desired_firewallrule|
-          if existing_names.include? desired_firewallrule['name']
-            existing_firewallrule = existing_firewallrules.find { |volume| volume[:name] == desired_firewallrule['name'] }
-            headers = update_firewallrule(
-              datacenter_id, server_id, nic_id, existing_firewallrule[:id], existing_firewallrule, desired_firewallrule
-            )
+        [nic, headers]
+      end
 
-            to_wait << headers unless headers.nil?
-            to_delete.delete(existing_firewallrule[:id])
-          else
-            Puppet.info "Creating FirewallRule #{desired_firewallrule}"
+      def self.delete_nic(datacenter_id, server_id, nic_id, wait = false)
+        Puppet.info "Deleting NIC #{nic_id}"
+        _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_delete_with_http_info(
+          datacenter_id, server_id, nic_id
+        )
+        wait_request(headers) if wait
 
-            firewallrule = firewallrule_object_from_hash(desired_firewallrule)
-
-            _, _, headers = Ionoscloud::FirewallRulesApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
-              datacenter_id, server_id, nic_id, firewallrule
-            )
-            to_wait << headers
-          end
-        end
-
-        to_delete.each do |firewallrule_id|
-          Puppet.info "Deleting FirewallRule #{firewallrule_id}"
-          _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
-            datacenter_id, server_id, nic_id, firewallrule_id
-          )
-          to_wait << headers
-        end
-
-        to_wait.each { |headers| wait_request(headers) } if wait
-        wait ? [] : to_wait
+        headers
       end
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
         changeable_fields = [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
-        return nil if changes.empty?
+        return [] if changes.empty?
 
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
         Puppet.info "Updating Firewall Rule #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::FirewallRulesApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
           datacenter_id, server_id, nic_id, firewallrule_id, changes
+        )
+        wait_request(headers) if wait
+
+        [headers]
+      end
+
+      def self.create_firewallrule(datacenter_id, server_id, nic_id, desired_firewallrule, wait = false)
+        Puppet.info "Creating FirewallRule #{desired_firewallrule}"
+
+        firewallrule = firewallrule_object_from_hash(desired_firewallrule)
+
+        firewallrule, _, headers = Ionoscloud::FirewallRulesApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+          datacenter_id, server_id, nic_id, firewallrule
+        )
+        wait_request(headers) if wait
+
+        [firewallrule, headers]
+      end
+
+      def self.delete_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, wait = false)
+        Puppet.info "Deleting FirewallRule #{firewallrule_id}"
+        _, _, headers = Ionoscloud::FirewallRulesApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
+          datacenter_id, server_id, nic_id, firewallrule_id
         )
         wait_request(headers) if wait
 

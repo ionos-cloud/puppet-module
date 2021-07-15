@@ -35,19 +35,20 @@ datacenter { $datacenter_name :
   lan             => $lan_name,
   ips             => ['158.222.102.129'],
   firewall_active => true,
-  firewall_type   => 'EGRESS',
+  firewall_type   => 'INGRESS',
   firewall_rules  => [
     {
       name             => 'SSH',
-      protocol         => 'TCP',
-      port_range_start => 22,
-      port_range_end   => 22
-    },
-    {
-      name             => 'HTTP',
       type             => 'INGRESS',
       protocol         => 'TCP',
-      port_range_start => 80,
+      port_range_start => 22,
+      port_range_end   => 27
+    },
+    {
+      name             => 'HTTP3',
+      type             => 'INGRESS',
+      protocol         => 'TCP',
+      port_range_start => 76,
       port_range_end   => 80
     }
   ]

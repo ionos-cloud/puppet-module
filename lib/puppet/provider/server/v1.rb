@@ -159,8 +159,9 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def nics=(value)
-    PuppetX::IonoscloudX::Helper.sync_nics(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:nics], value, wait: true
+    PuppetX::IonoscloudX::Helper.sync_objects(
+      @property_hash[:nics], value, [@property_hash[:datacenter_id], @property_hash[:id]],
+      :update_nic, :create_nic, :delete_nic, wait: true
     )
     @property_hash[:nics] = value
   end

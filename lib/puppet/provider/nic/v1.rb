@@ -114,12 +114,7 @@ Puppet::Type.type(:nic).provide(:v1) do
       server_id = PuppetX::IonoscloudX::Helper.server_from_name(resource[:server_name], datacenter_id).id
     end
 
-    nic = PuppetX::IonoscloudX::Helper.nic_object_from_hash(resource, datacenter_id)
-
-    Puppet.info "Creating a new NIC #{nic.to_hash}."
-
-    nic, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
+    nic, _ = PuppetX::IonoscloudX::Helper.create_nic(datacenter_id, server_id, resource, wait: true)
 
     Puppet.info("Created a new nic named #{resource[:name]}.")
     @property_hash[:ensure] = :present
@@ -129,17 +124,14 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def destroy
-    _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_delete_with_http_info(
-      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id]
-    )
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
+    PuppetX::IonoscloudX::Helper.delete_nic(@property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], wait: true)
     @property_hash[:ensure] = :absent
   end
 
   def flush
     return if @property_flush.empty?
     PuppetX::IonoscloudX::Helper.update_nic(
-      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true,
     )
 
     [:firewall_active, :ips, :dhcp, :lan, :firewall_rules].each do |property|
