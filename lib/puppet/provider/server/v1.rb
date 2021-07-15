@@ -60,6 +60,7 @@ Puppet::Type.type(:server).provide(:v1) do
         dhcp: nic.properties.dhcp,
         lan: lan.properties.name,
         firewall_active: nic.properties.firewall_active,
+        firewall_type: nic.properties.firewall_type,
         firewall_rules: nic.entities.firewallrules.items.map do |firewall_rule|
           {
             id: firewall_rule.id,
@@ -145,9 +146,11 @@ Puppet::Type.type(:server).provide(:v1) do
   end
 
   def cdroms=(value)
-    PuppetX::IonoscloudX::Helper.sync_cdroms(
-      @property_hash[:datacenter_id], @property_hash[:id], @property_hash[:cdroms], value, wait: true
+    PuppetX::IonoscloudX::Helper.sync_objects(
+      @property_hash[:cdroms], value, [@property_hash[:datacenter_id], @property_hash[:id]],
+      :update_cdrom, :attach_cdrom, :detach_cdrom, wait: true, id_field: :id,
     )
+
     @property_hash[:cdrom] = value
   end
 

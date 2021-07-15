@@ -103,49 +103,17 @@ module PuppetX
         raise 'Cluster ID or name must be provided.'
       end
 
-      def self.sync_cdroms(datacenter_id, server_id, existing_cdroms, target_cdroms, wait = false)
-        to_detach = existing_cdroms.nil? ? [] : existing_cdroms.map { |cdrom| cdrom[:id] }
-        to_wait = []
-
-        target_cdroms.each do |target_cdrom|
-          if to_detach.include? target_cdrom['id']
-            to_detach.delete(target_cdrom['id'])
-          else
-            Puppet.info "Attaching #{target_cdrom['id']} to server"
-            _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_post_with_http_info(
-              datacenter_id, server_id, id: target_cdrom['id']
-            )
-
-            to_wait << headers
-          end
-        end
-
-        to_detach.each do |cdrom_id|
-          Puppet.info "Detaching #{cdrom_id} from server"
-          _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_delete_with_http_info(
-            datacenter_id, server_id, cdrom_id
-          )
-          to_wait << headers
-        end
-
-        return to_wait unless wait
-
-        to_wait.each { |headers| wait_request(headers) }
-        []
-      end
-
-      def self.sync_objects(existing, target, aux_args, update_method, create_method, delete_method, wait = false)
+      def self.sync_objects(existing, target, aux_args, update_method, create_method, delete_method, wait = false, id_field = :name)
         return [] if target.nil?
 
-        existing_names = existing.nil? ? [] : existing.map { |firewallrule| firewallrule[:name] }
+        existing_names = existing.nil? ? [] : existing.map { |obj| obj[id_field] }
 
-        to_delete = existing.nil? ? [] : existing.map { |firewallrule| firewallrule[:id] }
+        to_delete = existing.nil? ? [] : existing.map { |obj| obj[:id] }
         to_wait = []
 
         target.each do |desired_obj|
-
-          if existing_names.include? desired_obj['name']
-            existing_obj = existing.find { |obj| obj[:name] == desired_obj['name'] }
+          if existing_names.include? desired_obj[id_field.to_s]
+            existing_obj = existing.find { |obj| obj[id_field] == desired_obj[id_field.to_s] }
             headers = public_send(update_method, *aux_args, existing_obj[:id], existing_obj, desired_obj)
 
             to_wait += headers unless headers.empty?
@@ -247,6 +215,28 @@ module PuppetX
         wait_request(headers) if wait
 
         headers
+      end
+
+      def self.update_cdrom(*args)
+        return []
+      end
+
+      def self.detach_cdrom(datacenter_id, server_id, cdrom_id, wait = false)
+        puts "Detaching #{cdrom_id} from server"
+        _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_delete_with_http_info(
+          datacenter_id, server_id, cdrom_id
+        )
+        wait_request(headers) if wait
+
+        headers
+      end
+
+      def self.attach_cdrom(datacenter_id, server_id, target_cdrom)
+        puts "Attaching #{target_cdrom['id']} to server"
+        cdrom, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_post_with_http_info(
+          datacenter_id, server_id, id: target_cdrom['id']
+        )
+        [cdrom, headers]
       end
 
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)

@@ -23,7 +23,7 @@ server { 'worker4' :
       lan             => 'public1',
       ips             => ['158.222.102.242'],
       firewall_active => true,
-      firewall_type   => 'INGRESS',
+      firewall_type   => 'EGRESS',
       firewall_rules  => [
         {
           name             => 'SSH',
@@ -48,6 +48,11 @@ server { 'worker4' :
       ips             => ['158.222.102.246'],
       firewall_active => true,
       firewall_type   => 'INGRESS',
+    }
+  ],
+  cdroms          => [
+    {
+      id => 'cd963010-d348-11eb-ae0d-de68fed054b6',
     }
   ]
 }

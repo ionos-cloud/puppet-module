@@ -208,7 +208,7 @@ Puppet::Type.newtype(:server) do
           [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
         )
       }
-      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :ips, :dhcp, :lan], &block)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :firewall_type, :ips, :dhcp, :lan], &block)
     end
   end
 
