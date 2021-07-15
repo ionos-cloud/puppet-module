@@ -26,18 +26,26 @@ server { 'worker4' :
       firewall_type   => 'EGRESS',
       firewall_rules  => [
         {
-          name             => 'SSH',
-          type             => 'INGRESS',
-          protocol         => 'TCP',
-          port_range_start => 22,
-          port_range_end   => 27
-        },
-        {
           name             => 'HTTP3',
           type             => 'INGRESS',
           protocol         => 'TCP',
           port_range_start => 76,
           port_range_end   => 80
+        },
+        {
+          name             => 'SSH',
+          type             => 'INGRESS',
+          protocol         => 'TCP',
+          port_range_start => 22,
+          port_range_end   => 27
+        }
+      ],
+      flowlogs        => [
+        {
+          name      => 'test2',
+          action    => 'ALL',
+          bucket    => 'testtest234134124214',
+          direction => 'INGRESS',
         }
       ]
     },

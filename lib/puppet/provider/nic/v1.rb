@@ -73,6 +73,15 @@ Puppet::Type.type(:nic).provide(:v1) do
           icmp_code: firewall_rule.properties.icmp_code,
         }.delete_if { |_k, v| v.nil? }
       end,
+      flowlogs: instance.entities.flowlogs.items.map do |flowlog|
+        {
+          id: flowlog.id,
+          name: flowlog.properties.name,
+          action: flowlog.properties.action,
+          direction: flowlog.properties.direction,
+          bucket: flowlog.properties.bucket,
+        }.delete_if { |_k, v| v.nil? }
+      end,
       name: instance.properties.name,
       ensure: :present,
     }
@@ -97,6 +106,10 @@ Puppet::Type.type(:nic).provide(:v1) do
 
   def firewall_rules=(value)
     @property_flush[:firewall_rules] = value
+  end
+
+  def flowlogs=(value)
+    @property_flush[:flowlogs] = value
   end
 
   def firewall_active=(value)
@@ -134,7 +147,7 @@ Puppet::Type.type(:nic).provide(:v1) do
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id], @property_hash, JSON.parse(@property_flush.to_json), wait: true,
     )
 
-    [:firewall_active, :ips, :dhcp, :lan, :firewall_rules].each do |property|
+    [:firewall_active, :ips, :dhcp, :lan, :firewall_rules, :flowlogs].each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
     end
     @property_flush = {}

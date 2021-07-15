@@ -2,7 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a IonosCloud network interface.'
-  @changeable_properties = [:ips, :lan, :dhcp, :firewall_active, :firewall_rules, :firewall_type]
+  @changeable_properties = [:ips, :lan, :dhcp, :firewall_active, :firewall_rules, :firewall_type, :flowlogs]
 
   ensurable
 
@@ -47,6 +47,14 @@ Puppet::Type.newtype(:nic) do
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.objects_match(is, should, [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code])
+    end
+  end
+
+  newproperty(:flowlogs, array_matching: :all) do
+    desc 'A list of flow logs associated to the NIC.'
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:name, :action, :direction, :bucket])
     end
   end
 

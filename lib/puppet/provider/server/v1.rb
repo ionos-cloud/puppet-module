@@ -75,6 +75,15 @@ Puppet::Type.type(:server).provide(:v1) do
             icmp_code: firewall_rule.properties.icmp_code,
           }.delete_if { |_k, v| v.nil? }
         end,
+        flowlogs: nic.entities.flowlogs.items.map do |flowlog|
+          {
+            id: flowlog.id,
+            name: flowlog.properties.name,
+            action: flowlog.properties.action,
+            direction: flowlog.properties.direction,
+            bucket: flowlog.properties.bucket,
+          }.delete_if { |_k, v| v.nil? }
+        end,
       }.delete_if { |_k, v| v.nil? }
     end
 

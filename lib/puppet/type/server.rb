@@ -207,6 +207,10 @@ Puppet::Type.newtype(:server) do
           target_object['firewall_rules'],
           [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
         )
+        PuppetX::IonoscloudX::Helper.objects_match(
+          existing_object[:flowlogs], target_object['flowlogs'],
+          [:name, :action, :direction, :bucket],
+        )
       }
       PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :firewall_type, :ips, :dhcp, :lan], &block)
     end

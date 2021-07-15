@@ -222,7 +222,7 @@ module PuppetX
       end
 
       def self.detach_cdrom(datacenter_id, server_id, cdrom_id, wait = false)
-        puts "Detaching #{cdrom_id} from server"
+        Puppet.info "Detaching #{cdrom_id} from server"
         _, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_delete_with_http_info(
           datacenter_id, server_id, cdrom_id
         )
@@ -232,7 +232,7 @@ module PuppetX
       end
 
       def self.attach_cdrom(datacenter_id, server_id, target_cdrom)
-        puts "Attaching #{target_cdrom['id']} to server"
+        Puppet.info "Attaching #{target_cdrom['id']} to server"
         cdrom, _, headers = Ionoscloud::ServersApi.new.datacenters_servers_cdroms_post_with_http_info(
           datacenter_id, server_id, id: target_cdrom['id']
         )
@@ -241,16 +241,21 @@ module PuppetX
 
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
 
-        firewallrules_headers = sync_objects(
+        entities_headers = sync_objects(
           current[:firewall_rules], target['firewall_rules'], [datacenter_id, server_id, nic_id],
           :update_firewallrule, :create_firewallrule, :delete_firewallrule,
+        )
+
+        entities_headers += sync_objects(
+          current[:flowlogs], target['flowlogs'], [datacenter_id, server_id, nic_id],
+          :update_flowlog, :create_flowlog, :delete_flowlog,
         )
 
         changes = Hash[*[:firewall_active, :ips, :dhcp, :lan, :firewall_type].flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
 
         if changes.empty?
-          firewallrules_headers.each { |headers| wait_request(headers) } if wait
-          return wait ? [] : firewallrules_headers
+          entities_headers.each { |headers| wait_request(headers) } if wait
+          return wait ? [] : entities_headers
         end
 
         changes[:lan] = Integer(lan_from_name(changes[:lan], datacenter_id).id) unless changes[:lan].nil?
@@ -259,7 +264,7 @@ module PuppetX
 
         _, _, headers = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
 
-        all_headers = firewallrules_headers
+        all_headers = entities_headers
         all_headers << headers
 
         all_headers.each { |headers| wait_request(headers) } if wait
@@ -328,6 +333,45 @@ module PuppetX
         headers
       end
 
+      def self.update_flowlog(datacenter_id, server_id, nic_id, flowlog_id, current, target, wait = false)
+        changeable_fields = [:action, :bucket, :direction]
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        return [] if changes.empty?
+
+        changes = Ionoscloud::FlowLogProperties.new(**changes)
+        Puppet.info "Updating FlowLog #{current[:name]} with #{changes}"
+
+        _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(
+          datacenter_id, server_id, nic_id, flowlog_id, changes
+        )
+        wait_request(headers) if wait
+
+        [headers]
+      end
+
+      def self.create_flowlog(datacenter_id, server_id, nic_id, desired_flowlog, wait = false)
+        Puppet.info "Creating FlowLog #{desired_flowlog}"
+
+        flowlog = flowlog_object_from_hash(desired_flowlog)
+
+        flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(
+          datacenter_id, server_id, nic_id, flowlog
+        )
+        wait_request(headers) if wait
+
+        [flowlog, headers]
+      end
+
+      def self.delete_flowlog(datacenter_id, server_id, nic_id, flowlog_id, wait = false)
+        Puppet.info "Deleting FlowLog #{flowlog_id}"
+        _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_delete_with_http_info(
+          datacenter_id, server_id, nic_id, flowlog_id
+        )
+        wait_request(headers) if wait
+
+        headers
+      end
+
       def self.volume_object_from_hash(volume)
         volume_config = {
           name: volume['name'],
@@ -370,6 +414,7 @@ module PuppetX
           dhcp: nic['dhcp'],
           lan: lan.id,
           firewall_active: nic['firewall_active'],
+          firewall_type: nic['firewall_type'],
         }
 
         Ionoscloud::Nic.new(
@@ -379,6 +424,9 @@ module PuppetX
           entities: Ionoscloud::NicEntities.new(
             firewallrules: Ionoscloud::FirewallRules.new(
               items: firewallrule_object_array_from_hashes(nic['firewall_rules']),
+            ),
+            flowlogs: Ionoscloud::Flowlogs.new(
+              items: flowlog_object_array_from_hashes(nic['flowlogs']),
             ),
           ),
         )
@@ -402,6 +450,26 @@ module PuppetX
             **(firewallrule_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
           ),
         )
+      end
+
+      def self.flowlog_object_from_hash(flowlog)
+        flowlog_config = {
+          name: flowlog['name'],
+          action: flowlog['action'],
+          bucket: flowlog['bucket'],
+          direction: flowlog['direction'],
+        }
+
+        Ionoscloud::FlowLog.new(
+          properties: Ionoscloud::FlowLogProperties.new(
+            **(flowlog_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
+          ),
+        )
+      end
+
+      def self.flowlog_object_array_from_hashes(flowlogs)
+        return flowlogs.map { |flowlog| flowlog_object_from_hash(flowlog) } unless flowlogs.nil?
+        []
       end
 
       def self.volume_object_array_from_hashes(volumes)

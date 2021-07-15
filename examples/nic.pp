@@ -51,5 +51,13 @@ datacenter { $datacenter_name :
       port_range_start => 76,
       port_range_end   => 80
     }
+  ],
+  flowlogs        => [
+    {
+      name      => 'test2',
+      action    => 'ALL',
+      bucket    => 'testtest234134124214',
+      direction => 'INGRESS',
+    }
   ]
 }
