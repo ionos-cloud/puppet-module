@@ -247,7 +247,7 @@ module PuppetX
         )
 
         entities_headers += sync_objects(
-          current[:flowlogs], target['flowlogs'], [datacenter_id, server_id, nic_id],
+          current[:flowlogs], target['flowlogs'], [:nic, datacenter_id, server_id, nic_id],
           :update_flowlog, :create_flowlog, :delete_flowlog,
         )
 
@@ -333,7 +333,16 @@ module PuppetX
         headers
       end
 
-      def self.update_flowlog(datacenter_id, server_id, nic_id, flowlog_id, current, target, wait = false)
+      def self.update_flowlog(type, *args, **kwargs)
+        case type
+        when :nic
+          current = args[4]
+          target = args[5]
+        else
+          current = args[3]
+          target = args[4]
+        end
+
         changeable_fields = [:action, :bucket, :direction]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return [] if changes.empty?
@@ -341,33 +350,62 @@ module PuppetX
         changes = Ionoscloud::FlowLogProperties.new(**changes)
         Puppet.info "Updating FlowLog #{current[:name]} with #{changes}"
 
-        _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(
-          datacenter_id, server_id, nic_id, flowlog_id, changes
-        )
-        wait_request(headers) if wait
+        case type
+        when :nic
+          _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(*args[..3], changes)
+        when :natgateway
+          _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_patch_with_http_info(*args[..2], changes)
+        when :networkloadbalacner
+          _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_patch_with_http_info(*args[..2], changes)
+        else
+          return
+        end
+
+        wait_request(headers) if kwargs[:wait]
 
         [headers]
       end
 
-      def self.create_flowlog(datacenter_id, server_id, nic_id, desired_flowlog, wait = false)
+      def self.create_flowlog(type, *args, **kwargs)
+        desired_flowlog = type == :nic ? args[4] : args[3]
+
         Puppet.info "Creating FlowLog #{desired_flowlog}"
 
         flowlog = flowlog_object_from_hash(desired_flowlog)
 
-        flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(
-          datacenter_id, server_id, nic_id, flowlog
-        )
-        wait_request(headers) if wait
+        case type
+        when :nic
+          flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(*args[..2], flowlog)
+        when :natgateway
+          flowlog, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_post_with_http_info(*args[..1], flowlog)
+        when :networkloadbalacner
+          flowlog, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_post_with_http_info(*args[..1], flowlog)
+        else
+          return
+        end
+
+        wait_request(headers) if kwargs[:wait]
 
         [flowlog, headers]
       end
 
-      def self.delete_flowlog(datacenter_id, server_id, nic_id, flowlog_id, wait = false)
-        Puppet.info "Deleting FlowLog #{flowlog_id}"
-        _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_delete_with_http_info(
-          datacenter_id, server_id, nic_id, flowlog_id
-        )
-        wait_request(headers) if wait
+      def self.delete_flowlog(type, *args, **kwargs)
+        case type
+        when :nic
+          Puppet.info "Deleting FlowLog #{args[3]}"
+          _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_delete_with_http_info(*args)
+        when :natgateway
+          Puppet.info "Deleting FlowLog #{args[2]}"
+
+          _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_delete_with_http_info(*args)
+        when :networkloadbalacner
+          Puppet.info "Deleting FlowLog #{args[2]}"
+          _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_delete_with_http_info(*args)
+        else
+          return
+        end
+
+        wait_request(headers) if kwargs[:wait]
 
         headers
       end
