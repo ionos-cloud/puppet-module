@@ -505,7 +505,7 @@ module PuppetX
             firewallrules: Ionoscloud::FirewallRules.new(
               items: firewallrule_object_array_from_hashes(nic['firewall_rules']),
             ),
-            flowlogs: Ionoscloud::Flowlogs.new(
+            flowlogs: Ionoscloud::FlowLogs.new(
               items: flowlog_object_array_from_hashes(nic['flowlogs']),
             ),
           ),
