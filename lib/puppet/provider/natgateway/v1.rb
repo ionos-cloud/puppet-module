@@ -42,6 +42,20 @@ Puppet::Type.type(:natgateway).provide(:v1) do
       datacenter_name: datacenter.properties.name,
       public_ips: instance.properties.public_ips,
       lans: instance.properties.lans,
+      rules: instance.entities.rules.items.map do |rule|
+        {
+          id: rule.id,
+          name: rule.properties.name,
+          protocol: rule.properties.protocol,
+          public_ip: rule.properties.public_ip,
+          source_subnet: rule.properties.source_subnet,
+          target_subnet: rule.properties.target_subnet,
+          target_port_range: rule.properties.target_port_range.nil? ? nil : {
+            start: rule.properties.target_port_range.start,
+            end: rule.properties.target_port_range._end,
+          },
+        }.delete_if { |_k, v| v.nil? }
+      end,
       flowlogs: instance.entities.flowlogs.items.map do |flowlog|
         {
           id: flowlog.id,
@@ -73,6 +87,10 @@ Puppet::Type.type(:natgateway).provide(:v1) do
     @property_flush[:flowlogs] = value
   end
 
+  def rules=(value)
+    @property_flush[:rules] = value
+  end
+
   def create
     datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
 
@@ -87,6 +105,9 @@ Puppet::Type.type(:natgateway).provide(:v1) do
       entities: Ionoscloud::NatGatewayEntities.new(
         flowlogs: Ionoscloud::FlowLogs.new(
           items: PuppetX::IonoscloudX::Helper.flowlog_object_array_from_hashes(resource[:flowlogs]),
+        ),
+        rules: Ionoscloud::NatGatewayRules.new(
+          items: PuppetX::IonoscloudX::Helper.natgateway_rule_object_array_from_hashes(resource[:rules]),
         ),
       ),
     )
@@ -112,10 +133,14 @@ Puppet::Type.type(:natgateway).provide(:v1) do
   def flush
     return if @property_flush.empty?
 
-    puts @property_flush
     entities_headers = PuppetX::IonoscloudX::Helper.sync_objects(
       @property_hash[:flowlogs], @property_flush[:flowlogs], [:natgateway, @property_hash[:datacenter_id], @property_hash[:id]],
       :update_flowlog, :create_flowlog, :delete_flowlog,
+    )
+
+    entities_headers += PuppetX::IonoscloudX::Helper.sync_objects(
+      @property_hash[:rules], @property_flush[:rules], [@property_hash[:datacenter_id], @property_hash[:id]],
+      :update_natgateway_rule, :create_natgateway_rule, :delete_natgateway_rule,
     )
 
     changes = Hash[*[:public_ips, :lans].flat_map { |v| [ v, @property_flush[v] ] } ].delete_if { |k, v| v.nil? || v == @property_hash[k] }

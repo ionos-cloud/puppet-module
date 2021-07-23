@@ -35,6 +35,14 @@ Puppet::Type.newtype(:natgateway) do
     end
   end
 
+  newproperty(:rules, array_matching: :all) do
+    desc 'A list of flow logs associated to the NIC.'
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range])
+    end
+  end
+
   newproperty(:flowlogs, array_matching: :all) do
     desc 'A list of flow logs associated to the NIC.'
 

@@ -201,6 +201,48 @@ module PuppetX
         []
       end
 
+
+      def self.update_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, current, target, wait = false)
+        changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+        return [] if changes.empty?
+
+        changes[:protocol] = current[:protocol] if changes[:protocol].nil?
+
+        changes = Ionoscloud::NatGatewayRuleProperties.new(**changes)
+        Puppet.info "Updating NAT Gateway Rule #{current[:name]} with #{changes}"
+
+        _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_patch_with_http_info(
+          datacenter_id, natgateway_id, natgateway_rule_id, changes,
+        )
+        wait_request(headers) if wait
+
+        [headers]
+      end
+
+      def self.create_natgateway_rule(datacenter_id, natgateway_id, desired_natgateway_rule, wait = false)
+        Puppet.info "Creating NAT Gateway Rule #{desired_natgateway_rule}"
+
+        natgateway_rule = natgateway_rule_object_from_hash(desired_natgateway_rule)
+
+        natgateway_rule, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_post_with_http_info(
+          datacenter_id, natgateway_id, natgateway_rule,
+        )
+        wait_request(headers) if wait
+
+        [natgateway_rule, headers]
+      end
+
+      def self.delete_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, wait = false)
+        Puppet.info "Deleting NAT Gateway Rule #{natgateway_rule_id}"
+        _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_delete_with_http_info(
+          datacenter_id, natgateway_id, natgateway_rule_id,
+        )
+        wait_request(headers) if wait
+
+        headers
+      end
+
       def self.update_volume(datacenter_id, volume_id, current, target, wait = false)
         changes = Hash[*[:size].map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
         return nil if changes.empty?
@@ -470,6 +512,26 @@ module PuppetX
         )
       end
 
+      def self.natgateway_rule_object_from_hash(natgateway_rule)
+        natgateway_rule_config = {
+          name: natgateway_rule['name'],
+          protocol: natgateway_rule['protocol'],
+          public_ip: natgateway_rule['public_ip'],
+          source_subnet: natgateway_rule['source_subnet'],
+          target_subnet: natgateway_rule['target_subnet'],
+          target_port_range: natgateway_rule['target_port_range'].nil? ? nil : Ionoscloud::TargetPortRange.new(
+            start: natgateway_rule['target_port_range']['start'],
+            _end: natgateway_rule['target_port_range']['end'],
+          ),
+        }
+
+        Ionoscloud::NatGatewayRule.new(
+          properties: Ionoscloud::NatGatewayRuleProperties.new(
+            **(natgateway_rule_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
+          ),
+        )
+      end
+
       def self.firewallrule_object_from_hash(firewallrule)
         firewallrule_config = {
           name: firewallrule['name'],
@@ -524,6 +586,11 @@ module PuppetX
 
       def self.firewallrule_object_array_from_hashes(fwrules)
         return fwrules.map { |fwrule| firewallrule_object_from_hash(fwrule) } unless fwrules.nil?
+        []
+      end
+
+      def self.natgateway_rule_object_array_from_hashes(natgateway_rules)
+        return natgateway_rules.map { |natgateway_rule| natgateway_rule_object_from_hash(natgateway_rule) } unless natgateway_rules.nil?
         []
       end
 
@@ -591,6 +658,39 @@ module PuppetX
         existing.empty?
       end
 
+      def self.compare_objects(existing, target)
+        return false if existing.class != target.class
+
+        case existing
+        when Array
+          return false if existing.length != target.length
+          existing_copy = Marshal.load(Marshal.dump(existing))
+          target_copy = Marshal.load(Marshal.dump(target))
+
+          begin
+            existing_copy = existing_copy.sort
+            target_copy = target_copy.sort
+          rescue
+            comp = ->(a, b) { a['name'] <=> b['name'] }
+            existing_copy = existing_copy.sort(&comp)
+            target_copy = target_copy.sort(&comp)
+          end
+          existing_copy.zip(target_copy).each do |e, t|
+            return false unless compare_objects(e, t)
+          end
+          return true
+        when Hash
+          return false unless existing.keys.map { |key| key.to_s } == target.keys
+
+          existing.keys.each do |key|
+            return false unless compare_objects(existing[key], target[key.to_s])
+          end
+          return true
+        else
+          existing == target
+        end
+      end
+
       def self.objects_match(existing_objects, target_objects, fields_to_check)
         return true if target_objects.nil?
         return false unless existing_objects.length == target_objects.length
@@ -603,7 +703,8 @@ module PuppetX
           end
           return false unless existing_object
           fields_to_check.each do |field|
-            return false unless target_object[field.to_s].nil? || target_object[field.to_s] == existing_object[field]
+            next if target_object[field.to_s].nil?
+            return false unless compare_objects(existing_object[field], target_object[field.to_s])
           end
 
           if block_given?

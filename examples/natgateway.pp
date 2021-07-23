@@ -17,5 +17,29 @@ datacenter { $datacenter_name :
       bucket    => 'testtest234134124214',
       direction => 'EGRESS',
     }
+  ],
+  rules           => [
+    {
+      name              => 'test_rule',
+      protocol          => 'TCP',
+      source_subnet     => '192.168.0.1/32',
+      target_subnet     => '192.168.0.4/32',
+      public_ip         => '158.222.103.21',
+      target_port_range => {
+        start => 22,
+        end   => 24,
+      }
+    },
+    {
+      name              => 'test_rule3',
+      protocol          => 'TCP',
+      source_subnet     => '192.168.0.1/32',
+      target_subnet     => '192.168.0.4/32',
+      public_ip         => '158.222.103.21',
+      target_port_range => {
+        start => 22,
+        end   => 24,
+      }
+    },
   ]
 }
