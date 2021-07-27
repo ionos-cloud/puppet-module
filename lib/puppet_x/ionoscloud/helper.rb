@@ -201,7 +201,6 @@ module PuppetX
         []
       end
 
-
       def self.update_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, current, target, wait = false)
         changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
@@ -237,6 +236,45 @@ module PuppetX
         Puppet.info "Deleting NAT Gateway Rule #{natgateway_rule_id}"
         _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_delete_with_http_info(
           datacenter_id, natgateway_id, natgateway_rule_id,
+        )
+        wait_request(headers) if wait
+
+        headers
+      end
+
+      def self.update_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, current, target, wait = false)
+        changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+        return [] if changes.empty?
+
+        changes = Ionoscloud::NetworkLoadBalancerForwardingRuleProperties.new(**changes)
+        Puppet.info "Updating Network Load Balancer Rule #{current[:name]} with #{changes}"
+
+        _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_patch_with_http_info(
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, changes,
+        )
+        wait_request(headers) if wait
+
+        [headers]
+      end
+
+      def self.create_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, desired_networkloadbalancer_rule, wait = false)
+        Puppet.info "Creating Network Load Balancer Rule #{desired_networkloadbalancer_rule}"
+
+        networkloadbalancer_rule = networkloadbalancer_rule_object_from_hash(desired_networkloadbalancer_rule)
+
+        networkloadbalancer_rule, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_post_with_http_info(
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule,
+        )
+        wait_request(headers) if wait
+
+        [networkloadbalancer_rule, headers]
+      end
+
+      def self.delete_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, wait = false)
+        Puppet.info "Deleting Network Load Balancer Rule #{networkloadbalancer_rule_id}"
+        _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_delete_with_http_info(
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id,
         )
         wait_request(headers) if wait
 
@@ -387,6 +425,7 @@ module PuppetX
 
         changeable_fields = [:action, :bucket, :direction]
         changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+
         return [] if changes.empty?
 
         changes = Ionoscloud::FlowLogProperties.new(**changes)
@@ -397,10 +436,10 @@ module PuppetX
           _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(*args[..3], changes)
         when :natgateway
           _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_patch_with_http_info(*args[..2], changes)
-        when :networkloadbalacner
+        when :networkloadbalancer
           _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_patch_with_http_info(*args[..2], changes)
         else
-          return
+          return []
         end
 
         wait_request(headers) if kwargs[:wait]
@@ -420,7 +459,7 @@ module PuppetX
           flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(*args[..2], flowlog)
         when :natgateway
           flowlog, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_post_with_http_info(*args[..1], flowlog)
-        when :networkloadbalacner
+        when :networkloadbalancer
           flowlog, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_post_with_http_info(*args[..1], flowlog)
         else
           return
@@ -440,7 +479,7 @@ module PuppetX
           Puppet.info "Deleting FlowLog #{args[2]}"
 
           _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_delete_with_http_info(*args)
-        when :networkloadbalacner
+        when :networkloadbalancer
           Puppet.info "Deleting FlowLog #{args[2]}"
           _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_delete_with_http_info(*args)
         else
@@ -532,6 +571,24 @@ module PuppetX
         )
       end
 
+      def self.networkloadbalancer_rule_object_from_hash(networkloadbalancer_rule)
+        networkloadbalancer_rule_config = {
+          name: networkloadbalancer_rule['name'],
+          algorithm: networkloadbalancer_rule['algorithm'],
+          protocol: networkloadbalancer_rule['protocol'],
+          listener_ip: networkloadbalancer_rule['listener_ip'],
+          listener_port: networkloadbalancer_rule['listener_port'],
+          health_check: networkloadbalancer_rule['health_check'],
+          targets: networkloadbalancer_rule['targets'],
+        }
+
+        Ionoscloud::NetworkLoadBalancerForwardingRule.new(
+          properties: Ionoscloud::NetworkLoadBalancerForwardingRuleProperties.new(
+            **(networkloadbalancer_rule_config.delete_if { |_k, v| v.nil? }).transform_values { |el| el.is_a?(Symbol) ? el.to_s : el },
+          ),
+        )
+      end
+
       def self.firewallrule_object_from_hash(firewallrule)
         firewallrule_config = {
           name: firewallrule['name'],
@@ -591,6 +648,14 @@ module PuppetX
 
       def self.natgateway_rule_object_array_from_hashes(natgateway_rules)
         return natgateway_rules.map { |natgateway_rule| natgateway_rule_object_from_hash(natgateway_rule) } unless natgateway_rules.nil?
+        []
+      end
+
+      def self.networkloadbalancer_rule_object_array_from_hashes(networkloadbalancer_rules)
+        return networkloadbalancer_rules.map do
+          |networkloadbalancer_rule|
+          networkloadbalancer_rule_object_from_hash(networkloadbalancer_rule)
+        end unless networkloadbalancer_rules.nil?
         []
       end
 
@@ -671,9 +736,18 @@ module PuppetX
             existing_copy = existing_copy.sort
             target_copy = target_copy.sort
           rescue
-            comp = ->(a, b) { a['name'] <=> b['name'] }
-            existing_copy = existing_copy.sort(&comp)
-            target_copy = target_copy.sort(&comp)
+            begin
+              comp = ->(a, b) { a['name'] <=> b['name'] }
+              existing_copy = existing_copy.sort(&comp)
+              target_copy = target_copy.sort(&comp)
+            rescue
+              begin
+                comp = ->(a, b) { a['ip'] <=> b['ip'] }
+                existing_copy = existing_copy.sort(&comp)
+                target_copy = target_copy.sort(&comp)
+              rescue
+              end
+            end
           end
           existing_copy.zip(target_copy).each do |e, t|
             return false unless compare_objects(e, t)

@@ -36,7 +36,7 @@ Puppet::Type.newtype(:natgateway) do
   end
 
   newproperty(:rules, array_matching: :all) do
-    desc 'A list of flow logs associated to the NIC.'
+    desc 'A list of flow logs associated to the NAT Gateway.'
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.objects_match(is, should, [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range])
@@ -44,7 +44,7 @@ Puppet::Type.newtype(:natgateway) do
   end
 
   newproperty(:flowlogs, array_matching: :all) do
-    desc 'A list of flow logs associated to the NIC.'
+    desc 'A list of flow logs associated to the NAT Gateway.'
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.objects_match(is, should, [:name, :action, :direction, :bucket])
@@ -54,7 +54,7 @@ Puppet::Type.newtype(:natgateway) do
   # read-only properties
 
   newproperty(:datacenter_id) do
-    desc 'The ID of the virtual data center where the NIC will reside.'
+    desc 'The ID of the virtual data center where the NAT Gateway will reside.'
 
     validate do |value|
       raise ArgumentError, 'The data center ID should be a String.' unless value.is_a?(String)
@@ -66,7 +66,7 @@ Puppet::Type.newtype(:natgateway) do
   end
 
   newproperty(:datacenter_name) do
-    desc 'The name of the virtual data center where the NIC will reside.'
+    desc 'The name of the virtual data center where the NAT Gateway will reside.'
 
     validate do |value|
       raise ArgumentError, 'The data center name should be a String.' unless value.is_a?(String)
@@ -78,7 +78,7 @@ Puppet::Type.newtype(:natgateway) do
   end
 
   newproperty(:id) do
-    desc 'The NIC ID.'
+    desc 'The NAT Gateway ID.'
 
     def insync?(_is)
       true

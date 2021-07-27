@@ -121,9 +121,9 @@ Puppet::Type.type(:natgateway).provide(:v1) do
   end
 
   def destroy
-    Puppet.info "Deleting NAT Gateway #{nic_id}"
+    Puppet.info "Deleting NAT Gateway #{@property_hash[:id]}"
     _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_delete_with_http_info(
-      @property_hash[:datacenter_id], @property_hash[:id]
+      @property_hash[:datacenter_id], @property_hash[:id],
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
