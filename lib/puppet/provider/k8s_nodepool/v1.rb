@@ -137,7 +137,20 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
       availability_zone: resource[:availability_zone].to_s,
-      lans: resource[:lans],
+      lans: resource[:lans].nil? ? nil : resource[:lans].map do
+        |lan|
+        Ionoscloud::KubernetesNodePoolLan.new(
+          id: lan['id'],
+          dhcp: lan['dhcp'],
+          routes: lan['routes'].nil? ? nil : lan['routes'].map do
+            |route|
+            Ionoscloud::KubernetesNodePoolLanRoutes.new(
+              network: route['network'],
+              gateway_ip: route['gateway_ip'],
+            )
+          end,
+        )
+      end,
     }.delete_if { |_k, v| v.nil? }
 
     if resource[:maintenance_day] && resource[:maintenance_time]
@@ -176,7 +189,20 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     nodepool_properties = {
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
-      lans: @property_flush[:lans],
+      lans: @property_flush[:lans].nil? ? nil : @property_flush[:lans].map do
+        |lan|
+        Ionoscloud::KubernetesNodePoolLan.new(
+          id: lan['id'],
+          dhcp: lan['dhcp'],
+          routes: lan['routes'].nil? ? nil : lan['routes'].map do
+            |route|
+            Ionoscloud::KubernetesNodePoolLanRoutes.new(
+              network: route['network'],
+              gateway_ip: route['gateway_ip'],
+            )
+          end,
+        )
+      end,
       maintenance_window: Ionoscloud::KubernetesMaintenanceWindow.new(
         day_of_the_week: @property_flush[:maintenance_day] || @property_hash[:maintenance_day],
         time: @property_flush[:maintenance_time] || @property_hash[:maintenance_time],

@@ -27,7 +27,18 @@ datacenter { $datacenter_name :
       public_ip         => '158.222.103.21',
       target_port_range => {
         start => 22,
-        end   => 24,
+        end   => 27,
+      }
+    },
+    {
+      name              => 'test_rule2',
+      protocol          => 'TCP',
+      source_subnet     => '192.168.0.1/32',
+      target_subnet     => '192.168.0.4/32',
+      public_ip         => '158.222.103.21',
+      target_port_range => {
+        start => 23,
+        end   => 26,
       }
     },
     {

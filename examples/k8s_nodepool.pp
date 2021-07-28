@@ -24,11 +24,11 @@ k8s_nodepool { 'nodepool_test' :
       'routes' => [],
     },
     {
-      'id'     => 3,
-      'dhcp'   => true,
-      'routes' => [{
-        'network'   => '1.2.3.4/24',
-        'gatewayIp' => '1.2.3.4',
+      id     => 3,
+      dhcp   => true,
+      routes => [{
+        network    => '1.2.3.4/24',
+        gateway_ip => '1.2.3.4',
       }],
     },
   ],
