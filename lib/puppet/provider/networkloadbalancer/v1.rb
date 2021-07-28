@@ -55,8 +55,8 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
           protocol: rule.properties.protocol,
           listener_ip: rule.properties.listener_ip,
           listener_port: rule.properties.listener_port,
-          health_check: rule.properties.health_check,
-          targets: rule.properties.targets,
+          health_check: rule.properties.health_check.to_hash,
+          targets: rule.properties.targets.map { |target| target.to_hash },
         }.delete_if { |_k, v| v.nil? }
       end,
       flowlogs: instance.entities.flowlogs.items.map do |flowlog|

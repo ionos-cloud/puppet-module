@@ -25,7 +25,21 @@ datacenter { $datacenter_name :
     protocol      => 'TCP',
     listener_ip   => '158.222.102.243',
     listener_port => 22,
-    # health_check  =>['health_check'],
-    # targets       =>['targets'],
+    health_check  => {
+      clientTimeout  => 50000,
+      connectTimeout => 5001,
+      targetTimeout  => 50000,
+      retries        => 3
+    },
+    targets       =>[
+      ip          => '1.1.1.1',
+      port        => 22,
+      weight      => 1,
+      healthCheck => {
+        check         => true,
+        checkInterval => 2000,
+        maintenance   => false,
+      },
+    ],
 ]
 }

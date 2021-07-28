@@ -203,7 +203,7 @@ module PuppetX
 
       def self.update_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, current, target, wait = false)
         changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
         return [] if changes.empty?
 
         changes[:protocol] = current[:protocol] if changes[:protocol].nil?
@@ -243,8 +243,9 @@ module PuppetX
       end
 
       def self.update_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, current, target, wait = false)
-        changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+        changeable_fields = [:algorithm, :protocol, :listener_ip, :listener_port, :health_check, :targets]
+        
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
         return [] if changes.empty?
 
         changes = Ionoscloud::NetworkLoadBalancerForwardingRuleProperties.new(**changes)
@@ -376,7 +377,7 @@ module PuppetX
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
         changeable_fields = [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
         return [] if changes.empty?
 
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
@@ -424,7 +425,7 @@ module PuppetX
         end
 
         changeable_fields = [:action, :bucket, :direction]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
 
         return [] if changes.empty?
 
