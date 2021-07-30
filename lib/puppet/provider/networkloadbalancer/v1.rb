@@ -136,7 +136,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
         flowlogs: Ionoscloud::FlowLogs.new(
           items: PuppetX::IonoscloudX::Helper.flowlog_object_array_from_hashes(resource[:flowlogs]),
         ),
-        rules: Ionoscloud::NetworkLoadBalancerForwardingRules.new(
+        forwardingrules: Ionoscloud::NetworkLoadBalancerForwardingRules.new(
           items: PuppetX::IonoscloudX::Helper.networkloadbalancer_rule_object_array_from_hashes(resource[:rules]),
         ),
       ),
