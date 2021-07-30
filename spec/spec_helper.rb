@@ -92,7 +92,7 @@ def create_datacenter(datacenter_name)
   Puppet::Type.type(:datacenter).provider(:v1).instances.each do |instance|
     return instance.id if instance.name == datacenter_name
   end
-  
+
   @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
     Puppet::Type.type(:datacenter).new(
       name: datacenter_name,

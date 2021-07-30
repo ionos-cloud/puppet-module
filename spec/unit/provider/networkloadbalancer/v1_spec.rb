@@ -45,12 +45,12 @@ describe provider_class do
               'listener_ip' => @ip1,
               'listener_port' => 22,
               'health_check' => {
-                'client_timeout' => 40000,
+                'client_timeout' => 40_000,
                 'connect_timeout' => 3001,
-                'target_timeout' => 20000,
+                'target_timeout' => 20_000,
                 'retries' => 4
               },
-              'targets' =>[
+              'targets' => [
                 'ip' => '1.1.1.1',
                 'port' => 22,
                 'weight' => 1,
@@ -179,12 +179,12 @@ describe provider_class do
             'listener_ip' => @ip1,
             'listener_port' => 25,
             'health_check' => {
-              'client_timeout' => 40000,
+              'client_timeout' => 40_000,
               'connect_timeout' => 5001,
-              'target_timeout' => 50000,
+              'target_timeout' => 50_000,
               'retries' => 3
             },
-            'targets' =>[
+            'targets' => [
               'ip' => '1.1.1.2',
               'port' => 22,
               'weight' => 1,
@@ -207,9 +207,9 @@ describe provider_class do
         expect(updated_instance.rules.first[:protocol]).to eq('TCP')
         expect(updated_instance.rules.first[:listener_ip]).to eq(@ip1)
         expect(updated_instance.rules.first[:listener_port]).to eq(25)
-        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(40000)
+        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(40_000)
         expect(updated_instance.rules.first[:health_check][:connect_timeout]).to eq(5001)
-        expect(updated_instance.rules.first[:health_check][:target_timeout]).to eq(50000)
+        expect(updated_instance.rules.first[:health_check][:target_timeout]).to eq(50_000)
         expect(updated_instance.rules.first[:health_check][:retries]).to eq(3)
         expect(updated_instance.rules.first[:targets].first[:ip]).to eq('1.1.1.2')
         expect(updated_instance.rules.first[:targets].first[:port]).to eq(22)
@@ -230,12 +230,12 @@ describe provider_class do
             'listener_ip' => @ip3,
             'listener_port' => 22,
             'health_check' => {
-              'client_timeout' => 40000,
+              'client_timeout' => 40_000,
               'connect_timeout' => 3001,
-              'target_timeout' => 20000,
+              'target_timeout' => 20_000,
               'retries' => 4
             },
-            'targets' =>[
+            'targets' => [
               'ip' => '1.1.1.1',
               'port' => 22,
               'weight' => 1,
@@ -258,9 +258,9 @@ describe provider_class do
         expect(updated_instance.rules.first[:protocol]).to eq('TCP')
         expect(updated_instance.rules.first[:listener_ip]).to eq(@ip3)
         expect(updated_instance.rules.first[:listener_port]).to eq(22)
-        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(40000)
+        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(40_000)
         expect(updated_instance.rules.first[:health_check][:connect_timeout]).to eq(3001)
-        expect(updated_instance.rules.first[:health_check][:target_timeout]).to eq(20000)
+        expect(updated_instance.rules.first[:health_check][:target_timeout]).to eq(20_000)
         expect(updated_instance.rules.first[:health_check][:retries]).to eq(4)
         expect(updated_instance.rules.first[:targets].first[:ip]).to eq('1.1.1.1')
         expect(updated_instance.rules.first[:targets].first[:port]).to eq(22)

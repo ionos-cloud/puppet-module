@@ -119,7 +119,7 @@ module PuppetX
             to_wait += headers unless headers.empty?
             to_delete.delete(existing_obj[:id])
           else
-            _, headers = public_send(create_method ,*aux_args, desired_obj)
+            _, headers = public_send(create_method, *aux_args, desired_obj)
             to_wait << headers
           end
         end
@@ -203,7 +203,7 @@ module PuppetX
 
       def self.update_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, current, target, wait = false)
         changeable_fields = [:protocol, :public_ip, :source_subnet, :target_subnet, :target_port_range]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+        changes = Hash[*changeable_fields.flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
         return [] if changes.empty?
 
         changes[:protocol] = current[:protocol] if changes[:protocol].nil?
@@ -212,7 +212,7 @@ module PuppetX
         Puppet.info "Updating NAT Gateway Rule #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_patch_with_http_info(
-          datacenter_id, natgateway_id, natgateway_rule_id, changes,
+          datacenter_id, natgateway_id, natgateway_rule_id, changes
         )
         wait_request(headers) if wait
 
@@ -225,7 +225,7 @@ module PuppetX
         natgateway_rule = natgateway_rule_object_from_hash(desired_natgateway_rule)
 
         natgateway_rule, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_post_with_http_info(
-          datacenter_id, natgateway_id, natgateway_rule,
+          datacenter_id, natgateway_id, natgateway_rule
         )
         wait_request(headers) if wait
 
@@ -235,7 +235,7 @@ module PuppetX
       def self.delete_natgateway_rule(datacenter_id, natgateway_id, natgateway_rule_id, wait = false)
         Puppet.info "Deleting NAT Gateway Rule #{natgateway_rule_id}"
         _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_rules_delete_with_http_info(
-          datacenter_id, natgateway_id, natgateway_rule_id,
+          datacenter_id, natgateway_id, natgateway_rule_id
         )
         wait_request(headers) if wait
 
@@ -244,38 +244,44 @@ module PuppetX
 
       def self.update_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, current, target, wait = false)
         changeable_fields = [:algorithm, :protocol, :listener_ip, :listener_port, :health_check, :targets]
-        
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
+
+        changes = Hash[*changeable_fields.flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
         return [] if changes.empty?
 
-        changes[:health_check] = Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
-          client_timeout: changes[:health_check]['client_timeout'],
-          check_timeout: changes[:health_check]['check_timeout'],
-          connect_timeout: changes[:health_check]['connect_timeout'],
-          target_timeout: changes[:health_check]['target_timeout'],
-          retries: changes[:health_check]['retries'],
-        ) unless changes[:health_check].nil?
-
-
-        changes[:targets] = changes[:targets].map do
-          |target|
-          Ionoscloud::NetworkLoadBalancerForwardingRuleTarget.new(
-            ip: target['ip'],
-            port: target['port'],
-            weight: target['weight'],
-            health_check: target['health_check'].nil? ? nil : Ionoscloud::NetworkLoadBalancerForwardingRuleTargetHealthCheck.new(
-              check: target['health_check']['check'],
-              check_interval: target['health_check']['check_interval'],
-              maintenance: target['health_check']['maintenance'],
-            ),
+        unless changes[:health_check].nil?
+          changes[:health_check] = Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
+            client_timeout: changes[:health_check]['client_timeout'],
+            check_timeout: changes[:health_check]['check_timeout'],
+            connect_timeout: changes[:health_check]['connect_timeout'],
+            target_timeout: changes[:health_check]['target_timeout'],
+            retries: changes[:health_check]['retries'],
           )
-        end unless changes[:targets].nil?
+        end
+
+        unless changes[:targets].nil?
+          changes[:targets] = changes[:targets].map do |target|
+            Ionoscloud::NetworkLoadBalancerForwardingRuleTarget.new(
+              ip: target['ip'],
+              port: target['port'],
+              weight: target['weight'],
+              health_check: if target['health_check'].nil?
+                              nil
+                            else
+                              Ionoscloud::NetworkLoadBalancerForwardingRuleTargetHealthCheck.new(
+                                            check: target['health_check']['check'],
+                                            check_interval: target['health_check']['check_interval'],
+                                            maintenance: target['health_check']['maintenance'],
+                                          )
+                            end,
+            )
+          end
+        end
 
         changes = Ionoscloud::NetworkLoadBalancerForwardingRuleProperties.new(**changes)
         Puppet.info "Updating Network Load Balancer Rule #{current[:name]} with #{changes}"
 
         _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_patch_with_http_info(
-          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, changes,
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, changes
         )
         wait_request(headers) if wait
 
@@ -288,7 +294,7 @@ module PuppetX
         networkloadbalancer_rule = networkloadbalancer_rule_object_from_hash(desired_networkloadbalancer_rule)
 
         networkloadbalancer_rule, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_post_with_http_info(
-          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule,
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule
         )
         wait_request(headers) if wait
 
@@ -298,7 +304,7 @@ module PuppetX
       def self.delete_networkloadbalancer_rule(datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id, wait = false)
         Puppet.info "Deleting Network Load Balancer Rule #{networkloadbalancer_rule_id}"
         _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_forwardingrules_delete_with_http_info(
-          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id,
+          datacenter_id, networkloadbalancer_id, networkloadbalancer_rule_id
         )
         wait_request(headers) if wait
 
@@ -321,8 +327,8 @@ module PuppetX
         headers
       end
 
-      def self.update_cdrom(*args)
-        return []
+      def self.update_cdrom(*_args)
+        []
       end
 
       def self.detach_cdrom(datacenter_id, server_id, cdrom_id, wait = false)
@@ -344,15 +350,14 @@ module PuppetX
       end
 
       def self.update_nic(datacenter_id, server_id, nic_id, current, target, wait = false)
-
         entities_headers = sync_objects(
           current[:firewall_rules], target['firewall_rules'], [datacenter_id, server_id, nic_id],
-          :update_firewallrule, :create_firewallrule, :delete_firewallrule,
+          :update_firewallrule, :create_firewallrule, :delete_firewallrule
         )
 
         entities_headers += sync_objects(
           current[:flowlogs], target['flowlogs'], [:nic, datacenter_id, server_id, nic_id],
-          :update_flowlog, :create_flowlog, :delete_flowlog,
+          :update_flowlog, :create_flowlog, :delete_flowlog
         )
 
         changes = Hash[*[:firewall_active, :ips, :dhcp, :lan, :firewall_type].flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
@@ -400,7 +405,7 @@ module PuppetX
 
       def self.update_firewallrule(datacenter_id, server_id, nic_id, firewallrule_id, current, target, wait = false)
         changeable_fields = [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*changeable_fields.flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
         return [] if changes.empty?
 
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
@@ -448,7 +453,7 @@ module PuppetX
         end
 
         changeable_fields = [:action, :bucket, :direction]
-        changes = Hash[*changeable_fields.map { |v| [ v, target[v.to_s] ] }.flatten(1) ].delete_if { |k, v| v.nil? || v == current[k] }
+        changes = Hash[*changeable_fields.flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || v == current[k] }
 
         return [] if changes.empty?
 
@@ -582,10 +587,14 @@ module PuppetX
           public_ip: natgateway_rule['public_ip'],
           source_subnet: natgateway_rule['source_subnet'],
           target_subnet: natgateway_rule['target_subnet'],
-          target_port_range: natgateway_rule['target_port_range'].nil? ? nil : Ionoscloud::TargetPortRange.new(
-            start: natgateway_rule['target_port_range']['start'],
-            _end: natgateway_rule['target_port_range']['end'],
-          ),
+          target_port_range: if natgateway_rule['target_port_range'].nil?
+                               nil
+                             else
+                               Ionoscloud::TargetPortRange.new(
+                                         start: natgateway_rule['target_port_range']['start'],
+                                         _end: natgateway_rule['target_port_range']['end'],
+                                       )
+                             end,
         }
 
         Ionoscloud::NatGatewayRule.new(
@@ -602,26 +611,37 @@ module PuppetX
           protocol: networkloadbalancer_rule['protocol'],
           listener_ip: networkloadbalancer_rule['listener_ip'],
           listener_port: networkloadbalancer_rule['listener_port'],
-          health_check: networkloadbalancer_rule['health_check'].nil? ? nil : Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
-            client_timeout: networkloadbalancer_rule['health_check']['client_timeout'],
-            check_timeout: networkloadbalancer_rule['health_check']['check_timeout'],
-            connect_timeout: networkloadbalancer_rule['health_check']['connect_timeout'],
-            target_timeout: networkloadbalancer_rule['health_check']['target_timeout'],
-            retries: networkloadbalancer_rule['health_check']['retries'],
-          ),
-          targets: networkloadbalancer_rule['targets'].nil? ? nil : networkloadbalancer_rule['targets'].map do
-            |target|
-            Ionoscloud::NetworkLoadBalancerForwardingRuleTarget.new(
-              ip: target['ip'],
-              port: target['port'],
-              weight: target['weight'],
-              health_check: target['health_check'].nil? ? nil : Ionoscloud::NetworkLoadBalancerForwardingRuleTargetHealthCheck.new(
-                check: target['health_check']['check'],
-                check_interval: target['health_check']['check_interval'],
-                maintenance: target['health_check']['maintenance'],
-              ),
-            )
-          end,
+          health_check: if networkloadbalancer_rule['health_check'].nil?
+                          nil
+                        else
+                          Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
+                                    client_timeout: networkloadbalancer_rule['health_check']['client_timeout'],
+                                    check_timeout: networkloadbalancer_rule['health_check']['check_timeout'],
+                                    connect_timeout: networkloadbalancer_rule['health_check']['connect_timeout'],
+                                    target_timeout: networkloadbalancer_rule['health_check']['target_timeout'],
+                                    retries: networkloadbalancer_rule['health_check']['retries'],
+                                  )
+                        end,
+          targets: if networkloadbalancer_rule['targets'].nil?
+                     nil
+                   else
+                     networkloadbalancer_rule['targets'].map do |target|
+                       Ionoscloud::NetworkLoadBalancerForwardingRuleTarget.new(
+                         ip: target['ip'],
+                         port: target['port'],
+                         weight: target['weight'],
+                         health_check: if target['health_check'].nil?
+                                         nil
+                                       else
+                                         Ionoscloud::NetworkLoadBalancerForwardingRuleTargetHealthCheck.new(
+                                                       check: target['health_check']['check'],
+                                                       check_interval: target['health_check']['check_interval'],
+                                                       maintenance: target['health_check']['maintenance'],
+                                                     )
+                                       end,
+                       )
+                     end
+                   end,
         }
 
         Ionoscloud::NetworkLoadBalancerForwardingRule.new(
@@ -694,10 +714,11 @@ module PuppetX
       end
 
       def self.networkloadbalancer_rule_object_array_from_hashes(networkloadbalancer_rules)
-        return networkloadbalancer_rules.map do
-          |networkloadbalancer_rule|
-          networkloadbalancer_rule_object_from_hash(networkloadbalancer_rule)
-        end unless networkloadbalancer_rules.nil?
+        unless networkloadbalancer_rules.nil?
+          return networkloadbalancer_rules.map do |networkloadbalancer_rule|
+            networkloadbalancer_rule_object_from_hash(networkloadbalancer_rule)
+          end
+        end
         []
       end
 
@@ -787,21 +808,22 @@ module PuppetX
                 comp = ->(a, b) { a['ip'] <=> b['ip'] }
                 existing_copy = existing_copy.sort(&comp)
                 target_copy = target_copy.sort(&comp)
-              rescue
+              rescue StandardError => e
+                raise e
               end
             end
           end
           existing_copy.zip(target_copy).each do |e, t|
             return false unless compare_objects(e, t)
           end
-          return true
+          true
         when Hash
-          return false if target.keys.map { |key| existing.keys.include? key.to_sym }.include? false          
+          return false if target.keys.map { |key| existing.keys.include? key.to_sym }.include? false
 
-          target.keys.each do |key|
+          target.each_key do |key|
             return false unless compare_objects(existing[key.to_sym], target[key])
           end
-          return true
+          true
         else
           existing == target
         end

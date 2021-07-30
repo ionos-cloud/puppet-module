@@ -106,7 +106,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
     end
   end
 
-
   newproperty(:create_flow_log) do
     desc 'Indicates if the group is allowed to create Flow Logs.'
     defaultto :false

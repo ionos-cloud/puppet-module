@@ -209,7 +209,7 @@ Puppet::Type.newtype(:server) do
         )
         PuppetX::IonoscloudX::Helper.objects_match(
           existing_object[:flowlogs], target_object['flowlogs'],
-          [:name, :action, :direction, :bucket],
+          [:name, :action, :direction, :bucket]
         )
       }
       PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :firewall_type, :ips, :dhcp, :lan], &block)

@@ -53,20 +53,22 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ram_size: instance.properties.ram_size,
       storage_type: instance.properties.storage_type,
       storage_size: instance.properties.storage_size,
-      lans: instance.properties.lans.map {
-        |el|
+      lans: instance.properties.lans.map do |el|
         {
           id: el.id,
           dhcp: el.dhcp,
-          routes: el.routes.nil? ? [] : el.routes.map {
-            |route|
-            {
-              network: route.network,
-              gateway_ip: route.gateway_ip,
-            }
-          },
+          routes: if el.routes.nil?
+                    []
+                  else
+                    el.routes.map do |route|
+                      {
+                        network: route.network,
+                        gateway_ip: route.gateway_ip,
+                      }
+                    end
+                  end,
         }
-      },
+      end,
       availability_zone: instance.properties.availability_zone,
       k8s_version: instance.properties.k8s_version,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
@@ -137,20 +139,26 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
       availability_zone: resource[:availability_zone].to_s,
-      lans: resource[:lans].nil? ? nil : resource[:lans].map do
-        |lan|
-        Ionoscloud::KubernetesNodePoolLan.new(
-          id: lan['id'],
-          dhcp: lan['dhcp'],
-          routes: lan['routes'].nil? ? nil : lan['routes'].map do
-            |route|
-            Ionoscloud::KubernetesNodePoolLanRoutes.new(
-              network: route['network'],
-              gateway_ip: route['gateway_ip'],
-            )
-          end,
-        )
-      end,
+      lans: if resource[:lans].nil?
+              nil
+            else
+              resource[:lans].map do |lan|
+                Ionoscloud::KubernetesNodePoolLan.new(
+                  id: lan['id'],
+                  dhcp: lan['dhcp'],
+                  routes: if lan['routes'].nil?
+                            nil
+                          else
+                            lan['routes'].map do |route|
+                              Ionoscloud::KubernetesNodePoolLanRoutes.new(
+                                network: route['network'],
+                                gateway_ip: route['gateway_ip'],
+                              )
+                            end
+                          end,
+                )
+              end
+            end,
     }.delete_if { |_k, v| v.nil? }
 
     if resource[:maintenance_day] && resource[:maintenance_time]
@@ -189,20 +197,26 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     nodepool_properties = {
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
-      lans: @property_flush[:lans].nil? ? nil : @property_flush[:lans].map do
-        |lan|
-        Ionoscloud::KubernetesNodePoolLan.new(
-          id: lan['id'],
-          dhcp: lan['dhcp'],
-          routes: lan['routes'].nil? ? nil : lan['routes'].map do
-            |route|
-            Ionoscloud::KubernetesNodePoolLanRoutes.new(
-              network: route['network'],
-              gateway_ip: route['gateway_ip'],
-            )
-          end,
-        )
-      end,
+      lans: if @property_flush[:lans].nil?
+              nil
+            else
+              @property_flush[:lans].map do |lan|
+                Ionoscloud::KubernetesNodePoolLan.new(
+                  id: lan['id'],
+                  dhcp: lan['dhcp'],
+                  routes: if lan['routes'].nil?
+                            nil
+                          else
+                            lan['routes'].map do |route|
+                              Ionoscloud::KubernetesNodePoolLanRoutes.new(
+                                network: route['network'],
+                                gateway_ip: route['gateway_ip'],
+                              )
+                            end
+                          end,
+                )
+              end
+            end,
       maintenance_window: Ionoscloud::KubernetesMaintenanceWindow.new(
         day_of_the_week: @property_flush[:maintenance_day] || @property_hash[:maintenance_day],
         time: @property_flush[:maintenance_time] || @property_hash[:maintenance_time],

@@ -157,7 +157,7 @@ Puppet::Type.type(:server).provide(:v1) do
   def cdroms=(value)
     PuppetX::IonoscloudX::Helper.sync_objects(
       @property_hash[:cdroms], value, [@property_hash[:datacenter_id], @property_hash[:id]],
-      :update_cdrom, :attach_cdrom, :detach_cdrom, wait: true, id_field: :id,
+      :update_cdrom, :attach_cdrom, :detach_cdrom, wait: true, id_field: :id
     )
 
     @property_hash[:cdrom] = value

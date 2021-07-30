@@ -98,12 +98,10 @@ end
 generated_types = []
 
 all_types.each do |type|
-  begin
-    type_name, filename = generate_type_doc(type)
-    generated_types.append({ title: type_name, filename: filename })
-  rescue StandardError => exc
-    puts "Could not generate doc for #{type}. Error: #{exc}"
-  end
+  type_name, filename = generate_type_doc(type)
+  generated_types.append({ title: type_name, filename: filename })
+rescue StandardError => exc
+  puts "Could not generate doc for #{type}. Error: #{exc}"
 end
 
 generated_types.sort! { |a, b| a[:title] <=> b[:title] }

@@ -29,7 +29,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
   def self.prefetch(resources)
     instances.each do |prov|
       next unless (resource = resources[prov.name])
-      if (resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name)
+      if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name
         resource.provider = prov
       end
     end
@@ -62,8 +62,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
             target_timeout: rule.properties.health_check.target_timeout,
             retries: rule.properties.health_check.retries,
           },
-          targets: rule.properties.targets.map do
-            |target|
+          targets: rule.properties.targets.map do |target|
             {
               ip: target.ip,
               port: target.port,
@@ -142,7 +141,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
       ),
     )
     networkloadbalancer, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_post_with_http_info(
-      datacenter_id, networkloadbalancer,
+      datacenter_id, networkloadbalancer
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
@@ -167,12 +166,12 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
 
     entities_headers = PuppetX::IonoscloudX::Helper.sync_objects(
       @property_hash[:flowlogs], @property_flush[:flowlogs], [:networkloadbalancer, @property_hash[:datacenter_id], @property_hash[:id]],
-      :update_flowlog, :create_flowlog, :delete_flowlog,
+      :update_flowlog, :create_flowlog, :delete_flowlog
     )
 
     entities_headers += PuppetX::IonoscloudX::Helper.sync_objects(
       @property_hash[:rules], @property_flush[:rules], [@property_hash[:datacenter_id], @property_hash[:id]],
-      :update_networkloadbalancer_rule, :create_networkloadbalancer_rule, :delete_networkloadbalancer_rule,
+      :update_networkloadbalancer_rule, :create_networkloadbalancer_rule, :delete_networkloadbalancer_rule
     )
 
     changeable_properties = [:ips, :lb_private_ips, :listener_lan, :target_lan]
@@ -185,7 +184,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
     Puppet.info "Updating Network Load Balancer #{@property_hash[:name]} with #{changes}"
 
     _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_patch_with_http_info(
-      @property_hash[:datacenter_id], @property_hash[:id], changes,
+      @property_hash[:datacenter_id], @property_hash[:id], changes
     )
 
     all_headers = entities_headers

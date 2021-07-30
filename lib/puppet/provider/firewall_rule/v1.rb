@@ -115,7 +115,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
 
     raise "Nic named '#{resource[:nic]}' cannot be found." unless nic
 
-    firewall_rule, _ = PuppetX::IonoscloudX::Helper.create_firewallrule(datacenter_id, server_id, nic.id, resource, wait: true)
+    firewall_rule, = PuppetX::IonoscloudX::Helper.create_firewallrule(datacenter_id, server_id, nic.id, resource, wait: true)
 
     Puppet.info("Creating firewall rule '#{resource[:name]}'.")
     @property_hash[:ensure] = :present
@@ -128,7 +128,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
 
   def destroy
     PuppetX::IonoscloudX::Helper.delete_firewallrule(
-      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id], wait: true,
+      @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id], wait: true
     )
     @property_hash[:ensure] = :absent
   end
@@ -137,7 +137,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     return if @property_flush.empty?
     PuppetX::IonoscloudX::Helper.update_firewallrule(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id],
-      @property_hash, JSON.parse(@property_flush.to_json), wait: true,
+      @property_hash, JSON.parse(@property_flush.to_json), wait: true
     )
 
     [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code].each do |property|

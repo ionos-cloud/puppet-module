@@ -72,7 +72,7 @@ describe provider_class do
     it 'updates k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_update') do
         new_version = '1.18.9'
-        new_lans = [{:dhcp=>true, :id=>Integer(@lan_id), :routes=>[]}]
+        new_lans = [{ dhcp: true, id: Integer(@lan_id), routes: [] }]
         my_instance = nil
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name

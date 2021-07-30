@@ -161,7 +161,7 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     changeable_properties = [
       :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log,
       :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc,
-      :create_flow_log, :access_and_manage_monitoring, :access_and_manage_certificates,
+      :create_flow_log, :access_and_manage_monitoring, :access_and_manage_certificates
     ]
     changes = Hash[*changeable_properties.map { |v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
