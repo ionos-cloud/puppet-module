@@ -1,6 +1,198 @@
 ---
 http_interactions:
 - request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:43 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '6389'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "datacenters",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters",
+          "items" : [ {
+            "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "metadata" : {
+              "etag" : "0da1a03ec8e063b1e152ecba8869c1b7",
+              "createdDate" : "2021-07-13T11:57:10Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-28T14:08:40Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "testdc1",
+              "description" : "my data center desc.",
+              "location" : "us/las",
+              "version" : 98,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "AMD_OPTERON",
+                "vendor" : "AuthenticAMD",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              }, {
+                "cpuFamily" : "INTEL_XEON",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers"
+              },
+              "volumes" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers"
+              },
+              "lans" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways"
+              }
+            }
+          }, {
+            "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "metadata" : {
+              "etag" : "9afd51d9fc58a3effee34c9ceb1ea15e",
+              "createdDate" : "2021-05-20T07:30:50Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-20T19:42:10Z",
+              "lastModifiedBy" : "[UNKNOWN]",
+              "lastModifiedByUserId" : "[UNKNOWN]",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "SDK AUTO-TEST",
+              "description" : "Datacenter created by an automated test.",
+              "location" : "de/fra",
+              "version" : 9,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/servers"
+              },
+              "volumes" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers"
+              },
+              "lans" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways"
+              }
+            }
+          } ]
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:43 GMT
+- request:
     method: post
     uri: https://api.ionos.com/cloudapi/v6/datacenters
     body:
@@ -23,7 +215,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Mon, 12 Jul 2021 13:37:09 GMT
+      - Fri, 30 Jul 2021 13:09:43 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -31,9 +223,9 @@ http_interactions:
       Content-Type:
       - application/json
       Etag:
-      - 4b5428be8b10e9dfe53db9f622014d8c
+      - aaf4880f0a6a1fb78d8277132b5bb41a
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/b037dccc-4e34-49ed-b797-bcb6dda2c4c2/status
+      - https://api.ionos.com/cloudapi/v6/requests/fa466b57-8761-4f6c-9805-7a5156461fa9/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -56,15 +248,15 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
-          "id" : "b71fa566-a843-4667-9991-259469531c3f",
+          "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
           "type" : "datacenter",
-          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
           "metadata" : {
-            "etag" : "4b5428be8b10e9dfe53db9f622014d8c",
-            "createdDate" : "2021-07-12T13:37:09Z",
+            "etag" : "aaf4880f0a6a1fb78d8277132b5bb41a",
+            "createdDate" : "2021-07-30T13:09:43Z",
             "createdBy" : "username",
             "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "lastModifiedDate" : "2021-07-12T13:37:09Z",
+            "lastModifiedDate" : "2021-07-30T13:09:43Z",
             "lastModifiedBy" : "username",
             "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
             "state" : "BUSY"
@@ -79,10 +271,10 @@ http_interactions:
             "cpuArchitecture" : [ ]
           }
         }
-  recorded_at: Mon, 12 Jul 2021 13:37:09 GMT
+  recorded_at: Fri, 30 Jul 2021 13:09:43 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/b037dccc-4e34-49ed-b797-bcb6dda2c4c2/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/fa466b57-8761-4f6c-9805-7a5156461fa9/status
     body:
       encoding: US-ASCII
       string: ''
@@ -102,7 +294,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 12 Jul 2021 13:37:09 GMT
+      - Fri, 30 Jul 2021 13:09:43 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -133,24 +325,24 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "b037dccc-4e34-49ed-b797-bcb6dda2c4c2/status",
+          "id" : "fa466b57-8761-4f6c-9805-7a5156461fa9/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/b037dccc-4e34-49ed-b797-bcb6dda2c4c2/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/fa466b57-8761-4f6c-9805-7a5156461fa9/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
                 "type" : "datacenter",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Mon, 12 Jul 2021 13:37:09 GMT
+  recorded_at: Fri, 30 Jul 2021 13:09:43 GMT
 - request:
     method: get
     uri: https://api.ionos.com/cloudapi/v6/datacenters?depth=1
@@ -173,11 +365,9 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 12 Jul 2021 13:37:10 GMT
+      - Fri, 30 Jul 2021 13:09:44 GMT
       Server:
       - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '6321'
       Content-Type:
       - application/json
       X-Frame-Options:
@@ -198,6 +388,8 @@ http_interactions:
       - "*"
       Access-Control-Allow-Credentials:
       - 'true'
+      Transfer-Encoding:
+      - chunked
     body:
       encoding: ASCII-8BIT
       string: |
@@ -206,15 +398,15 @@ http_interactions:
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v6/datacenters",
           "items" : [ {
-            "id" : "b71fa566-a843-4667-9991-259469531c3f",
+            "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
             "type" : "datacenter",
-            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
             "metadata" : {
-              "etag" : "67b17ba023eb1b9bf27bc730bce7f7d4",
-              "createdDate" : "2021-07-12T13:37:09Z",
+              "etag" : "d11e9755ef794c4b33d4792bf72f0e56",
+              "createdDate" : "2021-07-30T13:09:43Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-07-12T13:37:09Z",
+              "lastModifiedDate" : "2021-07-30T13:09:43Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "state" : "AVAILABLE"
@@ -224,7 +416,7 @@ http_interactions:
               "description" : "Puppet Module test description",
               "location" : "de/txl",
               "version" : 1,
-              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "ssd-storage-zoning", "vnf-fw", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "mem-hot-plug", "private-loadbalancer" ],
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "mem-hot-plug", "private-loadbalancer" ],
               "secAuthProtection" : false,
               "cpuArchitecture" : [ {
                 "cpuFamily" : "INTEL_SKYLAKE",
@@ -235,39 +427,109 @@ http_interactions:
             },
             "entities" : {
               "servers" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/servers",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/servers",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/servers"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/servers"
               },
               "volumes" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/volumes",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/volumes",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/volumes"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/volumes"
               },
               "loadbalancers" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/loadbalancers",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/loadbalancers",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/loadbalancers"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/loadbalancers"
               },
               "lans" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/lans",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/lans"
-              },
-              "networkloadbalancers" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/networkloadbalancers",
-                "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/networkloadbalancers"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans"
               },
               "applicationloadbalancers" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/applicationloadbalancers",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/applicationloadbalancers",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/applicationloadbalancers"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/networkloadbalancers"
               },
               "natgateways" : {
-                "id" : "b71fa566-a843-4667-9991-259469531c3f/natgateways",
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/natgateways",
                 "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/natgateways"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/natgateways"
+              }
+            }
+          }, {
+            "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "metadata" : {
+              "etag" : "0da1a03ec8e063b1e152ecba8869c1b7",
+              "createdDate" : "2021-07-13T11:57:10Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-28T14:08:40Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "testdc1",
+              "description" : "my data center desc.",
+              "location" : "us/las",
+              "version" : 98,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "AMD_OPTERON",
+                "vendor" : "AuthenticAMD",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              }, {
+                "cpuFamily" : "INTEL_XEON",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers"
+              },
+              "volumes" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers"
+              },
+              "lans" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways"
               }
             }
           }, {
@@ -289,7 +551,7 @@ http_interactions:
               "description" : "Datacenter created by an automated test.",
               "location" : "de/fra",
               "version" : 9,
-              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "ssd-storage-zoning", "vnf-fw", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
               "secAuthProtection" : false,
               "cpuArchitecture" : [ {
                 "cpuFamily" : "INTEL_SKYLAKE",
@@ -319,15 +581,15 @@ http_interactions:
                 "type" : "collection",
                 "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans"
               },
-              "networkloadbalancers" : {
-                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers",
-                "type" : "collection",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers"
-              },
               "applicationloadbalancers" : {
                 "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers",
                 "type" : "collection",
                 "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers"
               },
               "natgateways" : {
                 "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways",
@@ -337,86 +599,10 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Mon, 12 Jul 2021 13:37:10 GMT
-- request:
-    method: post
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/lans
-    body:
-      encoding: UTF-8
-      string: '{"properties":{"name":"puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed","public":"false"}}'
-    headers:
-      User-Agent:
-      - ionos-cloud-sdk-ruby/v6
-      Content-Type:
-      - application/json
-      Accept:
-      - application/json
-      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-      Expect:
-      - ''
-  response:
-    status:
-      code: 202
-      message: Accepted
-    headers:
-      Date:
-      - Mon, 12 Jul 2021 13:37:10 GMT
-      Server:
-      - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '715'
-      Content-Type:
-      - application/json
-      Etag:
-      - c5de845a74872200a03b44fc832b9643
-      Location:
-      - https://api.ionos.com/cloudapi/v6/requests/5d070e54-95d7-4817-ab8b-6cf2bf134e3e/status
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Ratelimit-Burst:
-      - '50'
-      X-Ratelimit-Limit:
-      - '120'
-      X-Ratelimit-Remaining:
-      - '48'
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - "*"
-      Access-Control-Expose-Headers:
-      - "*"
-      Access-Control-Allow-Methods:
-      - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
-    body:
-      encoding: ASCII-8BIT
-      string: |
-        {
-          "id" : "1",
-          "type" : "lan",
-          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/lans/1",
-          "metadata" : {
-            "etag" : "c5de845a74872200a03b44fc832b9643",
-            "createdDate" : "2021-07-12T13:37:10Z",
-            "createdBy" : "username",
-            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "lastModifiedDate" : "2021-07-12T13:37:10Z",
-            "lastModifiedBy" : "username",
-            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "state" : "BUSY"
-          },
-          "properties" : {
-            "name" : "puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed",
-            "ipFailover" : null,
-            "pcc" : null,
-            "public" : false
-          }
-        }
-  recorded_at: Mon, 12 Jul 2021 13:37:10 GMT
+  recorded_at: Fri, 30 Jul 2021 13:09:44 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/5d070e54-95d7-4817-ab8b-6cf2bf134e3e/status
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans?depth=1
     body:
       encoding: US-ASCII
       string: ''
@@ -436,7 +622,700 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 12 Jul 2021 13:37:15 GMT
+      - Fri, 30 Jul 2021 13:09:44 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '201'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans",
+          "items" : [ ]
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:44 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:44 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '6672'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans",
+          "items" : [ {
+            "id" : "4095",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/4095",
+            "metadata" : {
+              "etag" : "a85d6bdf349092a4a4fb37909f43fdf7",
+              "createdDate" : "2021-07-16T13:45:39Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-16T13:45:39Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "Lan 4095",
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : false
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "4095/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/4095/nics"
+              }
+            }
+          }, {
+            "id" : "6",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/6",
+            "metadata" : {
+              "etag" : "db37753b341956367c3181ed687b1ab0",
+              "createdDate" : "2021-07-14T10:07:07Z",
+              "createdBy" : "[UNKNOWN]",
+              "createdByUserId" : "[UNKNOWN]",
+              "lastModifiedDate" : "2021-07-14T10:07:07Z",
+              "lastModifiedBy" : "[UNKNOWN]",
+              "lastModifiedByUserId" : "[UNKNOWN]",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "k8s-public-lan",
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : true
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "6/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/6/nics"
+              }
+            }
+          }, {
+            "id" : "5",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/5",
+            "metadata" : {
+              "etag" : "00ce1b8547bc0c7b6560a0b7e2e1dbc9",
+              "createdDate" : "2021-07-14T10:06:18Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-14T10:06:18Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : null,
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : true
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "5/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/5/nics"
+              }
+            }
+          }, {
+            "id" : "4",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/4",
+            "metadata" : {
+              "etag" : "59d32dce64a0759d769f98d7083fe924",
+              "createdDate" : "2021-07-14T10:02:08Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-14T10:02:08Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : null,
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : true
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "4/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/4/nics"
+              }
+            }
+          }, {
+            "id" : "3",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/3",
+            "metadata" : {
+              "etag" : "40684ca24828980eedd9896bd80f6e7f",
+              "createdDate" : "2021-07-14T10:01:57Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-14T10:01:57Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : null,
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : false
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "3/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/3/nics"
+              }
+            }
+          }, {
+            "id" : "2",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/2",
+            "metadata" : {
+              "etag" : "a040a3dc87ab019c134fa389b79d17f1",
+              "createdDate" : "2021-07-14T10:01:48Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-14T10:01:48Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : null,
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : false
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "2/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/2/nics"
+              }
+            }
+          }, {
+            "id" : "1",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/1",
+            "metadata" : {
+              "etag" : "c89f51520ae89d34ff9767aac1179ebf",
+              "createdDate" : "2021-07-13T11:57:12Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-13T11:57:12Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "public1",
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : true
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "1/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans/1/nics"
+              }
+            }
+          } ]
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:44 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:44 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '201'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/lans",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans",
+          "items" : [ ]
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:44 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:44 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "datacenters",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters",
+          "items" : [ {
+            "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3",
+            "metadata" : {
+              "etag" : "d11e9755ef794c4b33d4792bf72f0e56",
+              "createdDate" : "2021-07-30T13:09:43Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-30T13:09:43Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test6w3g3g34g3g34g3g89g34d0ebc5ed",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/servers"
+              },
+              "volumes" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/loadbalancers"
+              },
+              "lans" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/natgateways"
+              }
+            }
+          }, {
+            "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823",
+            "metadata" : {
+              "etag" : "0da1a03ec8e063b1e152ecba8869c1b7",
+              "createdDate" : "2021-07-13T11:57:10Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-07-28T14:08:40Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "testdc1",
+              "description" : "my data center desc.",
+              "location" : "us/las",
+              "version" : 98,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "AMD_OPTERON",
+                "vendor" : "AuthenticAMD",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              }, {
+                "cpuFamily" : "INTEL_XEON",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/servers"
+              },
+              "volumes" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/loadbalancers"
+              },
+              "lans" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b4e89773-8aab-4a50-8ccf-f63d7ebeb823/natgateways"
+              }
+            }
+          }, {
+            "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "metadata" : {
+              "etag" : "9afd51d9fc58a3effee34c9ceb1ea15e",
+              "createdDate" : "2021-05-20T07:30:50Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-20T19:42:10Z",
+              "lastModifiedBy" : "[UNKNOWN]",
+              "lastModifiedByUserId" : "[UNKNOWN]",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "SDK AUTO-TEST",
+              "description" : "Datacenter created by an automated test.",
+              "location" : "de/fra",
+              "version" : 9,
+              "features" : [ "vnf-nat", "ssd", "vnf-nat-pcc-connection", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "vnf-nlb-pcc-connection", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "flow-logs", "cpu-hot-plug", "vnf-cidr", "mem-hot-plug", "private-loadbalancer" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/servers"
+              },
+              "volumes" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers"
+              },
+              "lans" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers"
+              },
+              "networkloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways"
+              }
+            }
+          } ]
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:44 GMT
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"name":"puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed","public":"false"}}'
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:45 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '715'
+      Content-Type:
+      - application/json
+      Etag:
+      - d2b25b8fc9402079efc5af93de084f88
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/b1583c4b-167d-4327-a4fe-154203d2f961/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "1",
+          "type" : "lan",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans/1",
+          "metadata" : {
+            "etag" : "d2b25b8fc9402079efc5af93de084f88",
+            "createdDate" : "2021-07-30T13:09:45Z",
+            "createdBy" : "username",
+            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "lastModifiedDate" : "2021-07-30T13:09:45Z",
+            "lastModifiedBy" : "username",
+            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "state" : "BUSY"
+          },
+          "properties" : {
+            "name" : "puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed",
+            "ipFailover" : null,
+            "pcc" : null,
+            "public" : false
+          }
+        }
+  recorded_at: Fri, 30 Jul 2021 13:09:45 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/requests/b1583c4b-167d-4327-a4fe-154203d2f961/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - ionos-cloud-sdk-ruby/v6
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 30 Jul 2021 13:09:50 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -467,9 +1346,9 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "5d070e54-95d7-4817-ab8b-6cf2bf134e3e/status",
+          "id" : "b1583c4b-167d-4327-a4fe-154203d2f961/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/5d070e54-95d7-4817-ab8b-6cf2bf134e3e/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/b1583c4b-167d-4327-a4fe-154203d2f961/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
@@ -478,11 +1357,11 @@ http_interactions:
               "target" : {
                 "id" : "1",
                 "type" : "lan",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/b71fa566-a843-4667-9991-259469531c3f/lans/1"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/1c81a0fb-920b-4e3d-ab4c-1123ea66d1e3/lans/1"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Mon, 12 Jul 2021 13:37:15 GMT
+  recorded_at: Fri, 30 Jul 2021 13:09:50 GMT
 recorded_with: VCR 6.0.0

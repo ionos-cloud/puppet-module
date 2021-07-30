@@ -16,7 +16,7 @@ describe provider_class do
           Puppet::Type.type(:ipblock).new(
             name: @ipblock_name,
             size: 2,
-            location: 'us/las',
+            location: 'de/txl',
           ),
         )
         @ipblock_provider.create unless @ipblock_provider.exists?

@@ -127,6 +127,7 @@ def create_server(datacenter_name, server_name)
       ram: 1024,
       availability_zone: 'ZONE_1',
       datacenter_name: datacenter_name,
+      cpu_family: 'INTEL_SKYLAKE',
     ),
   )
   @server_provider.create unless @server_provider.exists?

@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: patch
-    uri: https://api.ionos.com/cloudapi/v6/snapshots/c14d6314-c7dd-4f27-8f58-2b766074e191
+    uri: https://api.ionos.com/cloudapi/v6/snapshots/a6ebed6a-cca9-43ac-ade7-4316d08e4718
     body:
       encoding: UTF-8
       string: '{"description":"Puppet Module test snapshot - RENAME"}'
     headers:
       User-Agent:
-      - OpenAPI-Generator/6.0.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -22,7 +22,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Fri, 25 Jun 2021 08:34:41 GMT
+      - Fri, 30 Jul 2021 13:22:32 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -30,9 +30,9 @@ http_interactions:
       Content-Type:
       - application/json
       Etag:
-      - 25297fff987e7752b758d217216caf40
+      - fb7b969131c273be05415a00409521f2
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/04df629d-852e-4630-be85-b8921ad78fbc/status
+      - https://api.ionos.com/cloudapi/v6/requests/4d490aa5-2368-4925-bbd7-7c05ccd9d554/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -55,15 +55,15 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
-          "id" : "c14d6314-c7dd-4f27-8f58-2b766074e191",
+          "id" : "a6ebed6a-cca9-43ac-ade7-4316d08e4718",
           "type" : "snapshot",
-          "href" : "https://api.ionos.com/cloudapi/v6/snapshots/c14d6314-c7dd-4f27-8f58-2b766074e191",
+          "href" : "https://api.ionos.com/cloudapi/v6/snapshots/a6ebed6a-cca9-43ac-ade7-4316d08e4718",
           "metadata" : {
-            "etag" : "25297fff987e7752b758d217216caf40",
-            "createdDate" : "2021-06-25T08:20:42Z",
+            "etag" : "fb7b969131c273be05415a00409521f2",
+            "createdDate" : "2021-07-30T13:10:32Z",
             "createdBy" : "username",
             "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "lastModifiedDate" : "2021-06-25T08:34:41Z",
+            "lastModifiedDate" : "2021-07-30T13:22:32Z",
             "lastModifiedBy" : "username",
             "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
             "state" : "BUSY"
@@ -71,7 +71,7 @@ http_interactions:
           "properties" : {
             "name" : "puppet_module_test04cacda602e04de3b7c41bd099c46558",
             "description" : "Puppet Module test snapshot - RENAME",
-            "location" : "us/las",
+            "location" : "de/txl",
             "size" : 100,
             "secAuthProtection" : false,
             "cpuHotPlug" : false,
@@ -87,16 +87,16 @@ http_interactions:
             "licenceType" : "LINUX"
           }
         }
-  recorded_at: Fri, 25 Jun 2021 08:34:42 GMT
+  recorded_at: Fri, 30 Jul 2021 13:22:32 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/04df629d-852e-4630-be85-b8921ad78fbc/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/4d490aa5-2368-4925-bbd7-7c05ccd9d554/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/6.0.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -110,7 +110,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 25 Jun 2021 08:34:42 GMT
+      - Fri, 30 Jul 2021 13:22:32 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -141,24 +141,24 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "04df629d-852e-4630-be85-b8921ad78fbc/status",
+          "id" : "4d490aa5-2368-4925-bbd7-7c05ccd9d554/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/04df629d-852e-4630-be85-b8921ad78fbc/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/4d490aa5-2368-4925-bbd7-7c05ccd9d554/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "c14d6314-c7dd-4f27-8f58-2b766074e191",
+                "id" : "a6ebed6a-cca9-43ac-ade7-4316d08e4718",
                 "type" : "snapshot",
-                "href" : "https://api.ionos.com/cloudapi/v6/snapshots/c14d6314-c7dd-4f27-8f58-2b766074e191"
+                "href" : "https://api.ionos.com/cloudapi/v6/snapshots/a6ebed6a-cca9-43ac-ade7-4316d08e4718"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 25 Jun 2021 08:34:42 GMT
+  recorded_at: Fri, 30 Jul 2021 13:22:32 GMT
 - request:
     method: get
     uri: https://api.ionos.com/cloudapi/v6/snapshots?depth=1
@@ -167,7 +167,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/6.0.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -181,7 +181,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 25 Jun 2021 08:34:42 GMT
+      - Fri, 30 Jul 2021 13:22:32 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -214,15 +214,15 @@ http_interactions:
           "type" : "collection",
           "href" : "https://api.ionos.com/cloudapi/v6/snapshots",
           "items" : [ {
-            "id" : "c14d6314-c7dd-4f27-8f58-2b766074e191",
+            "id" : "a6ebed6a-cca9-43ac-ade7-4316d08e4718",
             "type" : "snapshot",
-            "href" : "https://api.ionos.com/cloudapi/v6/snapshots/c14d6314-c7dd-4f27-8f58-2b766074e191",
+            "href" : "https://api.ionos.com/cloudapi/v6/snapshots/a6ebed6a-cca9-43ac-ade7-4316d08e4718",
             "metadata" : {
-              "etag" : "a0fa156ea34e3248229ede669dbe302a",
-              "createdDate" : "2021-06-25T08:20:42Z",
+              "etag" : "dbf578952282268bae67af054d0d0c8c",
+              "createdDate" : "2021-07-30T13:10:32Z",
               "createdBy" : "username",
               "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-              "lastModifiedDate" : "2021-06-25T08:34:41Z",
+              "lastModifiedDate" : "2021-07-30T13:22:32Z",
               "lastModifiedBy" : "username",
               "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
               "state" : "AVAILABLE"
@@ -230,7 +230,7 @@ http_interactions:
             "properties" : {
               "name" : "puppet_module_test04cacda602e04de3b7c41bd099c46558",
               "description" : "Puppet Module test snapshot - RENAME",
-              "location" : "us/las",
+              "location" : "de/txl",
               "size" : 100,
               "secAuthProtection" : false,
               "cpuHotPlug" : false,
@@ -375,5 +375,5 @@ http_interactions:
             }
           } ]
         }
-  recorded_at: Fri, 25 Jun 2021 08:34:42 GMT
+  recorded_at: Fri, 30 Jul 2021 13:22:32 GMT
 recorded_with: VCR 6.0.0
