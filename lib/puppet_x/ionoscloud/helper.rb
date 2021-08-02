@@ -462,11 +462,11 @@ module PuppetX
 
         case type
         when :nic
-          _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(*args[..3], changes)
+          _, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_patch_with_http_info(*args[0..3], changes)
         when :natgateway
-          _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_patch_with_http_info(*args[..2], changes)
+          _, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_patch_with_http_info(*args[0..2], changes)
         when :networkloadbalancer
-          _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_patch_with_http_info(*args[..2], changes)
+          _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_patch_with_http_info(*args[0..2], changes)
         else
           return []
         end
@@ -485,11 +485,11 @@ module PuppetX
 
         case type
         when :nic
-          flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(*args[..2], flowlog)
+          flowlog, _, headers = Ionoscloud::FlowLogsApi.new.datacenters_servers_nics_flowlogs_post_with_http_info(*args[0..2], flowlog)
         when :natgateway
-          flowlog, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_post_with_http_info(*args[..1], flowlog)
+          flowlog, _, headers = Ionoscloud::NATGatewaysApi.new.datacenters_natgateways_flowlogs_post_with_http_info(*args[0..1], flowlog)
         when :networkloadbalancer
-          flowlog, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_post_with_http_info(*args[..1], flowlog)
+          flowlog, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_flowlogs_post_with_http_info(*args[0..1], flowlog)
         else
           return
         end
