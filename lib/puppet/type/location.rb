@@ -23,6 +23,14 @@ Puppet::Type.newtype(:location) do
     end
   end
 
+  newproperty(:cpu_architecture, array_matching: :all) do
+    desc 'Array of features and CPU families available in a location.'
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:image_aliases, array_matching: :all) do
     desc 'A list of image aliases available at the location.'
 

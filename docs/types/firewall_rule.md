@@ -20,6 +20,7 @@ Type representing a IonosCloud firewall rule.
 | port_range_end | No | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen.   | - |
 | icmp_type | No | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen.   | - |
 | icmp_code | No | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen.   | - |
+| type | No | The type of firewall rule. If is not specified, it will take the default value INGRESS.   | - |
 | protocol | No | The protocol for the firewall rule.  Valid values are `TCP`, `UDP`, `ICMP`, `ANY`.  | - |
 | datacenter_id | No | The ID of the virtual data center where the NIC will reside.   | - |
 | datacenter_name | No | The name of the virtual data center where the NIC will reside.   | - |
@@ -38,6 +39,7 @@ Type representing a IonosCloud firewall rule.
 * source_mac
 * source_ip
 * target_ip
+* type
 
 
 ## Example

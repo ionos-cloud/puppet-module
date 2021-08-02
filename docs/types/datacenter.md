@@ -18,6 +18,7 @@ Type representing a IonosCloud virtual data center.
 | location | Yes | The data center location.   | - |
 | version | No | The data center version.   | - |
 | features | No | List of features supported by the location this data center is part of.   | - |
+| cpu_architecture | No | Array of features and CPU families available in a location.   | - |
 | id | No | The data center ID.   | - |
 ***
 

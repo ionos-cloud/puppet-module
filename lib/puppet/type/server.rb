@@ -23,6 +23,10 @@ Puppet::Type.newtype(:server) do
       provider.stop unless provider.stopped?
     end
 
+    newvalue(:suspended) do
+      provider.suspend unless provider.suspended?
+    end
+
     def change_to_s(current, desired)
       current = :running if current == :present
       desired = :running if desired == :present
@@ -41,6 +45,27 @@ Puppet::Type.newtype(:server) do
     validate do |value|
       raise('Server must have a name') if value == ''
       raise('Name should be a String') unless value.is_a?(String)
+    end
+  end
+
+  newproperty(:type) do
+    desc 'The type of the server.'
+    defaultto 'ENTERPRISE'
+    newvalues('ENTERPRISE', 'CUBE')
+
+    validate do |value|
+      unless ['ENTERPRISE', 'CUBE'].include?(value)
+        raise('Server type must be either "ENTERPRISE" or "CUBE"')
+      end
+      raise('Server type must be a string') unless value.is_a?(String)
+    end
+  end
+
+  newproperty(:template_uuid) do
+    desc 'The template UUID of the server, needed for a CUBE server.'
+
+    def insync?(_is)
+      true
     end
   end
 
@@ -75,11 +100,11 @@ Puppet::Type.newtype(:server) do
   newproperty(:cpu_family) do
     desc 'The CPU family of the server.'
     defaultto 'AMD_OPTERON'
-    newvalues('AMD_OPTERON', 'INTEL_XEON')
+    newvalues('AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE')
 
     validate do |value|
-      unless ['AMD_OPTERON', 'INTEL_XEON'].include?(value)
-        raise('CPU family must be either "AMD_OPTERON" or "INTEL_XEON"')
+      unless ['AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE'].include?(value)
+        raise('CPU family must be either "AMD_OPTERON" or "INTEL_XEON" or "INTEL_SKYLAKE"')
       end
       raise('CPU family must be a string') unless value.is_a?(String)
     end
@@ -93,7 +118,6 @@ Puppet::Type.newtype(:server) do
             rescue
               nil
             end
-      raise('Server must have ram assigned') if value == ''
       raise('RAM must be a multiple of 256 MB') unless (ram % 256) == 0
     end
   end
@@ -127,7 +151,7 @@ Puppet::Type.newtype(:server) do
       volumes = value.is_a?(Array) ? value : [value]
       volumes.each do |volume|
         next if volume.keys.include?('id')
-        ['name', 'size', 'volume_type'].each do |key|
+        ['name', 'volume_type'].each do |key|
           raise("Volume must include #{key}") unless volume.keys.include?(key)
         end
       end
@@ -181,10 +205,14 @@ Puppet::Type.newtype(:server) do
         PuppetX::IonoscloudX::Helper.objects_match(
           existing_object[:firewall_rules],
           target_object['firewall_rules'],
-          [:source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
+          [:type, :source_mac, :source_ip, :target_ip, :port_range_start, :port_range_end, :icmp_type, :icmp_code],
+        )
+        PuppetX::IonoscloudX::Helper.objects_match(
+          existing_object[:flowlogs], target_object['flowlogs'],
+          [:name, :action, :direction, :bucket]
         )
       }
-      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :ips, :dhcp, :lan], &block)
+      PuppetX::IonoscloudX::Helper.objects_match(is, should, [:firewall_active, :firewall_type, :ips, :dhcp, :lan], &block)
     end
   end
 

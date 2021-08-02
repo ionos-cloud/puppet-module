@@ -1,6 +1,6 @@
 Puppet::Type.newtype(:firewall_rule) do
   @doc = 'Type representing a IonosCloud firewall rule.'
-  @changeable_properties = [:icmp_code, :icmp_type, :port_range_start, :port_range_end, :source_mac, :source_ip, :target_ip]
+  @changeable_properties = [:icmp_code, :icmp_type, :port_range_start, :port_range_end, :source_mac, :source_ip, :target_ip, :type]
 
   ensurable
 
@@ -74,6 +74,14 @@ Puppet::Type.newtype(:firewall_rule) do
     validate do |value|
       raise ArgumentError, 'The ICMP code must be an Integer.' unless value.is_a?(Integer)
     end
+
+    def insync?(is)
+      is.to_s == should.to_s
+    end
+  end
+
+  newproperty(:type) do
+    desc 'The type of firewall rule. If is not specified, it will take the default value INGRESS.'
 
     def insync?(is)
       is.to_s == should.to_s

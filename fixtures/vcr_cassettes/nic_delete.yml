@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/02068daa-8023-4188-97f8-5b8cee517211/servers/4d07c465-9ad7-4c4b-807c-3d3a72503110/nics/bbfacf45-b978-4f2c-a647-ad534742fcdb
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/c788a8a3-2980-4b3e-bfd5-6127bc0d4919/servers/a27a3268-b3f9-46df-bb9d-e8b0ffeab06a/nics/ca56a5ff-1272-47bb-93a5-95627543a00b
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/6.0.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -22,7 +22,7 @@ http_interactions:
       message: Accepted
     headers:
       Date:
-      - Fri, 25 Jun 2021 12:35:11 GMT
+      - Fri, 30 Jul 2021 13:30:40 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -30,7 +30,7 @@ http_interactions:
       Etag:
       - e2b535a996dbfb1d9f6df1715ebcf525
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/9e470179-e2c2-4cfe-931d-dd0a29e0d421/status
+      - https://api.ionos.com/cloudapi/v6/requests/ceae82a6-5361-4bb2-9a14-e2a8582fa510/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -52,16 +52,16 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Fri, 25 Jun 2021 12:35:11 GMT
+  recorded_at: Fri, 30 Jul 2021 13:30:40 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/9e470179-e2c2-4cfe-931d-dd0a29e0d421/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/ceae82a6-5361-4bb2-9a14-e2a8582fa510/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - OpenAPI-Generator/6.0.0/ruby
+      - ionos-cloud-sdk-ruby/v6
       Content-Type:
       - application/json
       Accept:
@@ -75,7 +75,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 25 Jun 2021 12:36:24 GMT
+      - Fri, 30 Jul 2021 13:31:06 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
@@ -106,22 +106,22 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "9e470179-e2c2-4cfe-931d-dd0a29e0d421/status",
+          "id" : "ceae82a6-5361-4bb2-9a14-e2a8582fa510/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/9e470179-e2c2-4cfe-931d-dd0a29e0d421/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/ceae82a6-5361-4bb2-9a14-e2a8582fa510/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "bbfacf45-b978-4f2c-a647-ad534742fcdb",
+                "id" : "ca56a5ff-1272-47bb-93a5-95627543a00b",
                 "type" : "nic",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/02068daa-8023-4188-97f8-5b8cee517211/servers/4d07c465-9ad7-4c4b-807c-3d3a72503110/nics/bbfacf45-b978-4f2c-a647-ad534742fcdb"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c788a8a3-2980-4b3e-bfd5-6127bc0d4919/servers/a27a3268-b3f9-46df-bb9d-e8b0ffeab06a/nics/ca56a5ff-1272-47bb-93a5-95627543a00b"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 25 Jun 2021 12:36:23 GMT
+  recorded_at: Fri, 30 Jul 2021 13:31:06 GMT
 recorded_with: VCR 6.0.0

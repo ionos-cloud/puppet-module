@@ -89,15 +89,34 @@ def create_cluster(cluster_name)
 end
 
 def create_datacenter(datacenter_name)
+  Puppet::Type.type(:datacenter).provider(:v1).instances.each do |instance|
+    return instance.id if instance.name == datacenter_name
+  end
+
   @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
     Puppet::Type.type(:datacenter).new(
       name: datacenter_name,
-      location: 'us/las',
+      location: 'de/txl',
       description: 'Puppet Module test description',
     ),
   )
-  @datacenter_provider.create unless @datacenter_provider.exists?
+  @datacenter_provider.create
   @datacenter_provider.id
+end
+
+def create_ipblock(ipblock_name)
+  Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
+    return instance.id if instance.name == ipblock_name
+  end
+  @ipblock_provider = Puppet::Type.type(:ipblock).provider(:v1).new(
+    Puppet::Type.type(:ipblock).new(
+      name: ipblock_name,
+      location: 'de/txl',
+      size: 2,
+    ),
+  )
+  @ipblock_provider.create
+  @ipblock_provider.id
 end
 
 def create_server(datacenter_name, server_name)
@@ -108,6 +127,7 @@ def create_server(datacenter_name, server_name)
       ram: 1024,
       availability_zone: 'ZONE_1',
       datacenter_name: datacenter_name,
+      cpu_family: 'INTEL_SKYLAKE',
     ),
   )
   @server_provider.create unless @server_provider.exists?
@@ -145,6 +165,9 @@ def create_volume(datacenter_name, volume_name)
 end
 
 def create_private_lan(datacenter_name, lan_name)
+  Puppet::Type.type(:lan).provider(:v1).instances.each do |instance|
+    return instance.id if instance.name == lan_name
+  end
   @lan_provider = Puppet::Type.type(:lan).provider(:v1).new(
     Puppet::Type.type(:lan).new(
       name: lan_name,
@@ -152,11 +175,14 @@ def create_private_lan(datacenter_name, lan_name)
       datacenter_name: datacenter_name,
     ),
   )
-  @lan_provider.create unless @lan_provider.exists?
+  @lan_provider.create
   @lan_provider.id
 end
 
 def create_public_lan(datacenter_name, lan_name)
+  Puppet::Type.type(:lan).provider(:v1).instances.each do |instance|
+    return instance.id if instance.name == lan_name
+  end
   @lan_provider = Puppet::Type.type(:lan).provider(:v1).new(
     Puppet::Type.type(:lan).new(
       name: lan_name,
@@ -164,7 +190,7 @@ def create_public_lan(datacenter_name, lan_name)
       datacenter_name: datacenter_name,
     ),
   )
-  @lan_provider.create unless @lan_provider.exists?
+  @lan_provider.create
   @lan_provider.id
 end
 

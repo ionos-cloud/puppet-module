@@ -7,7 +7,6 @@ describe type_class do
     [
       :name,
       :image_password,
-      :image_alias,
       :ssh_keys,
     ]
   end
@@ -26,6 +25,7 @@ describe type_class do
       :licence_type,
       :backupunit_id,
       :device_number,
+      :pci_slot,
       :user_data,
       :cpu_hot_plug,
       :ram_hot_plug,

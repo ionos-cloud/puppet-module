@@ -14,6 +14,7 @@ describe type_class do
       :features,
       :image_aliases,
       :id,
+      :cpu_architecture,
     ]
   end
 

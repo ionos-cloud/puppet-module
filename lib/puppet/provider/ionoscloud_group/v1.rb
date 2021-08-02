@@ -42,6 +42,9 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
       create_internet_access: instance.properties.create_internet_access,
       create_k8s_cluster: instance.properties.create_k8s_cluster,
       create_pcc: instance.properties.create_pcc,
+      create_flow_log: instance.properties.create_flow_log,
+      access_and_manage_monitoring: instance.properties.access_and_manage_monitoring,
+      access_and_manage_certificates: instance.properties.access_and_manage_certificates,
       members: instance.entities.users.items.map { |user| user.properties.email },
       ensure: :present,
     }
@@ -83,6 +86,18 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     @property_flush[:create_pcc] = value
   end
 
+  def create_flow_log=(value)
+    @property_flush[:create_flow_log] = value
+  end
+
+  def access_and_manage_monitoring=(value)
+    @property_flush[:access_and_manage_monitoring] = value
+  end
+
+  def access_and_manage_certificates=(value)
+    @property_flush[:access_and_manage_certificates] = value
+  end
+
   def members=(value)
     sync_members(@property_hash[:id], @property_hash[:members], value)
   end
@@ -105,6 +120,9 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
         create_internet_access: resource[:create_internet_access],
         create_k8s_cluster: resource[:create_k8s_cluster],
         create_pcc: resource[:create_pcc],
+        create_flow_log: resource[:create_flow_log],
+        access_and_manage_monitoring: resource[:access_and_manage_monitoring],
+        access_and_manage_certificates: resource[:access_and_manage_certificates],
       ),
     )
 
@@ -124,6 +142,9 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     @property_hash[:create_internet_access] = group.properties.create_internet_access
     @property_hash[:create_k8s_cluster] = group.properties.create_k8s_cluster
     @property_hash[:create_pcc] = group.properties.create_pcc
+    @property_hash[:create_flow_log] = group.properties.create_flow_log
+    @property_hash[:access_and_manage_monitoring] = group.properties.access_and_manage_monitoring
+    @property_hash[:access_and_manage_certificates] = group.properties.access_and_manage_certificates
 
     sync_members(group.id, [], resource[:members])
   end
@@ -139,7 +160,8 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
     return if @property_flush.empty?
     changeable_properties = [
       :name, :create_data_center, :create_snapshot, :reserve_ip, :access_activity_log,
-      :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc
+      :s3_privilege, :create_backup_unit, :create_internet_access, :create_k8s_cluster, :create_pcc,
+      :create_flow_log, :access_and_manage_monitoring, :access_and_manage_certificates
     ]
     changes = Hash[*changeable_properties.map { |v| [ v, @property_flush[v] ] }.flatten ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
     return nil unless !changes.empty?
@@ -155,6 +177,9 @@ Puppet::Type.type(:ionoscloud_group).provide(:v1) do
       create_internet_access: @property_hash[:create_internet_access],
       create_k8s_cluster: @property_hash[:create_k8s_cluster],
       create_pcc: @property_hash[:create_pcc],
+      create_flow_log: @property_hash[:create_flow_log],
+      access_and_manage_monitoring: @property_hash[:access_and_manage_monitoring],
+      access_and_manage_certificates: @property_hash[:access_and_manage_certificates],
     }
 
     Puppet.info "Updating group #{@property_hash[:name]} with #{changes}"

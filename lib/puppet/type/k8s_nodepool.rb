@@ -152,7 +152,6 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:storage_type) do
     desc 'The volume type.'
     defaultto 'HDD'
-    newvalues('HDD', 'SSD')
 
     validate do |value|
       raise ArgumentError, 'The volume type should be a String.' unless value.is_a?(String)
@@ -178,7 +177,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     desc 'The list of additional private LANs attached to worker nodes.'
 
     def insync?(is)
-      is.sort == should.sort
+      PuppetX::IonoscloudX::Helper.compare_objects(is, should)
     end
   end
 

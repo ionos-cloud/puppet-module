@@ -46,6 +46,7 @@ Puppet::Type.type(:volume).provide(:v1) do
       user_data: instance.properties.user_data,
       licence_type: instance.properties.licence_type,
       backupunit_id: instance.properties.backupunit_id,
+      pci_slot: instance.properties.pci_slot,
       device_number: instance.properties.device_number,
       availability_zone: instance.properties.availability_zone,
       cpu_hot_plug: instance.properties.cpu_hot_plug,

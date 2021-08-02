@@ -6,18 +6,20 @@ describe provider_class do
   context 'server operations' do
     before(:all) do
       VCR.use_cassette('server_prepare') do
-        @datacenter_name = 'puppet_module_test62rwg34hg3h34h3d0ebc5ed'
+        @datacenter_name = 'puppet_module_test6w3g3g34g3g34g3g89g34d0ebc5ed'
         @lan_name = 'puppet_module_test6ffwedqdwfeqwfwefweg5eh4d0ebc5ed'
         create_datacenter(@datacenter_name)
         create_private_lan(@datacenter_name, @lan_name)
 
         @server1_name = 'puppet_module_test6ffwegwgwegwwdqw5eh4d0ebc5ed'
         @server2_name = 'puppet_module_test6ffwgwegwegwegwegewgwh4d0ebc5ed'
+        @server3_name = 'puppet_module_test6ffwggergergergeadadegewgwh4d0ebc5ed'
 
         @resource1 = Puppet::Type.type(:server).new(
           name: @server1_name,
           cores: 1,
           ram: 1024,
+          cpu_family: 'INTEL_SKYLAKE',
           availability_zone: 'ZONE_1',
           datacenter_name: @datacenter_name,
         )
@@ -55,7 +57,7 @@ describe provider_class do
         @resource2 = Puppet::Type.type(:server).new(
           name: @server2_name,
           cores: 1,
-          cpu_family: 'INTEL_XEON',
+          cpu_family: 'INTEL_SKYLAKE',
           ram: 1024,
           volumes: [vol1, vol2],
           purge_volumes: true,
@@ -63,6 +65,22 @@ describe provider_class do
           datacenter_name: @datacenter_name,
         )
         @provider2 = provider_class.new(@resource2)
+
+        vol3 = {}
+        vol3['name'] = 'Puppet Module Test 3'
+        vol3['bus'] = 'VIRTIO'
+        vol3['volume_type'] = 'DAS'
+        vol3['licence_type'] = 'LINUX'
+
+        @resource3 = Puppet::Type.type(:server).new(
+          name: @server3_name,
+          type: 'CUBE',
+          cpu_family: 'INTEL_SKYLAKE',
+          template_uuid: '15c6dd2f-02d2-4987-b439-9a58dd59ecc3',
+          volumes: [vol3],
+          datacenter_name: @datacenter_name,
+        )
+        @provider3 = provider_class.new(@resource3)
       end
     end
 
@@ -75,6 +93,7 @@ describe provider_class do
     it 'is an instance of the ProviderV1' do
       expect(@provider1).to be_an_instance_of Puppet::Type::Server::ProviderV1
       expect(@provider2).to be_an_instance_of Puppet::Type::Server::ProviderV1
+      expect(@provider3).to be_an_instance_of Puppet::Type::Server::ProviderV1
     end
 
     it 'creates IonosCloud server with minimum params' do
@@ -90,6 +109,14 @@ describe provider_class do
         expect(@provider2.create).to be_truthy
         expect(@provider2.exists?).to be true
         expect(@provider2.name).to eq(@server2_name)
+      end
+    end
+
+    it 'creates cube server' do
+      VCR.use_cassette('server_create_cube') do
+        expect(@provider3.create).to be_truthy
+        expect(@provider3.exists?).to be true
+        expect(@provider3.name).to eq(@server3_name)
       end
     end
 
@@ -134,18 +161,6 @@ describe provider_class do
           updated_instance = instance if instance.name == @server2_name
         end
         expect(updated_instance.cores).to eq(2)
-      end
-    end
-
-    it 'updates CPU family' do
-      VCR.use_cassette('server_update_cpu_family') do
-        @provider2.cpu_family = 'AMD_OPTERON'
-        @provider2.flush
-        updated_instance = nil
-        provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == @server2_name
-        end
-        expect(updated_instance.cpu_family).to eq('AMD_OPTERON')
       end
     end
 
@@ -244,12 +259,6 @@ describe provider_class do
                 'port_range_start' => 22,
                 'port_range_end' => 22,
               },
-              {
-                'name' => 'HTTP2',
-                'protocol' => 'TCP',
-                'port_range_start' => 65,
-                'port_range_end' => 80
-              },
             ]
           },
           {
@@ -278,10 +287,7 @@ describe provider_class do
         expect(updated_instance.nics[1][:dhcp]).to eq(false)
         expect(updated_instance.nics[1][:lan]).to eq(@lan_name)
         expect(updated_instance.nics[1][:firewall_active]).to eq(true)
-        expect(updated_instance.nics[1][:firewall_rules].length).to eq(2)
-        expect(updated_instance.nics[1][:firewall_rules][1][:name]).to eq('HTTP2')
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_start]).to eq(65)
-        expect(updated_instance.nics[1][:firewall_rules][1][:port_range_end]).to eq(80)
+        expect(updated_instance.nics[1][:firewall_rules].length).to eq(1)
         expect(updated_instance.nics[1][:firewall_rules][0][:name]).to eq('SSH2')
         expect(updated_instance.nics[1][:firewall_rules][0][:port_range_start]).to eq(22)
         expect(updated_instance.nics[1][:firewall_rules][0][:port_range_end]).to eq(22)
@@ -312,10 +318,30 @@ describe provider_class do
       end
     end
 
+    it 'suspends server' do
+      VCR.use_cassette('server_suspend') do
+        expect(@provider3.running?).to be true
+        expect(@provider3.suspend).to be_truthy
+        expect(@provider3.suspended?).to be true
+      end
+    end
+
+    it 'resumes server' do
+      VCR.use_cassette('server_resume') do
+        expect(@provider3.running?).to be false
+        expect(@provider3.create).to be_truthy
+        expect(@provider3.running?).to be true
+      end
+    end
+
     it 'deletes server' do
       VCR.use_cassette('server_delete') do
+        expect(@provider1.destroy).to be_truthy
+        expect(@provider1.exists?).to be false
         expect(@provider2.destroy).to be_truthy
         expect(@provider2.exists?).to be false
+        expect(@provider3.destroy).to be_truthy
+        expect(@provider3.exists?).to be false
       end
     end
   end

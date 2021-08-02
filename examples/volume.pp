@@ -7,8 +7,7 @@ datacenter { $datacenter_name :
 -> volume { 'testvolume' :
   ensure            => present,
   datacenter_name   => $datacenter_name,
-  image_alias       => 'ubuntu:latest',
-  image_password    => 'password',
+  licence_type      => 'LINUX',
   size              => 50,
   volume_type       => 'SSD',
   availability_zone => 'AUTO',

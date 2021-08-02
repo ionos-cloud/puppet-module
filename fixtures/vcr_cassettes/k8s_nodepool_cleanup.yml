@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/k8s/8de02f04-7e07-4150-a81b-136be2be7b24
+    uri: https://api.ionos.com/cloudapi/v6/k8s/bc5c99bf-a317-4c18-ac33-4f49ed0f8bf9
     body:
       encoding: US-ASCII
       string: ''
@@ -22,15 +22,15 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 09 Jul 2021 10:04:23 GMT
+      - Fri, 30 Jul 2021 15:08:27 GMT
       Server:
       - Apache/2.4.38 (Debian)
       Content-Length:
-      - '1244'
+      - '1245'
       Content-Type:
       - application/json
       Etag:
-      - 4e5fae1552ebbfdac98b3732364593a8
+      - ded7f77b958e09bc232ed0c7774eb42d
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -53,39 +53,39 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "8de02f04-7e07-4150-a81b-136be2be7b24",
+          "id" : "bc5c99bf-a317-4c18-ac33-4f49ed0f8bf9",
           "type" : "k8s",
-          "href" : "https://api.ionos.com/cloudapi/v6/k8s/8de02f04-7e07-4150-a81b-136be2be7b24",
+          "href" : "https://api.ionos.com/cloudapi/v6/k8s/bc5c99bf-a317-4c18-ac33-4f49ed0f8bf9",
           "metadata" : {
-            "etag" : "4e5fae1552ebbfdac98b3732364593a8",
-            "createdDate" : "2021-05-24T11:32:22Z",
+            "etag" : "ded7f77b958e09bc232ed0c7774eb42d",
+            "createdDate" : "2021-07-12T10:40:13Z",
             "createdBy" : "username",
             "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
-            "lastModifiedDate" : "2021-05-24T11:32:22Z",
+            "lastModifiedDate" : "2021-07-12T10:40:13Z",
             "lastModifiedBy" : "username",
             "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
             "state" : "ACTIVE"
           },
           "properties" : {
             "name" : "puppet_module_testa",
-            "k8sVersion" : "1.18.5",
+            "k8sVersion" : "1.18.9",
             "maintenanceWindow" : {
               "dayOfTheWeek" : "Saturday",
-              "time" : "17:25:22Z"
+              "time" : "23:53:13Z"
             },
-            "availableUpgradeVersions" : [ "1.18.9", "1.18.12", "1.18.18", "1.19.10" ],
-            "viableNodePoolVersions" : [ "1.18.5", "1.18.9", "1.18.12", "1.18.18" ],
+            "availableUpgradeVersions" : [ "1.18.12", "1.18.20", "1.19.10", "1.19.12" ],
+            "viableNodePoolVersions" : [ "1.18.5", "1.18.9", "1.18.12", "1.18.20" ],
             "apiSubnetAllowList" : null,
             "s3Buckets" : null,
             "public" : true
           },
           "entities" : {
             "nodepools" : {
-              "id" : "8de02f04-7e07-4150-a81b-136be2be7b24/nodepools",
+              "id" : "bc5c99bf-a317-4c18-ac33-4f49ed0f8bf9/nodepools",
               "type" : "collection",
-              "href" : "https://api.ionos.com/cloudapi/v6/k8s/8de02f04-7e07-4150-a81b-136be2be7b24/nodepools"
+              "href" : "https://api.ionos.com/cloudapi/v6/k8s/bc5c99bf-a317-4c18-ac33-4f49ed0f8bf9/nodepools"
             }
           }
         }
-  recorded_at: Fri, 09 Jul 2021 10:04:23 GMT
+  recorded_at: Fri, 30 Jul 2021 15:08:27 GMT
 recorded_with: VCR 6.0.0

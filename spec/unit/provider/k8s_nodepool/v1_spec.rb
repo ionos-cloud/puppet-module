@@ -11,13 +11,13 @@ describe provider_class do
         @cluster_name = 'puppet_module_testa'
         @cluster_id = create_cluster(@cluster_name)
 
-        @datacenter_name = 'puppet_module_tes24334gvg3v43vg4b390h30'
+        @datacenter_name = 'puppet_module_tes24334qwfqfwqfwqfqwfqg4b390h30'
         create_datacenter(@datacenter_name)
 
-        @lan_name = 'puppet_module_test62342423f43434qfbc5ed'
+        @lan_name = 'puppet_module_test623qwfqfwqfqwfqf434qfbc5ed'
         @lan_id = create_private_lan(@datacenter_name, @lan_name)
 
-        @nodepool_name = 'puppet_module_test6f23424f343434345wfbc5ed'
+        @nodepool_name = 'puppet_module_test6f234qfwqfqfqfqwfqfwfbc5ed'
 
         @resource = Puppet::Type.type(:k8s_nodepool).new(
           name: @nodepool_name,
@@ -30,7 +30,7 @@ describe provider_class do
           max_node_count: 2,
           node_count: 1,
           cores_count: 1,
-          cpu_family: 'INTEL_XEON',
+          cpu_family: 'INTEL_SKYLAKE',
           ram_size: 2048,
           storage_type: 'SSD',
           storage_size: 10,
@@ -72,7 +72,7 @@ describe provider_class do
     it 'updates k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_update') do
         new_version = '1.18.9'
-        new_lans = [Integer(@lan_id)]
+        new_lans = [{ 'dhcp' => true, 'id' => Integer(@lan_id), 'routes' => [] }]
         my_instance = nil
         provider_class.instances.each do |nodepool|
           my_instance = nodepool if nodepool.name == @nodepool_name
@@ -86,7 +86,9 @@ describe provider_class do
           updated_instance = nodepool if nodepool.name == @nodepool_name
         end
         expect(updated_instance.k8s_version).to eq(new_version)
-        expect(updated_instance.lans).to eq(new_lans)
+        expect(updated_instance.lans.first[:id]).to eq(Integer(@lan_id))
+        expect(updated_instance.lans.first[:dhcp]).to eq(true)
+        expect(updated_instance.lans.first[:routes]).to eq([])
       end
     end
 
