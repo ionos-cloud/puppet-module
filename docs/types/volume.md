@@ -8,7 +8,6 @@ Type representing a IonosCloud storage volume.
 | :--- | :-: | :--- |
 | name | true | The name of the volume.   |
 | image_password |  | The image password for the "root" or "Administrator" account.   |
-| image_alias |  | The image alias. E.g. ubuntu:latest   |
 | ssh_keys |  | One or more SSH keys to allow access to the volume via SSH.   |
 
 ## Properties:
@@ -20,10 +19,11 @@ Type representing a IonosCloud storage volume.
 | image_id | No | The image or snapshot ID.   | - |
 | availability_zone | No | The availability zone of where the volume will reside.   | AUTO |
 | bus | No | The bus type of the volume.  Valid values are `VIRTIO`, `IDE`.  | VIRTIO |
-| volume_type | No | The volume type.  Valid values are `HDD`, `SSD`.  | HDD |
+| volume_type | No | The volume type.  Valid values are `HDD`.  | HDD |
 | user_data | No | The cloud-init configuration for the volume as base64 encoded string. The property is immutable and is only allowed to be set on a new volume creation. It is mandatory to provide either 'public image' or 'imageAlias' that has cloud-init compatibility in conjunction with this property.   | - |
 | licence_type | No | The license type of the volume.  Valid values are `LINUX`, `WINDOWS`, `WINDOWS2016`, `UNKNOWN`, `OTHER`.  | - |
 | device_number | No | The LUN ID of the storage volume. Null for volumes not mounted to any VM   | - |
+| pci_slot | No | The PCI slot number of the storage volume. Null for volumes not mounted to any VM   | - |
 | backupunit_id | No | The uuid of the Backup Unit that user has access to. The property is immutable and is only allowed to be set on a new volume creation. It is mandatory to provide either 'public image' or 'imageAlias' in conjunction with this property.   | - |
 | cpu_hot_plug | No | Indicates CPU hot plug capability.   | - |
 | ram_hot_plug | No | Indicates memory hot plug capability.   | - |
@@ -54,8 +54,7 @@ datacenter { $datacenter_name :
 -> volume { 'testvolume' :
   ensure            => present,
   datacenter_name   => $datacenter_name,
-  image_alias       => 'ubuntu:latest',
-  image_password    => 'password',
+  licence_type      => 'LINUX',
   size              => 50,
   volume_type       => 'SSD',
   availability_zone => 'AUTO',

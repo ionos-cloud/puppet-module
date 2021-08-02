@@ -22,6 +22,9 @@ Type representing a IonosCloud group.
 | create_internet_access | No | Indicates if the group is allowed to create internet access.  Valid values are `true`, `false`.  | false |
 | create_k8s_cluster | No | Indicates if the group is allowed to create kubernetes cluster.  Valid values are `true`, `false`.  | false |
 | create_pcc | No | Indicates if the group is allowed to create pcc.  Valid values are `true`, `false`.  | false |
+| create_flow_log | No | Indicates if the group is allowed to create Flow Logs.  Valid values are `true`, `false`.  | false |
+| access_and_manage_monitoring | No | Indicates if the group is allowed to access and manage monitoring related functionality (access metrics, CRUD on alarms, alarm-actions etc) using Monotoring-as-a-Service (MaaS).  Valid values are `true`, `false`.  | false |
+| access_and_manage_certificates | No | Indicates if the group is allowed to access and manage certificates.  Valid values are `true`, `false`.  | false |
 | members | No | The ionoscloud users associated with the group.   | - |
 | id | No | The group ID.   | - |
 ***

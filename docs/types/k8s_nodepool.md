@@ -24,7 +24,7 @@ Type representing a Ionoscloud K8s Nodepool.
 | cores_count | No | The number of CPU cores assigned to the node.   | - |
 | ram_size | No | The amount of RAM in MB assigned to the node.   | - |
 | availability_zone | No | The availability zone of where the server will reside.  Valid values are `AUTO`, `ZONE_1`, `ZONE_2`.  | AUTO |
-| storage_type | No | The volume type.  Valid values are `HDD`, `SSD`.  | HDD |
+| storage_type | No | The volume type.   | HDD |
 | storage_size | No | The size of the volume in GB.   | - |
 | lans | No | The list of additional private LANs attached to worker nodes.   | - |
 | available_upgrade_versions | No | List of available versions for upgrading the node pool.   | - |
@@ -51,8 +51,8 @@ Type representing a Ionoscloud K8s Nodepool.
 ## Example
 
 ```text
-$cluster_name = 'cluster_name'
-$datacenter_name = 'datacenter_name'
+$cluster_name = 'puppet_module_testa'
+$datacenter_name = 'testdc1'
 
 k8s_nodepool { 'nodepool_test' :
   ensure            => present,
@@ -70,7 +70,21 @@ k8s_nodepool { 'nodepool_test' :
   min_node_count    => 1,
   max_node_count    => 2,
   availability_zone => 'AUTO',
-  lans              => [4, 7, 5],
+  lans              => [
+    {
+      'id'     => 2,
+      'dhcp'   => true,
+      'routes' => [],
+    },
+    {
+      id     => 3,
+      dhcp   => true,
+      routes => [{
+        network    => '1.2.3.4/24',
+        gateway_ip => '1.2.3.4',
+      }],
+    },
+  ],
 }
 
 ```
