@@ -348,23 +348,12 @@ module PuppetX
           nic_hot_unplug: volume['nic_hot_unplug'],
           disc_virtio_hot_plug: volume['disc_virtio_hot_plug'],
           disc_virtio_hot_unplug: volume['disc_virtio_hot_unplug'],
+          image: volume['image_id'],
+          image_alias: volume['image_alias'],
+          licence_type: volume['licence_type'],
+          image_password: volume['image_password'],
+          ssh_keys: volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']],
         }
-
-        if volume['image_password'] && !volume['image_password'].empty?
-          volume_config[:image_password] = volume['image_password']
-        elsif volume['ssh_keys'] && !volume['ssh_keys'].empty?
-          volume_config[:ssh_keys] = volume['ssh_keys'].is_a?(Array) ? volume['ssh_keys'] : [volume['ssh_keys']]
-        else
-          raise('Volume must have either image_password or ssh_keys defined.')
-        end
-
-        if volume['image_id'] && !volume['image_id'].empty?
-          volume_config[:image] = volume['image_id']
-        elsif volume['image_alias'] && !volume['image_alias'].empty?
-          volume_config[:image_alias] = volume['image_alias']
-        else
-          raise('Volume must have either image_id or image_alias defined.')
-        end
 
         Ionoscloud::Volume.new(
           properties: Ionoscloud::VolumeProperties.new(
