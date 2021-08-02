@@ -70,18 +70,22 @@ Puppet::Type.newtype(:k8s_nodepool) do
   newproperty(:min_node_count) do
     desc 'The minimum number of nodes in the nodepool.'
     validate do |value|
-      Integer(value)
-    rescue
-      raise('Minimum node count must be a integer')
+      begin
+        Integer(value)
+      rescue
+        raise('Minimum node count must be a integer')
+      end
     end
   end
 
   newproperty(:max_node_count) do
     desc 'The maximum number of nodes in the nodepool.'
     validate do |value|
-      Integer(value)
-    rescue
-      raise('Maximum node count must be a integer')
+      begin
+        Integer(value)
+      rescue
+        raise('Maximum node count must be a integer')
+      end
     end
   end
 
