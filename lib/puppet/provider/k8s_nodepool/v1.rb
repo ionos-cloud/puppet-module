@@ -195,6 +195,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     return if @property_flush.empty?
 
     nodepool_properties = {
+      name: @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
       lans: if @property_flush[:lans].nil?
@@ -227,7 +228,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ),
     }
 
-    new_k8s_nodepool = Ionoscloud::KubernetesNodePool.new(properties: Ionoscloud::KubernetesNodePoolProperties.new(nodepool_properties))
+    new_k8s_nodepool = Ionoscloud::KubernetesNodePoolForPut.new(properties: Ionoscloud::KubernetesNodePoolPropertiesForPut.new(nodepool_properties))
 
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
