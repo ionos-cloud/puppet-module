@@ -251,7 +251,6 @@ module PuppetX
         unless changes[:health_check].nil?
           changes[:health_check] = Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
             client_timeout: changes[:health_check]['client_timeout'],
-            check_timeout: changes[:health_check]['check_timeout'],
             connect_timeout: changes[:health_check]['connect_timeout'],
             target_timeout: changes[:health_check]['target_timeout'],
             retries: changes[:health_check]['retries'],
@@ -616,7 +615,6 @@ module PuppetX
                         else
                           Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
                                     client_timeout: networkloadbalancer_rule['health_check']['client_timeout'],
-                                    check_timeout: networkloadbalancer_rule['health_check']['check_timeout'],
                                     connect_timeout: networkloadbalancer_rule['health_check']['connect_timeout'],
                                     target_timeout: networkloadbalancer_rule['health_check']['target_timeout'],
                                     retries: networkloadbalancer_rule['health_check']['retries'],

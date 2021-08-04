@@ -57,7 +57,6 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
           listener_port: rule.properties.listener_port,
           health_check: {
             client_timeout: rule.properties.health_check.client_timeout,
-            check_timeout: rule.properties.health_check.check_timeout,
             connect_timeout: rule.properties.health_check.connect_timeout,
             target_timeout: rule.properties.health_check.target_timeout,
             retries: rule.properties.health_check.retries,
