@@ -7,8 +7,8 @@ k8s_cluster { 'myClustertest' :
   api_subnet_allow_list => [
     '1.2.3.4/32',
     '2002::1234:abcd:ffff:c0a8:101/64',
-    '1.2.3.4',
-    '2002::1234:abcd:ffff:c0a8:101',
+    '1.2.3.4/32',
+    '2002::1234:abcd:ffff:c0a8:101/128',
   ],
   s3_buckets            => [
     {

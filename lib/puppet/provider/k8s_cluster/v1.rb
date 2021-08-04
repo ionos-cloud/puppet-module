@@ -40,7 +40,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       available_upgrade_versions: instance.properties.available_upgrade_versions,
       viable_node_pool_versions: instance.properties.viable_node_pool_versions,
       api_subnet_allow_list: instance.properties.api_subnet_allow_list,
-      s3_buckets: instance.properties.s3_buckets.nil? ? [] : instance.properties.s3_buckets.map { |s3_bucket| s3_bucket.name },
+      s3_buckets: instance.properties.s3_buckets.nil? ? [] : instance.properties.s3_buckets.map { |s3_bucket| { name: s3_bucket.name } },
       k8s_nodepools: instance.entities.nodepools.items.map do |nodepool|
         {
           id: nodepool.id,
