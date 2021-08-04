@@ -201,7 +201,6 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     return if @property_flush.empty?
 
     nodepool_properties = {
-      name: @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
       public_ips: @property_flush[:public_ips] || @property_hash[:public_ips],
