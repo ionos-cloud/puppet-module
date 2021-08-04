@@ -53,6 +53,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ram_size: instance.properties.ram_size,
       storage_type: instance.properties.storage_type,
       storage_size: instance.properties.storage_size,
+      public_ips: instance.properties.public_ips,
       lans: instance.properties.lans.map do |el|
         {
           id: el.id,
@@ -117,6 +118,10 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_flush[:max_node_count] = value
   end
 
+  def public_ips=(value)
+    @property_flush[:public_ips] = value
+  end
+
   def lans=(value)
     @property_flush[:lans] = value
   end
@@ -139,6 +144,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
       availability_zone: resource[:availability_zone].to_s,
+      public_ips: resource[:public_ips],
       lans: if resource[:lans].nil?
               nil
             else
@@ -198,6 +204,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       name: @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
+      public_ips: @property_flush[:public_ips] || @property_hash[:public_ips],
       lans: if @property_flush[:lans].nil?
               nil
             else
