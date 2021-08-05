@@ -8,7 +8,7 @@ k8s_cluster { 'myClustertest' :
     '1.2.3.4/32',
     '2002::1234:abcd:ffff:c0a8:101/64',
     '1.2.3.4/32',
-    '2002::1234:abcd:ffff:c0a8:101/128',
+    '2002::1234:abdd:ffff:c0a8:101/128',
   ],
   s3_buckets            => [
     {
