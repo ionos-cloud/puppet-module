@@ -129,7 +129,6 @@ Puppet::Type.type(:target_group).provide(:v1) do
     target_group = Ionoscloud::TargetGroup.new(
       properties: Ionoscloud::TargetGroupProperties.new(**target_group_properties),
     )
-    puts target_group
     target_group, _, headers = Ionoscloud::TargetGroupsApi.new.targetgroups_post_with_http_info(target_group)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
