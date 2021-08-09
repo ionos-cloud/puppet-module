@@ -1,0 +1,251 @@
+---
+http_interactions:
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/28746096-a5b8-4372-b428-e28c3d86ae98/applicationloadbalancers/47b2cde7-2a72-48aa-afa9-9b467215ec7f
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:36:32 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/43e6da16-1e67-4ca9-8610-f3e913958e15/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+  recorded_at: Mon, 09 Aug 2021 14:36:33 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/requests/43e6da16-1e67-4ca9-8610-f3e913958e15/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:41:09 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '684'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "43e6da16-1e67-4ca9-8610-f3e913958e15/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/43e6da16-1e67-4ca9-8610-f3e913958e15/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "47b2cde7-2a72-48aa-afa9-9b467215ec7f",
+                "type" : "applicationloadbalancer",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/28746096-a5b8-4372-b428-e28c3d86ae98/applicationloadbalancers/47b2cde7-2a72-48aa-afa9-9b467215ec7f"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Mon, 09 Aug 2021 14:41:09 GMT
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/28746096-a5b8-4372-b428-e28c3d86ae98/applicationloadbalancers/69154132-9d45-4c6b-8be5-ffabf9fb1bdf
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:41:09 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/9fb232ac-ea6f-4c4a-9a1f-96d4cf8f421d/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+  recorded_at: Mon, 09 Aug 2021 14:41:09 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/requests/9fb232ac-ea6f-4c4a-9a1f-96d4cf8f421d/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:32 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '684'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "9fb232ac-ea6f-4c4a-9a1f-96d4cf8f421d/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/9fb232ac-ea6f-4c4a-9a1f-96d4cf8f421d/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "69154132-9d45-4c6b-8be5-ffabf9fb1bdf",
+                "type" : "applicationloadbalancer",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/28746096-a5b8-4372-b428-e28c3d86ae98/applicationloadbalancers/69154132-9d45-4c6b-8be5-ffabf9fb1bdf"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Mon, 09 Aug 2021 14:42:32 GMT
+recorded_with: VCR 6.0.0

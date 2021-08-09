@@ -36,13 +36,13 @@ Puppet::Type.type(:target_group).provide(:v1) do
       name: instance.properties.name,
       algorithm: instance.properties.algorithm,
       protocol: instance.properties.protocol,
-      health_check: {
+      health_check: instance.properties.health_check.nil? ? {} : {
         check_timeout: instance.properties.health_check.check_timeout,
         connect_timeout: instance.properties.health_check.connect_timeout,
         target_timeout: instance.properties.health_check.target_timeout,
         retries: instance.properties.health_check.retries,
       },
-      http_health_check: {
+      http_health_check: instance.properties.http_health_check.nil? ? {} : {
         path: instance.properties.http_health_check.path,
         method: instance.properties.http_health_check.method,
         match_type: instance.properties.http_health_check.match_type,
@@ -51,12 +51,12 @@ Puppet::Type.type(:target_group).provide(:v1) do
         negate: instance.properties.http_health_check.negate,
       },
 
-      targets: instance.properties.targets.map do |target|
+      targets: instance.properties.targets.nil? ? [] : instance.properties.targets.map do |target|
         {
           ip: target.ip,
           port: target.port,
           weight: target.weight,
-          health_check: {
+          health_check: target.health_check.nil? ? {} : {
             check: target.health_check.check,
             check_interval: target.health_check.check_interval,
             maintenance: target.health_check.maintenance,

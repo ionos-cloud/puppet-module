@@ -1,0 +1,182 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v6/targetgroups
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"name":"puppet_module_test6f2nfctjrasfwefwgwgwdfqwfqwfq","algorithm":"LEAST_CONNECTION","protocol":"HTTP","targets":[{"ip":"1.1.1.1","port":20,"weight":15,"healthCheck":{"check":true,"checkInterval":2000,"maintenance":false}},{"ip":"1.1.3.1","port":22,"weight":10,"healthCheck":{"check":false,"checkInterval":1000,"maintenance":false}}],"healthCheck":{"checkTimeout":60,"connectTimeout":4000,"targetTimeout":50000,"retries":3},"httpHealthCheck":{"path":"/.","method":"GET","matchType":"STATUS_CODE","response":"200"}}}'
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:41 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '1474'
+      Content-Type:
+      - application/json
+      Etag:
+      - 1b9671e0643819851232ec08ece728ce
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/4c557dc7-45a3-4343-9b9f-9006f7ef3eed/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "d63cfb95-9bb4-4f94-bde5-82054009580a",
+          "type" : "target-group",
+          "href" : "https://api.ionos.com/cloudapi/v6/targetgroups/d63cfb95-9bb4-4f94-bde5-82054009580a",
+          "metadata" : {
+            "etag" : "1b9671e0643819851232ec08ece728ce",
+            "createdDate" : "2021-08-09T14:42:41Z",
+            "createdBy" : "username",
+            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "lastModifiedDate" : "2021-08-09T14:42:41Z",
+            "lastModifiedBy" : "username",
+            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "state" : "BUSY"
+          },
+          "properties" : {
+            "name" : "puppet_module_test6f2nfctjrasfwefwgwgwdfqwfqwfq",
+            "algorithm" : "LEAST_CONNECTION",
+            "protocol" : "HTTP",
+            "targets" : [ {
+              "ip" : "1.1.1.1",
+              "port" : 20,
+              "weight" : 15,
+              "healthCheck" : {
+                "check" : true,
+                "checkInterval" : 2000,
+                "maintenance" : false
+              }
+            }, {
+              "ip" : "1.1.3.1",
+              "port" : 22,
+              "weight" : 10,
+              "healthCheck" : {
+                "check" : false,
+                "checkInterval" : 1000,
+                "maintenance" : false
+              }
+            } ],
+            "healthCheck" : {
+              "checkTimeout" : 60,
+              "connectTimeout" : 4000,
+              "targetTimeout" : 50000,
+              "retries" : 3
+            },
+            "httpHealthCheck" : {
+              "path" : "/.",
+              "method" : "GET",
+              "matchType" : "STATUS_CODE",
+              "response" : "200",
+              "regex" : false,
+              "negate" : false
+            }
+          }
+        }
+  recorded_at: Mon, 09 Aug 2021 14:42:41 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/requests/4c557dc7-45a3-4343-9b9f-9006f7ef3eed/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:41 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '612'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "4c557dc7-45a3-4343-9b9f-9006f7ef3eed/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/4c557dc7-45a3-4343-9b9f-9006f7ef3eed/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "d63cfb95-9bb4-4f94-bde5-82054009580a",
+                "type" : "target-group",
+                "href" : "https://api.ionos.com/cloudapi/v6/targetgroups/d63cfb95-9bb4-4f94-bde5-82054009580a"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Mon, 09 Aug 2021 14:42:41 GMT
+recorded_with: VCR 6.0.0

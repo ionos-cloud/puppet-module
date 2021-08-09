@@ -71,5 +71,5 @@ datacenter { $datacenter_name :
 
       ]
     },
-]
+  ]
 }

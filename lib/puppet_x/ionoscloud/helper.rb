@@ -365,7 +365,7 @@ module PuppetX
       def self.create_application_loadbalancer_rule(datacenter_id, application_loadbalancer_id, desired_application_loadbalancer_rule, wait = false)
         Puppet.info "Creating Network Load Balancer Rule #{desired_application_loadbalancer_rule}"
 
-        application_loadbalancer_rule = application_loadbalancer_rule_object_from_hash(desired_application_loadbalancer_rule)
+        application_loadbalancer_rule = applicationloadbalancer_rule_object_from_hash(desired_application_loadbalancer_rule)
 
         application_loadbalancer_rule, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_forwardingrules_post_with_http_info(
           datacenter_id, application_loadbalancer_id, application_loadbalancer_rule

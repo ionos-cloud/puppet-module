@@ -1,0 +1,179 @@
+---
+http_interactions:
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v6/targetgroups/d63cfb95-9bb4-4f94-bde5-82054009580a
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:45 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '0'
+      Etag:
+      - e2b535a996dbfb1d9f6df1715ebcf525
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/6489ade4-f4a0-4906-b24b-6244fb91f52c/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+  recorded_at: Mon, 09 Aug 2021 14:42:45 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/requests/6489ade4-f4a0-4906-b24b-6244fb91f52c/status
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:45 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '612'
+      Content-Type:
+      - application/json
+      Etag:
+      - 2ba22e58ca17bb728d522bba36cf8350
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "6489ade4-f4a0-4906-b24b-6244fb91f52c/status",
+          "type" : "request-status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/6489ade4-f4a0-4906-b24b-6244fb91f52c/status",
+          "metadata" : {
+            "status" : "DONE",
+            "message" : "Request has been successfully executed",
+            "etag" : "2ba22e58ca17bb728d522bba36cf8350",
+            "targets" : [ {
+              "target" : {
+                "id" : "d63cfb95-9bb4-4f94-bde5-82054009580a",
+                "type" : "target-group",
+                "href" : "https://api.ionos.com/cloudapi/v6/targetgroups/d63cfb95-9bb4-4f94-bde5-82054009580a"
+              },
+              "status" : "DONE"
+            } ]
+          }
+        }
+  recorded_at: Mon, 09 Aug 2021 14:42:45 GMT
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/v6/targetgroups/1d2fe414-dd1a-4a64-8a2d-5e4a901b93d2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - OpenAPI-Generator/1.0.0/ruby
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Mon, 09 Aug 2021 14:42:46 GMT
+      Server:
+      - Apache/2.4.38 (Debian)
+      Content-Length:
+      - '181'
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "httpStatus" : 422,
+          "messages" : [ {
+            "errorCode" : "200",
+            "message" : "[VDC-14-1816] VNF Manager API: 'an unexpected error occurred when sending the request'"
+          } ]
+        }
+  recorded_at: Mon, 09 Aug 2021 14:42:46 GMT
+recorded_with: VCR 6.0.0

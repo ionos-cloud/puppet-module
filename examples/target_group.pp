@@ -12,7 +12,6 @@ target_group { 'test_target_group':
     response   => '200',
     path       => '/.',
     method     => 'GET',
-
   },
   targets           => [
     {
