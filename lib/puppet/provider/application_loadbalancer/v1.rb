@@ -58,27 +58,35 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
             client_timeout: rule.properties.health_check.client_timeout,
           },
           server_certificates: rule.properties.server_certificates,
-          http_rules: rule.properties.http_rules.nil? ? [] : rule.properties.http_rules.map do |http_rule|
-            {
-              name: http_rule.name,
-              type: http_rule.type,
-              target_group: http_rule.target_group,
-              drop_query: http_rule.drop_query,
-              location: http_rule.location,
-              status_code: http_rule.status_code,
-              response_message: http_rule.response_message,
-              content_type: http_rule.content_type,
-              conditions: http_rule.conditions.nil? ? [] : http_rule.conditions.map do |condition|
-                {
-                  type: condition.type,
-                  condition: condition.condition,
-                  negate: condition.negate,
-                  key: condition.key,
-                  value: condition.value,
-                }
-              end
-            }
-          end,
+          http_rules: if rule.properties.http_rules.nil?
+                        []
+                      else
+                        rule.properties.http_rules.map do |http_rule|
+                          {
+                            name: http_rule.name,
+                            type: http_rule.type,
+                            target_group: http_rule.target_group,
+                            drop_query: http_rule.drop_query,
+                            location: http_rule.location,
+                            status_code: http_rule.status_code,
+                            response_message: http_rule.response_message,
+                            content_type: http_rule.content_type,
+                            conditions: if http_rule.conditions.nil?
+                                          []
+                                        else
+                                          http_rule.conditions.map do |condition|
+                                            {
+                                              type: condition.type,
+                                              condition: condition.condition,
+                                              negate: condition.negate,
+                                              key: condition.key,
+                                              value: condition.value,
+                                            }
+                                          end
+                                        end
+                          }
+                        end
+                      end,
         }.delete_if { |_k, v| v.nil? }
       end,
       ensure: :present,
@@ -134,7 +142,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
       ),
     )
     applicationloadbalancer, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_post_with_http_info(
-      datacenter_id, applicationloadbalancer,
+      datacenter_id, applicationloadbalancer
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
@@ -147,7 +155,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
   def destroy
     Puppet.info "Deleting Application Load Balancer #{@property_hash[:id]}"
     _, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_delete_with_http_info(
-      @property_hash[:datacenter_id], @property_hash[:id],
+      @property_hash[:datacenter_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 

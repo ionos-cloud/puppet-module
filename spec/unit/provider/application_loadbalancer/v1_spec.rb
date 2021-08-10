@@ -36,7 +36,7 @@ describe provider_class do
               'listener_ip' => @ip2,
               'listener_port' => 47,
               'health_check' => {
-                'client_timeout' => 50000,
+                'client_timeout' => 50_000,
               },
               'server_certificates' => [
               ],
@@ -81,7 +81,7 @@ describe provider_class do
               'listener_ip' => @ip2,
               'listener_port' => 28,
               'health_check' => {
-                'client_timeout' => 35000,
+                'client_timeout' => 35_000,
               },
               'server_certificates' => [
               ],
@@ -178,7 +178,7 @@ describe provider_class do
             'listener_ip' => @ip2,
             'listener_port' => 49,
             'health_check' => {
-              'client_timeout' => 50000,
+              'client_timeout' => 50_000,
             },
             'server_certificates' => [
             ],
@@ -221,7 +221,7 @@ describe provider_class do
             'listener_ip' => @ip1,
             'listener_port' => 23,
             'health_check' => {
-              'client_timeout' => 45000,
+              'client_timeout' => 45_000,
             },
             'server_certificates' => [
             ],
@@ -246,14 +246,14 @@ describe provider_class do
         expect(updated_instance.rules[1][:http_rules].first[:response_message]).to eq('Test message.')
         expect(updated_instance.rules[1][:http_rules].first[:status_code]).to eq(303)
         expect(updated_instance.rules[1][:http_rules].first[:conditions]).to eq([
-          {
-            type: 'path',
-            condition: 'starts-with',
-            negate: true,
-            key: nil,
-            value: 'Sunday',
-          },
-        ])
+                                                                                  {
+                                                                                    type: 'path',
+                                                                                    condition: 'starts-with',
+                                                                                    negate: true,
+                                                                                    key: nil,
+                                                                                    value: 'Sunday',
+                                                                                  },
+                                                                                ])
 
         expect(updated_instance.rules.first[:name]).to eq('regula2')
         expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
@@ -274,7 +274,7 @@ describe provider_class do
             'listener_ip' => @ip3,
             'listener_port' => 36,
             'health_check' => {
-              'client_timeout' => 50000,
+              'client_timeout' => 50_000,
             },
             'server_certificates' => [
             ],
@@ -329,14 +329,14 @@ describe provider_class do
         expect(updated_instance.rules.first[:http_rules].first[:response_message]).to eq('Test message.')
         expect(updated_instance.rules.first[:http_rules].first[:status_code]).to eq(303)
         expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
-          {
-            type: 'path',
-            condition: 'starts-with',
-            negate: true,
-            key: nil,
-            value: 'Sunday',
-          },
-        ])
+                                                                                     {
+                                                                                       type: 'path',
+                                                                                       condition: 'starts-with',
+                                                                                       negate: true,
+                                                                                       key: nil,
+                                                                                       value: 'Sunday',
+                                                                                     },
+                                                                                   ])
       end
     end
 

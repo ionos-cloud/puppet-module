@@ -5,7 +5,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
   @doc = 'Type representing a Ionoscloud K8s Nodepool.'
   @changeable_properties = [
     :k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count,
-    :max_node_count, :lans, :public_ips,
+    :max_node_count, :lans, :public_ips
   ]
 
   ensurable

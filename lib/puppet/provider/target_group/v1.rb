@@ -36,33 +36,49 @@ Puppet::Type.type(:target_group).provide(:v1) do
       name: instance.properties.name,
       algorithm: instance.properties.algorithm,
       protocol: instance.properties.protocol,
-      health_check: instance.properties.health_check.nil? ? {} : {
-        check_timeout: instance.properties.health_check.check_timeout,
-        connect_timeout: instance.properties.health_check.connect_timeout,
-        target_timeout: instance.properties.health_check.target_timeout,
-        retries: instance.properties.health_check.retries,
-      },
-      http_health_check: instance.properties.http_health_check.nil? ? {} : {
-        path: instance.properties.http_health_check.path,
-        method: instance.properties.http_health_check.method,
-        match_type: instance.properties.http_health_check.match_type,
-        response: instance.properties.http_health_check.response,
-        regex: instance.properties.http_health_check.regex,
-        negate: instance.properties.http_health_check.negate,
-      },
+      health_check: if instance.properties.health_check.nil?
+                      {}
+                    else
+                      {
+                        check_timeout: instance.properties.health_check.check_timeout,
+                            connect_timeout: instance.properties.health_check.connect_timeout,
+                            target_timeout: instance.properties.health_check.target_timeout,
+                            retries: instance.properties.health_check.retries,
+                      }
+                    end,
+      http_health_check: if instance.properties.http_health_check.nil?
+                           {}
+                         else
+                           {
+                             path: instance.properties.http_health_check.path,
+                                 method: instance.properties.http_health_check.method,
+                                 match_type: instance.properties.http_health_check.match_type,
+                                 response: instance.properties.http_health_check.response,
+                                 regex: instance.properties.http_health_check.regex,
+                                 negate: instance.properties.http_health_check.negate,
+                           }
+                         end,
 
-      targets: instance.properties.targets.nil? ? [] : instance.properties.targets.map do |target|
-        {
-          ip: target.ip,
-          port: target.port,
-          weight: target.weight,
-          health_check: target.health_check.nil? ? {} : {
-            check: target.health_check.check,
-            check_interval: target.health_check.check_interval,
-            maintenance: target.health_check.maintenance,
-          },
-        }.delete_if { |_k, v| v.nil? }
-      end,
+      targets: if instance.properties.targets.nil?
+                 []
+               else
+                 instance.properties.targets.map do |target|
+                   {
+                     ip: target.ip,
+                     port: target.port,
+                     weight: target.weight,
+                     health_check: if target.health_check.nil?
+                                     {}
+                                   else
+                                     {
+                                       check: target.health_check.check,
+                                               check_interval: target.health_check.check_interval,
+                                               maintenance: target.health_check.maintenance,
+                                     }
+                                   end,
+                   }.delete_if { |_k, v| v.nil? }
+                 end
+               end,
       ensure: :present,
     }
   end
@@ -97,33 +113,48 @@ Puppet::Type.type(:target_group).provide(:v1) do
       name: resource[:name].to_s,
       algorithm: resource[:algorithm],
       protocol: resource[:protocol],
-      health_check: resource[:health_check].nil? ? nil : Ionoscloud::TargetGroupHealthCheck.new(
-        check_timeout: resource[:health_check]['check_timeout'],
-        connect_timeout: resource[:health_check]['connect_timeout'],
-        target_timeout: resource[:health_check]['target_timeout'],
-        retries: resource[:health_check]['retries'],
-      ),
-      http_health_check: resource[:http_health_check].nil? ? nil : Ionoscloud::TargetGroupHttpHealthCheck.new(
-        path: resource[:http_health_check]['path'],
-        method: resource[:http_health_check]['method'],
-        match_type: resource[:http_health_check]['match_type'],
-        response: resource[:http_health_check]['response'],
-        regex: resource[:http_health_check]['regex'],
-        negate: resource[:http_health_check]['negate'],
-      ),
-      targets: resource[:targets].nil? ? nil : resource[:targets].map do
-        |target|
-        Ionoscloud::TargetGroupTarget.new(
-          ip: target['ip'],
-          port: target['port'],
-          weight: target['weight'],
-          health_check: target['health_check'].nil? ? nil : Ionoscloud::TargetGroupTargetHealthCheck.new(
-            check: target['health_check']['check'],
-            check_interval: target['health_check']['check_interval'],
-            maintenance: target['health_check']['maintenance'],
-          ),
-        )
-      end,
+      health_check: if resource[:health_check].nil?
+                      nil
+                    else
+                      Ionoscloud::TargetGroupHealthCheck.new(
+                            check_timeout: resource[:health_check]['check_timeout'],
+                            connect_timeout: resource[:health_check]['connect_timeout'],
+                            target_timeout: resource[:health_check]['target_timeout'],
+                            retries: resource[:health_check]['retries'],
+                          )
+                    end,
+      http_health_check: if resource[:http_health_check].nil?
+                           nil
+                         else
+                           Ionoscloud::TargetGroupHttpHealthCheck.new(
+                                 path: resource[:http_health_check]['path'],
+                                 method: resource[:http_health_check]['method'],
+                                 match_type: resource[:http_health_check]['match_type'],
+                                 response: resource[:http_health_check]['response'],
+                                 regex: resource[:http_health_check]['regex'],
+                                 negate: resource[:http_health_check]['negate'],
+                               )
+                         end,
+      targets: if resource[:targets].nil?
+                 nil
+               else
+                 resource[:targets].map do |target|
+                   Ionoscloud::TargetGroupTarget.new(
+                     ip: target['ip'],
+                     port: target['port'],
+                     weight: target['weight'],
+                     health_check: if target['health_check'].nil?
+                                     nil
+                                   else
+                                     Ionoscloud::TargetGroupTargetHealthCheck.new(
+                                               check: target['health_check']['check'],
+                                               check_interval: target['health_check']['check_interval'],
+                                               maintenance: target['health_check']['maintenance'],
+                                             )
+                                   end,
+                   )
+                 end
+               end,
     }
 
     target_group = Ionoscloud::TargetGroup.new(
@@ -150,46 +181,54 @@ Puppet::Type.type(:target_group).provide(:v1) do
 
     changeable_properties = [:algorithm, :protocol, :health_check, :http_health_check, :targets]
 
-    changes = Hash[*changeable_properties.flat_map { |v| [ v, @property_flush[v] ] } ].delete_if do
-      |k, v|
+    changes = Hash[*changeable_properties.flat_map { |v| [ v, @property_flush[v] ] } ].delete_if do |k, v|
       v.nil? || PuppetX::IonoscloudX::Helper.compare_objects(@property_hash[k], v)
     end
 
-    changes[:health_check] = Ionoscloud::TargetGroupHealthCheck.new(
-      check_timeout: changes[:health_check]['check_timeout'],
-      connect_timeout: changes[:health_check]['connect_timeout'],
-      target_timeout: changes[:health_check]['target_timeout'],
-      retries: changes[:health_check]['retries'],
-    ) if changes[:health_check]
-
-    changes[:http_health_check] = Ionoscloud::TargetGroupHttpHealthCheck.new(
-      path: changes[:http_health_check]['path'],
-      method: changes[:http_health_check]['method'],
-      match_type: changes[:http_health_check]['match_type'],
-      response: changes[:http_health_check]['response'],
-      regex: changes[:http_health_check]['regex'],
-      negate: changes[:http_health_check]['negate'],
-    ) if changes[:http_health_check]
-
-    changes[:targets] = changes[:targets].map do
-      |target|
-      Ionoscloud::TargetGroupTarget.new(
-        ip: target['ip'],
-        port: target['port'],
-        weight: target['weight'],
-        health_check: target['health_check'].nil? ? nil : Ionoscloud::TargetGroupTargetHealthCheck.new(
-          check: target['health_check']['check'],
-          check_interval: target['health_check']['check_interval'],
-          maintenance: target['health_check']['maintenance'],
-        ),
+    if changes[:health_check]
+      changes[:health_check] = Ionoscloud::TargetGroupHealthCheck.new(
+        check_timeout: changes[:health_check]['check_timeout'],
+        connect_timeout: changes[:health_check]['connect_timeout'],
+        target_timeout: changes[:health_check]['target_timeout'],
+        retries: changes[:health_check]['retries'],
       )
-    end if changes[:targets]
+    end
+
+    if changes[:http_health_check]
+      changes[:http_health_check] = Ionoscloud::TargetGroupHttpHealthCheck.new(
+        path: changes[:http_health_check]['path'],
+        method: changes[:http_health_check]['method'],
+        match_type: changes[:http_health_check]['match_type'],
+        response: changes[:http_health_check]['response'],
+        regex: changes[:http_health_check]['regex'],
+        negate: changes[:http_health_check]['negate'],
+      )
+    end
+
+    if changes[:targets]
+      changes[:targets] = changes[:targets].map do |target|
+        Ionoscloud::TargetGroupTarget.new(
+          ip: target['ip'],
+          port: target['port'],
+          weight: target['weight'],
+          health_check: if target['health_check'].nil?
+                          nil
+                        else
+                          Ionoscloud::TargetGroupTargetHealthCheck.new(
+                                    check: target['health_check']['check'],
+                                    check_interval: target['health_check']['check_interval'],
+                                    maintenance: target['health_check']['maintenance'],
+                                  )
+                        end,
+        )
+      end
+    end
 
     changes = Ionoscloud::TargetGroupProperties.new(**changes)
     Puppet.info "Updating Target Group #{@property_hash[:name]} with #{changes}"
 
     _, _, headers = Ionoscloud::TargetGroupsApi.new.targetgroups_patch_with_http_info(@property_hash[:id], changes)
-    
+
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     changeable_properties.each do |property|

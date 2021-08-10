@@ -6,7 +6,7 @@ Puppet::Type.newtype(:k8s_cluster) do
   @doc = 'Type representing a Ionoscloud K8s Cluster.'
   @changeable_properties = [
     :k8s_version, :maintenance_day, :maintenance_time,
-    :api_subnet_allow_list, :s3_buckets,
+    :api_subnet_allow_list, :s3_buckets
   ]
 
   ensurable

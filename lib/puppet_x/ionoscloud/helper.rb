@@ -333,11 +333,11 @@ module PuppetX
               status_code: rule['status_code'],
               response_message: rule['response_message'],
               content_type: rule['content_type'],
-              
+
               conditions: if rule['conditions'].nil?
-                              nil
-                           else
-                             rule['conditions'].map do |condition|
+                            nil
+                          else
+                            rule['conditions'].map do |condition|
                               Ionoscloud::ApplicationLoadBalancerHttpRuleCondition.new(
                                type: condition['type'],
                                condition: condition['condition'],
@@ -345,8 +345,8 @@ module PuppetX
                                key: condition['key'],
                                value: condition['value'],
                              )
-                             end
-                           end,
+                            end
+                          end,
             )
           end
         end
@@ -724,7 +724,6 @@ module PuppetX
         )
       end
 
-
       def self.applicationloadbalancer_rule_object_from_hash(applicationloadbalancer_rule)
         applicationloadbalancer_rule_config = {
           name: applicationloadbalancer_rule['name'],
@@ -740,35 +739,35 @@ module PuppetX
                         end,
           server_certificates: applicationloadbalancer_rule['server_certificates'],
           http_rules: if applicationloadbalancer_rule['http_rules'].nil?
-                     nil
-                   else
-                     applicationloadbalancer_rule['http_rules'].map do |rule|
-                       Ionoscloud::ApplicationLoadBalancerHttpRule.new(
-                         name: rule['name'],
-                         type: rule['type'],
-                         target_group: rule['target_group'],
-                         drop_query: rule['drop_query'],
-                         location: rule['location'],
-                         status_code: rule['status_code'],
-                         response_message: rule['response_message'],
-                         content_type: rule['content_type'],
-                         
-                         conditions: if rule['conditions'].nil?
-                                         nil
-                                      else
-                                        rule['conditions'].map do |condition|
-                                         Ionoscloud::ApplicationLoadBalancerHttpRuleCondition.new(
-                                          type: condition['type'],
-                                          condition: condition['condition'],
-                                          negate: condition['negate'],
-                                          key: condition['key'],
-                                          value: condition['value'],
-                                        )
-                                        end
-                                      end,
-                       )
-                     end
-                   end,
+                        nil
+                      else
+                        applicationloadbalancer_rule['http_rules'].map do |rule|
+                          Ionoscloud::ApplicationLoadBalancerHttpRule.new(
+                            name: rule['name'],
+                            type: rule['type'],
+                            target_group: rule['target_group'],
+                            drop_query: rule['drop_query'],
+                            location: rule['location'],
+                            status_code: rule['status_code'],
+                            response_message: rule['response_message'],
+                            content_type: rule['content_type'],
+
+                            conditions: if rule['conditions'].nil?
+                                          nil
+                                        else
+                                          rule['conditions'].map do |condition|
+                                            Ionoscloud::ApplicationLoadBalancerHttpRuleCondition.new(
+                                             type: condition['type'],
+                                             condition: condition['condition'],
+                                             negate: condition['negate'],
+                                             key: condition['key'],
+                                             value: condition['value'],
+                                           )
+                                          end
+                                        end,
+                          )
+                        end
+                      end,
         }
 
         Ionoscloud::ApplicationLoadBalancerForwardingRule.new(
