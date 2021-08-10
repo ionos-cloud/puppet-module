@@ -566,5 +566,96 @@ describe PuppetX::IonoscloudX::Helper do
         expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check)]).to eq([existing, target, false])
       end
     end
+
+    it 'should return false when an object from existing_objects does not exist in target_objects' do
+      values = [
+        [
+          [{ name: 'test2', id: 'id' }, { name: 'test', id: 'id' }],
+          [{ 'name' => 'test' }],
+          [],
+        ],
+        [
+          [{ name: 'test', id: 'id' }, { name: 'test2', id: 'id2' }],
+          [{ 'id' => 'id2' }],
+          [],
+        ],
+      ]
+
+      values.each do |existing, target, fields_to_check|
+        expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check)]).to eq([existing, target, false])
+      end
+    end
+
+    it 'should return false when some specified fields to not match' do
+      values = [
+        [
+          [{ name: 'test', id: 'id', key: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2' }],
+          [:key],
+        ],
+        [
+          [{ name: 'test', id: 'id', key: 'value1', key2: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2', 'key2' => 'value1' }],
+          [:key2, :key],
+        ],
+      ]
+
+      values.each do |existing, target, fields_to_check|
+        expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check)]).to eq([existing, target, false])
+      end
+    end
+
+    it 'should return true when all specified fields match' do
+      values = [
+        [
+          [{ name: 'test', id: 'id', key: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2' }],
+          [],
+        ],
+        [
+          [{ name: 'test', id: 'id', key: 'value1', key2: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2', 'key2' => 'value1' }],
+          [:key2],
+        ],
+      ]
+
+      values.each do |existing, target, fields_to_check|
+        expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check)]).to eq([existing, target, true])
+      end
+    end
+
+    it 'should return false if specified block returns false' do
+      values = [
+        [
+          [{ name: 'test', id: 'id', key: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2' }],
+          [],
+          ->(existing_object, target_object) {
+            false
+          }
+        ],
+      ]
+
+      values.each do |existing, target, fields_to_check, block|
+        expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check, &block)]).to eq([existing, target, false])
+      end
+    end
+
+    it 'should return true if everything is ok' do
+      values = [
+        [
+          [{ name: 'test', id: 'id', key: 'value1' }],
+          [{ 'name' => 'test', 'key' => 'value2' }],
+          [],
+          ->(existing_object, target_object) {
+            true
+          }
+        ],
+      ]
+
+      values.each do |existing, target, fields_to_check, block|
+        expect([existing, target, PuppetX::IonoscloudX::Helper.objects_match(existing, target, fields_to_check, &block)]).to eq([existing, target, true])
+      end
+    end
   end
 end
