@@ -1,4 +1,5 @@
-target_group { 'test_target_group':
+target_group { 'puppet_module_test6f2nfctjrfqwfpmpamvpsjfewqfwqfqfwqd':
+ensure              => present,
   algorithm         => 'LEAST_CONNECTION',
   protocol          => 'HTTP',
   health_check      => {
