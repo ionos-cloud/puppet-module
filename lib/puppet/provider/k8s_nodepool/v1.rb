@@ -14,8 +14,8 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   def self.instances
     PuppetX::IonoscloudX::Helper.ionoscloud_config
 
-    nodepools = []
     Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.map { |k8s_cluster|
+      nodepools = []
       # Ignore data center if name is not defined.
       unless k8s_cluster.properties.name.nil? || k8s_cluster.properties.name.empty?
         Ionoscloud::KubernetesApi.new.k8s_nodepools_get(k8s_cluster.id, depth: 1).items.each do |nodepool|
