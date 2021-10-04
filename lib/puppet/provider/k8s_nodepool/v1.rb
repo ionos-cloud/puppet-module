@@ -122,7 +122,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   def lans=(value)
     @property_flush[:lans] = value
   end
-  
+
   def labels=(value)
     @property_flush[:labels] = value
   end

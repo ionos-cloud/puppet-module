@@ -197,7 +197,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
       true
     end
   end
-  
+
   newproperty(:labels) do
     desc 'The map of labels attached to node pool.'
 
