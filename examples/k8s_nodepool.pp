@@ -18,5 +18,8 @@ k8s_nodepool { 'nodepool_test' :
   max_node_count    => 2,
   availability_zone => 'AUTO',
   lans              => [],
-  labels            => { 'test' => 'test' }
+  labels            => {
+    test  => 'test',
+    test2 => 'test'
+  }
 }
