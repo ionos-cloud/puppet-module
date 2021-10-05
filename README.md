@@ -9,7 +9,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=puppet-module)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=security_rating)](https://sonarcloud.io/dashboard?id=puppet-module)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=puppet-module)
-https://img.shields.io/puppetforge/pdk-version/ionoscloud/ionoscloud
+
 ## Overview
 
 The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.
