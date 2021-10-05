@@ -29,6 +29,7 @@ group :development do
   gem 'webmock', '~> 3.12', '>= 3.12.2',     require: true
   gem 'vcr', '~> 6.0',     require: true
   gem 'mustache', '~> 1.0',     require: true
+  gem 'simplecov_json_formatter', '~> 0.1.3'
 end
 group :system_tests do
   gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby] if minor_version != '3.0'

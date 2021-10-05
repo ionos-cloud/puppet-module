@@ -5,6 +5,7 @@ require 'webmock/rspec'
 require 'vcr'
 require 'securerandom'
 require 'simplecov'
+require 'simplecov_json_formatter'
 
 SimpleCov.start do
   add_group 'Providers', 'lib/puppet/provider/'
@@ -13,6 +14,7 @@ SimpleCov.start do
   add_group 'Types spec files', 'spec/unit/type/'
 end
 SimpleCov.coverage_dir 'coverage'
+SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
 
 RSpec.configure do |config|
   config.mock_with :rspec

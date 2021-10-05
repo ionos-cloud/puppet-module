@@ -24,8 +24,8 @@ jobs:
       - name: Run the tests Puppet 7
         run: pdk test unit --puppet-version=7
 
-      - name: Update file paths in .resultset.json
-        run: sed -i 's+/home/runner/work/puppet-module/puppet-module+/github/workspace+g' coverage/.resultset.json
+      - name: Update file paths in coverage.json
+        run: sed -i 's+/home/runner/work/puppet-module/puppet-module+/github/workspace+g' coverage/coverage.json
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
