@@ -60,7 +60,6 @@ Puppet::Type.newtype(:volume) do
 
   newproperty(:availability_zone) do
     desc 'The availability zone of where the volume will reside.'
-    defaultto 'AUTO'
 
     validate do |value|
       raise ArgumentError, 'The availability zone should be a String.' unless value.is_a?(String)
@@ -73,7 +72,6 @@ Puppet::Type.newtype(:volume) do
 
   newproperty(:bus) do
     desc 'The bus type of the volume.'
-    defaultto 'VIRTIO'
     newvalues('VIRTIO', 'IDE')
 
     validate do |value|
@@ -87,7 +85,6 @@ Puppet::Type.newtype(:volume) do
 
   newproperty(:volume_type) do
     desc 'The volume type.'
-    defaultto 'HDD'
     newvalues('HDD', 'SSD')
 
     validate do |value|

@@ -10,11 +10,11 @@ Type representing a IonosCloud location.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| id | No | The ID of the location.   | - |
-| features | No | A list of features available at the location.   | - |
-| image_aliases | No | A list of image aliases available at the location.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| id | No | The ID of the location.   |
+| features | No | A list of features available at the location.   |
+| image_aliases | No | A list of image aliases available at the location.   |
 ***
 
 

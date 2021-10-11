@@ -74,7 +74,6 @@ Puppet::Type.newtype(:server) do
 
   newproperty(:cpu_family) do
     desc 'The CPU family of the server.'
-    defaultto 'AMD_OPTERON'
     newvalues('AMD_OPTERON', 'INTEL_XEON')
 
     validate do |value|
@@ -100,7 +99,6 @@ Puppet::Type.newtype(:server) do
 
   newproperty(:availability_zone) do
     desc 'The availability zone of where the server will reside.'
-    defaultto 'AUTO'
     newvalues('AUTO', 'ZONE_1', 'ZONE_2')
   end
 
@@ -123,7 +121,6 @@ Puppet::Type.newtype(:server) do
 
   newproperty(:nat) do
     desc 'A boolean which indicates if the NIC will perform Network Address Translation.'
-    defaultto :false
 
     def insync?(_is)
       true

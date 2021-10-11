@@ -23,7 +23,6 @@ Puppet::Type.newtype(:lan) do
 
   newproperty(:public) do
     desc 'Set whether LAN will face the public Internet or not.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s
