@@ -11,16 +11,16 @@ Type representing a IonosCloud user.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
-| firstname | No | The user's first name.   | - |
-| lastname | No | The user's last name.   | - |
-| administrator | No | Indicates whether or not the user have administrative rights.  Valid values are `true`, `false`.  | false |
-| force_sec_auth | No | Indicates if secure (two-factor) authentication should be forced for the user.  Valid values are `true`, `false`.  | false |
-| groups | No | The ionoscloud groups the user is assigned to.   | - |
-| id | No | The user ID.   | - |
-| sec_auth_active | No | Indicates if secure (two-factor) authentication is active for the user.  Valid values are `true`, `false`.  | false |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
+| firstname | No | The user's first name.   |
+| lastname | No | The user's last name.   |
+| administrator | No | Indicates whether or not the user have administrative rights.  Valid values are `true`, `false`.  |
+| force_sec_auth | No | Indicates if secure (two-factor) authentication should be forced for the user.  Valid values are `true`, `false`.  |
+| groups | No | The ionoscloud groups the user is assigned to.   |
+| id | No | The user ID.   |
+| sec_auth_active | No | Indicates if secure (two-factor) authentication is active for the user.  Valid values are `true`, `false`.  |
 ***
 
 

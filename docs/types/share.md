@@ -10,14 +10,14 @@ Type representing a IonosCloud shared resource.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
-| edit_privilege | No | Indicates if the group has permission to edit privileges on the resource.  Valid values are `true`, `false`.  | false |
-| share_privilege | No | Indicates if the group has permission to share the resource.  Valid values are `true`, `false`.  | false |
-| group_id | No | The ID of the group where the share will be available.   | - |
-| group_name | No | The name of the group where the share will be available.   | - |
-| type | No | The type of the shared resource.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
+| edit_privilege | No | Indicates if the group has permission to edit privileges on the resource.  Valid values are `true`, `false`.  |
+| share_privilege | No | Indicates if the group has permission to share the resource.  Valid values are `true`, `false`.  |
+| group_id | No | The ID of the group where the share will be available.   |
+| group_name | No | The name of the group where the share will be available.   |
+| type | No | The type of the shared resource.   |
 ***
 
 

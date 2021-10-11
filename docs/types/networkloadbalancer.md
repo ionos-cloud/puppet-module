@@ -10,18 +10,18 @@ Type representing a IonosCloud Network Load Balancer.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
-| ips | No | Collection of IP addresses of the Network Load Balancer. (inbound and outbound) IP of the listenerLan must be a customer reserved IP for the public load balancer and private IP for the private load balancer.   | - |
-| lb_private_ips | No | Collection of private IP addresses with subnet mask of the Network Load Balancer. IPs must contain valid subnet mask. If user will not provide any IP then the system will generate one IP with /24 subnet.   | - |
-| listener_lan | No | Id of the listening LAN. (inbound)   | - |
-| target_lan | No | Id of the balanced private target LAN. (outbound)   | - |
-| rules | No | A list of flow logs associated to the Network Load Balancer.   | - |
-| flowlogs | No | A list of flow logs associated to the Network Load Balancer.   | - |
-| datacenter_id | No | The ID of the virtual data center where the Network Load Balancer will reside.   | - |
-| datacenter_name | No | The name of the virtual data center where the Network Load Balancer will reside.   | - |
-| id | No | The Network Load Balancer ID.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
+| ips | No | Collection of IP addresses of the Network Load Balancer. (inbound and outbound) IP of the listenerLan must be a customer reserved IP for the public load balancer and private IP for the private load balancer.   |
+| lb_private_ips | No | Collection of private IP addresses with subnet mask of the Network Load Balancer. IPs must contain valid subnet mask. If user will not provide any IP then the system will generate one IP with /24 subnet.   |
+| listener_lan | No | Id of the listening LAN. (inbound)   |
+| target_lan | No | Id of the balanced private target LAN. (outbound)   |
+| rules | No | A list of flow logs associated to the Network Load Balancer.   |
+| flowlogs | No | A list of flow logs associated to the Network Load Balancer.   |
+| datacenter_id | No | The ID of the virtual data center where the Network Load Balancer will reside.   |
+| datacenter_name | No | The name of the virtual data center where the Network Load Balancer will reside.   |
+| id | No | The Network Load Balancer ID.   |
 ***
 
 

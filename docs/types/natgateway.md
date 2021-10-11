@@ -10,16 +10,16 @@ Type representing a IonosCloud NAT Gateway.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
-| public_ips | No | Collection of public IP addresses of the NAT gateway. Should be customer reserved IP addresses in that location.   | - |
-| lans | No | Collection of LANs connected to the NAT gateway. IPs must contain valid subnet mask. If user will not provide any IP then system will generate an IP with /24 subnet.   | - |
-| rules | No | A list of flow logs associated to the NAT Gateway.   | - |
-| flowlogs | No | A list of flow logs associated to the NAT Gateway.   | - |
-| datacenter_id | No | The ID of the virtual data center where the NAT Gateway will reside.   | - |
-| datacenter_name | No | The name of the virtual data center where the NAT Gateway will reside.   | - |
-| id | No | The NAT Gateway ID.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
+| public_ips | No | Collection of public IP addresses of the NAT gateway. Should be customer reserved IP addresses in that location.   |
+| lans | No | Collection of LANs connected to the NAT gateway. IPs must contain valid subnet mask. If user will not provide any IP then system will generate an IP with /24 subnet.   |
+| rules | No | A list of flow logs associated to the NAT Gateway.   |
+| flowlogs | No | A list of flow logs associated to the NAT Gateway.   |
+| datacenter_id | No | The ID of the virtual data center where the NAT Gateway will reside.   |
+| datacenter_name | No | The name of the virtual data center where the NAT Gateway will reside.   |
+| id | No | The NAT Gateway ID.   |
 ***
 
 
