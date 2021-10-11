@@ -54,12 +54,10 @@ def generate_type_doc(type)
   end
 
   properties = Puppet::Type.type(type).properties.map do |property|
-    default_value = puppet_type.properties.find { |el| el.name == property.name }
     {
       name: property.name,
       doc: property.doc.tr("\n", ' '),
       required: property.required? ? 'Yes' : 'No',
-      default_value: default_value ? default_value.should : '-',
     }
   end
 
