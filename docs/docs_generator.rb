@@ -39,8 +39,6 @@ class Summary < Mustache
 end
 
 def generate_type_doc(type)
-  puppet_type = Puppet::Type.type(type).new({ name: 'sample' })
-
   doc = Puppet::Type.type(type).doc
   changeable_properties = Puppet::Type.type(type).instance_variable_get(:@changeable_properties)
 
