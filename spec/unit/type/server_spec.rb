@@ -79,6 +79,11 @@ describe type_class do
     }.to raise_error(Puppet::Error, %r{Volume must include size})
   end
 
+  it 'defaults purge_volumes to false' do
+    server = type_class.new(name: 'sample')
+    expect(server[:purge_volumes]).to eq(:false)
+  end
+
   it 'if nics included must include a nic name' do
     expect {
       type_class.new({ name: 'sample', nics: [{
