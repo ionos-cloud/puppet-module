@@ -11,6 +11,86 @@ module PuppetX
         end
       end
 
+      def self.ionoscloud_api_client
+        api_config = Ionoscloud::Configuration.new
+
+        api_config.username = ENV['IONOS_USERNAME']
+        api_config.password = ENV['IONOS_PASSWORD']
+
+        unless ENV['IONOS_API_URL'].nil?
+          uri = URI.parse(ENV['IONOS_API_URL'])
+
+          api_config.scheme = uri.scheme
+          api_config.host = uri.host
+          api_config.base_path = uri.path
+          api_config.server_index = nil
+        end
+
+        api_config.debugging = ENV['IONOS_DEBUG'] || false
+
+        api_client = Ionoscloud::ApiClient.new(api_config)
+
+        api_client.user_agent =  [
+          'puppet/v5.1.0',
+          api_client.default_headers['User-Agent'],
+          'puppet/' + Puppet.version,
+        ].join('_')
+
+        api_client
+      end
+
+      def self.backupunit_api
+        Ionoscloud::BackupUnitApi.new(ionoscloud_api_client)
+      end
+
+      def self.datacenter_api
+        Ionoscloud::DataCenterApi.new(ionoscloud_api_client)
+      end
+
+      def self.server_api
+        Ionoscloud::ServerApi.new(ionoscloud_api_client)
+      end
+
+      def self.nic_api
+        Ionoscloud::NicApi.new(ionoscloud_api_client)
+      end
+
+      def self.image_api
+        Ionoscloud::ImageApi.new(ionoscloud_api_client)
+      end
+
+      def self.user_management_api
+        Ionoscloud::UserManagementApi.new(ionoscloud_api_client)
+      end
+
+      def self.ip_blocks_api
+        Ionoscloud::IPBlocksApi.new(ionoscloud_api_client)
+      end
+
+      def self.kubernetes_api
+        Ionoscloud::KubernetesApi.new(ionoscloud_api_client)
+      end
+
+      def self.lan_api
+        Ionoscloud::LanApi.new(ionoscloud_api_client)
+      end
+
+      def self.location_api
+        Ionoscloud::LocationApi.new(ionoscloud_api_client)
+      end
+
+      def self.pcc_api
+        Ionoscloud::PrivateCrossConnectApi.new(ionoscloud_api_client)
+      end
+
+      def self.snapshot_api
+        Ionoscloud::SnapshotApi.new(ionoscloud_api_client)
+      end
+
+      def self.volume_api
+        Ionoscloud::VolumeApi.new(ionoscloud_api_client)
+      end
+
       def self.count_by_name(res_name, items)
         items.count { |item| res_name == item.properties.name }
       end
@@ -25,7 +105,7 @@ module PuppetX
       end
 
       def self.datacenter_from_name(dc_name)
-        datacenters = Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1)
+        datacenters = datacenter_api.datacenters_get(depth: 1)
         dc_count = count_by_name(dc_name, datacenters.items)
 
         raise "Found more than one data center named '#{dc_name}'." if dc_count > 1
@@ -35,28 +115,28 @@ module PuppetX
       end
 
       def self.lan_from_name(lan_name, datacenter_id)
-        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter_id, depth: 1)
+        lans = lan_api.datacenters_lans_get(datacenter_id, depth: 1)
         lan = lans.items.find { |lan| lan.properties.name == lan_name }
         raise "LAN named '#{lan_name}' cannot be found." unless lan
         lan
       end
 
       def self.volume_from_name(volume_name, datacenter_id)
-        volumes = Ionoscloud::VolumeApi.new.datacenters_volumes_get(datacenter_id, depth: 1)
+        volumes = volume_api.datacenters_volumes_get(datacenter_id, depth: 1)
         volume = volumes.items.find { |volume| volume.properties.name == volume_name }
         raise "Volume named '#{volume_name}' cannot be found." unless volume
         volume
       end
 
       def self.server_from_name(server_name, datacenter_id)
-        servers = Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter_id, depth: 1)
+        servers = server_api.datacenters_servers_get(datacenter_id, depth: 1)
         server = servers.items.find { |server| server.properties.name == server_name }
         raise "Server named '#{server_name}' cannot be found." unless server
         server
       end
 
       def self.group_from_name(group_name)
-        group = Ionoscloud::UserManagementApi.new.um_groups_get(depth: 1).items.find { |group| group.properties.name == group_name }
+        group = user_management_api.um_groups_get(depth: 1).items.find { |group| group.properties.name == group_name }
         raise "Group named '#{group_name}' cannot be found." unless group
         group
       end
@@ -67,13 +147,13 @@ module PuppetX
       end
 
       def self.user_from_email(user_email)
-        user = Ionoscloud::UserManagementApi.new.um_users_get(depth: 1).items.find { |user| user.properties.email == user_email }
+        user = user_management_api.um_users_get(depth: 1).items.find { |user| user.properties.email == user_email }
         raise "User with email '#{user_email}' cannot be found." unless user
         user
       end
 
       def self.backup_unit_from_name(backup_unit_name)
-        backup_units = Ionoscloud::BackupUnitApi.new.backupunits_get(depth: 1)
+        backup_units = backupunit_api.backupunits_get(depth: 1)
 
         backup_unit = backup_units.items.find { |backup_unit| backup_unit.properties.name == backup_unit_name }
         raise "Backup unit named '#{backup_unit_name}' cannot be found." unless backup_unit
@@ -81,7 +161,7 @@ module PuppetX
       end
 
       def self.pcc_from_name(pcc_name)
-        pccs = Ionoscloud::PrivateCrossConnectApi.new.pccs_get(depth: 1)
+        pccs = pcc_api.pccs_get(depth: 1)
 
         pcc = pccs.items.find { |pcc| pcc.properties.name == pcc_name }
         raise "PCC named '#{pcc_name}' cannot be found." unless pcc
@@ -89,7 +169,7 @@ module PuppetX
       end
 
       def self.cluster_from_name(cluster_name)
-        clusters = Ionoscloud::KubernetesApi.new.k8s_get(depth: 1)
+        clusters = kubernetes_api.k8s_get(depth: 1)
         cluster = clusters.items.find { |cluster| cluster.properties.name == cluster_name }
         raise "K8s cluster named '#{cluster_name}' cannot be found." unless cluster
         cluster
@@ -112,7 +192,7 @@ module PuppetX
             to_detach.delete(target_cdrom['id'])
           else
             Puppet.info "Attaching #{target_cdrom['id']} to server"
-            _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_post_with_http_info(
+            _, _, headers = server_api.datacenters_servers_cdroms_post_with_http_info(
               datacenter_id, server_id, id: target_cdrom['id']
             )
 
@@ -122,7 +202,7 @@ module PuppetX
 
         to_detach.each do |cdrom_id|
           Puppet.info "Detaching #{cdrom_id} from server"
-          _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_cdroms_delete_with_http_info(
+          _, _, headers = server_api.datacenters_servers_cdroms_delete_with_http_info(
             datacenter_id, server_id, cdrom_id
           )
           to_wait << headers
@@ -152,7 +232,7 @@ module PuppetX
               to_detach.delete(existing_volume[:id])
             else
               Puppet.info "Attaching #{target_volume['id']} to server"
-              _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
+              _, _, headers = server_api.datacenters_servers_volumes_post_with_http_info(
                 datacenter_id, server_id, id: target_volume['id']
               )
 
@@ -170,7 +250,7 @@ module PuppetX
             else
               Puppet.info "Creating volume #{target_volume} from server"
 
-              volume, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_post_with_http_info(
+              volume, _, headers = volume_api.datacenters_volumes_post_with_http_info(
                 datacenter_id, volume_object_from_hash(target_volume)
               )
 
@@ -181,7 +261,7 @@ module PuppetX
 
         to_detach.each do |volume_id|
           Puppet.info "Detaching #{volume_id} from server"
-          _, _, headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_delete_with_http_info(
+          _, _, headers = server_api.datacenters_servers_volumes_delete_with_http_info(
             datacenter_id, server_id, volume_id
           )
           to_wait << headers
@@ -190,7 +270,7 @@ module PuppetX
         to_wait_create.each do |headers, volume_id|
           Puppet.info "Attaching #{volume_id} to server"
           wait_request(headers)
-          _, _, new_headers = Ionoscloud::ServerApi.new.datacenters_servers_volumes_post_with_http_info(
+          _, _, new_headers = server_api.datacenters_servers_volumes_post_with_http_info(
             datacenter_id, server_id, id: volume_id
           )
 
@@ -213,7 +293,7 @@ module PuppetX
 
         Puppet.info "Updating Volume #{current[:name]} with #{changes}"
 
-        _, _, headers = Ionoscloud::VolumeApi.new.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
+        _, _, headers = volume_api.datacenters_volumes_patch_with_http_info(datacenter_id, volume_id, changes)
         wait_request(headers) if wait
 
         headers
@@ -235,7 +315,7 @@ module PuppetX
           else
             Puppet.info "Creating NIC #{desired_nic} in server #{server_id}"
 
-            _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(
+            _, _, headers = nic_api.datacenters_servers_nics_post_with_http_info(
               datacenter_id, server_id, nic_object_from_hash(desired_nic, datacenter_id)
             )
             to_wait << headers
@@ -244,7 +324,7 @@ module PuppetX
 
         to_delete.each do |nic_id|
           Puppet.info "Deleting NIC #{nic_id} from server #{server_id}"
-          _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+          _, _, headers = nic_api.datacenters_servers_nics_delete_with_http_info(
             datacenter_id, server_id, nic_id
           )
           to_wait << headers
@@ -268,7 +348,7 @@ module PuppetX
         changes = Ionoscloud::NicProperties.new(**changes)
         Puppet.info "Updating NIC #{current[:name]} with #{changes}"
 
-        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
+        _, _, headers = nic_api.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
 
         all_headers = firewallrules_headers
         all_headers << headers
@@ -299,7 +379,7 @@ module PuppetX
 
             firewallrule = firewallrule_object_from_hash(desired_firewallrule)
 
-            _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+            _, _, headers = nic_api.datacenters_servers_nics_firewallrules_post_with_http_info(
               datacenter_id, server_id, nic_id, firewallrule
             )
             to_wait << headers
@@ -308,7 +388,7 @@ module PuppetX
 
         to_delete.each do |firewallrule_id|
           Puppet.info "Deleting FirewallRule #{firewallrule_id}"
-          _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
+          _, _, headers = nic_api.datacenters_servers_nics_firewallrules_delete_with_http_info(
             datacenter_id, server_id, nic_id, firewallrule_id
           )
           to_wait << headers
@@ -326,7 +406,7 @@ module PuppetX
         changes = Ionoscloud::FirewallruleProperties.new(**changes)
         Puppet.info "Updating Firewall Rule #{current[:name]} with #{changes}"
 
-        _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_patch_with_http_info(
+        _, _, headers = nic_api.datacenters_servers_nics_firewallrules_patch_with_http_info(
           datacenter_id, server_id, nic_id, firewallrule_id, changes
         )
         wait_request(headers) if wait
@@ -453,14 +533,14 @@ module PuppetX
             peer_id = target_object['id'] ? target_object['id'] : PuppetX::IonoscloudX::Helper.lan_from_name(target_object['name'], datacenter_id).id
 
             Puppet.info "Adding LAN #{peer_id} to PCC #{pcc_id}"
-            _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
+            _, _, headers = lan_api.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
             headers_list << headers
           end
         end
 
         existing.each do |peer|
           Puppet.info "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
-          _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
+          _, _, headers = lan_api.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
           headers_list << headers
         end
 
@@ -519,7 +599,7 @@ module PuppetX
       end
 
       def self.wait_request(headers)
-        Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
+        ionoscloud_api_client.wait_for_completion(get_request_id(headers))
       end
 
       def self.get_request_id(headers)
