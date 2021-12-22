@@ -51,9 +51,12 @@ jobs:
         id: old_version
         run: echo ::set-output name=VERSION::$(git tag --list "v*" --sort=version:refname | tail -n 2 | head -n 1)
 
+      - name: Get the release version
+        run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
+
       - name: Check Version
         run: |
-          if [ "${{ steps.new_version.outputs.VERSION }}" != v$(cat metadata.json | grep '"version":' | tr -s ' ' | cut -d ' ' -f 3 | cut -d '"' -f 2) ]; then
+          if [ $RELEASE_VERSION != v$(cat metadata.json | grep '"version":' | tr -s ' ' | cut -d ' ' -f 3 | cut -d '"' -f 2) ]; then
             echo "Tag version does not match the one from metadata.json!"
             exit 1
           fi
