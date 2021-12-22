@@ -87,7 +87,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
   def s3_buckets=(value)
     @property_flush[:s3_buckets] = value
   end
-  
+
   def create
     cluster_properties = {
       name: resource[:name],

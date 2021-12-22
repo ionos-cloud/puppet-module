@@ -27,8 +27,11 @@ Type representing a Ionoscloud K8s Nodepool.
 | storage_type | No | The volume type.   |
 | storage_size | No | The size of the volume in GB.   |
 | lans | No | The list of additional private LANs attached to worker nodes.   |
+| public_ips | No | Optional array of reserved public IP addresses to be used by the nodes. IPs must be from same location as the data center used for the node pool. The array must contain one extra IP than maximum number of nodes could be. (nodeCount+1 if fixed node amount or maxNodeCount+1 if auto scaling is used) The extra provided IP Will be used during rebuilding of nodes.   |
 | available_upgrade_versions | No | List of available versions for upgrading the node pool.   |
 | cluster_name | No | The name of the K8s used by the K8s Nodepool.   |
+| labels | No | The map of labels attached to node pool.   |
+| annotations | No | The map of annotations attached to node pool.   |
 | id | No | The ID of the K8s Nodepool.   |
 | datacenter_id | No | The datacenter used by the K8s Nodepool.   |
 | cluster_id | No | The ID of the K8s cluster of the K8s Nodepool.   |
@@ -46,6 +49,7 @@ Type representing a Ionoscloud K8s Nodepool.
 * min_node_count
 * max_node_count
 * lans
+* public_ips
 
 
 ## Example
