@@ -15,7 +15,6 @@ Puppet::Type.newtype(:share) do
 
   newproperty(:edit_privilege) do
     desc 'Indicates if the group has permission to edit privileges on the resource.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s
@@ -24,7 +23,6 @@ Puppet::Type.newtype(:share) do
 
   newproperty(:share_privilege) do
     desc 'Indicates if the group has permission to share the resource.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s

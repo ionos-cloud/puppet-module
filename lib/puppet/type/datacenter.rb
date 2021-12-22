@@ -22,7 +22,6 @@ Puppet::Type.newtype(:datacenter) do
 
   newproperty(:sec_auth_protection) do
     desc 'Boolean value representing if the data center requires extra protection e.g. two factor protection.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)

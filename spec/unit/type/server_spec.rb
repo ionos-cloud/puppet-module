@@ -68,11 +68,6 @@ describe type_class do
     type_class.new(name: 'sample', ensure: :suspended)
   end
 
-  it 'defaults availability_zone to AUTO' do
-    server = type_class.new(name: 'sample')
-    expect(server[:availability_zone]).to eq(:AUTO)
-  end
-
   it 'defaults purge_volumes to false' do
     server = type_class.new(name: 'sample')
     expect(server[:purge_volumes]).to eq(:false)

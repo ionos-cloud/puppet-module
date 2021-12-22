@@ -39,8 +39,6 @@ class Summary < Mustache
 end
 
 def generate_type_doc(type)
-  puppet_type = Puppet::Type.type(type).new({ name: 'sample' })
-
   doc = Puppet::Type.type(type).doc
   changeable_properties = Puppet::Type.type(type).instance_variable_get(:@changeable_properties)
 
@@ -54,12 +52,10 @@ def generate_type_doc(type)
   end
 
   properties = Puppet::Type.type(type).properties.map do |property|
-    default_value = puppet_type.properties.find { |el| el.name == property.name }
     {
       name: property.name,
       doc: property.doc.tr("\n", ' '),
       required: property.required? ? 'Yes' : 'No',
-      default_value: default_value ? default_value.should : '-',
     }
   end
 

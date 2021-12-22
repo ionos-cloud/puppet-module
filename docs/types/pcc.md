@@ -11,12 +11,12 @@ Type representing a IonosCloud LAN.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No |   Valid values are `present`, `absent`.  | - |
-| peers | No | The list of peers connected to the PCC.   | - |
-| id | No | The PCC ID.   | - |
-| connectable_datacenters | No | The datacenters from which you may connect to this PCC.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No |   Valid values are `present`, `absent`.  |
+| peers | No | The list of peers connected to the PCC.   |
+| id | No | The PCC ID.   |
+| connectable_datacenters | No | The datacenters from which you may connect to this PCC.   |
 ***
 
 

@@ -52,9 +52,4 @@ describe type_class do
   it 'supports :absent as a value to :ensure' do
     type_class.new(name: 'sample', ensure: :absent)
   end
-
-  it 'defaults volume DHCP to false' do
-    volume = type_class.new(name: 'test')
-    expect(volume[:dhcp]).to eq(:false)
-  end
 end
