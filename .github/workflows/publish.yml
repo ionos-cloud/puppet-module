@@ -21,6 +21,24 @@ jobs:
       - name: Unshallow
         run: git fetch --prune --unshallow
 
+      - name: Get the new version
+        id: new_version
+        run: echo ::set-output name=VERSION::$(git tag --list "v*" --sort=version:refname | tail -n 1)
+
+      - name: Get the old version
+        id: old_version
+        run: echo ::set-output name=VERSION::$(git tag --list "v*" --sort=version:refname | tail -n 2 | head -n 1)
+
+      - name: Get the release version
+        run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
+
+      - name: Check Version
+        run: |
+          if [ $RELEASE_VERSION != v$(cat metadata.json | grep '"version":' | tr -s ' ' | cut -d ' ' -f 3 | cut -d '"' -f 2) ]; then
+            echo "Tag version does not match the one from metadata.json!"
+            exit 1
+          fi
+
       - name: Install PDK
         run: |
           wget https://apt.puppet.com/puppet-tools-release-focal.deb
@@ -42,24 +60,6 @@ jobs:
 
       - name: Try to build the package
         run: pdk build
-
-      - name: Get the new version
-        id: new_version
-        run: echo ::set-output name=VERSION::$(git tag --list "v*" --sort=version:refname | tail -n 1)
-
-      - name: Get the old version
-        id: old_version
-        run: echo ::set-output name=VERSION::$(git tag --list "v*" --sort=version:refname | tail -n 2 | head -n 1)
-
-      - name: Get the release version
-        run: echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV
-
-      - name: Check Version
-        run: |
-          if [ $RELEASE_VERSION != v$(cat metadata.json | grep '"version":' | tr -s ' ' | cut -d ' ' -f 3 | cut -d '"' -f 2) ]; then
-            echo "Tag version does not match the one from metadata.json!"
-            exit 1
-          fi
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.61.1
