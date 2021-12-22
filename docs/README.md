@@ -1,5 +1,10 @@
 # Introduction
 
+---
+**NOTE:**
+Be aware that the Puppet IonosCloud Module v6 will become main branch and it will be using the latest stable API Version
+
+---
 ## Overview
 
 The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.

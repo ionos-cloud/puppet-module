@@ -1,5 +1,23 @@
 # Introduction
 
+![CI](https://github.com/ionos-cloud/puppet-module/workflows/CI/badge.svg) 
+[![Puppet Forge Version](https://img.shields.io/puppetforge/v/ionoscloud/ionoscloud)](https://forge.puppet.com/modules/ionoscloud/ionoscloud) 
+[![Gitter](https://badges.gitter.im/ionos-cloud/sdk-general.png)](https://gitter.im/ionos-cloud/sdk-general)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=alert_status)](https://sonarcloud.io/dashboard?id=puppet-module)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=bugs)](https://sonarcloud.io/dashboard?id=puppet-module)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=puppet-module)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=puppet-module)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=security_rating)](https://sonarcloud.io/dashboard?id=puppet-module)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=puppet-module&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=puppet-module)
+
+
+![Alt text](.github/IONOS.CLOUD.BLU.svg?raw=true "Title")
+
+---
+**NOTE:**
+Be aware that the Puppet IonosCloud Module v6 will become main branch and it will be using the latest stable API Version
+
+---
 ## Overview
 
 The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.
