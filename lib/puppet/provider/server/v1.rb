@@ -52,7 +52,7 @@ Puppet::Type.type(:server).provide(:v1) do
     end
 
     nics = instance.entities.nics.items.map do |nic|
-      lan = Ionoscloud::LansApi.new.datacenters_lans_find_by_id(datacenter.id, nic.properties.lan)
+      lan = Ionoscloud::LANsApi.new.datacenters_lans_find_by_id(datacenter.id, nic.properties.lan)
       {
         id: nic.id,
         name: nic.properties.name,

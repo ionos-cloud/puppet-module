@@ -77,7 +77,7 @@ Puppet::Type.type(:pcc).provide(:v1) do
         datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(peer['datacenter_id'], peer['datacenter_name'])
         peer_id = peer['id'] ? peer['id'] : PuppetX::IonoscloudX::Helper.lan_from_name(peer['name'], datacenter_id).id
 
-        _, _, headers = Ionoscloud::LansApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc.id)
+        _, _, headers = Ionoscloud::LANsApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc.id)
         headers_list << headers
       end
       headers_list.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
@@ -92,7 +92,7 @@ Puppet::Type.type(:pcc).provide(:v1) do
     if @property_hash[:peers]
       headers_list = []
       @property_hash[:peers].each do |peer|
-        _, _, headers = Ionoscloud::LansApi.new.datacenters_lans_patch_with_http_info(peer['datacenter_id'], peer['id'], pcc: nil)
+        _, _, headers = Ionoscloud::LANsApi.new.datacenters_lans_patch_with_http_info(peer['datacenter_id'], peer['id'], pcc: nil)
         headers_list << headers
       end
       headers_list.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }

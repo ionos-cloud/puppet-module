@@ -35,7 +35,7 @@ module PuppetX
       end
 
       def self.lan_from_name(lan_name, datacenter_id)
-        lans = Ionoscloud::LansApi.new.datacenters_lans_get(datacenter_id, depth: 1)
+        lans = Ionoscloud::LANsApi.new.datacenters_lans_get(datacenter_id, depth: 1)
         lan = lans.items.find { |lan| lan.properties.name == lan_name }
         raise "LAN named '#{lan_name}' cannot be found." unless lan
         lan
@@ -615,7 +615,6 @@ module PuppetX
                         else
                           Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
                                     client_timeout: networkloadbalancer_rule['health_check']['client_timeout'],
-                                    check_timeout: networkloadbalancer_rule['health_check']['check_timeout'],
                                     connect_timeout: networkloadbalancer_rule['health_check']['connect_timeout'],
                                     target_timeout: networkloadbalancer_rule['health_check']['target_timeout'],
                                     retries: networkloadbalancer_rule['health_check']['retries'],
@@ -745,14 +744,14 @@ module PuppetX
             peer_id = target_object['id'] ? target_object['id'] : PuppetX::IonoscloudX::Helper.lan_from_name(target_object['name'], datacenter_id).id
 
             Puppet.info "Adding LAN #{peer_id} to PCC #{pcc_id}"
-            _, _, headers = Ionoscloud::LansApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
+            _, _, headers = Ionoscloud::LANsApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc_id)
             headers_list << headers
           end
         end
 
         existing.each do |peer|
           Puppet.info "Removing LAN #{peer[:id]} from PCC #{pcc_id}"
-          _, _, headers = Ionoscloud::LansApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
+          _, _, headers = Ionoscloud::LANsApi.new.datacenters_lans_patch_with_http_info(peer[:datacenter_id], peer[:id], pcc: nil)
           headers_list << headers
         end
 

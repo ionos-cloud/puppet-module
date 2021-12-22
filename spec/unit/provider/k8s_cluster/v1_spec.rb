@@ -11,7 +11,6 @@ describe provider_class do
         k8s_version: '1.18.5',
         maintenance_day: 'Sunday',
         maintenance_time: '14:53:00Z',
-        public: true,
       )
       @provider = provider_class.new(@resource)
     end

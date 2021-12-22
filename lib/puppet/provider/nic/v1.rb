@@ -17,7 +17,7 @@ Puppet::Type.type(:nic).provide(:v1) do
       nics = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        lans = Ionoscloud::LansApi.new.datacenters_lans_get(datacenter.id, depth: 1).items
+        lans = Ionoscloud::LANsApi.new.datacenters_lans_get(datacenter.id, depth: 1).items
 
         unless lans.empty?
           Ionoscloud::ServersApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
