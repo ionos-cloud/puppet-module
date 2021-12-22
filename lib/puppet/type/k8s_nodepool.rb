@@ -198,6 +198,22 @@ Puppet::Type.newtype(:k8s_nodepool) do
     end
   end
 
+  newproperty(:labels) do
+    desc 'The map of labels attached to node pool.'
+
+    def insync?(is)
+      is == should
+    end
+  end
+
+  newproperty(:annotations) do
+    desc 'The map of annotations attached to node pool.'
+
+    def insync?(is)
+      is == should
+    end
+  end
+
   # read-only properties
 
   newproperty(:id) do

@@ -28,6 +28,8 @@ describe type_class do
       :availability_zone,
       :storage_type,
       :storage_size,
+      :labels,
+      :annotations,
       :state,
       :k8s_nodes,
     ]
