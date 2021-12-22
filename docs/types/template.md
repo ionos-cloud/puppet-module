@@ -10,11 +10,11 @@ Type representing available templates for CUBE servers.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| cores | No | The CPU cores count.   | - |
-| ram | No | The RAM size in MB.   | - |
-| storage_size | No | The storage size in GB.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| cores | No | The CPU cores count.   |
+| ram | No | The RAM size in MB.   |
+| storage_size | No | The storage size in GB.   |
 ***
 
 

@@ -10,10 +10,10 @@ Type representing a IonosCloud resource.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| id | No | The ID of the resource.   | - |
-| type | No | The resource's type.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| id | No | The ID of the resource.   |
+| type | No | The resource's type.   |
 ***
 
 

@@ -27,7 +27,6 @@ Puppet::Type.newtype(:nic) do
 
   newproperty(:dhcp) do
     desc 'Enable or disable DHCP on the NIC.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -60,7 +59,6 @@ Puppet::Type.newtype(:nic) do
 
   newproperty(:firewall_active) do
     desc 'Indicates the firewall is active.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)

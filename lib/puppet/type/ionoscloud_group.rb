@@ -18,7 +18,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_data_center) do
     desc 'Indicates if the group is allowed to create virtual data centers.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -28,7 +27,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_snapshot) do
     desc 'Indicates if the group is allowed to create snapshots.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -38,7 +36,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:reserve_ip) do
     desc 'Indicates if the group is allowed to reserve IP addresses.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -48,7 +45,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:access_activity_log) do
     desc 'Indicates if the group is allowed to access the activity log.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -58,7 +54,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:s3_privilege) do
     desc 'Indicates if the group is allowed is allowed to manage S3.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -68,7 +63,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_backup_unit) do
     desc 'Indicates if the group is allowed to manage backup units.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -78,7 +72,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_internet_access) do
     desc 'Indicates if the group is allowed to create internet access.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -88,7 +81,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_k8s_cluster) do
     desc 'Indicates if the group is allowed to create kubernetes cluster.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -98,7 +90,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_pcc) do
     desc 'Indicates if the group is allowed to create pcc.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -108,7 +99,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:create_flow_log) do
     desc 'Indicates if the group is allowed to create Flow Logs.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -119,7 +109,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
   newproperty(:access_and_manage_monitoring) do
     desc 'Indicates if the group is allowed to access and manage monitoring related '\
     'functionality (access metrics, CRUD on alarms, alarm-actions etc) using Monotoring-as-a-Service (MaaS).'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -129,7 +118,6 @@ Puppet::Type.newtype(:ionoscloud_group) do
 
   newproperty(:access_and_manage_certificates) do
     desc 'Indicates if the group is allowed to access and manage certificates.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
