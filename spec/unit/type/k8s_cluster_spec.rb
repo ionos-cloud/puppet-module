@@ -14,8 +14,6 @@ describe type_class do
       :k8s_version,
       :maintenance_day,
       :maintenance_time,
-      :public,
-      :gateway_ip,
       :id,
       :k8s_nodepools,
       :available_upgrade_versions,

@@ -82,15 +82,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     cluster_properties = {
       name: resource[:name],
       k8s_version: resource[:k8s_version],
-      public: (resource[:public] == :true),
     }
-
-    if resource[:public] != :true
-      if resource[:gateway_ip].nil?
-        raise 'If public is set to false then gateway_ip must be set!'
-      end
-      cluster_properties[:gateway_ip] = resource[:gateway_ip]
-    end
 
     if resource[:maintenance_day] && resource[:maintenance_time]
       cluster_properties[:maintenance_window] = Ionoscloud::KubernetesMaintenanceWindow.new(
