@@ -4,7 +4,10 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:k8s_cluster) do
   @doc = 'Type representing a Ionoscloud K8s Cluster.'
-  @changeable_properties = [:k8s_version, :maintenance_day, :maintenance_time]
+  @changeable_properties = [
+    :k8s_version, :maintenance_day, :maintenance_time,
+    :api_subnet_allow_list, :s3_buckets
+  ]
 
   ensurable
 
@@ -42,6 +45,24 @@ Puppet::Type.newtype(:k8s_cluster) do
 
     def insync?(is)
       Time.parse(is) - Time.parse(should) < 15 * 60.0
+    end
+  end
+
+  newproperty(:api_subnet_allow_list, array_matching: :all) do
+    desc 'Access to the K8s API server is restricted to these CIDRs. Cluster-internal traffic '\
+    'is not affected by this restriction. If no allowlist is specified, access is not restricted. '\
+    'If an IP without subnet mask is provided, the default value will be used: 32 for IPv4 and 128 for IPv6.'
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.compare_objects(is, should)
+    end
+  end
+
+  newproperty(:s3_buckets, array_matching: :all) do
+    desc 'List of S3 bucket configured for K8s usage. For now it contains only an S3 bucket used to store K8s API audit logs'
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.compare_objects(is, should)
     end
   end
 

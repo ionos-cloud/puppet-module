@@ -251,7 +251,6 @@ module PuppetX
         unless changes[:health_check].nil?
           changes[:health_check] = Ionoscloud::NetworkLoadBalancerForwardingRuleHealthCheck.new(
             client_timeout: changes[:health_check]['client_timeout'],
-            check_timeout: changes[:health_check]['check_timeout'],
             connect_timeout: changes[:health_check]['connect_timeout'],
             target_timeout: changes[:health_check]['target_timeout'],
             retries: changes[:health_check]['retries'],
@@ -799,20 +798,22 @@ module PuppetX
             existing_copy = existing_copy.sort
             target_copy = target_copy.sort
           rescue
-            begin
-              comp = ->(a, b) { a['name'] <=> b['name'] }
-              existing_copy = existing_copy.sort(&comp)
-              target_copy = target_copy.sort(&comp)
-            rescue
-              begin
-                comp = ->(a, b) { a['ip'] <=> b['ip'] }
-                existing_copy = existing_copy.sort(&comp)
-                target_copy = target_copy.sort(&comp)
-              rescue StandardError => e
-                raise e
-              end
-            end
+            compare_keys_order = ['name', 'ip']
+
+            comp_existing = ->(a, b) {
+              compare_keys_order.map(&:to_sym).each { |key| return a[key] <=> b[key] if a[key] != b[key] }
+              1
+            }
+
+            comp_target = ->(a, b) {
+              compare_keys_order.each { |key| return a[key] <=> b[key] if a[key] != b[key] }
+              1
+            }
+
+            existing_copy = existing_copy.sort(&comp_existing)
+            target_copy = target_copy.sort(&comp_target)
           end
+
           existing_copy.zip(target_copy).each do |e, t|
             return false unless compare_objects(e, t)
           end
@@ -839,7 +840,9 @@ module PuppetX
           existing_object = existing_objects.find do |object|
             (object[:name] == target_object['name']) || (object[:id] == target_object['id'])
           end
+
           return false unless existing_object
+
           fields_to_check.each do |field|
             next if target_object[field.to_s].nil?
             return false unless compare_objects(existing_object[field], target_object[field.to_s])

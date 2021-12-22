@@ -39,6 +39,8 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       state: instance.metadata.state,
       available_upgrade_versions: instance.properties.available_upgrade_versions,
       viable_node_pool_versions: instance.properties.viable_node_pool_versions,
+      api_subnet_allow_list: instance.properties.api_subnet_allow_list,
+      s3_buckets: instance.properties.s3_buckets.nil? ? [] : instance.properties.s3_buckets.map { |s3_bucket| { name: s3_bucket.name } },
       k8s_nodepools: instance.entities.nodepools.items.map do |nodepool|
         {
           id: nodepool.id,
@@ -78,10 +80,20 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     @property_flush[:maintenance_time] = value
   end
 
+  def api_subnet_allow_list=(value)
+    @property_flush[:api_subnet_allow_list] = value
+  end
+
+  def s3_buckets=(value)
+    @property_flush[:s3_buckets] = value
+  end
+  
   def create
     cluster_properties = {
       name: resource[:name],
       k8s_version: resource[:k8s_version],
+      api_subnet_allow_list: resource[:api_subnet_allow_list],
+      s3_buckets: resource[:s3_buckets],
     }
 
     if resource[:maintenance_day] && resource[:maintenance_time]
@@ -110,6 +122,8 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     cluster_properties = {
       name: @property_hash[:name],
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
+      api_subnet_allow_list: @property_flush[:api_subnet_allow_list] || @property_hash[:api_subnet_allow_list],
+      s3_buckets: @property_flush[:s3_buckets] || @property_hash[:s3_buckets],
       maintenance_window: Ionoscloud::KubernetesMaintenanceWindow.new(
         day_of_the_week: @property_flush[:maintenance_day] || @property_hash[:maintenance_day],
         time: @property_flush[:maintenance_time] || @property_hash[:maintenance_time],

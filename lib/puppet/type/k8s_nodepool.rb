@@ -3,7 +3,10 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:k8s_nodepool) do
   @doc = 'Type representing a Ionoscloud K8s Nodepool.'
-  @changeable_properties = [:k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count, :max_node_count, :lans]
+  @changeable_properties = [
+    :k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count,
+    :max_node_count, :lans, :public_ips
+  ]
 
   ensurable
 
@@ -175,6 +178,17 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
   newproperty(:lans, array_matching: :all) do
     desc 'The list of additional private LANs attached to worker nodes.'
+
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.compare_objects(is, should)
+    end
+  end
+
+  newproperty(:public_ips, array_matching: :all) do
+    desc 'Optional array of reserved public IP addresses to be used by the nodes. IPs must be from same '\
+    'location as the data center used for the node pool. The array must contain one extra IP than maximum '\
+    'number of nodes could be. (nodeCount+1 if fixed node amount or maxNodeCount+1 if auto scaling is used) '\
+    'The extra provided IP Will be used during rebuilding of nodes.'
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.compare_objects(is, should)

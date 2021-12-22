@@ -53,6 +53,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ram_size: instance.properties.ram_size,
       storage_type: instance.properties.storage_type,
       storage_size: instance.properties.storage_size,
+      public_ips: instance.properties.public_ips,
       lans: instance.properties.lans.map do |el|
         {
           id: el.id,
@@ -131,6 +132,10 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_flush[:annotations] = value
   end
 
+  def public_ips=(value)
+    @property_flush[:public_ips] = value
+  end
+
   def create
     cluster_id = PuppetX::IonoscloudX::Helper.resolve_cluster_id(resource[:cluster_id], resource[:cluster_name])
     datacenter_id = nil
@@ -149,6 +154,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       storage_type: resource[:storage_type].to_s,
       storage_size: resource[:storage_size],
       availability_zone: resource[:availability_zone].to_s,
+      public_ips: resource[:public_ips],
       labels: resource[:labels],
       annotations: resource[:annotations],
       lans: if resource[:lans].nil?
@@ -209,6 +215,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     nodepool_properties = {
       k8s_version: @property_flush[:k8s_version] || @property_hash[:k8s_version],
       node_count: @property_flush[:node_count] || @property_hash[:node_count],
+      public_ips: @property_flush[:public_ips] || @property_hash[:public_ips],
       lans: if @property_flush[:lans].nil?
               nil
             else
@@ -241,7 +248,7 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       ),
     }
 
-    new_k8s_nodepool = Ionoscloud::KubernetesNodePool.new(properties: Ionoscloud::KubernetesNodePoolProperties.new(nodepool_properties))
+    new_k8s_nodepool = Ionoscloud::KubernetesNodePoolForPut.new(properties: Ionoscloud::KubernetesNodePoolPropertiesForPut.new(nodepool_properties))
 
     _, _, headers = Ionoscloud::KubernetesApi.new.k8s_nodepools_put_with_http_info(@property_hash[:cluster_id], @property_hash[:id], new_k8s_nodepool)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
