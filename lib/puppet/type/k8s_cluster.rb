@@ -22,22 +22,6 @@ Puppet::Type.newtype(:k8s_cluster) do
     end
   end
 
-  newproperty(:public) do
-    desc 'The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.'
-    newvalues(:true, :false)
-    def insync?(_is)
-      true
-    end
-  end
-
-  newproperty(:gateway_ip) do
-    desc 'The IP address of the gateway used by the cluster. This is mandatory when `public` is set to `false` and should not be provided otherwise.'
-    validate do |value|
-      raise ArgumentError, 'The gateway IP should be a String.' unless value.is_a?(String)
-      IPAddr.new value
-    end
-  end
-
   newproperty(:maintenance_day) do
     desc 'The maintenance day of the K8s Cluster.'
     validate do |value|
