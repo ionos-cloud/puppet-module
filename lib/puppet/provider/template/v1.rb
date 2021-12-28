@@ -6,15 +6,12 @@ Puppet::Type.type(:template).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     templates = []
-    Ionoscloud::TemplatesApi.new.templates_get(depth: 1).items.each do |template|
+    PuppetX::IonoscloudX::Helper.templates_api.templates_get(depth: 1).items.each do |template|
       templates << new(instance_to_hash(template))
     end
     templates.flatten

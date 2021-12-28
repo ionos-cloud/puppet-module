@@ -6,21 +6,18 @@ Puppet::Type.type(:k8s_node).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
-    Ionoscloud::KubernetesApi.new.k8s_get(depth: 1).items.map { |cluster|
+    PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_get(depth: 1).items.map { |cluster|
       nodes = []
       # Ignore data center if name is not defined.
       unless cluster.properties.name.nil? || cluster.properties.name.empty?
-        Ionoscloud::KubernetesApi.new.k8s_nodepools_get(cluster.id, depth: 1).items.map do |nodepool|
+        PuppetX::IonoscloudX::Helper.kubernetes_api.new.k8s_nodepools_get(cluster.id, depth: 1).items.map do |nodepool|
           next if nodepool.properties.name.nil? || nodepool.properties.name.empty?
-          Ionoscloud::KubernetesApi.new.k8s_nodepools_nodes_get(cluster.id, nodepool.id, depth: 1).items.map do |node|
+          PuppetX::IonoscloudX::Helper.kubernetes_api.new.k8s_nodepools_nodes_get(cluster.id, nodepool.id, depth: 1).items.map do |node|
             unless node.properties.name.nil? || node.properties.name.empty?
               nodes << new(instance_to_hash(node, nodepool, cluster))
             end
