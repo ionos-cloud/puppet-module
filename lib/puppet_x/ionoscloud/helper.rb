@@ -30,7 +30,7 @@ module PuppetX
 
         api_client = Ionoscloud::ApiClient.new(api_config)
 
-        api_client.user_agent =  [
+        api_client.user_agent = [
           'puppet/v5.1.0',
           api_client.default_headers['User-Agent'],
           'puppet/' + Puppet.version,

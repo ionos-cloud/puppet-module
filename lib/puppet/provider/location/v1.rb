@@ -6,7 +6,6 @@ Puppet::Type.type(:location).provide(:v1) do
   mk_resource_methods
 
   def self.instances
-
     locations = []
     PuppetX::IonoscloudX::Helper.location_api.locations_get(depth: 1).items.each do |location|
       locations << new(instance_to_hash(location))
