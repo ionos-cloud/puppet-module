@@ -30,7 +30,7 @@ module PuppetX
 
         api_client = Ionoscloud::ApiClient.new(api_config)
 
-        api_client.user_agent =  [
+        api_client.user_agent = [
           'puppet/v5.1.0',
           api_client.default_headers['User-Agent'],
           'puppet/' + Puppet.version,
@@ -392,7 +392,7 @@ module PuppetX
 
         networkloadbalancer_rule = networkloadbalancer_rule_object_from_hash(desired_networkloadbalancer_rule)
 
-        networkloadbalancer_rule, _, headers =networkloadbalancers_api.datacenters_networkloadbalancers_forwardingrules_post_with_http_info(
+        networkloadbalancer_rule, _, headers = networkloadbalancers_api.datacenters_networkloadbalancers_forwardingrules_post_with_http_info(
           datacenter_id, networkloadbalancer_id, networkloadbalancer_rule
         )
         wait_request(headers) if wait
