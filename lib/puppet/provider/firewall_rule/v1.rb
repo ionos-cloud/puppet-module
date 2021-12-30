@@ -104,8 +104,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   def create
     datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = resource[:server_id] ? resource[:server_id] : PuppetX::IonoscloudX::Helper.server_from_name(resource[:server_name], datacenter_id).id
-    nic = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find do
-      |nic|
+    nic = PuppetX::IonoscloudX::Helper.nics_api.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find do |nic|
       nic.properties.name == resource[:nic]
     end
 

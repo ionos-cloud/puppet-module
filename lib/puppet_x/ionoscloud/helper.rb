@@ -51,7 +51,7 @@ module PuppetX
         Ionoscloud::ServersApi.new(ionoscloud_api_client)
       end
 
-      def self.nic_api
+      def self.nics_api
         Ionoscloud::NetworkInterfacesApi.new(ionoscloud_api_client)
       end
 
@@ -470,7 +470,7 @@ module PuppetX
         changes = Ionoscloud::NicProperties.new(**changes)
         Puppet.info "Updating NIC #{current[:name]} with #{changes}"
 
-        _, _, headers = nic_api.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
+        _, _, headers = nics_api.datacenters_servers_nics_patch_with_http_info(datacenter_id, server_id, nic_id, changes)
 
         all_headers = entities_headers
         all_headers << headers
@@ -484,7 +484,7 @@ module PuppetX
 
         nic = nic_object_from_hash(desired_nic, datacenter_id)
 
-        nic, _, headers = nic_api.datacenters_servers_nics_post_with_http_info(
+        nic, _, headers = nics_api.datacenters_servers_nics_post_with_http_info(
           datacenter_id, server_id, nic
         )
         wait_request(headers) if wait
@@ -494,7 +494,7 @@ module PuppetX
 
       def self.delete_nic(datacenter_id, server_id, nic_id, wait = false)
         Puppet.info "Deleting NIC #{nic_id}"
-        _, _, headers = nic_api.datacenters_servers_nics_delete_with_http_info(
+        _, _, headers = nics_api.datacenters_servers_nics_delete_with_http_info(
           datacenter_id, server_id, nic_id
         )
         wait_request(headers) if wait
