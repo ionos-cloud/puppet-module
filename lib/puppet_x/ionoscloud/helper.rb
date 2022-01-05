@@ -111,6 +111,10 @@ module PuppetX
         Ionoscloud::TemplatesApi.new(ionoscloud_api_client)
       end
 
+      def self.s3_keys_api
+        Ionoscloud::UserS3KeysApi.new(ionoscloud_api_client)
+      end
+
       def self.count_by_name(res_name, items)
         items.count { |item| res_name == item.properties.name }
       end
