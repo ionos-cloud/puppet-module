@@ -6,16 +6,14 @@ Puppet::Type.type(:pcc).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    datacenters = Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items
+    datacenters = PuppetX::IonoscloudX::Helper.datacenter_api.datacenters_get(depth: 1).items
     pccs = []
-    Ionoscloud::PrivateCrossConnectApi.new.pccs_get(depth: 1).items.each do |pcc|
+    PuppetX::IonoscloudX::Helper.pcc_api.pccs_get(depth: 1).items.each do |pcc|
       # Ignore data centers if name is not defined.
       pccs << new(instance_to_hash(pcc, datacenters)) unless pcc.properties.name.nil? || pcc.properties.name.empty?
     end
@@ -46,7 +44,7 @@ Puppet::Type.type(:pcc).provide(:v1) do
 
   def description=(value)
     Puppet.info("Updating PCC #{resource[:name]} description with #{value}.")
-    _, _, headers = Ionoscloud::PrivateCrossConnectApi.new.pccs_patch_with_http_info(@property_hash[:id], description: value)
+    _, _, headers = PuppetX::IonoscloudX::Helper.pcc_api.pccs_patch_with_http_info(@property_hash[:id], description: value)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:description] = value
   end
@@ -68,7 +66,7 @@ Puppet::Type.type(:pcc).provide(:v1) do
       ),
     )
 
-    pcc, _, headers = Ionoscloud::PrivateCrossConnectApi.new.pccs_post_with_http_info(pcc)
+    pcc, _, headers = PuppetX::IonoscloudX::Helper.pcc_api.pccs_post_with_http_info(pcc)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     if resource[:peers]
@@ -77,7 +75,7 @@ Puppet::Type.type(:pcc).provide(:v1) do
         datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(peer['datacenter_id'], peer['datacenter_name'])
         peer_id = peer['id'] ? peer['id'] : PuppetX::IonoscloudX::Helper.lan_from_name(peer['name'], datacenter_id).id
 
-        _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc.id)
+        _, _, headers = PuppetX::IonoscloudX::Helper.lan_api.datacenters_lans_patch_with_http_info(datacenter_id, peer_id, pcc: pcc.id)
         headers_list << headers
       end
       headers_list.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
@@ -92,12 +90,12 @@ Puppet::Type.type(:pcc).provide(:v1) do
     if @property_hash[:peers]
       headers_list = []
       @property_hash[:peers].each do |peer|
-        _, _, headers = Ionoscloud::LanApi.new.datacenters_lans_patch_with_http_info(peer['datacenter_id'], peer['id'], pcc: nil)
+        _, _, headers = PuppetX::IonoscloudX::Helper.lan_api.datacenters_lans_patch_with_http_info(peer['datacenter_id'], peer['id'], pcc: nil)
         headers_list << headers
       end
       headers_list.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
     end
-    _, _, headers = Ionoscloud::PrivateCrossConnectApi.new.pccs_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.pcc_api.pccs_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
