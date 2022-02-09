@@ -6,23 +6,16 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
     super(*args)
     @property_flush = {}
   end
 
-  def self.client
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
-    Ionoscloud::DataCentersApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    PuppetX::IonoscloudX::Helper.datacenters_api.datacenters_get(depth: 1).items.map { |datacenter|
       firewall_rules = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        Ionoscloud::ServersApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
+        PuppetX::IonoscloudX::Helper.servers_api.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
           next if server.properties.name.nil? || server.properties.name.empty?
           server.entities.nics.items.map do |nic|
             next if nic.properties.name.nil? || nic.properties.name.empty?
@@ -111,7 +104,9 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   def create
     datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = resource[:server_id] ? resource[:server_id] : PuppetX::IonoscloudX::Helper.server_from_name(resource[:server_name], datacenter_id).id
-    nic = Ionoscloud::NetworkInterfacesApi.new.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find { |nic| nic.properties.name == resource[:nic] }
+    nic = PuppetX::IonoscloudX::Helper.nics_api.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find do |nic|
+      nic.properties.name == resource[:nic]
+    end
 
     raise "Nic named '#{resource[:nic]}' cannot be found." unless nic
 

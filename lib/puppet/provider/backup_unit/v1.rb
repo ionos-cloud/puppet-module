@@ -5,15 +5,9 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
 
   mk_resource_methods
 
-  def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    super(*args)
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     backup_units = []
-    Ionoscloud::BackupUnitsApi.new.backupunits_get(depth: 1).items.each do |backup_unit|
+    PuppetX::IonoscloudX::Helper.backupunits_api.backupunits_get(depth: 1).items.each do |backup_unit|
       # Ignore backup units if name is not defined.
       backup_units << new(instance_to_hash(backup_unit)) unless backup_unit.properties.name.nil? || backup_unit.properties.name.empty?
     end
@@ -43,7 +37,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
 
     backup_unit = Ionoscloud::BackupUnitProperties.new(email: value)
 
-    backup_unit, _, headers = Ionoscloud::BackupUnitsApi.new.backupunits_patch_with_http_info(@property_hash[:id], backup_unit)
+    backup_unit, _, headers = PuppetX::IonoscloudX::Helper.backupunits_api.backupunits_patch_with_http_info(@property_hash[:id], backup_unit)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:email] = backup_unit.properties.email
@@ -64,7 +58,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
         password: resource[:password],
       ),
     )
-    backup_unit, _, headers = Ionoscloud::BackupUnitsApi.new.backupunits_post_with_http_info(backup_unit)
+    backup_unit, _, headers = PuppetX::IonoscloudX::Helper.backupunits_api.backupunits_post_with_http_info(backup_unit)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :present
@@ -74,7 +68,7 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
   def destroy
     Puppet.info("Deleting backup unit #{resource[:name]}.")
 
-    _, _, headers = Ionoscloud::BackupUnitsApi.new.backupunits_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.backupunits_api.backupunits_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
