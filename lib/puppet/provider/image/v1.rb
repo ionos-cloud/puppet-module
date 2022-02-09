@@ -5,17 +5,10 @@ Puppet::Type.type(:image).provide(:v1) do
 
   mk_resource_methods
 
-  def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    super(*args)
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     images = []
 
-    Ionoscloud::ImageApi.new.images_get(depth: 1).items.each do |image|
+    PuppetX::IonoscloudX::Helper.image_api.images_get(depth: 1).items.each do |image|
       images << new(instance_to_hash(image))
     end
     images.flatten

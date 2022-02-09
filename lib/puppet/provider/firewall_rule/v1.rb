@@ -6,23 +6,16 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    self.class.client
     super(*args)
     @property_flush = {}
   end
 
-  def self.client
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    PuppetX::IonoscloudX::Helper.datacenter_api.datacenters_get(depth: 1).items.map { |datacenter|
       firewall_rules = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
+        PuppetX::IonoscloudX::Helper.server_api.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
           next if server.properties.name.nil? || server.properties.name.empty?
           server.entities.nics.items.map do |nic|
             next if nic.properties.name.nil? || nic.properties.name.empty?
@@ -107,11 +100,13 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     firewall_rule = PuppetX::IonoscloudX::Helper.firewallrule_object_from_hash(resource)
     datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = resource[:server_id] ? resource[:server_id] : PuppetX::IonoscloudX::Helper.server_from_name(resource[:server_name], datacenter_id).id
-    nic = Ionoscloud::NicApi.new.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find { |nic| nic.properties.name == resource[:nic] }
+    nic = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find do |nic|
+      nic.properties.name == resource[:nic]
+    end
 
     raise "Nic named '#{resource[:nic]}' cannot be found." unless nic
 
-    firewall_rule, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_post_with_http_info(
+    firewall_rule, _, headers = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_firewallrules_post_with_http_info(
       datacenter_id, server_id, nic.id, firewall_rule
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -128,7 +123,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   def destroy
     Puppet.info("Deleting firewall rule #{name}.")
 
-    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_firewallrules_delete_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_firewallrules_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:nic_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)

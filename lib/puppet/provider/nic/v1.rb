@@ -6,21 +6,19 @@ Puppet::Type.type(:nic).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    Ionoscloud::DataCenterApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    PuppetX::IonoscloudX::Helper.datacenter_api.datacenters_get(depth: 1).items.map { |datacenter|
       nics = []
       # Ignore data center if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        lans = Ionoscloud::LanApi.new.datacenters_lans_get(datacenter.id, depth: 1).items
+        lans = PuppetX::IonoscloudX::Helper.lan_api.datacenters_lans_get(datacenter.id, depth: 1).items
 
         unless lans.empty?
-          Ionoscloud::ServerApi.new.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
+          PuppetX::IonoscloudX::Helper.server_api.datacenters_servers_get(datacenter.id, depth: 5).items.map do |server|
             next if server.properties.name.nil? || server.properties.name.empty?
             server.entities.nics.items.map do |nic|
               unless nic.properties.name.nil? || nic.properties.name.empty?
@@ -111,7 +109,7 @@ Puppet::Type.type(:nic).provide(:v1) do
 
     Puppet.info "Creating a new NIC #{nic.to_hash}."
 
-    nic, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
+    nic, _, headers = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_post_with_http_info(datacenter_id, server_id, nic)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new nic named #{resource[:name]}.")
@@ -122,7 +120,7 @@ Puppet::Type.type(:nic).provide(:v1) do
   end
 
   def destroy
-    _, _, headers = Ionoscloud::NicApi.new.datacenters_servers_nics_delete_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.nic_api.datacenters_servers_nics_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:server_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
