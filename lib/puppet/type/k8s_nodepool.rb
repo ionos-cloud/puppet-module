@@ -91,7 +91,6 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
   newproperty(:cpu_family) do
     desc 'The CPU family of the nodes.'
-    defaultto 'AMD_OPTERON'
     newvalues('AMD_OPTERON', 'INTEL_XEON', 'INTEL_SKYLAKE')
 
     validate do |value|
@@ -141,7 +140,6 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
   newproperty(:availability_zone) do
     desc 'The availability zone of where the server will reside.'
-    defaultto 'AUTO'
     newvalues('AUTO', 'ZONE_1', 'ZONE_2')
 
     def insync?(_is)
@@ -151,7 +149,6 @@ Puppet::Type.newtype(:k8s_nodepool) do
 
   newproperty(:storage_type) do
     desc 'The volume type.'
-    defaultto 'HDD'
     newvalues('HDD', 'SSD')
 
     validate do |value|

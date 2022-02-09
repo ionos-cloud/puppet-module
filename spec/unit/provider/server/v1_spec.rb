@@ -62,6 +62,7 @@ describe provider_class do
           cores: 1,
           cpu_family: 'INTEL_XEON',
           ram: 1024,
+          availability_zone: 'AUTO',
           volumes: [vol1, vol2],
           purge_volumes: true,
           nics: [nic],

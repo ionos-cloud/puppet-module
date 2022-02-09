@@ -46,9 +46,4 @@ describe type_class do
   it 'supports :absent as a value to :ensure' do
     type_class.new(name: 'sample', ensure: :absent)
   end
-
-  it 'defaults public to false' do
-    lan = type_class.new(name: 'sample')
-    expect(lan[:public]).to eq(:false)
-  end
 end

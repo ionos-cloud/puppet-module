@@ -62,21 +62,6 @@ describe type_class do
     type_class.new(name: 'sample', ensure: :absent)
   end
 
-  it 'defaults volume availability_zone to AUTO' do
-    volume = type_class.new(name: 'test')
-    expect(volume[:availability_zone]).to eq('AUTO')
-  end
-
-  it 'defaults volume bus to VIRTIO' do
-    volume = type_class.new(name: 'test')
-    expect(volume[:bus]).to eq(:VIRTIO)
-  end
-
-  it 'defaults volume_type to HDD' do
-    volume = type_class.new(name: 'test')
-    expect(volume[:volume_type]).to eq(:HDD)
-  end
-
   it 'validates length of image_password' do
     expect {
       type_class.new(name: 'test', image_password: 'test123')

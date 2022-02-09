@@ -10,20 +10,20 @@ Type representing a IonosCloud network interface.
 
 ## Properties:
 
-| Name | Required | Description | Default Value |
-| :--- | :-: | :--- | :--- |
-| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  | - |
-| ips | No | The IPs assigned to the NIC.   | - |
-| dhcp | No | Enable or disable DHCP on the NIC.  Valid values are `true`, `false`.  | false |
-| lan | No | The LAN name the NIC will sit on.   | - |
-| nat | No | A boolean which indicates if the NIC will perform Network Address Translation.  Valid values are `true`, `false`.  | false |
-| firewall_rules | No | A list of firewall rules associated to the NIC.   | - |
-| firewall_active | No | Indicates the firewall is active.  Valid values are `true`, `false`.  | false |
-| server_id | No | The server ID the NIC will be attached to.   | - |
-| server_name | No | The server name the NIC will be attached to.   | - |
-| datacenter_id | No | The ID of the virtual data center where the NIC will reside.   | - |
-| datacenter_name | No | The name of the virtual data center where the NIC will reside.   | - |
-| id | No | The NIC ID.   | - |
+| Name | Required | Description |
+| :--- | :-: | :--- |
+| ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
+| ips | No | The IPs assigned to the NIC.   |
+| dhcp | No | Enable or disable DHCP on the NIC.  Valid values are `true`, `false`.  |
+| lan | No | The LAN name the NIC will sit on.   |
+| nat | No | A boolean which indicates if the NIC will perform Network Address Translation.  Valid values are `true`, `false`.  |
+| firewall_rules | No | A list of firewall rules associated to the NIC.   |
+| firewall_active | No | Indicates the firewall is active.  Valid values are `true`, `false`.  |
+| server_id | No | The server ID the NIC will be attached to.   |
+| server_name | No | The server name the NIC will be attached to.   |
+| datacenter_id | No | The ID of the virtual data center where the NIC will reside.   |
+| datacenter_name | No | The name of the virtual data center where the NIC will reside.   |
+| id | No | The NIC ID.   |
 ***
 
 
