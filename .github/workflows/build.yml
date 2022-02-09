@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - release/v5
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -26,6 +26,7 @@ jobs:
 
       - name: Update file paths in coverage.json
         run: sed -i 's+/home/runner/work/puppet-module/puppet-module+/github/workspace+g' coverage/coverage.json
+
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
