@@ -2,6 +2,7 @@
 Puppet::Type.newtype(:backup_unit) do
   @doc = 'Type representing a Ionoscloud Backup Unit'
   @changeable_properties = [:email]
+  @doc_directory = 'backup'
 
   ensurable
 

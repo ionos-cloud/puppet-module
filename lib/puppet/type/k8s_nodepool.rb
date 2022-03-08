@@ -7,6 +7,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     :k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count,
     :max_node_count, :lans, :public_ips
   ]
+  @doc_directory = 'kubernetes'
 
   ensurable
 

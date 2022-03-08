@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:natgateway) do
   @doc = 'Type representing a IonosCloud NAT Gateway.'
   @changeable_properties = [:public_ips, :lans, :rules, :flowlogs]
+  @doc_directory = 'compute-engine'
 
   ensurable
 

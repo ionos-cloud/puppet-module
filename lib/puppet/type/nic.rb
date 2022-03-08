@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a IonosCloud network interface.'
   @changeable_properties = [:ips, :lan, :dhcp, :firewall_active, :firewall_rules, :firewall_type, :flowlogs]
+  @doc_directory = 'compute-engine'
 
   ensurable
 

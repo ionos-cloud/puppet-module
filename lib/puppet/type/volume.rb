@@ -1,6 +1,7 @@
 Puppet::Type.newtype(:volume) do
   @doc = 'Type representing a IonosCloud storage volume.'
   @changeable_properties = [:size]
+  @doc_directory = 'compute-engine'
 
   ensurable
 

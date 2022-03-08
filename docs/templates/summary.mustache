@@ -5,6 +5,9 @@
 
 ## Types
 
-{{#types}}
-* [{{title}}]({{filename}})
-{{/types}}
+{{#categories}}
+* {{category}}
+  {{#generated_types}}
+  * [{{title}}]({{filename}})
+  {{/generated_types}}
+{{/categories}}
