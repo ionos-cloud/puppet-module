@@ -13,7 +13,7 @@ FOLDER_TO_NAME_MAP = {
   'user' => 'User Management',
   'compute-engine' => 'Compute Engine',
   'kubernetes' => 'Managed Kubernetes',
-  'dbaas-postgres' => 'DbaaS Postgres',
+  'dbaas-postgres' => 'DBaaS Postgres',
 }.freeze
 
 # Mustache class for Puppet type documentation file
@@ -50,7 +50,6 @@ end
 def generate_type_doc(type)
   doc = Puppet::Type.type(type).doc
   changeable_properties = Puppet::Type.type(type).instance_variable_get(:@changeable_properties)
-  doc_directory = Puppet::Type.type(type).instance_variable_get(:@doc_directory)
 
   parameters = Puppet::Type.type(type).parameters.map do |param|
     param_class = Puppet::Type.type(type).paramclass(param)
@@ -135,8 +134,6 @@ end
 
 final_categories = []
 
-categories.map { |key, value| final_categories << { category: key, generated_types: value.sort { |a, b| a[:title] <=> b[:title] } } }
+categories.map { |key, value| final_categories << { category: key, generated_types: value.sort_by { |a| a[:title] } } }
 
-File.open('summary.md', 'w') { |f|
-  f.write(Summary.new(final_categories).render)
-}
+File.open('summary.md', 'w') { |f| f.write(Summary.new(final_categories).render) }
