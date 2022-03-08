@@ -3,9 +3,18 @@
 # This must be run from /docs directory
 
 require 'mustache'
+require 'fileutils'
 require 'puppet'
 
 $LOAD_PATH << '.'
+
+FOLDER_TO_NAME_MAP = {
+  'backup' => 'Managed Backup',
+  'user' => 'User Management',
+  'compute-engine' => 'Compute Engine',
+  'kubernetes' => 'Managed Kubernetes',
+  'dbaas-postgres' => 'DbaaS Postgres',
+}.freeze
 
 # Mustache class for Puppet type documentation file
 class Type < Mustache
@@ -30,17 +39,18 @@ class Summary < Mustache
   self.template_path = './templates'
   self.template_file = './templates/summary.mustache'
 
-  attr_accessor :types
+  attr_accessor :categories
 
-  def initialize(types)
+  def initialize(categories)
     super()
-    @types = types || []
+    @categories = categories || []
   end
 end
 
 def generate_type_doc(type)
   doc = Puppet::Type.type(type).doc
   changeable_properties = Puppet::Type.type(type).instance_variable_get(:@changeable_properties)
+  doc_directory = Puppet::Type.type(type).instance_variable_get(:@doc_directory)
 
   parameters = Puppet::Type.type(type).parameters.map do |param|
     param_class = Puppet::Type.type(type).paramclass(param)
@@ -66,7 +76,15 @@ def generate_type_doc(type)
     puts "No example found for #{type}, still generating."
   end
 
-  filename = "types/#{type}.md"
+  begin
+    filename = "types/#{Puppet::Type.type(type).instance_variable_get(:@doc_directory)}/#{type}.md"
+    category = FOLDER_TO_NAME_MAP[Puppet::Type.type(type).instance_variable_get(:@doc_directory)]
+  rescue NoMethodError
+    filename = "types/#{type}.md"
+    category = ''
+  end
+
+  FileUtils.mkdir_p(File.dirname(filename)) unless File.directory?(File.dirname(filename))
 
   File.open(filename, 'w') do |f|
     f.write(
@@ -82,7 +100,11 @@ def generate_type_doc(type)
   end
 
   puts "Generated documentation for #{type}."
-  [type, filename]
+  {
+    title: type,
+    filename: filename,
+    category: category,
+  }
 end
 
 all_types = []
@@ -95,15 +117,26 @@ generated_types = []
 
 all_types.each do |type|
   begin
-    type_name, filename = generate_type_doc(type)
-    generated_types.append({ title: type_name, filename: filename })
+    generated_types.append(generate_type_doc(type))
   rescue StandardError => exc
     puts "Could not generate doc for #{type}. Error: #{exc}"
   end
 end
 
-generated_types.sort! { |a, b| a[:title] <=> b[:title] }
+categories = {}
 
-File.open('summary.md', 'w') do |f|
-  f.write(Summary.new(generated_types).render)
+generated_types.map do |generated_type|
+  if categories.key?(generated_type[:category])
+    categories[generated_type[:category]] << generated_type
+  else
+    categories[generated_type[:category]] = [generated_type]
+  end
 end
+
+final_categories = []
+
+categories.map { |key, value| final_categories << { category: key, generated_types: value.sort { |a, b| a[:title] <=> b[:title] } } }
+
+File.open('summary.md', 'w') { |f|
+  f.write(Summary.new(final_categories).render)
+}

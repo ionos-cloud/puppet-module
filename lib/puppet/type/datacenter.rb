@@ -2,6 +2,7 @@
 Puppet::Type.newtype(:datacenter) do
   @doc = 'Type representing a IonosCloud virtual data center.'
   @changeable_properties = [:description]
+  @doc_directory = 'compute-engine'
 
   ensurable
 

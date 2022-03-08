@@ -2,6 +2,7 @@ require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:k8s_node) do
   @doc = 'Type representing a Ionoscloud network interface.'
+  @doc_directory = 'kubernetes'
 
   ensurable
 

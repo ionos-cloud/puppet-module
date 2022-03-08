@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:s3_key) do
   @doc = 'Type representing an s3 key'
+  @doc_directory = 'user'
 
   newparam(:name, namevar: true) do
     desc 'The id of the s3 key.'

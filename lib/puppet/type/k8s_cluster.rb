@@ -8,6 +8,7 @@ Puppet::Type.newtype(:k8s_cluster) do
     :k8s_version, :maintenance_day, :maintenance_time,
     :api_subnet_allow_list, :s3_buckets
   ]
+  @doc_directory = 'kubernetes'
 
   ensurable
 

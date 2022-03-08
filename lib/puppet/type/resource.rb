@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:resource) do
   @doc = 'Type representing a IonosCloud resource.'
+  @doc_directory = 'compute-engine'
 
   newparam(:name, namevar: true) do
     desc 'The name of the resource.'
