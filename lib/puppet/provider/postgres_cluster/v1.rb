@@ -13,7 +13,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   def self.instances
     postgres_clusters = []
     PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.clusters_get(depth: 1).items.each do |postgres_cluster|
-      postgres_clusters << new(instance_to_hash(postgres_cluster))
+      backups = PuppetX::IonoscloudX::Helper.dbaas_postgres_backup_api.cluster_backups_get(postgres_cluster.id)
+      postgres_clusters << new(instance_to_hash(postgres_cluster, backups))
     end
     postgres_clusters.flatten
   end
@@ -21,94 +22,80 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   def self.prefetch(resources)
     instances.each do |prov|
       if (resource = resources[prov.name])
-        resource.provider = prov if resource[:name] == prov.name
+        resource.provider = prov if resource[:display_name] == prov.name
       end
     end
   end
 
-  def self.instance_to_hash(instance)
+  def self.instance_to_hash(instance, backups)
     {
       id: instance.id,
       postgres_version: instance.properties.postgres_version,
       instances: instance.properties.instances,
-      cores: instance.properties.cores,
-      ram: instance.properties.ram,
+      cores_count: instance.properties.cores,
+      ram_size: instance.properties.ram,
       storage_size: instance.properties.storage_size,
       storage_type: instance.properties.storage_type,
       connections: instance.properties.connections,
       location: instance.properties.location,
       display_name: instance.properties.display_name,
+      name: instance.properties.display_name,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
-      db_username: instance.properties.credentials.username,
-      db_password: instance.properties.credentials.password,
       synchronization_mode: instance.properties.synchronization_mode,
+      state: instance.metadata.state,
+      backups: backups.items.map do |backup|
+        {
+          id: backup.id,
+          version: backup.properties.version,
+          is_active: backup.properties.is_active,
+          earliest_recovery_target_time: backup.properties.earliest_recovery_target_time,
+        }
+      end,
       ensure: :present,
     }
   end
 
   def restore=(_value)
     # restore setter is only invoked on restore => true
-    datacenter_id = get_datacenter_id(resource[:datacenter])
-    volume_id = get_volume_id(datacenter_id, resource[:volume])
 
-    _, _, headers = PuppetX::IonoscloudX::Helper.volumes_api.datacenters_volumes_restore_snapshot_post_with_http_info(
-      datacenter_id, volume_id, { snapshot_id: @property_hash[:id] }
+    PuppetX::IonoscloudX::Helper.dbaas_postgres_restore_api.cluster_restore_post(
+      @property_hash[:id], 
+      restore_request = IonoscloudDbaasPostgres::CreateRestoreRequest.new(
+        backup_id: resource[:backup_id],
+        recovery_target_time: resource[:recovery_target_time],
+      ),
     )
-    Puppet.info("Restoring snapshot '#{name}' onto volume '#{resource[:volume]}'...")
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
+
+    Puppet.info("Restoring backup '#{resource[:backup_id]}' onto Postgres Cluster '#{name}'")
   end
 
-  def description=(value)
-    @property_flush[:description] = value
+  def cores_count=(value)
+    @property_flush[:cores_count] = value
   end
 
-  def cpu_hot_plug=(value)
-    @property_flush[:cpu_hot_plug] = value
+  def ram_size=(value)
+    @property_flush[:ram_size] = value
   end
 
-  def cpu_hot_unplug=(value)
-    @property_flush[:cpu_hot_unplug] = value
+  def storage_size=(value)
+    @property_flush[:storage_size] = value
   end
 
-  def ram_hot_plug=(value)
-    @property_flush[:ram_hot_plug] = value
+  def maintenance_time=(value)
+    @property_flush[:maintenance_time] = value
   end
 
-  def ram_hot_unplug=(value)
-    @property_flush[:ram_hot_unplug] = value
+  def maintenance_day=(value)
+    @property_flush[:maintenance_day] = value
   end
 
-  def nic_hot_plug=(value)
-    @property_flush[:nic_hot_plug] = value
+  def postgres_version=(value)
+    @property_flush[:postgres_version] = value
   end
 
-  def nic_hot_unplug=(value)
-    @property_flush[:nic_hot_unplug] = value
-  end
-
-  def disc_virtio_hot_plug=(value)
-    @property_flush[:disc_virtio_hot_plug] = value
-  end
-
-  def disc_virtio_hot_unplug=(value)
-    @property_flush[:disc_virtio_hot_unplug] = value
-  end
-
-  def disc_scsi_hot_plug=(value)
-    @property_flush[:disc_scsi_hot_plug] = value
-  end
-
-  def disc_scsi_hot_unplug=(value)
-    @property_flush[:disc_scsi_hot_unplug] = value
-  end
-
-  def sec_auth_protection=(value)
-    @property_flush[:sec_auth_protection] = value
-  end
-
-  def licence_type=(value)
-    @property_flush[:licence_type] = value
+  def instances=(value)
+    @property_flush[:instances] = value
   end
 
   def exists?
@@ -117,22 +104,22 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   end
 
   def create
-    datacenter_id = get_datacenter_id(resource[:connection]['datacenter'])
-    lan_id = get_lan_id(datacenter_id, resource[:connection]['lan'])
+    datacenter_id = get_datacenter_id(resource[:connections][0]['datacenter'])
+    lan_id = get_lan_id(datacenter_id, resource[:connections][0]['lan'])
 
     cluster = PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.clusters_post(
       IonoscloudDbaasPostgres::CreateClusterRequest.new(properties: IonoscloudDbaasPostgres::CreateClusterProperties.new(
         postgres_version: resource[:postgres_version],
         instances: Integer(resource[:instances]),
-        cores: Integer(resource[:cores]),
-        ram: Integer(resource[:ram]),
+        cores: Integer(resource[:cores_count]),
+        ram: Integer(resource[:ram_size]),
         storage_size: Integer(resource[:storage_size]),
         storage_type: resource[:storage_type],
         connections: [
           IonoscloudDbaasPostgres::Connection.new(
             datacenter_id: datacenter_id,
-            lan_id: lan_id,
-            cidr: resource[:connection]['cidr'],
+            lan_id: String(lan_id),
+            cidr: resource[:connections][0]['cidr'],
           ),
         ],
         location: resource[:location],
@@ -160,21 +147,26 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
 
   def flush
     return if @property_flush.empty?
-    changeable_properties = [
-      :description, :cpu_hot_plug, :cpu_hot_unplug, :ram_hot_plug, :ram_hot_unplug,
-      :nic_hot_plug, :nic_hot_unplug, :disc_virtio_hot_plug, :disc_virtio_hot_unplug,
-      :disc_scsi_hot_plug, :disc_scsi_hot_unplug, :licence_type, :licence_type, :sec_auth_protection
-    ]
+    changeable_properties = [:cores_count, :ram_size, :storage_size, :maintenance_time, :maintenance_day, :postgres_version, :instances]
     changes = Hash[ *changeable_properties.map { |property| [ property, @property_flush[property] ] }.flatten ].delete_if { |_k, v| v.nil? }
 
     return if changes.empty?
 
-    Puppet.info("Updating snapshot '#{name}', #{changes.keys}.")
-    changes = Ionoscloud::SnapshotProperties.new(**changes)
+    Puppet.info("Updating Postgres Cluster '#{name}', #{changes.keys}.")
 
-    _, _, headers = PuppetX::IonoscloudX::Helper.snapshots_api.snapshots_patch_with_http_info(@property_hash[:id], changes)
+    cluster_request = IonoscloudDbaasPostgres::PatchClusterRequest.new(properties: IonoscloudDbaasPostgres::PatchClusterProperties.new(
+      cores: (changes[:cores_count].nil? ? nil : Integer(changes[:cores_count])),
+      ram: (changes[:ram_size].nil? ? nil : Integer(changes[:ram_size])),
+      storage_size: (changes[:storage_size].nil? ? nil : Integer(changes[:storage_size])),
+      maintenance_window: IonoscloudDbaasPostgres::MaintenanceWindow.new(
+        time: (changes[:maintenance_time].nil? ? @property_hash[:maintenance_time] : changes[:maintenance_time]),
+        day_of_the_week: (changes[:maintenance_day].nil? ? @property_hash[:maintenance_day] : changes[:maintenance_day]),
+      ),
+      postgres_version: (changes[:postgres_version].nil? ? nil : changes[:postgres_version]),
+      instances: (changes[:instances].nil? ? nil : Integer(changes[:instances])),
+    ))
 
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
+    PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.clusters_patch(@property_hash[:id], cluster_request)
 
     changeable_properties.each do |property|
       @property_hash[property] = @property_flush[property] if @property_flush[property]
@@ -183,9 +175,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   end
 
   def destroy
-    Puppet.info("Deleting snapshot '#{name}'...")
-    _, _, headers = PuppetX::IonoscloudX::Helper.snapshots_api.snapshots_delete_with_http_info(@property_hash[:id])
-    PuppetX::IonoscloudX::Helper.wait_request(headers)
+    Puppet.info("Deleting Postgres Cluster '#{name}'...")
+    PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.clusters_delete(@property_hash[:id])
     @property_hash[:ensure] = :absent
   end
 
@@ -195,7 +186,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   end
 
   def get_lan_id(datacenter_id, lan_id_or_name)
-    return lan_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(lan_id_or_name)
+    return lan_id_or_name if lan_id_or_name.is_a? Integer
     PuppetX::IonoscloudX::Helper.lan_from_name(lan_id_or_name, datacenter_id).id
   end
 end

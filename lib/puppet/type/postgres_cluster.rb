@@ -89,7 +89,7 @@ Puppet::Type.newtype(:postgres_cluster) do
         raise('RAM size must be a integer')
       end
       raise('Instances must have ram assigned') if value == ''
-      raise('Requested Ram size must be set to multiple of 1024MB with a minimum of 2048MB') unless (ram_size % 1024) == 0 && ram_size >= 2048
+      raise('Requested Ram size must be set to multiple of 1024MB') unless (ram_size % 1024) == 0
     end
   end
 
@@ -131,6 +131,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     desc 'Represents different modes of replication.'
     isrequired
     validate do |value|
+      raise('Syncronization mode must be set') if value == ''
       raise('Syncronization mode must be a String') unless value.is_a?(String)
     end
 
@@ -205,6 +206,13 @@ Puppet::Type.newtype(:postgres_cluster) do
 
   newproperty(:id) do
     desc 'The ID of the Postgres Cluster.'
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:state) do
+    desc 'The state of the Postgres Cluster.'
     def insync?(_is)
       true
     end

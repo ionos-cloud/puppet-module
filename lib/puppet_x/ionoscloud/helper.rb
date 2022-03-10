@@ -1,5 +1,9 @@
+
+warn_level = $VERBOSE
+$VERBOSE = nil
 require 'ionoscloud'
 require 'ionoscloud-dbaas-postgres'
+$VERBOSE = warn_level
 
 
 module PuppetX
@@ -151,6 +155,10 @@ module PuppetX
 
       def self.dbaas_postgres_backup_api
         IonoscloudDbaasPostgres::BackupsApi.new(ionoscloud_dbaas_postgres_api_client)
+      end
+
+      def self.dbaas_postgres_restore_api
+        IonoscloudDbaasPostgres::RestoresApi.new(ionoscloud_dbaas_postgres_api_client)
       end
 
       def self.count_by_name(res_name, items)
