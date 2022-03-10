@@ -6,12 +6,12 @@ describe provider_class do
   context 'postgres_cluster operations' do
     before(:all) do
       VCR.use_cassette('postgres_cluster_prepare') do
-        @datacenter_name = 'puppet_module_test04caw234t334g3h4332525d099c46550'
-        @lan_name = 'puppet_module_test04cacdaf2f3f2c41bd099c46553'
+        @datacenter_name = 'puppet_module_test3gfwgewgwegweggwegwwgwgwegw099c46550'
+        @lan_name = 'puppet_module_test04cacdaf2f3f2gwegwgwegwgwgwegwegw9c46553'
         create_datacenter(@datacenter_name)
         create_private_lan(@datacenter_name, @lan_name)
 
-        @postgres_cluster_name = 'puppet_module_test04cacqwfqfqf2f2f23f3246558'
+        @postgres_cluster_name = 'puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558'
 
         @resource = Puppet::Type.type(:postgres_cluster).new(
           display_name: @postgres_cluster_name,
@@ -25,7 +25,7 @@ describe provider_class do
             {
               'datacenter' => @datacenter_name,
               'lan' => @lan_name,
-              'cidr' => '192.168.1.106/24',
+              'cidr' => '192.168.1.105/24',
             }
           ],
           location: 'de/txl',
@@ -83,7 +83,7 @@ describe provider_class do
 
     it 'restores postgres_cluster' do
       VCR.use_cassette('postgres_cluster_restore') do
-        sleep(1000)
+        sleep(600)
         backup = get_postgres_backup(@provider.id)
         @provider.backup_id = backup.id
         expect(@provider.restore = true).to be_truthy
