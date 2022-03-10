@@ -62,8 +62,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
     PuppetX::IonoscloudX::Helper.dbaas_postgres_restore_api.cluster_restore_post(
       @property_hash[:id], 
       restore_request = IonoscloudDbaasPostgres::CreateRestoreRequest.new(
-        backup_id: resource[:backup_id],
-        recovery_target_time: resource[:recovery_target_time],
+        backup_id: @property_hash[:backup_id],
+        recovery_target_time: @property_hash[:recovery_target_time],
       ),
     )
 
@@ -158,10 +158,10 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
       cores: (changes[:cores_count].nil? ? nil : Integer(changes[:cores_count])),
       ram: (changes[:ram_size].nil? ? nil : Integer(changes[:ram_size])),
       storage_size: (changes[:storage_size].nil? ? nil : Integer(changes[:storage_size])),
-      maintenance_window: IonoscloudDbaasPostgres::MaintenanceWindow.new(
+      maintenance_window: (changes[:maintenance_time] || changes[:maintenance_day] ? IonoscloudDbaasPostgres::MaintenanceWindow.new(
         time: (changes[:maintenance_time].nil? ? @property_hash[:maintenance_time] : changes[:maintenance_time]),
         day_of_the_week: (changes[:maintenance_day].nil? ? @property_hash[:maintenance_day] : changes[:maintenance_day]),
-      ),
+      ) : nil),
       postgres_version: (changes[:postgres_version].nil? ? nil : changes[:postgres_version]),
       instances: (changes[:instances].nil? ? nil : Integer(changes[:instances])),
     ))

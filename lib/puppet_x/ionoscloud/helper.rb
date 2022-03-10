@@ -1,4 +1,3 @@
-
 warn_level = $VERBOSE
 $VERBOSE = nil
 require 'ionoscloud'
@@ -1008,7 +1007,7 @@ module PuppetX
       end
 
       def self.wait_request(headers)
-        Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
+        ionoscloud_api_client.wait_for_completion(get_request_id(headers))
       end
 
       def self.get_request_id(headers)
