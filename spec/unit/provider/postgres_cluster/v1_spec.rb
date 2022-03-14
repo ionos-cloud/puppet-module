@@ -26,7 +26,7 @@ describe provider_class do
               'datacenter' => @datacenter_name,
               'lan' => @lan_name,
               'cidr' => '192.168.1.105/24',
-            }
+            },
           ],
           location: 'de/txl',
           maintenance_day: 'Sunday',

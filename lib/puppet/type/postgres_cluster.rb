@@ -145,7 +145,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     isrequired
     validate do |value|
       connections = value.is_a?(Array) ? value : [value]
-      connections.each do |connection|
+      connections.each do |_connection|
         ['datacenter', 'lan', 'cidr'].each do |key|
           raise("Connection must include #{key}") unless value.keys.include?(key)
         end
@@ -201,7 +201,7 @@ Puppet::Type.newtype(:postgres_cluster) do
       true
     end
   end
-  
+
   # read-only properties
 
   newproperty(:id) do

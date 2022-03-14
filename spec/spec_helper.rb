@@ -44,8 +44,11 @@ VCR.configure do |config|
     rec.ignore! if rec.request.method == :get && k8s_cluster_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
     rec.ignore! if rec.request.method == :get && k8s_nodepool_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
 
-    postgres_cluster_url_regex =%r{/clusters/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
-    rec.ignore! if rec.request.method == :get && k8s_nodepool_url_regex.match?(rec.request.uri) && ['DESTROYING', 'DEPLOYING', 'BUSY'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
+    postgres_cluster_url_regex = %r{/clusters/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    rec.ignore! if
+      rec.request.method == :get &&
+      postgres_cluster_url_regex.match?(rec.request.uri) &&
+      ['DESTROYING', 'DEPLOYING', 'BUSY'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
   end
 end
 

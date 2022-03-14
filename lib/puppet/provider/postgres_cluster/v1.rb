@@ -62,8 +62,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
     # restore setter is only invoked on restore => true
 
     PuppetX::IonoscloudX::Helper.dbaas_postgres_restore_api.cluster_restore_post(
-      @property_hash[:id], 
-      restore_request = IonoscloudDbaasPostgres::CreateRestoreRequest.new(
+      @property_hash[:id],
+      IonoscloudDbaasPostgres::CreateRestoreRequest.new(
         backup_id: @property_hash[:backup_id],
         recovery_target_time: @property_hash[:recovery_target_time],
       ),
@@ -126,10 +126,14 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
         ],
         location: resource[:location],
         display_name: resource[:display_name],
-        maintenance_window: (resource[:maintenance_time] && resource[:maintenance_day]) ? IonoscloudDbaasPostgres::MaintenanceWindow.new(
-          time: resource[:maintenance_time],
-          day_of_the_week: resource[:maintenance_day],
-        ) : nil,
+        maintenance_window: if resource[:maintenance_time] && resource[:maintenance_day]
+                              IonoscloudDbaasPostgres::MaintenanceWindow.new(
+                                      time: resource[:maintenance_time],
+                                      day_of_the_week: resource[:maintenance_day],
+                                    )
+                            else
+                              nil
+                            end,
         credentials: IonoscloudDbaasPostgres::DBUser.new(
           username: resource[:db_username],
           password: resource[:db_password],
@@ -139,7 +143,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
           backup_id: resource[:backup_id],
           recovery_target_time: resource[:recovery_target_time],
         ),
-      ))
+      )),
     )
 
     Puppet.info("Created a new Postgres Cluster '#{display_name}'.")
@@ -160,10 +164,14 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
       cores: (changes[:cores_count].nil? ? nil : Integer(changes[:cores_count])),
       ram: (changes[:ram_size].nil? ? nil : Integer(changes[:ram_size])),
       storage_size: (changes[:storage_size].nil? ? nil : Integer(changes[:storage_size])),
-      maintenance_window: (changes[:maintenance_time] || changes[:maintenance_day] ? IonoscloudDbaasPostgres::MaintenanceWindow.new(
-        time: (changes[:maintenance_time].nil? ? @property_hash[:maintenance_time] : changes[:maintenance_time]),
-        day_of_the_week: (changes[:maintenance_day].nil? ? @property_hash[:maintenance_day] : changes[:maintenance_day]),
-      ) : nil),
+      maintenance_window: (if changes[:maintenance_time] || changes[:maintenance_day]
+                             IonoscloudDbaasPostgres::MaintenanceWindow.new(
+                                   time: (changes[:maintenance_time].nil? ? @property_hash[:maintenance_time] : changes[:maintenance_time]),
+                                   day_of_the_week: (changes[:maintenance_day].nil? ? @property_hash[:maintenance_day] : changes[:maintenance_day]),
+                                 )
+                           else
+                             nil
+                           end),
       postgres_version: (changes[:postgres_version].nil? ? nil : changes[:postgres_version]),
       instances: (changes[:instances].nil? ? nil : Integer(changes[:instances])),
     ))

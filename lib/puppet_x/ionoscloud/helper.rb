@@ -4,7 +4,6 @@ require 'ionoscloud'
 require 'ionoscloud-dbaas-postgres'
 $VERBOSE = warn_level
 
-
 module PuppetX
   module IonoscloudX
     # Helper class for the IONOS Cloud Puppet module
