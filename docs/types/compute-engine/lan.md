@@ -31,7 +31,7 @@ Type representing a IonosCloud LAN.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'MyDataCenter'
 
 lan { 'public' :

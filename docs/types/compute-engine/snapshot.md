@@ -54,7 +54,7 @@ Type representing a IonosCloud Snapshot.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'PPSnapshotTest'
 $volume_name = 'staging'
 

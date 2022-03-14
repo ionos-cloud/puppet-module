@@ -33,7 +33,7 @@ Type representing a IonosCloud NAT Gateway.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'testdc1'
 
 datacenter { $datacenter_name :

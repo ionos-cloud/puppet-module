@@ -14,7 +14,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
     postgres_clusters = []
     PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.clusters_get(depth: 1).items.each do |postgres_cluster|
       backups = PuppetX::IonoscloudX::Helper.dbaas_postgres_backup_api.cluster_backups_get(postgres_cluster.id)
-      postgres_clusters << new(instance_to_hash(postgres_cluster, backups))
+      postgres_versions = PuppetX::IonoscloudX::Helper.dbaas_postgres_cluster_api.cluster_postgres_versions_get(postgres_cluster.id)
+      postgres_clusters << new(instance_to_hash(postgres_cluster, backups, postgres_versions))
     end
     postgres_clusters.flatten
   end
@@ -27,7 +28,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
     end
   end
 
-  def self.instance_to_hash(instance, backups)
+  def self.instance_to_hash(instance, backups, postgres_versions)
     {
       id: instance.id,
       postgres_version: instance.properties.postgres_version,
@@ -52,6 +53,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
           earliest_recovery_target_time: backup.properties.earliest_recovery_target_time,
         }
       end,
+      available_postgres_vesions: postgres_versions.data.map { |postgres_version| postgres_version.name },
       ensure: :present,
     }
   end

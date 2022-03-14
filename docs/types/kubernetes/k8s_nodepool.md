@@ -35,7 +35,7 @@ Type representing a Ionoscloud K8s Nodepool.
 | id | No | The ID of the K8s Nodepool.   |
 | datacenter_id | No | The datacenter used by the K8s Nodepool.   |
 | cluster_id | No | The ID of the K8s cluster of the K8s Nodepool.   |
-| state | No | She state of the K8s Nodepool.   |
+| state | No | The state of the K8s Nodepool.   |
 | k8s_nodes | No | A list of K8s nodes that exist in the nodepool.   |
 ***
 
@@ -54,7 +54,7 @@ Type representing a Ionoscloud K8s Nodepool.
 
 ## Example
 
-```text
+```ruby
 $cluster_name = 'puppet_module_testa'
 $datacenter_name = 'testdc1'
 

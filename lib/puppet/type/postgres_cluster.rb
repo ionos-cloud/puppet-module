@@ -157,7 +157,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     end
   end
 
-  newparam(:db_username) do
+  newproperty(:db_username) do
     desc 'The username for the initial postgres user. Some system usernames are restricted (e.g. "postgres", "admin", "standby")'
     isrequired
     validate do |value|
@@ -169,7 +169,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     end
   end
 
-  newparam(:db_password) do
+  newproperty(:db_password) do
     desc 'The password for the initial postgres user.'
     validate do |value|
       raise ArgumentError, 'The image password should be a String.' unless value.is_a?(String)
@@ -180,7 +180,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     end
   end
 
-  newparam(:backup_id) do
+  newproperty(:backup_id) do
     desc 'ID of a backup for the Cluster'
     validate do |value|
       raise ArgumentError, 'The Backup ID should be a String.' unless value.is_a?(String)
@@ -191,7 +191,7 @@ Puppet::Type.newtype(:postgres_cluster) do
     end
   end
 
-  newparam(:recovery_target_time) do
+  newproperty(:recovery_target_time) do
     desc 'Recovery target time'
     validate do |value|
       raise ArgumentError, 'The Recovery target time should be a String.' unless value.is_a?(String)
@@ -220,6 +220,13 @@ Puppet::Type.newtype(:postgres_cluster) do
 
   newproperty(:backups, array_matching: :all) do
     desc 'A list of backups that exist in the Postgres Cluster.'
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:available_postgres_vesions, array_matching: :all) do
+    desc 'A list of Postgres Versions available for the Postgres Cluster.'
     def insync?(_is)
       true
     end

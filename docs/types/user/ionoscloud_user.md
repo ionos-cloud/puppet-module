@@ -35,7 +35,7 @@ Type representing a IonosCloud user.
 
 ## Example
 
-```text
+```ruby
 ionoscloud_user { 'john.doe.007@example.com' :
   ensure        => present,
   firstname     => 'John',

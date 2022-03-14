@@ -43,7 +43,7 @@ Type representing a IonosCloud network interface.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'testdc1'
 $server_name = 'worker1'
 $lan_name = 'public1'
