@@ -1,0 +1,2277 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/6.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:06 GMT
+      Content-Type:
+      - application/json
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "datacenters",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters",
+          "items" : [ {
+            "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed",
+            "metadata" : {
+              "etag" : "2e652fc2439cd16b4e4a7e661fa171bb",
+              "createdDate" : "2022-03-10T14:48:05Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:48:05Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test3gfwgewgwegweggwegwwgwgwegw099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 2,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/servers"
+              },
+              "volumes" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/loadbalancers"
+              },
+              "lans" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e",
+            "metadata" : {
+              "etag" : "4951c9ef288bfc52f4914810f6398710",
+              "createdDate" : "2022-03-10T14:47:05Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:47:05Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04caw2grthtrhtrhrth5525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/servers"
+              },
+              "volumes" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/loadbalancers"
+              },
+              "lans" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "eed6bdd0-8484-412f-8e45-ebe453af5b1e/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/eed6bdd0-8484-412f-8e45-ebe453af5b1e/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e",
+            "metadata" : {
+              "etag" : "a536263ae9036ff92f078b9ac9d032ea",
+              "createdDate" : "2022-03-10T14:46:06Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:46:06Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04caw23423525325235525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/servers"
+              },
+              "volumes" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/loadbalancers"
+              },
+              "lans" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/4a12e670-7bb4-4a9a-8f04-2be4a1bbfb7e/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9",
+            "metadata" : {
+              "etag" : "39d3b44526b44a69a73c61a186558504",
+              "createdDate" : "2022-03-10T14:24:40Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:24:40Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04caw234t334g3h4332525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 2,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/servers"
+              },
+              "volumes" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/loadbalancers"
+              },
+              "lans" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "f41fc160-3244-4fc5-a9f0-b3159f6b58b9/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/f41fc160-3244-4fc5-a9f0-b3159f6b58b9/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "a9e497ef-b669-4dc9-8683-451fa6250933",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933",
+            "metadata" : {
+              "etag" : "ffd6426af0e050b87facb488bd5f71ab",
+              "createdDate" : "2022-03-10T14:23:20Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:23:20Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04caw234t3yt435y43h43532525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/servers"
+              },
+              "volumes" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/loadbalancers"
+              },
+              "lans" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "a9e497ef-b669-4dc9-8683-451fa6250933/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/a9e497ef-b669-4dc9-8683-451fa6250933/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8",
+            "metadata" : {
+              "etag" : "18b99dd6d5d497cfd4f0c27448eb4f68",
+              "createdDate" : "2022-03-10T14:20:13Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:20:13Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04cawegwg2wgwg3h3h43532525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/servers"
+              },
+              "volumes" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/loadbalancers"
+              },
+              "lans" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/c6e06f7e-11c5-4ea9-aa37-244fdd3549f8/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de",
+            "metadata" : {
+              "etag" : "b134d24303a82cb88356295ec4db45ec",
+              "createdDate" : "2022-03-10T14:16:06Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:16:06Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04cacda602e2532532525d099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 1,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/servers"
+              },
+              "volumes" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/loadbalancers"
+              },
+              "lans" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "dd4561dd-514f-44ed-94d2-e7f8533636de/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/dd4561dd-514f-44ed-94d2-e7f8533636de/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc",
+            "metadata" : {
+              "etag" : "d5428dac34c2e84a85c55e5f04fadb75",
+              "createdDate" : "2022-03-10T13:27:36Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T13:27:36Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04cacda602e04de3b7c41bd099c46550",
+              "description" : "Puppet Module test description",
+              "location" : "de/txl",
+              "version" : 2,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug", "vnf-alb" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/servers"
+              },
+              "volumes" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/loadbalancers"
+              },
+              "lans" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/3a4ab0ad-2ca0-44c5-8e99-89b29aae87bc/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0",
+            "metadata" : {
+              "etag" : "85e7d1d5f2c0a8f69b19c46290d119b7",
+              "createdDate" : "2022-03-10T09:53:04Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T09:53:04Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "testdc1",
+              "description" : null,
+              "location" : "de/fra",
+              "version" : 2,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/servers"
+              },
+              "volumes" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/loadbalancers"
+              },
+              "lans" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "7548e315-6c3b-4140-b2c4-5d6f4344e9a0/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/7548e315-6c3b-4140-b2c4-5d6f4344e9a0/networkloadbalancers"
+              }
+            }
+          }, {
+            "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "type" : "datacenter",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513",
+            "metadata" : {
+              "etag" : "9afd51d9fc58a3effee34c9ceb1ea15e",
+              "createdDate" : "2021-05-20T07:30:50Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2021-05-20T19:42:10Z",
+              "lastModifiedBy" : "[UNKNOWN]",
+              "lastModifiedByUserId" : "[UNKNOWN]",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "SDK AUTO-TEST",
+              "description" : "Datacenter created by an automated test.",
+              "location" : "de/fra",
+              "version" : 9,
+              "features" : [ "cloud-init-private-image", "vm-autoscaling", "vnf-nat", "ssd", "k8s", "vnf-fw", "ssd-storage-zoning", "nic-hot-plug", "vnf-lb", "monitoring", "pcc", "nic-hot-unplug", "contract-identities", "disk-vio-hot-unplug", "disk-vio-hot-plug", "cloud-init", "flow-logs", "cpu-hot-plug", "vnf-cidr", "core-vps", "k8s-cidr-s3-support", "private-loadbalancer", "mem-hot-plug" ],
+              "secAuthProtection" : false,
+              "cpuArchitecture" : [ {
+                "cpuFamily" : "INTEL_SKYLAKE",
+                "vendor" : "GenuineIntel",
+                "maxCores" : 4,
+                "maxRam" : 20480
+              } ]
+            },
+            "entities" : {
+              "servers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/servers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/servers"
+              },
+              "volumes" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/volumes"
+              },
+              "loadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/loadbalancers"
+              },
+              "lans" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/lans",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/lans"
+              },
+              "applicationloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/applicationloadbalancers"
+              },
+              "natgateways" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/natgateways"
+              },
+              "networkloadbalancers" : {
+                "id" : "64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/64d0766b-0fd0-458e-9bc9-33c885f2d513/networkloadbalancers"
+              }
+            }
+          } ],
+          "offset" : 0,
+          "limit" : 100,
+          "_links" : {
+            "self" : "https://api.ionos.com/cloudapi/v6/datacenters?depth=1&offset=0&limit=100"
+          }
+        }
+  recorded_at: Mon, 14 Mar 2022 08:52:06 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/lans?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/6.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:06 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1189'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "86279c5d-d59d-4d82-ad46-65ac357ceeed/lans",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/lans",
+          "items" : [ {
+            "id" : "1",
+            "type" : "lan",
+            "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/lans/1",
+            "metadata" : {
+              "etag" : "59ed6e3ede92076134413c3e9ac8b290",
+              "createdDate" : "2022-03-10T14:48:10Z",
+              "createdBy" : "username",
+              "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "lastModifiedDate" : "2022-03-10T14:48:10Z",
+              "lastModifiedBy" : "username",
+              "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+              "state" : "AVAILABLE"
+            },
+            "properties" : {
+              "name" : "puppet_module_test04cacdaf2f3f2gwegwgwegwgwgwegwegw9c46553",
+              "ipFailover" : [ ],
+              "pcc" : null,
+              "public" : false
+            },
+            "entities" : {
+              "nics" : {
+                "id" : "1/nics",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/86279c5d-d59d-4d82-ad46-65ac357ceeed/lans/1/nics"
+              }
+            }
+          } ]
+        }
+  recorded_at: Mon, 14 Mar 2022 08:52:06 GMT
+- request:
+    method: post
+    uri: https://api.ionos.com/databases/postgresql/clusters
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"postgresVersion":"12","instances":1,"cores":1,"ram":2048,"storageSize":4096,"storageType":"HDD","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"location":"de/txl","displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","maintenanceWindow":{"time":"16:30:59","dayOfTheWeek":"Sunday"},"credentials":{"username":"test","password":"7357cluster"},"synchronizationMode":"ASYNCHRONOUS","fromBackup":{}}}'
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:06 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:06 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:11 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '642'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"UNKNOWN","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:11 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '641'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"FAILED","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '641'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"FAILED","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:21 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:26 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:32 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:31 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:37 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:37 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:42 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:47 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '641'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"FAILED","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:47 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '641'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"FAILED","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:52 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:52:57 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:52:57 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:07 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:17 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:17 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:27 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:37 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:37 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:47 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:47 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:53:57 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:53:57 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:54:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:54:07 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:54:17 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:54:17 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:54:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:54:27 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:54:38 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:54:37 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:54:48 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:54:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:55:08 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:55:08 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:55:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:55:28 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:55:48 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:55:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:56:08 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:56:08 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:56:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:56:28 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:56:48 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:56:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:57:08 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:57:08 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:57:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:57:28 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:57:48 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:57:48 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:58:09 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:58:08 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:58:29 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:58:28 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:58:49 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:58:49 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:59:09 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:59:09 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:59:29 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:59:29 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 08:59:49 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 08:59:49 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 09:00:09 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '639'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"BUSY","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 09:00:09 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/06b2f7f5-a374-11ec-ac51-82a34c99d4c7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 09:00:29 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '644'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"type":"cluster","id":"06b2f7f5-a374-11ec-ac51-82a34c99d4c7","metadata":{"state":"AVAILABLE","createdDate":"2022-03-14T08:52:06Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 09:00:29 GMT
+recorded_with: VCR 6.0.0
