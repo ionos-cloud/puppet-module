@@ -84,9 +84,13 @@ describe provider_class do
     it 'restores postgres_cluster' do
       VCR.use_cassette('postgres_cluster_restore') do
         sleep(600)
-        backup = get_postgres_backup(@provider.id)
-        @provider.backup_id = backup.id
-        expect(@provider.restore = true).to be_truthy
+        restore_resource = Puppet::Type.type(:postgres_cluster).new(
+          display_name: @postgres_cluster_name,
+          backup_id: get_postgres_backup(@provider.id).id,
+        )
+        restore_provider = provider_class.new(restore_resource)
+        restore_provider.id = @provider.id
+        expect(restore_provider.restore = true).to be_truthy
         wait_postgres_cluster_available(@provider.id)
       end
     end

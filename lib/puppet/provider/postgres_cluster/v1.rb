@@ -64,8 +64,8 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
     PuppetX::IonoscloudX::Helper.dbaas_postgres_restore_api.cluster_restore_post(
       @property_hash[:id],
       IonoscloudDbaasPostgres::CreateRestoreRequest.new(
-        backup_id: @property_hash[:backup_id],
-        recovery_target_time: @property_hash[:recovery_target_time],
+        backup_id: resource[:backup_id],
+        recovery_target_time: resource[:recovery_target_time],
       ),
     )
 
