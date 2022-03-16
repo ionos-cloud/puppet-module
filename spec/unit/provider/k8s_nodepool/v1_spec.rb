@@ -94,7 +94,7 @@ describe provider_class do
 
     it 'deletes k8s nodepool' do
       VCR.use_cassette('k8s_nodepool_delete') do
-        sleep(100)
+        # sleep(100)
         wait_nodepool_active(@cluster_id, @provider.id)
         expect(@provider.destroy).to be_truthy
         expect(@provider.exists?).to be false
