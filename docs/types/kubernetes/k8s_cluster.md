@@ -37,7 +37,7 @@ Type representing a Ionoscloud K8s Cluster.
 
 ## Example
 
-```text
+```ruby
 k8s_cluster { 'myClustertest' :
   ensure           => present,
   k8s_version      => '1.18.5',

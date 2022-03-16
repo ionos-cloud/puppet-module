@@ -44,7 +44,7 @@ Type representing a IonosCloud storage volume.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'TestDataCenter'
 
 datacenter { $datacenter_name :

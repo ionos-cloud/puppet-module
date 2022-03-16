@@ -44,7 +44,7 @@ Type representing a IonosCloud firewall rule.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'testdc1'
 $server_name = 'worker1'
 $nic = 'testnic'

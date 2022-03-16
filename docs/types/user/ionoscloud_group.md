@@ -46,7 +46,7 @@ Type representing a IonosCloud group.
 
 ## Example
 
-```text
+```ruby
 ionoscloud_group { 'Puppet Test' :
   ensure              => present,
   create_data_center  => false,

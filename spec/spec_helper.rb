@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
+warn_level = $VERBOSE
+$VERBOSE = nil
 require 'ionoscloud'
+require 'ionoscloud-dbaas-postgres'
+$VERBOSE = warn_level
+
 require 'webmock/rspec'
 require 'vcr'
 require 'securerandom'
@@ -38,12 +43,69 @@ VCR.configure do |config|
 
     rec.ignore! if rec.request.method == :get && k8s_cluster_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
     rec.ignore! if rec.request.method == :get && k8s_nodepool_url_regex.match?(rec.request.uri) && ['DEPLOYING', 'UPDATING'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
+
+    postgres_cluster_url_regex = %r{/clusters/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
+    rec.ignore! if
+      rec.request.method == :get &&
+      postgres_cluster_url_regex.match?(rec.request.uri) &&
+      ['DESTROYING', 'DEPLOYING', 'BUSY'].include?((JSON.parse(rec.response.body)['metadata'] || {})['state'])
   end
 end
 
-Ionoscloud.configure do |config|
-  config.username = ENV['IONOS_USERNAME']
-  config.password = ENV['IONOS_PASSWORD']
+def ionoscloud_api_client
+  api_config = Ionoscloud::Configuration.new
+
+  api_config.username = ENV['IONOS_USERNAME']
+  api_config.password = ENV['IONOS_PASSWORD']
+
+  unless ENV['IONOS_API_URL'].nil?
+    uri = URI.parse(ENV['IONOS_API_URL'])
+
+    api_config.scheme = uri.scheme
+    api_config.host = uri.host
+    api_config.base_path = uri.path
+    api_config.server_index = nil
+  end
+
+  api_config.debugging = ENV['IONOS_DEBUG'] || false
+
+  api_client = Ionoscloud::ApiClient.new(api_config)
+
+  api_client.user_agent = [
+    'puppet/v5.1.0',
+    api_client.default_headers['User-Agent'],
+    'puppet/' + Puppet.version,
+  ].join('_')
+
+  api_client
+end
+
+def ionoscloud_dbaas_postgres_api_client
+  api_config = IonoscloudDbaasPostgres::Configuration.new
+
+  api_config.username = ENV['IONOS_USERNAME']
+  api_config.password = ENV['IONOS_PASSWORD']
+
+  unless ENV['IONOS_API_URL'].nil?
+    uri = URI.parse(ENV['IONOS_API_URL'])
+
+    api_config.scheme = uri.scheme
+    api_config.host = uri.host
+    api_config.base_path = uri.path
+    api_config.server_index = nil
+  end
+
+  api_config.debugging = ENV['IONOS_DEBUG'] || false
+
+  api_client = IonoscloudDbaasPostgres::ApiClient.new(api_config)
+
+  api_client.user_agent = [
+    'puppet/v5.1.0',
+    api_client.default_headers['User-Agent'],
+    'puppet/' + Puppet.version,
+  ].join('_')
+
+  api_client
 end
 
 def filter_headers(rec, pattern, placeholder)
@@ -56,20 +118,20 @@ def filter_headers(rec, pattern, placeholder)
 end
 
 def get_cluster_id(cluster_name)
-  cluster = Ionoscloud::KubernetesApi.new.k8s_get(depth: 1).items.find { |cluster| cluster.properties.name == cluster_name }
+  cluster = Ionoscloud::KubernetesApi.new(ionoscloud_api_client).k8s_get(depth: 1).items.find { |cluster| cluster.properties.name == cluster_name }
   cluster.id
 end
 
 def wait_cluster_active(cluster_id)
-  Ionoscloud::ApiClient.new.wait_for do
-    cluster = Ionoscloud::KubernetesApi.new.k8s_find_by_cluster_id(cluster_id)
+  ionoscloud_api_client.wait_for do
+    cluster = Ionoscloud::KubernetesApi.new(ionoscloud_api_client).k8s_find_by_cluster_id(cluster_id)
     cluster.metadata.state == 'ACTIVE'
   end
 end
 
 def wait_nodepool_active(cluster_id, nodepool_id)
-  Ionoscloud::ApiClient.new.wait_for do
-    cluster = Ionoscloud::KubernetesApi.new.k8s_nodepools_find_by_id(cluster_id, nodepool_id)
+  ionoscloud_api_client.wait_for do
+    cluster = Ionoscloud::KubernetesApi.new(ionoscloud_api_client).k8s_nodepools_find_by_id(cluster_id, nodepool_id)
     cluster.metadata.state == 'ACTIVE'
   end
 end
@@ -244,4 +306,14 @@ def delete_datacenter(datacenter_name)
     Puppet::Type.type(:datacenter).new(name: datacenter_name),
   )
   @datacenter_provider.destroy if @datacenter_provider.exists?
+end
+
+def get_postgres_backup(postgres_cluster_id)
+  IonoscloudDbaasPostgres::BackupsApi.new(ionoscloud_dbaas_postgres_api_client).cluster_backups_get(postgres_cluster_id).items.first
+end
+
+def wait_postgres_cluster_available(cluster_id)
+  ionoscloud_dbaas_postgres_api_client.wait_for do
+    IonoscloudDbaasPostgres::ClustersApi.new(ionoscloud_dbaas_postgres_api_client).clusters_find_by_id(cluster_id).metadata.state == 'AVAILABLE'
+  end
 end

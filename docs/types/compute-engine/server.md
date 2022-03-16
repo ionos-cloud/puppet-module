@@ -44,7 +44,7 @@ Type representing a IonosCloud server.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'testdc1'
 
 server { 'worker4' :

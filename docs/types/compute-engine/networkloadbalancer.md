@@ -35,7 +35,7 @@ Type representing a IonosCloud Network Load Balancer.
 
 ## Example
 
-```text
+```ruby
 $datacenter_name = 'testdc1'
 
 datacenter { $datacenter_name :

@@ -29,7 +29,7 @@ Type representing a IonosCloud shared resource.
 
 ## Example
 
-```text
+```ruby
 $datacenter_id = '4017613d-b3fb-41bd-a7bf-8da8e1b02890'
 
 share { $datacenter_id :

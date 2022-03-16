@@ -251,8 +251,9 @@ Puppet::Type.newtype(:k8s_nodepool) do
       true
     end
   end
+
   newproperty(:state) do
-    desc 'She state of the K8s Nodepool.'
+    desc 'The state of the K8s Nodepool.'
     def insync?(_is)
       true
     end

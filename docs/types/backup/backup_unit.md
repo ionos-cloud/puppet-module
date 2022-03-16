@@ -26,7 +26,7 @@ Type representing a Ionoscloud Backup Unit
 
 ## Example
 
-```text
+```ruby
 backup_unit { 'new_backup_unit' :
   ensure   => absent,
   email    => 'email@mail.com',

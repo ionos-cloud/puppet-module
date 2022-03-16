@@ -28,7 +28,7 @@ Type representing a IonosCloud LAN.
 
 ## Example
 
-```text
+```ruby
 $datacenter1_name = 'datacenter1_name'
 $private_lan_in_datacenter1 = 'private_lan_in_datacenter1'
 $datacenter2_name = 'datacenter1_name'

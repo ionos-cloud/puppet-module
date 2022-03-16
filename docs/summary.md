@@ -32,3 +32,6 @@
   * [ionoscloud_user](types/user/ionoscloud_user.md)
   * [s3_key](types/user/s3_key.md)
   * [share](types/user/share.md)
+* DBaaS Postgres
+  * [postgres_cluster](types/dbaas-postgres/postgres_cluster.md)
+  * [postgres_version](types/dbaas-postgres/postgres_version.md)

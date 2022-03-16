@@ -1,4 +1,8 @@
+warn_level = $VERBOSE
+$VERBOSE = nil
 require 'ionoscloud'
+require 'ionoscloud-dbaas-postgres'
+$VERBOSE = warn_level
 
 module PuppetX
   module IonoscloudX
@@ -29,6 +33,34 @@ module PuppetX
         api_config.debugging = ENV['IONOS_DEBUG'] || false
 
         api_client = Ionoscloud::ApiClient.new(api_config)
+
+        api_client.user_agent = [
+          'puppet/v5.1.0',
+          api_client.default_headers['User-Agent'],
+          'puppet/' + Puppet.version,
+        ].join('_')
+
+        api_client
+      end
+
+      def self.ionoscloud_dbaas_postgres_api_client
+        api_config = IonoscloudDbaasPostgres::Configuration.new
+
+        api_config.username = ENV['IONOS_USERNAME']
+        api_config.password = ENV['IONOS_PASSWORD']
+
+        unless ENV['IONOS_API_URL'].nil?
+          uri = URI.parse(ENV['IONOS_API_URL'])
+
+          api_config.scheme = uri.scheme
+          api_config.host = uri.host
+          api_config.base_path = uri.path
+          api_config.server_index = nil
+        end
+
+        api_config.debugging = ENV['IONOS_DEBUG'] || false
+
+        api_client = IonoscloudDbaasPostgres::ApiClient.new(api_config)
 
         api_client.user_agent = [
           'puppet/v5.1.0',
@@ -113,6 +145,18 @@ module PuppetX
 
       def self.s3_keys_api
         Ionoscloud::UserS3KeysApi.new(ionoscloud_api_client)
+      end
+
+      def self.dbaas_postgres_cluster_api
+        IonoscloudDbaasPostgres::ClustersApi.new(ionoscloud_dbaas_postgres_api_client)
+      end
+
+      def self.dbaas_postgres_backup_api
+        IonoscloudDbaasPostgres::BackupsApi.new(ionoscloud_dbaas_postgres_api_client)
+      end
+
+      def self.dbaas_postgres_restore_api
+        IonoscloudDbaasPostgres::RestoresApi.new(ionoscloud_dbaas_postgres_api_client)
       end
 
       def self.count_by_name(res_name, items)
@@ -962,7 +1006,7 @@ module PuppetX
       end
 
       def self.wait_request(headers)
-        Ionoscloud::ApiClient.new.wait_for_completion(get_request_id(headers))
+        ionoscloud_api_client.wait_for_completion(get_request_id(headers))
       end
 
       def self.get_request_id(headers)

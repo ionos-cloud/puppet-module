@@ -1,0 +1,188 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 13:13:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '1331'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"clusters","type":"collection","items":[{"type":"cluster","id":"660586d0-a397-11ec-ac51-82a34c99d4c7","metadata":{"state":"AVAILABLE","createdDate":"2022-03-14T13:05:18Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"puppet_module_test0423r2r23r2gwsgwsgewgwegwegh246558","location":"de/txl","connections":[{"datacenterId":"86279c5d-d59d-4d82-ad46-65ac357ceeed","lanId":"1","cidr":"192.168.1.105/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":4096,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Sunday","time":"16:30:59"},"synchronizationMode":"ASYNCHRONOUS"}},{"type":"cluster","id":"f8a3f717-a386-11ec-ac51-82a34c99d4c7","metadata":{"state":"AVAILABLE","createdDate":"2022-03-14T11:07:43Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0"},"properties":{"displayName":"test_cluster","location":"de/fra","connections":[{"datacenterId":"7548e315-6c3b-4140-b2c4-5d6f4344e9a0","lanId":"1","cidr":"192.168.1.106/24"}],"cores":1,"postgresVersion":"12","ram":2048,"instances":1,"storageSize":20490,"storageType":"HDD","maintenanceWindow":{"dayOfTheWeek":"Tuesday","time":"19:35:23"},"synchronizationMode":"ASYNCHRONOUS"}}],"offset":0,"limit":2,"_links":{}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 13:13:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/660586d0-a397-11ec-ac51-82a34c99d4c7/backups
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 13:13:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '357'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"id":"660586d0-a397-11ec-ac51-82a34c99d4c7/backups","type":"collection","items":[{"type":"backup","id":"660586d0-a397-11ec-ac51-82a34c99d4c7-4oymiqu-12","properties":{"clusterId":"660586d0-a397-11ec-ac51-82a34c99d4c7","version":"12","isActive":true},"metadata":{"state":"AVAILABLE","createdDate":"2022-03-14T13:05:19Z"}}],"offset":0,"limit":1,"_links":{}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 13:13:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/660586d0-a397-11ec-ac51-82a34c99d4c7/postgresversions
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 13:13:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '39'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"data":[{"name":"12"},{"name":"13"}]}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 13:13:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/f8a3f717-a386-11ec-ac51-82a34c99d4c7/backups
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 13:13:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '409'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"id":"f8a3f717-a386-11ec-ac51-82a34c99d4c7/backups","type":"collection","items":[{"type":"backup","id":"f8a3f717-a386-11ec-ac51-82a34c99d4c7-4oymiqu-12","properties":{"clusterId":"f8a3f717-a386-11ec-ac51-82a34c99d4c7","version":"12","isActive":true,"earliestRecoveryTargetTime":"2022-03-14T11:14:41Z"},"metadata":{"state":"AVAILABLE","createdDate":"2022-03-14T11:07:44Z"}}],"offset":0,"limit":1,"_links":{}}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 13:13:16 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/databases/postgresql/clusters/f8a3f717-a386-11ec-ac51-82a34c99d4c7/postgresversions
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_sdk-ruby-dbaas-postgres/1.0.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 14 Mar 2022 13:13:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '39'
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: '{"data":[{"name":"12"},{"name":"13"}]}
+
+        '
+  recorded_at: Mon, 14 Mar 2022 13:13:16 GMT
+recorded_with: VCR 6.0.0

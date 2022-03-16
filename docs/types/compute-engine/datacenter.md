@@ -30,7 +30,7 @@ Type representing a IonosCloud virtual data center.
 
 ## Example
 
-```text
+```ruby
 datacenter { 'myDataCenter' :
   ensure              => present,
   location            => 'de/fra',

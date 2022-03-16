@@ -33,7 +33,7 @@ Type representing a IonosCloud IP block.
 
 ## Example
 
-```text
+```ruby
 ipblock { 'puppet_demo':
   ensure   => present,
   location => 'us/ewr',
