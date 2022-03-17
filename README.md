@@ -13,11 +13,6 @@
 
 ![Alt text](.github/IONOS.CLOUD.BLU.svg?raw=true "Title")
 
----
-**NOTE:**
-Be aware that the Puppet IonosCloud Module v6 will become main branch and it will be using the latest stable API Version
-
----
 ## Overview
 
 The Ionoscloud Puppet module allows a multi-server cloud environment using Ionoscloud resources to be deployed automatically from a Puppet manifest file.
@@ -54,6 +49,12 @@ For users who already have a system with Puppet and Ruby installed, the followin
         export IONOS_USERNAME="user@example.com"
         export IONOS_PASSWORD="secretpassword"
 
+      or
+
+        export IONOS_TOKEN="<token>"
+
+**Note:** Be aware that setting the token makes the username and password be ignored, in order to use the username and password one must unset the token value.
+
 A situation could arise in which you have installed a Puppet release that contains a bundled copy of Ruby, but you already had Ruby installed. In that case, you will want to be sure to specify the `gem` binary that comes with the bundled version of Ruby. This avoids a situation in which you inadvertently install the *ionoscloud* library but it is not available to the Ruby install that Puppet is actually using.
 
 To demonstrate this on a CentOS 7 server, these steps could be followed.
@@ -78,6 +79,10 @@ To demonstrate this on a CentOS 7 server, these steps could be followed.
 
         export IONOS_USERNAME="user@example.com"
         export IONOS_PASSWORD="secretpassword"
+
+      or
+
+        export IONOS_TOKEN="<token>"
 
 ## Usage
 
