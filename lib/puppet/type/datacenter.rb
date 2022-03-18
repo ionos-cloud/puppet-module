@@ -2,6 +2,7 @@
 Puppet::Type.newtype(:datacenter) do
   @doc = 'Type representing a IonosCloud virtual data center.'
   @changeable_properties = [:description]
+  @doc_directory = 'compute-engine'
 
   ensurable
 
@@ -22,7 +23,6 @@ Puppet::Type.newtype(:datacenter) do
 
   newproperty(:sec_auth_protection) do
     desc 'Boolean value representing if the data center requires extra protection e.g. two factor protection.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)

@@ -5,16 +5,9 @@ Puppet::Type.type(:location).provide(:v1) do
 
   mk_resource_methods
 
-  def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    super(*args)
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     locations = []
-    Ionoscloud::LocationsApi.new.locations_get(depth: 1).items.each do |location|
+    PuppetX::IonoscloudX::Helper.locations_api.locations_get(depth: 1).items.each do |location|
       locations << new(instance_to_hash(location))
     end
     locations.flatten

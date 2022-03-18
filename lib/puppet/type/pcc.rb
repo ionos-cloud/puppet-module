@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:pcc) do
   @doc = 'Type representing a IonosCloud LAN.'
   @changeable_properties = [:description, :peers]
+  @doc_directory = 'compute-engine'
 
   newproperty(:ensure) do
     newvalue(:present) do

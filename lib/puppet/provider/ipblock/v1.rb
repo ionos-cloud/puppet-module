@@ -5,16 +5,9 @@ Puppet::Type.type(:ipblock).provide(:v1) do
 
   mk_resource_methods
 
-  def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    super(*args)
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     ipblocks = []
-    Ionoscloud::IPBlocksApi.new.ipblocks_get(depth: 1).items.each do |ipblock|
+    PuppetX::IonoscloudX::Helper.ip_blocks_api.ipblocks_get(depth: 1).items.each do |ipblock|
       ipblocks << new(instance_to_hash(ipblock))
     end
     ipblocks.flatten
@@ -55,7 +48,7 @@ Puppet::Type.type(:ipblock).provide(:v1) do
       ),
     )
 
-    ipblock, _, headers = Ionoscloud::IPBlocksApi.new.ipblocks_post_with_http_info(ipblock)
+    ipblock, _, headers = PuppetX::IonoscloudX::Helper.ip_blocks_api.ipblocks_post_with_http_info(ipblock)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created new ipblock '#{name}'.")
@@ -65,7 +58,7 @@ Puppet::Type.type(:ipblock).provide(:v1) do
 
   def destroy
     Puppet.info("Deleting ipblock '#{name}'...")
-    _, _, headers = Ionoscloud::IPBlocksApi.new.ipblocks_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.ip_blocks_api.ipblocks_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end

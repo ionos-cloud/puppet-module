@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:nic) do
   @doc = 'Type representing a IonosCloud network interface.'
   @changeable_properties = [:ips, :lan, :dhcp, :firewall_active, :firewall_rules, :firewall_type, :flowlogs]
+  @doc_directory = 'compute-engine'
 
   ensurable
 
@@ -27,7 +28,6 @@ Puppet::Type.newtype(:nic) do
 
   newproperty(:dhcp) do
     desc 'Enable or disable DHCP on the NIC.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -60,7 +60,6 @@ Puppet::Type.newtype(:nic) do
 
   newproperty(:firewall_active) do
     desc 'Indicates the firewall is active.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)

@@ -5,17 +5,10 @@ Puppet::Type.type(:resource).provide(:v1) do
 
   mk_resource_methods
 
-  def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    super(*args)
-  end
-
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     resources = []
 
-    Ionoscloud::UserManagementApi.new.um_resources_get(depth: 1).items.each do |resource|
+    PuppetX::IonoscloudX::Helper.user_management_api.um_resources_get(depth: 1).items.each do |resource|
       resources << new(instance_to_hash(resource))
     end
     resources.flatten

@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:ionoscloud_user) do
   @doc = 'Type representing a IonosCloud user.'
   @changeable_properties = [:firstname, :lastname, :administrator, :force_sec_auth, :groups]
+  @doc_directory = 'user'
 
   ensurable
 
@@ -36,7 +37,6 @@ Puppet::Type.newtype(:ionoscloud_user) do
 
   newproperty(:administrator) do
     desc 'Indicates whether or not the user have administrative rights.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -46,7 +46,6 @@ Puppet::Type.newtype(:ionoscloud_user) do
 
   newproperty(:force_sec_auth) do
     desc 'Indicates if secure (two-factor) authentication should be forced for the user.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)
@@ -78,7 +77,6 @@ Puppet::Type.newtype(:ionoscloud_user) do
 
   newproperty(:sec_auth_active) do
     desc 'Indicates if secure (two-factor) authentication is active for the user.'
-    defaultto :false
     newvalues(:true, :false)
 
     def insync?(is)

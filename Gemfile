@@ -16,7 +16,8 @@ end
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
-gem "ionoscloud", '6.0.0.beta.3',     require: true
+gem "ionoscloud", '6.0.0',     require: true
+gem "ionoscloud-dbaas-postgres", '1.0.0',     require: true
 
 group :development do
   gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
@@ -29,6 +30,7 @@ group :development do
   gem 'webmock', '~> 3.12', '>= 3.12.2',     require: true
   gem 'vcr', '~> 6.0',     require: true
   gem 'mustache', '~> 1.0',     require: true
+  gem 'simplecov_json_formatter', '~> 0.1.3'
 end
 group :system_tests do
   gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby] if minor_version != '3.0'

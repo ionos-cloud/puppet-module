@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:template) do
   @doc = 'Type representing available templates for CUBE servers.'
+  @doc_directory = 'compute-engine'
 
   newparam(:name, namevar: true) do
     desc 'The name of the template.'

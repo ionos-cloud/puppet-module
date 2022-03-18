@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:image) do
   @doc = 'Type representing a IonosCloud image.'
+  @doc_directory = 'compute-engine'
 
   newparam(:name, namevar: true) do
     desc 'The name of the image.'

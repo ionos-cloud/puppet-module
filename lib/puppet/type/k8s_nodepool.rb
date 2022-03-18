@@ -7,6 +7,7 @@ Puppet::Type.newtype(:k8s_nodepool) do
     :k8s_version, :node_count, :maintenance_day, :maintenance_time, :min_node_count,
     :max_node_count, :lans, :public_ips
   ]
+  @doc_directory = 'kubernetes'
 
   ensurable
 
@@ -212,6 +213,22 @@ Puppet::Type.newtype(:k8s_nodepool) do
     end
   end
 
+  newproperty(:labels) do
+    desc 'The map of labels attached to node pool.'
+
+    def insync?(is)
+      is == should
+    end
+  end
+
+  newproperty(:annotations) do
+    desc 'The map of annotations attached to node pool.'
+
+    def insync?(is)
+      is == should
+    end
+  end
+
   # read-only properties
 
   newproperty(:id) do
@@ -234,8 +251,9 @@ Puppet::Type.newtype(:k8s_nodepool) do
       true
     end
   end
+
   newproperty(:state) do
-    desc 'She state of the K8s Nodepool.'
+    desc 'The state of the K8s Nodepool.'
     def insync?(_is)
       true
     end

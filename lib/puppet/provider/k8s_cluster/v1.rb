@@ -6,15 +6,13 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     k8s_clusters = []
-    Ionoscloud::KubernetesApi.new.k8s_get(depth: 3).items.each do |k8s_cluster|
+    PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_get(depth: 3).items.each do |k8s_cluster|
       # Ignore data centers if name is not defined.
       k8s_clusters << new(instance_to_hash(k8s_cluster)) unless k8s_cluster.properties.name.nil? || k8s_cluster.properties.name.empty?
     end
@@ -46,7 +44,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
           id: nodepool.id,
           name: nodepool.properties.name,
           datacenter_id: nodepool.properties.datacenter_id,
-          datacenter_name: Ionoscloud::DataCentersApi.new.datacenters_find_by_id(nodepool.properties.datacenter_id).properties.name,
+          datacenter_name: PuppetX::IonoscloudX::Helper.datacenters_api.datacenters_find_by_id(nodepool.properties.datacenter_id).properties.name,
           node_count: nodepool.properties.node_count,
           cpu_family: nodepool.properties.cpu_family,
           cores_count: nodepool.properties.cores_count,
@@ -94,15 +92,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       k8s_version: resource[:k8s_version],
       api_subnet_allow_list: resource[:api_subnet_allow_list],
       s3_buckets: resource[:s3_buckets],
-      public: (resource[:public] == :true),
     }
-
-    if resource[:public] != :true
-      if resource[:gateway_ip].nil?
-        raise 'If public is set to false then gateway_ip must be set!'
-      end
-      cluster_properties[:gateway_ip] = resource[:gateway_ip]
-    end
 
     if resource[:maintenance_day] && resource[:maintenance_time]
       cluster_properties[:maintenance_window] = Ionoscloud::KubernetesMaintenanceWindow.new(
@@ -117,7 +107,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       ),
     )
 
-    k8s_cluster, _, headers = Ionoscloud::KubernetesApi.new.k8s_post_with_http_info(k8s_cluster)
+    k8s_cluster, _, headers = PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_post_with_http_info(k8s_cluster)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new K8s Cluster named #{resource[:name]}.")
@@ -139,7 +129,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     }
 
     new_k8s_cluster = Ionoscloud::KubernetesClusterForPut.new(properties: Ionoscloud::KubernetesClusterPropertiesForPut.new(cluster_properties))
-    _, _, headers = Ionoscloud::KubernetesApi.new.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
+    _, _, headers = PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_put_with_http_info(@property_hash[:id], new_k8s_cluster)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     [:k8s_version, :maintenance_day, :maintenance_time].each do |property|
@@ -149,7 +139,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
   end
 
   def destroy
-    _, _, headers = Ionoscloud::KubernetesApi.new.k8s_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end

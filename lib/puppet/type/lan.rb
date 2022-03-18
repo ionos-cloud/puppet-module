@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:lan) do
   @doc = 'Type representing a IonosCloud LAN.'
   @changeable_properties = [:public, :pcc, :ip_failover]
+  @doc_directory = 'compute-engine'
 
   newproperty(:ensure) do
     newvalue(:present) do
@@ -23,7 +24,6 @@ Puppet::Type.newtype(:lan) do
 
   newproperty(:public) do
     desc 'Set whether LAN will face the public Internet or not.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s

@@ -6,18 +6,16 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    Ionoscloud::DataCentersApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    PuppetX::IonoscloudX::Helper.datacenters_api.datacenters_get(depth: 1).items.map { |datacenter|
       networkloadbalancers = []
       # Ignore nat gateway if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_get(datacenter.id, depth: 5).items.map do |networkloadbalancer|
+        PuppetX::IonoscloudX::Helper.networkloadbalancers_api.datacenters_networkloadbalancers_get(datacenter.id, depth: 5).items.map do |networkloadbalancer|
           next if networkloadbalancer.properties.name.nil? || networkloadbalancer.properties.name.empty?
           networkloadbalancers << new(instance_to_hash(networkloadbalancer, datacenter))
         end
@@ -139,7 +137,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
         ),
       ),
     )
-    networkloadbalancer, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_post_with_http_info(
+    networkloadbalancer, _, headers = PuppetX::IonoscloudX::Helper.networkloadbalancers_api.datacenters_networkloadbalancers_post_with_http_info(
       datacenter_id, networkloadbalancer
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -152,7 +150,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
 
   def destroy
     Puppet.info "Deleting Network Load Balancer #{@property_hash[:id]}"
-    _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_delete_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.networkloadbalancers_api.datacenters_networkloadbalancers_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -182,7 +180,7 @@ Puppet::Type.type(:networkloadbalancer).provide(:v1) do
     changes = Ionoscloud::NetworkLoadBalancerProperties.new(**changes)
     Puppet.info "Updating Network Load Balancer #{@property_hash[:name]} with #{changes}"
 
-    _, _, headers = Ionoscloud::NetworkLoadBalancersApi.new.datacenters_networkloadbalancers_patch_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.networkloadbalancers_api.datacenters_networkloadbalancers_patch_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:id], changes
     )
 

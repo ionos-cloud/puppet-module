@@ -1,5 +1,6 @@
 Puppet::Type.newtype(:location) do
   @doc = 'Type representing a IonosCloud location.'
+  @doc_directory = 'compute-engine'
 
   newparam(:name, namevar: true) do
     desc 'The name of the location.'

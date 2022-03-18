@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:share) do
   @doc = 'Type representing a IonosCloud shared resource.'
   @changeable_properties = [:edit_privilege, :share_privilege]
+  @doc_directory = 'user'
 
   ensurable
 
@@ -15,7 +16,6 @@ Puppet::Type.newtype(:share) do
 
   newproperty(:edit_privilege) do
     desc 'Indicates if the group has permission to edit privileges on the resource.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s
@@ -24,7 +24,6 @@ Puppet::Type.newtype(:share) do
 
   newproperty(:share_privilege) do
     desc 'Indicates if the group has permission to share the resource.'
-    defaultto :false
     newvalues(:true, :false)
     def insync?(is)
       is.to_s == should.to_s

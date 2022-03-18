@@ -6,16 +6,13 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     users = []
-    Ionoscloud::UserManagementApi.new.um_users_get(depth: 3).items.each do |user|
+    PuppetX::IonoscloudX::Helper.user_management_api.um_users_get(depth: 3).items.each do |user|
       users << new(instance_to_hash(user))
     end
     users.flatten
@@ -82,7 +79,7 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
       ),
     )
 
-    user, _, headers = Ionoscloud::UserManagementApi.new.um_users_post_with_http_info(user)
+    user, _, headers = PuppetX::IonoscloudX::Helper.user_management_api.um_users_post_with_http_info(user)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created new ionoscloud user #{name}.")
@@ -99,7 +96,7 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
 
   def destroy
     Puppet.info("Deleting user #{name}...")
-    _, _, headers = Ionoscloud::UserManagementApi.new.um_users_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.user_management_api.um_users_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
     @property_hash[:ensure] = :absent
   end
@@ -122,7 +119,7 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
 
     new_user = Ionoscloud::UserPut.new(properties: Ionoscloud::UserPropertiesPut.new(**user_properties.merge(changes)))
 
-    _, _, headers = Ionoscloud::UserManagementApi.new.um_users_put_with_http_info(@property_hash[:id], new_user)
+    _, _, headers = PuppetX::IonoscloudX::Helper.user_management_api.um_users_put_with_http_info(@property_hash[:id], new_user)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     changeable_properties.each do |property|
@@ -139,7 +136,7 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
         next if !existing_groups.nil? && existing_groups.include?(group)
         Puppet.info "Adding user #{user_id} to group #{group}"
 
-        _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_post_with_http_info(
+        _, _, headers = PuppetX::IonoscloudX::Helper.user_management_api.um_groups_users_post_with_http_info(
           PuppetX::IonoscloudX::Helper.group_from_name(group).id,
           { id: user_id },
         )
@@ -153,7 +150,7 @@ Puppet::Type.type(:ionoscloud_user).provide(:v1) do
         next if !target_groups.nil? && target_groups.include?(group)
         Puppet.info "Removing user #{user_id} from group #{group}"
 
-        _, _, headers = Ionoscloud::UserManagementApi.new.um_groups_users_delete_with_http_info(
+        _, _, headers = PuppetX::IonoscloudX::Helper.user_management_api.um_groups_users_delete_with_http_info(
           PuppetX::IonoscloudX::Helper.group_from_name(group).id,
           user_id,
         )
