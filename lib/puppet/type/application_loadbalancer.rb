@@ -58,7 +58,7 @@ Puppet::Type.newtype(:application_loadbalancer) do
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.objects_match(
-        is, should, [:protocol, :listener_ip, :listener_port, :health_check, :server_certificates, :http_rules]
+        is, should, [:protocol, :listener_ip, :listener_port, :client_timeout, :server_certificates, :http_rules]
       )
     end
   end

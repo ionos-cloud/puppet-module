@@ -878,13 +878,7 @@ module PuppetX
           protocol: applicationloadbalancer_rule['protocol'],
           listener_ip: applicationloadbalancer_rule['listener_ip'],
           listener_port: applicationloadbalancer_rule['listener_port'],
-          health_check: if applicationloadbalancer_rule['health_check'].nil?
-                          nil
-                        else
-                          Ionoscloud::ApplicationLoadBalancerForwardingRuleHealthCheck.new(
-                                    client_timeout: applicationloadbalancer_rule['health_check']['client_timeout'],
-                                  )
-                        end,
+          client_timeout: applicationloadbalancer_rule['client_timeout'],
           server_certificates: applicationloadbalancer_rule['server_certificates'],
           http_rules: if applicationloadbalancer_rule['http_rules'].nil?
                         nil

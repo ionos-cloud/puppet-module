@@ -54,9 +54,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
           protocol: rule.properties.protocol,
           listener_ip: rule.properties.listener_ip,
           listener_port: rule.properties.listener_port,
-          health_check: {
-            client_timeout: rule.properties.health_check.client_timeout,
-          },
+          client_timeout: rule.properties.client_timeout,
           server_certificates: rule.properties.server_certificates,
           http_rules: if rule.properties.http_rules.nil?
                         []

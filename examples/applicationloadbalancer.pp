@@ -17,9 +17,7 @@ datacenter { $datacenter_name :
       protocol            => 'HTTP',
       listener_ip         => '85.215.232.165',
       listener_port       => 47,
-      health_check        => {
-        client_timeout  => 50000,
-      },
+      client_timeout      => 50000,
       server_certificates => [
       ],
       http_rules          => [

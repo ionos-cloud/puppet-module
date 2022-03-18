@@ -35,9 +35,7 @@ describe provider_class do
               'protocol' => 'HTTP',
               'listener_ip' => @ip2,
               'listener_port' => 47,
-              'health_check' => {
-                'client_timeout' => 50_000,
-              },
+              'client_timeout' => 50_000,
               'server_certificates' => [
               ],
               'http_rules' => [
@@ -177,9 +175,7 @@ describe provider_class do
             'protocol' => 'HTTP',
             'listener_ip' => @ip2,
             'listener_port' => 49,
-            'health_check' => {
-              'client_timeout' => 50_000,
-            },
+            'client_timeout' => 50_000,
             'server_certificates' => [
             ],
             'http_rules' => [
@@ -220,9 +216,7 @@ describe provider_class do
             'protocol' => 'HTTP',
             'listener_ip' => @ip1,
             'listener_port' => 23,
-            'health_check' => {
-              'client_timeout' => 45_000,
-            },
+            'client_timeout' => 45_000,
             'server_certificates' => [
             ],
             'http_rules' => [
@@ -239,7 +233,7 @@ describe provider_class do
         expect(updated_instance.rules[1][:protocol]).to eq('HTTP')
         expect(updated_instance.rules[1][:listener_ip]).to eq(@ip2)
         expect(updated_instance.rules[1][:listener_port]).to eq(49)
-        expect(updated_instance.rules[1][:health_check][:client_timeout]).to eq(50_000)
+        expect(updated_instance.rules[1][:client_timeout]).to eq(50_000)
         expect(updated_instance.rules[1][:server_certificates]).to eq([])
         expect(updated_instance.rules[1][:http_rules].first[:name]).to eq('nume3')
         expect(updated_instance.rules[1][:http_rules].first[:type]).to eq('STATIC')
@@ -260,7 +254,7 @@ describe provider_class do
         expect(updated_instance.rules.first[:listener_ip]).to eq(@ip1)
         expect(updated_instance.rules.first[:listener_port]).to eq(23)
         expect(updated_instance.rules.first[:server_certificates]).to eq([])
-        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(45_000)
+        expect(updated_instance.rules.first[:client_timeout]).to eq(45_000)
         expect(updated_instance.rules.first[:http_rules]).to eq([])
       end
     end
@@ -273,9 +267,7 @@ describe provider_class do
             'protocol' => 'HTTP',
             'listener_ip' => @ip3,
             'listener_port' => 36,
-            'health_check' => {
-              'client_timeout' => 50_000,
-            },
+            'client_timeout' => 50_000,
             'server_certificates' => [
             ],
             'http_rules' => [
@@ -322,7 +314,7 @@ describe provider_class do
         expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
         expect(updated_instance.rules.first[:listener_ip]).to eq(@ip3)
         expect(updated_instance.rules.first[:listener_port]).to eq(36)
-        expect(updated_instance.rules.first[:health_check][:client_timeout]).to eq(50_000)
+        expect(updated_instance.rules.first[:client_timeout]).to eq(50_000)
         expect(updated_instance.rules.first[:server_certificates]).to eq([])
         expect(updated_instance.rules.first[:http_rules].first[:name]).to eq('nume3')
         expect(updated_instance.rules.first[:http_rules].first[:type]).to eq('STATIC')

@@ -41,9 +41,8 @@ Puppet::Type.type(:target_group).provide(:v1) do
                     else
                       {
                         check_timeout: instance.properties.health_check.check_timeout,
-                            connect_timeout: instance.properties.health_check.connect_timeout,
-                            target_timeout: instance.properties.health_check.target_timeout,
-                            retries: instance.properties.health_check.retries,
+                        check_interval: instance.properties.health_check.check_interval,
+                        retries: instance.properties.health_check.retries,
                       }
                     end,
       http_health_check: if instance.properties.http_health_check.nil?
@@ -51,11 +50,11 @@ Puppet::Type.type(:target_group).provide(:v1) do
                          else
                            {
                              path: instance.properties.http_health_check.path,
-                                 method: instance.properties.http_health_check.method,
-                                 match_type: instance.properties.http_health_check.match_type,
-                                 response: instance.properties.http_health_check.response,
-                                 regex: instance.properties.http_health_check.regex,
-                                 negate: instance.properties.http_health_check.negate,
+                              method: instance.properties.http_health_check.method,
+                              match_type: instance.properties.http_health_check.match_type,
+                              response: instance.properties.http_health_check.response,
+                              regex: instance.properties.http_health_check.regex,
+                              negate: instance.properties.http_health_check.negate,
                            }
                          end,
 
@@ -67,15 +66,8 @@ Puppet::Type.type(:target_group).provide(:v1) do
                      ip: target.ip,
                      port: target.port,
                      weight: target.weight,
-                     health_check: if target.health_check.nil?
-                                     {}
-                                   else
-                                     {
-                                       check: target.health_check.check,
-                                               check_interval: target.health_check.check_interval,
-                                               maintenance: target.health_check.maintenance,
-                                     }
-                                   end,
+                     health_check_enabled: target.health_check_enabled,
+                     maintenance_enabled: target.maintenance_enabled,
                    }.delete_if { |_k, v| v.nil? }
                  end
                end,
@@ -118,8 +110,7 @@ Puppet::Type.type(:target_group).provide(:v1) do
                     else
                       Ionoscloud::TargetGroupHealthCheck.new(
                             check_timeout: resource[:health_check]['check_timeout'],
-                            connect_timeout: resource[:health_check]['connect_timeout'],
-                            target_timeout: resource[:health_check]['target_timeout'],
+                            check_interval: resource[:health_check]['check_interval'],
                             retries: resource[:health_check]['retries'],
                           )
                     end,
@@ -143,15 +134,8 @@ Puppet::Type.type(:target_group).provide(:v1) do
                      ip: target['ip'],
                      port: target['port'],
                      weight: target['weight'],
-                     health_check: if target['health_check'].nil?
-                                     nil
-                                   else
-                                     Ionoscloud::TargetGroupTargetHealthCheck.new(
-                                               check: target['health_check']['check'],
-                                               check_interval: target['health_check']['check_interval'],
-                                               maintenance: target['health_check']['maintenance'],
-                                             )
-                                   end,
+                     health_check_enabled: target['health_check_enabled'],
+                     maintenance_enabled: target['maintenance_enabled'],
                    )
                  end
                end,
@@ -188,8 +172,7 @@ Puppet::Type.type(:target_group).provide(:v1) do
     if changes[:health_check]
       changes[:health_check] = Ionoscloud::TargetGroupHealthCheck.new(
         check_timeout: changes[:health_check]['check_timeout'],
-        connect_timeout: changes[:health_check]['connect_timeout'],
-        target_timeout: changes[:health_check]['target_timeout'],
+        check_interval: changes[:health_check]['check_interval'],
         retries: changes[:health_check]['retries'],
       )
     end
@@ -211,15 +194,8 @@ Puppet::Type.type(:target_group).provide(:v1) do
           ip: target['ip'],
           port: target['port'],
           weight: target['weight'],
-          health_check: if target['health_check'].nil?
-                          nil
-                        else
-                          Ionoscloud::TargetGroupTargetHealthCheck.new(
-                                    check: target['health_check']['check'],
-                                    check_interval: target['health_check']['check_interval'],
-                                    maintenance: target['health_check']['maintenance'],
-                                  )
-                        end,
+          health_check_enabled: target['health_check_enabled'],
+          maintenance_enabled: target['maintenance_enabled'],
         )
       end
     end
