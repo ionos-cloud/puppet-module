@@ -5,10 +5,6 @@
 
 ## Types
 
-* Managed Kubernetes
-  * [k8s_cluster](types/kubernetes/k8s_cluster.md)
-  * [k8s_node](types/kubernetes/k8s_node.md)
-  * [k8s_nodepool](types/kubernetes/k8s_nodepool.md)
 * Compute Engine
   * [datacenter](types/compute-engine/datacenter.md)
   * [firewall_rule](types/compute-engine/firewall_rule.md)
@@ -25,13 +21,17 @@
   * [snapshot](types/compute-engine/snapshot.md)
   * [template](types/compute-engine/template.md)
   * [volume](types/compute-engine/volume.md)
+* DBaaS Postgres
+  * [postgres_cluster](types/dbaas-postgres/postgres_cluster.md)
+  * [postgres_version](types/dbaas-postgres/postgres_version.md)
 * Managed Backup
   * [backup_unit](types/backup/backup_unit.md)
+* Managed Kubernetes
+  * [k8s_cluster](types/kubernetes/k8s_cluster.md)
+  * [k8s_node](types/kubernetes/k8s_node.md)
+  * [k8s_nodepool](types/kubernetes/k8s_nodepool.md)
 * User Management
   * [ionoscloud_group](types/user/ionoscloud_group.md)
   * [ionoscloud_user](types/user/ionoscloud_user.md)
   * [s3_key](types/user/s3_key.md)
   * [share](types/user/share.md)
-* DBaaS Postgres
-  * [postgres_cluster](types/dbaas-postgres/postgres_cluster.md)
-  * [postgres_version](types/dbaas-postgres/postgres_version.md)
