@@ -31,7 +31,6 @@ module PuppetX
         end
 
         api_config.debugging = ENV['IONOS_DEBUG'] || false
-        api_config.verify_ssl = false
 
         api_client = Ionoscloud::ApiClient.new(api_config)
 
