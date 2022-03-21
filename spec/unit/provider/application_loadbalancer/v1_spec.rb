@@ -47,7 +47,7 @@ describe provider_class do
                   'status_code' => 303,
                   'conditions' => [
                     {
-                      'type' => 'header',
+                      'type' => 'HEADER',
                       'condition' => 'STARTS_WITH',
                       'negate' => true,
                       'key' => 'forward-at',
@@ -63,7 +63,7 @@ describe provider_class do
                   'content_type' => 'text/html',
                   'conditions' => [
                     {
-                      'type' => 'query',
+                      'type' => 'QUERY',
                       'condition' => 'STARTS_WITH',
                       'negate' => true,
                       'key' => 'forward-at',
@@ -186,7 +186,7 @@ describe provider_class do
                 'status_code' => 303,
                 'conditions' => [
                   {
-                    'type' => 'path',
+                    'type' => 'PATH',
                     'condition' => 'STARTS_WITH',
                     'negate' => true,
                     'value' => 'Sunday',
@@ -201,7 +201,7 @@ describe provider_class do
                 'content_type' => 'application/json',
                 'conditions' => [
                   {
-                    'type' => 'header',
+                    'type' => 'HEADER',
                     'condition' => 'STARTS_WITH',
                     'negate' => true,
                     'key' => nil,
@@ -241,7 +241,7 @@ describe provider_class do
         expect(updated_instance.rules[1][:http_rules].first[:status_code]).to eq(303)
         expect(updated_instance.rules[1][:http_rules].first[:conditions]).to eq([
                                                                                   {
-                                                                                    type: 'path',
+                                                                                    type: 'PATH',
                                                                                     condition: 'starts-with',
                                                                                     negate: true,
                                                                                     key: nil,
@@ -278,7 +278,7 @@ describe provider_class do
                 'status_code' => 303,
                 'conditions' => [
                   {
-                    'type' => 'path',
+                    'type' => 'PATH',
                     'condition' => 'STARTS_WITH',
                     'negate' => true,
                     'value' => 'Sunday',
@@ -293,7 +293,7 @@ describe provider_class do
                 'content_type' => 'application/json',
                 'conditions' => [
                   {
-                    'type' => 'header',
+                    'type' => 'HEADER',
                     'condition' => 'STARTS_WITH',
                     'negate' => true,
                     'key' => 'forward-at',
@@ -322,7 +322,7 @@ describe provider_class do
         expect(updated_instance.rules.first[:http_rules].first[:status_code]).to eq(303)
         expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
                                                                                      {
-                                                                                       type: 'path',
+                                                                                       type: 'PATH',
                                                                                        condition: 'starts-with',
                                                                                        negate: true,
                                                                                        key: nil,

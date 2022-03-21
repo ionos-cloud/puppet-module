@@ -120,19 +120,19 @@ describe provider_class do
         end
         expect(updated_instance.algorithm).to eq('SOURCE_IP')
         expect(updated_instance.health_check).to eq({
-          check_timeout: 57,
+                                                      check_timeout: 57,
           connect_timeout: 4000,
           retries: 4,
           target_timeout: 50_000,
-        })
+                                                    })
         expect(updated_instance.http_health_check).to eq({
-          match_type: 'STATUS_CODE',
+                                                           match_type: 'STATUS_CODE',
           method: 'POST',
           negate: false,
           path: '/.',
           regex: false,
           response: '304',
-        })
+                                                         })
       end
     end
 
@@ -161,21 +161,21 @@ describe provider_class do
         end
 
         expect(updated_instance.targets).to eq([
-          {
-            health_check_enabled: true,
-            maintenance_enabled: false,
-            ip: '1.1.1.1',
-            port: 20,
-            weight: 20,
-          },
-          {
-            health_check_enabled: false,
-            maintenance_enabled: false,
-            ip: '1.1.3.1',
-            port: 28,
-            weight: 23,
-          },
-        ])
+                                                 {
+                                                   health_check_enabled: true,
+                                                   maintenance_enabled: false,
+                                                   ip: '1.1.1.1',
+                                                   port: 20,
+                                                   weight: 20,
+                                                 },
+                                                 {
+                                                   health_check_enabled: false,
+                                                   maintenance_enabled: false,
+                                                   ip: '1.1.3.1',
+                                                   port: 28,
+                                                   weight: 23,
+                                                 },
+                                               ])
       end
     end
 
@@ -197,14 +197,14 @@ describe provider_class do
         end
 
         expect(updated_instance.targets).to eq([
-          {
-            health_check_enabled: false,
-            maintenance_enabled: false,
-            ip: '1.1.1.3',
-            port: 21,
-            weight: 21,
-          },
-        ])
+                                                 {
+                                                   health_check_enabled: false,
+                                                   maintenance_enabled: false,
+                                                   ip: '1.1.1.3',
+                                                   port: 21,
+                                                   weight: 21,
+                                                 },
+                                               ])
       end
     end
 

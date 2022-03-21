@@ -6,15 +6,13 @@ Puppet::Type.type(:target_group).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     target_groups = []
-    Ionoscloud::TargetGroupsApi.new.targetgroups_get(depth: 1).items.each do |target_group|
+    PuppetX::IonoscloudX::Helper.target_groups_api.targetgroups_get(depth: 1).items.each do |target_group|
       # Ignore target groups if name is not defined.
       target_groups << new(instance_to_hash(target_group)) unless target_group.properties.name.nil? || target_group.properties.name.empty?
     end
@@ -144,7 +142,7 @@ Puppet::Type.type(:target_group).provide(:v1) do
     target_group = Ionoscloud::TargetGroup.new(
       properties: Ionoscloud::TargetGroupProperties.new(**target_group_properties),
     )
-    target_group, _, headers = Ionoscloud::TargetGroupsApi.new.targetgroups_post_with_http_info(target_group)
+    target_group, _, headers = PuppetX::IonoscloudX::Helper.target_groups_api.targetgroups_post_with_http_info(target_group)
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     Puppet.info("Created a new Target Group named #{resource[:name]}.")
@@ -154,7 +152,7 @@ Puppet::Type.type(:target_group).provide(:v1) do
 
   def destroy
     Puppet.info "Deleting Target Group #{@property_hash[:id]}"
-    _, _, headers = Ionoscloud::TargetGroupsApi.new.target_groups_delete_with_http_info(@property_hash[:id])
+    _, _, headers = PuppetX::IonoscloudX::Helper.target_groups_api.target_groups_delete_with_http_info(@property_hash[:id])
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 
     @property_hash[:ensure] = :absent
@@ -203,7 +201,7 @@ Puppet::Type.type(:target_group).provide(:v1) do
     changes = Ionoscloud::TargetGroupProperties.new(**changes)
     Puppet.info "Updating Target Group #{@property_hash[:name]} with #{changes}"
 
-    _, _, headers = Ionoscloud::TargetGroupsApi.new.targetgroups_patch_with_http_info(@property_hash[:id], changes)
+    _, _, headers = PuppetX::IonoscloudX::Helper.target_groups_api.targetgroups_patch_with_http_info(@property_hash[:id], changes)
 
     PuppetX::IonoscloudX::Helper.wait_request(headers)
 

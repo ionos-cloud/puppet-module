@@ -6,18 +6,16 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-    Ionoscloud::DataCentersApi.new.datacenters_get(depth: 1).items.map { |datacenter|
+    PuppetX::IonoscloudX::Helper.datacenters_api.datacenters_get(depth: 1).items.map { |datacenter|
       application_loadbalancers = []
       # Ignore nat gateway if name is not defined.
       unless datacenter.properties.name.nil? || datacenter.properties.name.empty?
-        Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_get(datacenter.id, depth: 5).items.map do |application_loadbalancer|
+        PuppetX::IonoscloudX::Helper.application_loadbalancers_api.datacenters_applicationloadbalancers_get(datacenter.id, depth: 5).items.map do |application_loadbalancer|
           next if application_loadbalancer.properties.name.nil? || application_loadbalancer.properties.name.empty?
           application_loadbalancers << new(instance_to_hash(application_loadbalancer, datacenter))
         end
@@ -139,7 +137,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
         ),
       ),
     )
-    applicationloadbalancer, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_post_with_http_info(
+    applicationloadbalancer, _, headers = PuppetX::IonoscloudX::Helper.application_loadbalancers_api.datacenters_applicationloadbalancers_post_with_http_info(
       datacenter_id, applicationloadbalancer
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -152,7 +150,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
 
   def destroy
     Puppet.info "Deleting Application Load Balancer #{@property_hash[:id]}"
-    _, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_delete_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.application_loadbalancers_api.datacenters_applicationloadbalancers_delete_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:id]
     )
     PuppetX::IonoscloudX::Helper.wait_request(headers)
@@ -177,7 +175,7 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
     changes = Ionoscloud::NetworkLoadBalancerProperties.new(**changes)
     Puppet.info "Updating Application Load Balancer #{@property_hash[:name]} with #{changes}"
 
-    _, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_patch_with_http_info(
+    _, _, headers = PuppetX::IonoscloudX::Helper.application_loadbalancers_api.datacenters_applicationloadbalancers_patch_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:id], changes
     )
 

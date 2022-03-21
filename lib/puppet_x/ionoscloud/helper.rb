@@ -31,6 +31,7 @@ module PuppetX
         end
 
         api_config.debugging = ENV['IONOS_DEBUG'] || false
+        api_config.verify_ssl = false
 
         api_client = Ionoscloud::ApiClient.new(api_config)
 
@@ -145,6 +146,14 @@ module PuppetX
 
       def self.s3_keys_api
         Ionoscloud::UserS3KeysApi.new(ionoscloud_api_client)
+      end
+
+      def self.application_loadbalancers_api
+        Ionoscloud::ApplicationLoadBalancersApi.new(ionoscloud_api_client)
+      end
+
+      def self.target_groups_api
+        Ionoscloud::TargetGroupsApi.new(ionoscloud_api_client)
       end
 
       def self.dbaas_postgres_cluster_api
@@ -459,16 +468,10 @@ module PuppetX
       end
 
       def self.update_application_loadbalancer_rule(datacenter_id, application_loadbalancer_id, application_loadbalancer_rule_id, current, target, wait = false)
-        changeable_fields = [:protocol, :listener_ip, :listener_port, :health_check, :server_certificates, :http_rules]
+        changeable_fields = [:protocol, :listener_ip, :listener_port, :client_timeout, :server_certificates, :http_rules]
 
         changes = Hash[*changeable_fields.flat_map { |v| [ v, target[v.to_s] ] } ].delete_if { |k, v| v.nil? || compare_objects(current[k], v) }
         return [] if changes.empty?
-
-        unless changes[:health_check].nil?
-          changes[:health_check] = Ionoscloud::ApplicationLoadBalancerForwardingRuleHealthCheck.new(
-            client_timeout: changes[:health_check]['client_timeout'],
-          )
-        end
 
         unless changes[:http_rules].nil?
           changes[:http_rules] = changes[:http_rules].map do |rule|
@@ -502,7 +505,7 @@ module PuppetX
         changes = Ionoscloud::ApplicationLoadBalancerForwardingRuleProperties.new(**changes)
         Puppet.info "Updating Network Load Balancer Rule #{current[:name]} with #{changes}"
 
-        _, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_forwardingrules_patch_with_http_info(
+        _, _, headers = application_loadbalancers_api.datacenters_applicationloadbalancers_forwardingrules_patch_with_http_info(
           datacenter_id, application_loadbalancer_id, application_loadbalancer_rule_id, changes
         )
         wait_request(headers) if wait
@@ -515,7 +518,7 @@ module PuppetX
 
         application_loadbalancer_rule = applicationloadbalancer_rule_object_from_hash(desired_application_loadbalancer_rule)
 
-        application_loadbalancer_rule, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_forwardingrules_post_with_http_info(
+        application_loadbalancer_rule, _, headers = application_loadbalancers_api.datacenters_applicationloadbalancers_forwardingrules_post_with_http_info(
           datacenter_id, application_loadbalancer_id, application_loadbalancer_rule
         )
         wait_request(headers) if wait
@@ -525,7 +528,7 @@ module PuppetX
 
       def self.delete_application_loadbalancer_rule(datacenter_id, application_loadbalancer_id, application_loadbalancer_rule_id, wait = false)
         Puppet.info "Deleting Network Load Balancer Rule #{application_loadbalancer_rule_id}"
-        _, _, headers = Ionoscloud::ApplicationLoadBalancersApi.new.datacenters_applicationloadbalancers_forwardingrules_delete_with_http_info(
+        _, _, headers = application_loadbalancers_api.datacenters_applicationloadbalancers_forwardingrules_delete_with_http_info(
           datacenter_id, application_loadbalancer_id, application_loadbalancer_rule_id
         )
         wait_request(headers) if wait
