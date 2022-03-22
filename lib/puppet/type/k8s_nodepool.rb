@@ -59,6 +59,18 @@ Puppet::Type.newtype(:k8s_nodepool) do
     end
   end
 
+  newproperty(:gateway_ip) do
+    desc "Public IP address for the gateway performing source NAT for the node pool's nodes belonging to a private cluster. "\
+         "Required only if the node pool belongs to a private cluster."
+    validate do |value|
+      raise ArgumentError, 'The gateway_ip should be a String.' unless value.is_a?(String)
+    end
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:node_count) do
     desc 'The number of nodes in the nodepool.'
     validate do |value|
