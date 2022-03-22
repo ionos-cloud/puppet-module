@@ -21,6 +21,7 @@ describe type_class do
       :storage_size,
       :storage_type,
       :location,
+      :backup_location,
       :synchronization_mode,
       :connections,
       :id,

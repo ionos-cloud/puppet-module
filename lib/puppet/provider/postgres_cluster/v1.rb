@@ -39,6 +39,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
       storage_type: instance.properties.storage_type,
       connections: instance.properties.connections,
       location: instance.properties.location,
+      backup_location: instance.properties.backup_location,
       display_name: instance.properties.display_name,
       name: instance.properties.display_name,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
@@ -125,6 +126,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
           ),
         ],
         location: resource[:location],
+        backup_location: resource[:backup_location],
         display_name: resource[:display_name],
         maintenance_window: if resource[:maintenance_time] && resource[:maintenance_day]
                               IonoscloudDbaasPostgres::MaintenanceWindow.new(
