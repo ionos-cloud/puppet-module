@@ -5,6 +5,9 @@
 
 ## Types
 
+* Application Load Balancer
+  * [application_loadbalancer](types/application-loadbalancer/application_loadbalancer.md)
+  * [target_group](types/application-loadbalancer/target_group.md)
 * Compute Engine
   * [datacenter](types/compute-engine/datacenter.md)
   * [firewall_rule](types/compute-engine/firewall_rule.md)

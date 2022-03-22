@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:target_group) do
   @doc = 'Type representing a IonosCloud Target Group.'
   @changeable_properties = [:algorithm, :protocol, :health_check, :http_health_check, :targets]
+  @doc_directory = 'application-loadbalancer'
 
   ensurable
 

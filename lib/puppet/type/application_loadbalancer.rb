@@ -3,6 +3,7 @@ require 'puppet/parameter/boolean'
 Puppet::Type.newtype(:application_loadbalancer) do
   @doc = 'Type representing a IonosCloud Application Load Balancer.'
   @changeable_properties = [:public_ips, :lans, :rules, :flowlogs]
+  @doc_directory = 'application-loadbalancer'
 
   ensurable
 
