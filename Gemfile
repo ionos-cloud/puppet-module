@@ -18,6 +18,7 @@ minor_version = ruby_version_segments[0..1].join('.')
 
 gem "ionoscloud", '6.0.0',     require: true
 gem "ionoscloud-dbaas-postgres", '1.0.0',     require: true
+gem "ionoscloud-vm-autoscaling", '1.0.0',     require: true
 
 group :development do
   gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))

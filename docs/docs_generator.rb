@@ -14,6 +14,7 @@ FOLDER_TO_NAME_MAP = {
   'compute-engine' => 'Compute Engine',
   'kubernetes' => 'Managed Kubernetes',
   'dbaas-postgres' => 'DBaaS Postgres',
+  'vm-autoscaling' => 'VM Autoscaling',
 }.freeze
 
 # Mustache class for Puppet type documentation file

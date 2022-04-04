@@ -2,6 +2,7 @@ warn_level = $VERBOSE
 $VERBOSE = nil
 require 'ionoscloud'
 require 'ionoscloud-dbaas-postgres'
+require 'ionoscloud-vm-autoscaling'
 $VERBOSE = warn_level
 
 module PuppetX
@@ -15,8 +16,8 @@ module PuppetX
         end
       end
 
-      def self.ionoscloud_api_client
-        api_config = Ionoscloud::Configuration.new
+      def self.get_api_client(sdk_module)
+        api_config = sdk_module::Configuration.new
 
         api_config.username = ENV['IONOS_USERNAME']
         api_config.password = ENV['IONOS_PASSWORD']
@@ -32,7 +33,7 @@ module PuppetX
 
         api_config.debugging = ENV['IONOS_DEBUG'] || false
 
-        api_client = Ionoscloud::ApiClient.new(api_config)
+        api_client = sdk_module::ApiClient.new(api_config)
 
         api_client.user_agent = [
           'puppet/v5.1.0',
@@ -43,32 +44,16 @@ module PuppetX
         api_client
       end
 
+      def self.ionoscloud_api_client
+        get_api_client(Ionoscloud)
+      end
+
       def self.ionoscloud_dbaas_postgres_api_client
-        api_config = IonoscloudDbaasPostgres::Configuration.new
+        get_api_client(IonoscloudDbaasPostgres)
+      end
 
-        api_config.username = ENV['IONOS_USERNAME']
-        api_config.password = ENV['IONOS_PASSWORD']
-
-        unless ENV['IONOS_API_URL'].nil?
-          uri = URI.parse(ENV['IONOS_API_URL'])
-
-          api_config.scheme = uri.scheme
-          api_config.host = uri.host
-          api_config.base_path = uri.path
-          api_config.server_index = nil
-        end
-
-        api_config.debugging = ENV['IONOS_DEBUG'] || false
-
-        api_client = IonoscloudDbaasPostgres::ApiClient.new(api_config)
-
-        api_client.user_agent = [
-          'puppet/v5.1.0',
-          api_client.default_headers['User-Agent'],
-          'puppet/' + Puppet.version,
-        ].join('_')
-
-        api_client
+      def self.ionoscloud_vm_autoscaling_api_client
+        get_api_client(IonoscloudVmAutoscaling)
       end
 
       def self.backupunits_api
@@ -157,6 +142,10 @@ module PuppetX
 
       def self.dbaas_postgres_restore_api
         IonoscloudDbaasPostgres::RestoresApi.new(ionoscloud_dbaas_postgres_api_client)
+      end
+
+      def self.vm_autoscaling_groups_api
+        IonoscloudVmAutoscaling::GroupsApi.new(ionoscloud_vm_autoscaling_api_client)
       end
 
       def self.count_by_name(res_name, items)
