@@ -51,20 +51,6 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
     end
   end
 
-  newproperty(:datacenter) do
-    desc 'The ID or name of the virtual data center where the volume resides.'
-
-    validate do |value|
-      unless value.is_a?(String)
-        raise ArgumentError, 'The data center ID/name should be a String.'
-      end
-    end
-
-    def insync?(_is)
-      true
-    end
-  end
-
   newproperty(:replica_configuration) do
     desc 'The replica configuration'
 
@@ -74,8 +60,8 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
       end
     end
 
-    def insync?(_is)
-      PuppetX::IonoscloudX::Helper.compare_objects(is, should)
+    def insync?(is)
+      PuppetX::IonoscloudX::Helper.compare_objects(is, should.reject {|k,v| k == 'volumes'})
     end
   end
 
@@ -91,8 +77,22 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
       end
     end
 
-    def insync?(_is)
+    def insync?(is)
       PuppetX::IonoscloudX::Helper.compare_objects(is, should)
+    end
+  end
+
+  newproperty(:datacenter) do
+    desc 'The ID or name of the virtual data center where the volume resides.'
+
+    validate do |value|
+      unless value.is_a?(String)
+        raise ArgumentError, 'The data center ID/name should be a String.'
+      end
+    end
+
+    def insync?(_is)
+      true
     end
   end
 
@@ -119,10 +119,21 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
     end
   end
 
+  newproperty(:actions, array_matching: :all) do
+    desc 'A list of actions for the VM Autoscaling group.'
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:servers, array_matching: :all) do
+    desc 'A list of servers for the VM Autoscaling group.'
+    def insync?(_is)
+      true
+    end
+  end
+
   autorequire(:datacenter) do
     self[:datacenter]
-  end
-  autorequire(:volume) do
-    self[:volume]
   end
 end

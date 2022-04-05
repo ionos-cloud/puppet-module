@@ -922,7 +922,7 @@ module PuppetX
       end
 
       def self.compare_objects(existing, target)
-        return false if existing.class != target.class
+        return false if ((existing.class != target.class) && (existing != target))
 
         case existing
         when Array
@@ -1008,6 +1008,49 @@ module PuppetX
         uuid_regex = %r{^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$}
         return true if uuid_regex.match?(uuid.to_s.downcase)
         false
+      end
+
+      def self.underscore_string(str)
+        str.to_s.gsub(/::/, '/')
+           .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+           .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+           .tr('-', '_')
+           .downcase
+      end
+
+      def self.underscore_symbolize_string_block
+        ->(key) {
+          underscore_string(key).to_sym
+        }
+      end
+
+      def self.symbolize_string_block
+        ->(key) {
+          key.to_sym
+        }
+      end
+
+      def self.deep_transform_keys_in_object!(object, &block)
+        case object
+        when Hash
+          object.keys.each do |key|
+            value = object.delete(key)
+            object[yield(key)] = deep_transform_keys_in_object!(value, &block)
+          end
+          object
+        when Array
+          object.map! { |e| deep_transform_keys_in_object!(e, &block) }
+        else
+          object
+        end
+      end
+
+      def self.deep_underscore_keys_in_object!(object)
+        deep_transform_keys_in_object!(object, &underscore_symbolize_string_block)
+      end
+
+      def self.deep_symbolize_keys_in_object!(object)
+        deep_transform_keys_in_object!(object, &symbolize_string_block)
       end
     end
   end
