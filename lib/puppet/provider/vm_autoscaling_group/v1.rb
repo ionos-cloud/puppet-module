@@ -115,11 +115,15 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
           cpu_family: resource[:replica_configuration]['cpu_family'],
           ram: resource[:replica_configuration]['ram'],
           nics: resource[:replica_configuration]['nics'].map do |nic|
-            IonoscloudVmAutoscaling::ReplicaNic.new(
-              lan: Integer(get_lan_id(datacenter_id, nic['lan'])),
-              name: nic['name'],
-              dhcp: nic['dhcp'],
-            )
+            begin
+              IonoscloudVmAutoscaling::ReplicaNic.new(
+                lan: Integer(nic['lan']),
+                name: nic['name'],
+                dhcp: nic['dhcp'],
+              )
+            rescue ArgumentError => e
+              raise "LAN ID should be an Integer. Invalid value: #{nic['lan']}"
+            end
           end,
           volumes: resource[:replica_configuration]['volumes'].map do |volume|
             IonoscloudVmAutoscaling::ReplicaVolumePost.new(
@@ -140,10 +144,11 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
     Puppet.info("Created a new VM Autoscaling group '#{name}'.")
     @property_hash[:ensure] = :present
     @property_hash[:id] = group.id
+    @property_hash[:datacenter] = datacenter_id
+    @property_hash[:name] = name
   end
 
   def flush
-    
     return if @property_flush.empty?
 
     changeable_properties = [:target_replica_count, :min_replica_count, :max_replica_count, :replica_configuration, :policy]
@@ -189,15 +194,19 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
         cpu_family: replica_configuration[:cpu_family],
         ram: replica_configuration[:ram],
         nics: replica_configuration[:nics].map do |nic|
-          raise "LAN ID should be an integer not #{nic[:lan].class}. Invalid value: #{nic[:lan]}" unless nic[:lan].is_a? Integer
-          IonoscloudVmAutoscaling::ReplicaNic.new(
-            lan: nic[:lan],
-            name: nic[:name],
-            dhcp: nic[:dhcp],
-          )
+          begin
+            IonoscloudVmAutoscaling::ReplicaNic.new(
+              lan: nic[:lan],
+              name: nic[:name],
+              dhcp: nic[:dhcp],
+            )
+          rescue ArgumentError => e
+            raise "LAN ID should be an Integer. Invalid value: #{nic[:lan]}"
+          end
         end,
       ),
     ))
+
     PuppetX::IonoscloudX::Helper.vm_autoscaling_groups_api.autoscaling_groups_put(@property_hash[:id], updated_group)
 
     changeable_properties.each do |property|

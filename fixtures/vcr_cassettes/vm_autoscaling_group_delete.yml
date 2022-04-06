@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: delete
+    uri: https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_OpenAPI-Generator/1.0.5/ruby_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 204
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 06 Apr 2022 14:18:13 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+  recorded_at: Wed, 06 Apr 2022 14:18:13 GMT
+recorded_with: VCR 6.0.0

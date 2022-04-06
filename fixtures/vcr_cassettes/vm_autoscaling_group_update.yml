@@ -1,0 +1,89 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"maxReplicaCount":4,"minReplicaCount":1,"targetReplicaCount":2,"name":"test_vm_autoscaling_group","policy":{"metric":"INSTANCE_CPU_UTILIZATION_AVERAGE","range":"PT24H","scaleInAction":{"amount":3,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M","terminationPolicy":"RANDOM"},"scaleInThreshold":33,"scaleOutAction":{"amount":2,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M"},"scaleOutThreshold":77,"unit":"PER_HOUR"},"replicaConfiguration":{"availabilityZone":"ZONE_2","cores":2,"cpuFamily":"INTEL_XEON","nics":[{"lan":1,"name":"TEST_NIC1","dhcp":true}],"ram":2048},"datacenter":{"id":"feb02c68-6286-4f5b-a7bd-ab082f1031bf"}}}'
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_OpenAPI-Generator/1.0.5/ruby_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 06 Apr 2022 14:18:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1699'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"959df40a-a1bb-4956-8863-ae5c2d620901","type":"autoscaling-group","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901","metadata":{"createdDate":"2022-04-06T14:18:13.164826Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0","etag":null,"lastModifiedDate":"2022-04-06T14:18:13.167843Z","lastModifiedBy":"username","lastModifiedByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0","state":"AVAILABLE"},"properties":{"name":"test_vm_autoscaling_group","targetReplicaCount":2,"minReplicaCount":1,"maxReplicaCount":4,"datacenter":{"id":"feb02c68-6286-4f5b-a7bd-ab082f1031bf","type":"datacenter","href":"https://api.ionos.com/cloudapi/v5/datacenters/feb02c68-6286-4f5b-a7bd-ab082f1031bf"},"location":"us/las","policy":{"metric":"INSTANCE_CPU_UTILIZATION_AVERAGE","unit":"PER_HOUR","range":"PT24H","scaleInThreshold":33.00,"scaleInAction":{"amount":3.00,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M","terminationPolicy":"RANDOM"},"scaleOutThreshold":77.00,"scaleOutAction":{"amount":2.00,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M"}},"replicaConfiguration":{"cpuFamily":"INTEL_XEON","availabilityZone":"ZONE_2","cores":2,"ram":2048,"volumes":[],"nics":[{"name":"TEST_NIC1","lan":1,"dhcp":true}]}},"entities":{"actions":{"id":"959df40a-a1bb-4956-8863-ae5c2d620901/actions","type":"collection","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901/actions"},"servers":{"id":"959df40a-a1bb-4956-8863-ae5c2d620901/servers","type":"collection","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901/servers"}}}'
+  recorded_at: Wed, 06 Apr 2022 14:18:13 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/autoscaling/groups?depth=3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_OpenAPI-Generator/1.0.5/ruby_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 06 Apr 2022 14:18:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2270'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"groups","type":"collection","href":"https://api.ionos.com/cloudapi/autoscaling/groups","items":[{"id":"959df40a-a1bb-4956-8863-ae5c2d620901","type":"autoscaling-group","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901","metadata":{"createdDate":"2022-04-06T14:18:13.164826Z","createdBy":"username","createdByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0","etag":null,"lastModifiedDate":"2022-04-06T14:18:13.637229Z","lastModifiedBy":"username","lastModifiedByUserId":"99156d9e-eb3f-4024-a3a4-283be74699c0","state":"AVAILABLE"},"properties":{"name":"test_vm_autoscaling_group","targetReplicaCount":2,"minReplicaCount":1,"maxReplicaCount":4,"datacenter":{"id":"feb02c68-6286-4f5b-a7bd-ab082f1031bf","type":"datacenter","href":"https://api.ionos.com/cloudapi/v5/datacenters/feb02c68-6286-4f5b-a7bd-ab082f1031bf"},"location":"us/las","policy":{"metric":"INSTANCE_CPU_UTILIZATION_AVERAGE","unit":"PER_HOUR","range":"PT24H","scaleInThreshold":33.00,"scaleInAction":{"amount":3.00,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M","terminationPolicy":"RANDOM"},"scaleOutThreshold":77.00,"scaleOutAction":{"amount":2.00,"amountType":"ABSOLUTE","cooldownPeriod":"PT5M"}},"replicaConfiguration":{"cpuFamily":"INTEL_XEON","availabilityZone":"ZONE_2","cores":2,"ram":2048,"volumes":[],"nics":[{"name":"TEST_NIC1","lan":1,"dhcp":true}]}},"entities":{"actions":{"id":"959df40a-a1bb-4956-8863-ae5c2d620901/actions","type":"collection","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901/actions","items":[{"id":"1099d917-2108-4dbb-9196-86f7b938cffb","type":"autoscaling-action","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901/actions/1099d917-2108-4dbb-9196-86f7b938cffb","metadata":{"createdDate":"2022-04-06T14:18:13.167206Z","etag":null,"lastModifiedDate":"2022-04-06T14:18:13.167207Z","state":"AVAILABLE"},"properties":{"actionStatus":"IN_PROGRESS","actionType":"SCALE_OUT","targetReplicaCount":2}}]},"servers":{"id":"959df40a-a1bb-4956-8863-ae5c2d620901/servers","type":"collection","href":"https://api.ionos.com/cloudapi/autoscaling/groups/959df40a-a1bb-4956-8863-ae5c2d620901/servers","items":[]}}}]}'
+  recorded_at: Wed, 06 Apr 2022 14:18:13 GMT
+recorded_with: VCR 6.0.0

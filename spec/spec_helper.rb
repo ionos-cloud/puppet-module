@@ -162,7 +162,7 @@ def create_cluster(cluster_name)
   @cluster_provider.id
 end
 
-def create_datacenter(datacenter_name)
+def create_datacenter(datacenter_name, location = 'de/txl')
   Puppet::Type.type(:datacenter).provider(:v1).instances.each do |instance|
     return instance.id if instance.name == datacenter_name
   end
@@ -170,7 +170,7 @@ def create_datacenter(datacenter_name)
   @datacenter_provider = Puppet::Type.type(:datacenter).provider(:v1).new(
     Puppet::Type.type(:datacenter).new(
       name: datacenter_name,
-      location: 'de/txl',
+      location: location,
       description: 'Puppet Module test description',
     ),
   )
