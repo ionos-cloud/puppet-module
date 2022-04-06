@@ -35,3 +35,5 @@
   * [ionoscloud_user](types/user/ionoscloud_user.md)
   * [s3_key](types/user/s3_key.md)
   * [share](types/user/share.md)
+* VM Autoscaling
+  * [vm_autoscaling_group](types/vm-autoscaling/vm_autoscaling_group.md)

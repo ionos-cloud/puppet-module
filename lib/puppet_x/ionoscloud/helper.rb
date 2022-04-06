@@ -922,7 +922,12 @@ module PuppetX
       end
 
       def self.compare_objects(existing, target)
-        return false if ((existing.class != target.class) && (existing != target))
+        begin
+          return false if ((existing.class != target.class) && (existing != target))
+        rescue Exception => e
+          puts e
+          raise e
+        end
 
         case existing
         when Array

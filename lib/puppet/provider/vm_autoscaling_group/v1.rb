@@ -189,8 +189,9 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
         cpu_family: replica_configuration[:cpu_family],
         ram: replica_configuration[:ram],
         nics: replica_configuration[:nics].map do |nic|
+          raise "LAN ID should be an integer not #{nic[:lan].class}. Invalid value: #{nic[:lan]}" unless nic[:lan].is_a? Integer
           IonoscloudVmAutoscaling::ReplicaNic.new(
-            lan: Integer(get_lan_id(datacenter_id, nic[:lan])),
+            lan: nic[:lan],
             name: nic[:name],
             dhcp: nic[:dhcp],
           )
@@ -214,10 +215,5 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
   def get_datacenter_id(datacenter_id_or_name)
     return datacenter_id_or_name if PuppetX::IonoscloudX::Helper.validate_uuid_format(datacenter_id_or_name)
     PuppetX::IonoscloudX::Helper.resolve_datacenter_id(nil, datacenter_id_or_name)
-  end
-
-  def get_lan_id(datacenter_id, lan_id_or_name)
-    return lan_id_or_name if lan_id_or_name.is_a? Integer
-    PuppetX::IonoscloudX::Helper.lan_from_name(lan_id_or_name, datacenter_id).id
   end
 end
