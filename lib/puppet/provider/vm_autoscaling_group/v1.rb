@@ -164,7 +164,7 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
                             @property_hash[:replica_configuration]
     policy = PuppetX::IonoscloudX::Helper.deep_symbolize_keys_in_object!(@property_flush[:policy]) || @property_hash[:policy]
 
-    updated_group = IonoscloudVmAutoscaling::Group.new(properties: IonoscloudVmAutoscaling::GroupProperties.new(
+    updated_group = IonoscloudVmAutoscaling::GroupUpdate.new(properties: IonoscloudVmAutoscaling::GroupUpdatableProperties.new(
       name: @property_hash[:name],
       datacenter: { id: @property_hash[:datacenter] },
       max_replica_count: @property_flush[:max_replica_count] || @property_hash[:max_replica_count],
