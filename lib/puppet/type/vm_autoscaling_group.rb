@@ -30,7 +30,7 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
   end
 
   newproperty(:min_replica_count) do
-    desc 'Minimum replica count value for `targetReplicaCount`. Will be enforced for both automatic and manual changes..'
+    desc 'Minimum replica count value for `targetReplicaCount`. Will be enforced for both automatic and manual changes.'
     validate do |value|
       begin
         Integer(value)
@@ -83,7 +83,7 @@ Puppet::Type.newtype(:vm_autoscaling_group) do
   end
 
   newproperty(:datacenter) do
-    desc 'The ID or name of the virtual data center where the volume resides.'
+    desc 'VMs for this autoscaling group will be created in this virtual data center.'
 
     validate do |value|
       unless value.is_a?(String)
