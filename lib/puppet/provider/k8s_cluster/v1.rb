@@ -32,6 +32,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
       id: instance.id,
       name: instance.properties.name,
       k8s_version: instance.properties.k8s_version,
+      public: instance.properties.public,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
       maintenance_time: instance.properties.maintenance_window.time,
       state: instance.metadata.state,
@@ -90,6 +91,7 @@ Puppet::Type.type(:k8s_cluster).provide(:v1) do
     cluster_properties = {
       name: resource[:name],
       k8s_version: resource[:k8s_version],
+      public: resource[:public],
       api_subnet_allow_list: resource[:api_subnet_allow_list],
       s3_buckets: resource[:s3_buckets],
     }
