@@ -196,7 +196,7 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
         nics: replica_configuration[:nics].map do |nic|
           begin
             IonoscloudVmAutoscaling::ReplicaNic.new(
-              lan: nic[:lan],
+              lan: Integer(nic[:lan]),
               name: nic[:name],
               dhcp: nic[:dhcp],
             )
