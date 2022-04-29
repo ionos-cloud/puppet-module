@@ -135,6 +135,8 @@ Puppet::Type.type(:vm_autoscaling_group).provide(:v1) do
               user_data: volume['user_data'],
               bus: volume['bus'],
               image_password: volume['image_password'],
+              image_alias: volume['image_alias'],
+              backupunit_id: volume['backupunit_id'],
             )
           end,
         ),

@@ -24,7 +24,7 @@ vm_autoscaling_group { 'test-autoscaling' :
         unit                => 'PER_HOUR'
     },
     replica_configuration => {
-        availability_zone => 'ZONE_1',
+        availability_zone => 'AUTO',
         cores             => 2,
         cpu_family        => 'INTEL_XEON',
         ram               => 1024,
