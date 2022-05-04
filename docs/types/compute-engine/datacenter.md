@@ -31,7 +31,7 @@ Type representing a IonosCloud virtual data center.
 ## Example
 
 ```ruby
-datacenter { 'myDataCenter' :
+datacenter { 'MyDataCenter' :
   ensure              => present,
   location            => 'de/fra',
   description         => 'test data center',

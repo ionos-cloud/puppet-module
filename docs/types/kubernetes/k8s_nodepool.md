@@ -85,8 +85,8 @@ k8s_nodepool { 'nodepool_test' :
       id     => 3,
       dhcp   => true,
       routes => [{
-        network    => '1.2.3.4/24',
-        gateway_ip => '1.2.3.4',
+        network    => '127.0.0.1/24',
+        gateway_ip => '127.0.0.1',
       }],
     },
   ],

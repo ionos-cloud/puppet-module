@@ -45,14 +45,14 @@ Type representing a IonosCloud server.
 ## Example
 
 ```ruby
-$datacenter_name = 'testdc1'
+$datacenter_name = 'MyDataCenter'
 
 server { 'worker4' :
   ensure          => present,
   cores           => 1,
   datacenter_name => $datacenter_name,
   ram             => 1024,
-  cpu_family      => 'INTEL_XEON',
+  cpu_family      => 'INTEL_SKYLAKE',
   volumes         => [
     {
       name              => 'system',
@@ -67,8 +67,8 @@ server { 'worker4' :
     {
       name            => 'testnic3',
       dhcp            => true,
-      lan             => 'public1',
-      ips             => ['158.222.102.242'],
+      lan             => 'public',
+      ips             => ['127.0.0.1'],
       firewall_active => true,
       firewall_type   => 'EGRESS',
       firewall_rules  => [
@@ -99,15 +99,15 @@ server { 'worker4' :
     {
       name            => 'testnic2',
       dhcp            => true,
-      lan             => 'public1',
-      ips             => ['158.222.102.246'],
+      lan             => 'public',
+      ips             => ['127.0.0.1'],
       firewall_active => true,
       firewall_type   => 'INGRESS',
     }
   ],
   cdroms          => [
     {
-      id => 'cd963010-d348-11eb-ae0d-de68fed054b6',
+      id => '1c511436-5bfa-11ec-adcb-2e0e2737acfd',
     }
   ]
 }

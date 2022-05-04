@@ -43,7 +43,7 @@ datacenter { $datacenter_name :
 }
 -> natgateway { 'testnatg':
   datacenter_name => $datacenter_name,
-  public_ips      => ['158.222.103.21'],
+  public_ips      => ['127.0.0.2'],
   lans            => [
   ],
   flowlogs        => [
@@ -60,7 +60,7 @@ datacenter { $datacenter_name :
       protocol          => 'TCP',
       source_subnet     => '192.168.0.1/32',
       target_subnet     => '192.168.0.4/32',
-      public_ip         => '158.222.103.21',
+      public_ip         => '127.0.0.1',
       target_port_range => {
         start => 22,
         end   => 27,
@@ -71,7 +71,7 @@ datacenter { $datacenter_name :
       protocol          => 'TCP',
       source_subnet     => '192.168.0.1/32',
       target_subnet     => '192.168.0.4/32',
-      public_ip         => '158.222.103.21',
+      public_ip         => '127.0.0.1',
       target_port_range => {
         start => 23,
         end   => 26,
@@ -82,7 +82,7 @@ datacenter { $datacenter_name :
       protocol          => 'TCP',
       source_subnet     => '192.168.0.1/32',
       target_subnet     => '192.168.0.4/32',
-      public_ip         => '158.222.103.21',
+      public_ip         => '127.0.0.1',
       target_port_range => {
         start => 22,
         end   => 24,

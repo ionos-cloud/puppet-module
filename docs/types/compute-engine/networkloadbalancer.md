@@ -45,7 +45,7 @@ datacenter { $datacenter_name :
 }
 -> networkloadbalancer { 'testnetlb':
   datacenter_name => $datacenter_name,
-  ips             => ['158.222.102.243'],
+  ips             => ['127.0.0.1'],
   lb_private_ips  => ['10.12.106.225/24', '10.12.106.222/24'],
   target_lan      => 3,
   listener_lan    => 1,
@@ -62,7 +62,7 @@ datacenter { $datacenter_name :
       name             => 'regula',
       algorithm        => 'ROUND_ROBIN',
       protocol         => 'TCP',
-      listener_ip      => '158.222.102.243',
+      listener_ip      => '127.0.0.1',
       listener_port    => 22,
       health_check     => {
         client_timeout  => 50000,
@@ -71,7 +71,7 @@ datacenter { $datacenter_name :
         retries         => 4
       },
       targets          =>[
-        ip             => '1.1.1.1',
+        ip             => '127.0.0.1',
         port           => 22,
         weight         => 1,
         'health_check' => {
@@ -85,7 +85,7 @@ datacenter { $datacenter_name :
       name          => 'regula2',
       algorithm     => 'ROUND_ROBIN',
       protocol      => 'TCP',
-      listener_ip   => '158.222.102.243',
+      listener_ip   => '127.0.0.1',
       listener_port => 23,
       health_check  => {
         client_timeout  => 50000,
