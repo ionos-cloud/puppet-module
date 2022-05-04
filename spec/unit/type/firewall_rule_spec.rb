@@ -11,7 +11,6 @@ describe type_class do
 
   let :properties do
     [
-      :nic,
       :type,
       :icmp_type,
       :icmp_code,
@@ -21,6 +20,8 @@ describe type_class do
       :source_mac,
       :source_ip,
       :target_ip,
+      :nic_id,
+      :nic_name,
       :server_id,
       :server_name,
       :datacenter_id,

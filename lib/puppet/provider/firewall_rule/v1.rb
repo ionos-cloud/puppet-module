@@ -32,11 +32,23 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.keys.each do |key|
+      resource = resources[key]
+      if instances.select do |instance|
+        instance.name == key &&
+        (resource[:datacenter_id] == instance.datacenter_id || resource[:datacenter_name] == instance.datacenter_name) &&
+        (resource[:server_id] == instance.server_id || resource[:server_name] == instance.server_name) &&
+        (resource[:nic_id] == instance.nic_id || resource[:nic_name] == instance.nic_name)
+      end.count > 1
+        raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+      end
+    end
+
     instances.each do |prov|
       next unless (resource = resources[prov.name])
       next unless (resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name) &&
                   (resource[:server_id] == prov.server_id || resource[:server_name] == prov.server_name) &&
-                  resource[:nic] == prov.nic
+                  (resource[:nic_id] == prov.nic_id || resource[:nic_name] == prov.nic_name)
       resource.provider = prov
     end
   end
@@ -49,7 +61,7 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
       server_id: server.id,
       server_name: server.properties.name,
       nic_id: nic.id,
-      nic: nic.properties.name,
+      nic_name: nic.properties.name,
       source_mac: firewall_rule.properties.source_mac,
       source_ip: firewall_rule.properties.source_ip,
       target_ip: firewall_rule.properties.target_ip,
@@ -105,10 +117,10 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
     datacenter_id = PuppetX::IonoscloudX::Helper.resolve_datacenter_id(resource[:datacenter_id], resource[:datacenter_name])
     server_id = resource[:server_id] ? resource[:server_id] : PuppetX::IonoscloudX::Helper.server_from_name(resource[:server_name], datacenter_id).id
     nic = PuppetX::IonoscloudX::Helper.nics_api.datacenters_servers_nics_get(datacenter_id, server_id, depth: 1).items.find do |nic|
-      nic.properties.name == resource[:nic]
+      nic.properties.name == resource[:nic_name]
     end
 
-    raise "Nic named '#{resource[:nic]}' cannot be found." unless nic
+    raise "Nic named '#{resource[:nic_name]}' cannot be found." unless nic
 
     firewall_rule, = PuppetX::IonoscloudX::Helper.create_firewallrule(datacenter_id, server_id, nic.id, resource, wait: true)
 

@@ -150,14 +150,33 @@ Puppet::Type.newtype(:firewall_rule) do
     end
   end
 
-  newproperty(:nic) do
+  newproperty(:nic_id) do
+    desc 'The NIC ID the NIC will be attached to.'
+    validate do |value|
+      raise ArgumentError, 'The NIC ID must be a String.' unless value.is_a?(String)
+    end
+
+    def insync?(_is)
+      true
+    end
+  end
+
+  newproperty(:nic_name) do
     desc 'The name of the NIC the firewall rule will be added to.'
     validate do |value|
       raise ArgumentError, 'The NIC name must be a String.' unless value.is_a?(String)
     end
   end
 
-  autorequire(:nic) do
-    self[:nic]
+  autorequire(:nic_name) do
+    self[:nic_name]
+  end
+
+  newproperty(:id) do
+    desc 'The Firewall Rule ID.'
+
+    def insync?(_is)
+      true
+    end
   end
 end
