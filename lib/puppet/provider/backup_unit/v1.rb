@@ -15,8 +15,8 @@ Puppet::Type.type(:backup_unit).provide(:v1) do
   end
 
   def self.prefetch(resources)
-    resources.keys.each do |key|
-      if instances.select { |instance| instance.name == key }.count > 1
+    resources.each_key do |key|
+      if instances.count { |instance| instance.name == key } > 1
         raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
       end
     end

@@ -32,16 +32,15 @@ Puppet::Type.type(:firewall_rule).provide(:v1) do
   end
 
   def self.prefetch(resources)
-    resources.keys.each do |key|
+    resources.each_key do |key|
       resource = resources[key]
-      if instances.select do |instance|
+      next unless instances.count { |instance|
         instance.name == key &&
         (resource[:datacenter_id] == instance.datacenter_id || resource[:datacenter_name] == instance.datacenter_name) &&
         (resource[:server_id] == instance.server_id || resource[:server_name] == instance.server_name) &&
         (resource[:nic_id] == instance.nic_id || resource[:nic_name] == instance.nic_name)
-      end.count > 1
-        raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
-      end
+      } > 1
+      raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
     end
 
     instances.each do |prov|
