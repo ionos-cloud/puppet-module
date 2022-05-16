@@ -17,7 +17,6 @@ Type representing a Ionoscloud K8s Nodepool.
 | maintenance_day | No | The maintenance day of the K8s Nodepool.   |
 | maintenance_time | No | The maintenance time of the K8s Nodepool.   |
 | datacenter_name | No | The datacenter used by the K8s Nodepool.   |
-| gateway_ip | No | Public IP address for the gateway performing source NAT for the node pool's nodes belonging to a private cluster. Required only if the node pool belongs to a private cluster.   |
 | node_count | No | The number of nodes in the nodepool.   |
 | min_node_count | No | The minimum number of nodes in the nodepool.   |
 | max_node_count | No | The maximum number of nodes in the nodepool.   |
