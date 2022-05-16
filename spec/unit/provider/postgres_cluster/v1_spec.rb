@@ -29,6 +29,7 @@ describe provider_class do
             },
           ],
           location: 'de/txl',
+          backup_location: 'eu-central-2',
           maintenance_day: 'Sunday',
           maintenance_time: '16:30:59',
           db_username: 'test',

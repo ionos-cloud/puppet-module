@@ -136,4 +136,4 @@ final_categories = []
 
 categories.map { |key, value| final_categories << { category: key, generated_types: value.sort_by { |a| a[:title] } } }
 
-File.open('summary.md', 'w') { |f| f.write(Summary.new(final_categories).render) }
+File.open('summary.md', 'w') { |f| f.write(Summary.new(final_categories.sort_by { |a| a[:category].to_s }).render) }
