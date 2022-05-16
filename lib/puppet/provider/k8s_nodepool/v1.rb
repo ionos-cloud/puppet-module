@@ -6,14 +6,11 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_get(depth: 3).items.map { |k8s_cluster|
       nodepools = []
       # Ignore data center if name is not defined.
@@ -53,7 +50,6 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       cluster_name: cluster.properties.name,
       datacenter_id: instance.properties.datacenter_id,
       datacenter_name: PuppetX::IonoscloudX::Helper.datacenters_api.datacenters_find_by_id(instance.properties.datacenter_id).properties.name,
-      gateway_ip: instance.properties.gateway_ip,
       node_count: instance.properties.node_count,
       min_node_count: instance.properties.auto_scaling.min_node_count,
       max_node_count: instance.properties.auto_scaling.max_node_count,
@@ -156,7 +152,6 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
       name: resource[:name],
       k8s_version: resource[:k8s_version],
       datacenter_id: datacenter_id,
-      gateway_ip: resource[:gateway_ip],
       node_count: resource[:node_count],
       cpu_family: resource[:cpu_family],
       cores_count: resource[:cores_count],

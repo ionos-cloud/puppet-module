@@ -14,7 +14,6 @@ Type representing a Ionoscloud K8s Cluster.
 | :--- | :-: | :--- |
 | ensure | No | The basic property that the resource should be in.  Valid values are `present`, `absent`.  |
 | k8s_version | No | The K8s version of the K8s Cluster.   |
-| public | No | The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.  Valid values are `true`, `false`.  |
 | maintenance_day | No | The maintenance day of the K8s Cluster.   |
 | maintenance_time | No | The maintenance time of the K8s Cluster.   |
 | api_subnet_allow_list | No | Access to the K8s API server is restricted to these CIDRs. Cluster-internal traffic is not affected by this restriction. If no allowlist is specified, access is not restricted. If an IP without subnet mask is provided, the default value will be used: 32 for IPv4 and 128 for IPv6.   |

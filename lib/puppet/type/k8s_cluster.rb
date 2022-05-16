@@ -26,14 +26,6 @@ Puppet::Type.newtype(:k8s_cluster) do
     end
   end
 
-  newproperty(:public) do
-    desc 'The indicator if the cluster is public or private. Be aware that setting it to false is currently in beta phase.'
-    newvalues(:true, :false)
-    def insync?(is)
-      is.to_s == should.to_s
-    end
-  end
-
   newproperty(:maintenance_day) do
     desc 'The maintenance day of the K8s Cluster.'
     validate do |value|

@@ -20,9 +20,11 @@ jobs:
           sudo dpkg -i puppet-tools-release-focal.deb
           sudo apt-get update
           sudo apt-get install pdk
-      
+
       - name: Run the tests Puppet 7
         run: pdk test unit --puppet-version=7
+        env:
+          IONOS_TOKEN: token
 
       - name: Update file paths in coverage.json
         run: sed -i 's+/home/runner/work/puppet-module/puppet-module+/github/workspace+g' coverage/coverage.json
