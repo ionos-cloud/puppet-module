@@ -33,7 +33,16 @@ Type representing a IonosCloud Network Load Balancer.
 * flowlogs
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource networkloadbalancer
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 $datacenter_name = 'testdc1'
@@ -45,7 +54,7 @@ datacenter { $datacenter_name :
 }
 -> networkloadbalancer { 'testnetlb':
   datacenter_name => $datacenter_name,
-  ips             => ['158.222.102.243'],
+  ips             => ['127.0.0.1'],
   lb_private_ips  => ['10.12.106.225/24', '10.12.106.222/24'],
   target_lan      => 3,
   listener_lan    => 1,
@@ -62,7 +71,7 @@ datacenter { $datacenter_name :
       name             => 'regula',
       algorithm        => 'ROUND_ROBIN',
       protocol         => 'TCP',
-      listener_ip      => '158.222.102.243',
+      listener_ip      => '127.0.0.1',
       listener_port    => 22,
       health_check     => {
         client_timeout  => 50000,
@@ -71,7 +80,7 @@ datacenter { $datacenter_name :
         retries         => 4
       },
       targets          =>[
-        ip             => '1.1.1.1',
+        ip             => '127.0.0.1',
         port           => 22,
         weight         => 1,
         'health_check' => {
@@ -85,7 +94,7 @@ datacenter { $datacenter_name :
       name          => 'regula2',
       algorithm     => 'ROUND_ROBIN',
       protocol      => 'TCP',
-      listener_ip   => '158.222.102.243',
+      listener_ip   => '127.0.0.1',
       listener_port => 23,
       health_check  => {
         client_timeout  => 50000,
@@ -100,3 +109,5 @@ datacenter { $datacenter_name :
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+

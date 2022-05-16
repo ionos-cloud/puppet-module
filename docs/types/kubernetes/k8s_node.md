@@ -29,6 +29,15 @@ Type representing a Ionoscloud network interface.
 No Changeable properties
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource k8s_node
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 No example available

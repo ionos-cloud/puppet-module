@@ -1,15 +1,15 @@
-$datacenter_name = 'testdc1'
-$server_name = 'worker1'
-$nic = 'testnic'
+$datacenter_name = 'MyDataCenter'
+$server_name = 'worker4'
+$nic = 'testnic3'
 
-firewall_rule { 'HTTP':
-  datacenter_name  => $datacenter_name,
-  server_name      => $server_name,
-  nic              => $nic,
+firewall_rule { 'SSH':
+  ensure           => 'present',
+  datacenter_name  => 'MyDataCenter',
+  nic_name         => 'testnic3',
+  port_range_end   => 29,
+  port_range_start => 22,
   protocol         => 'TCP',
-  port_range_start => 80,
-  port_range_end   => 83,
-  source_mac       => '12:47:e9:b1:77:b4',
-  source_ip        => '10.81.12.123',
-  target_ip        => '10.81.12.124'
+  provider         => 'v1',
+  server_name      => 'worker4',
+  type             => 'INGRESS',
 }

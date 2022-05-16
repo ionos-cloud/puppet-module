@@ -33,7 +33,7 @@ datacenter { $datacenter_name :
   server_name     => $server_name,
   dhcp            => true,
   lan             => $lan_name,
-  ips             => ['158.222.102.129'],
+  ips             => ['127.0.0.1'],
   firewall_active => true,
   firewall_type   => 'INGRESS',
   firewall_rules  => [

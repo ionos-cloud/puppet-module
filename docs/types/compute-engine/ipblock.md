@@ -24,14 +24,19 @@ Type representing a IonosCloud IP block.
 
 ### Changeable properties:
 
-* firstname
-* lastname
-* administrator
-* force_sec_auth
-* groups
+No Changeable properties
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource ipblock
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 ipblock { 'puppet_demo':
@@ -41,3 +46,5 @@ ipblock { 'puppet_demo':
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+
