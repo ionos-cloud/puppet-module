@@ -24,6 +24,15 @@ Type representing an s3 key
 No Changeable properties
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource s3_key
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 No example available

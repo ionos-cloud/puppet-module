@@ -24,6 +24,15 @@ Type representing a IonosCloud location.
 No Changeable properties
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource location
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 No example available

@@ -42,7 +42,16 @@ Type representing a IonosCloud server.
 * nics
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource server
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 $datacenter_name = 'MyDataCenter'
@@ -113,3 +122,5 @@ server { 'worker4' :
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+
