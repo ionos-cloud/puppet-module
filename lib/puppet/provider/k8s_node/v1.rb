@@ -29,6 +29,16 @@ Puppet::Type.type(:k8s_node).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.each_key do |key|
+      resource = resources[key]
+      next unless instances.count { |instance|
+        instance.name == key &&
+        (resource[:cluster_id] == instance.cluster_id || resource[:cluster_name] == instance.cluster_name) &&
+        (resource[:nodepool_id] == instance.nodepool_id || resource[:nodepool_name] == instance.nodepool_name)
+      } > 1
+      raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+    end
+
     instances.each do |prov|
       next unless (resource = resources[prov.name])
       if (resource[:cluster_id] == prov.cluster_id || resource[:cluster_name] == prov.cluster_name) &&

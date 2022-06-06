@@ -127,6 +127,17 @@ Puppet::Type.newtype(:postgres_cluster) do
     end
   end
 
+  newproperty(:backup_location) do
+    desc 'The S3 location where the backups will be stored.'
+    validate do |value|
+      raise('Postgres Cluster backup_location must be a String') unless value.is_a?(String)
+    end
+
+    def insync?(_is)
+      true
+    end
+  end
+
   newproperty(:synchronization_mode) do
     desc 'Represents different modes of replication.'
     isrequired

@@ -26,7 +26,9 @@ Type representing a IonosCloud firewall rule.
 | datacenter_name | No | The name of the virtual data center where the NIC will reside.   |
 | server_id | No | The server ID the NIC will be attached to.   |
 | server_name | No | The server name the NIC will be attached to.   |
-| nic | No | The name of the NIC the firewall rule will be added to.   |
+| nic_id | No | The NIC ID the NIC will be attached to.   |
+| nic_name | No | The name of the NIC the firewall rule will be added to.   |
+| id | No | The Firewall Rule ID.   |
 ***
 
 
@@ -42,23 +44,34 @@ Type representing a IonosCloud firewall rule.
 * type
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource firewall_rule
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
-$datacenter_name = 'testdc1'
-$server_name = 'worker1'
-$nic = 'testnic'
+$datacenter_name = 'MyDataCenter'
+$server_name = 'worker4'
+$nic = 'testnic3'
 
-firewall_rule { 'HTTP':
-  datacenter_name  => $datacenter_name,
-  server_name      => $server_name,
-  nic              => $nic,
+firewall_rule { 'SSH':
+  ensure           => 'present',
+  datacenter_name  => 'MyDataCenter',
+  nic_name         => 'testnic3',
+  port_range_end   => 29,
+  port_range_start => 22,
   protocol         => 'TCP',
-  port_range_start => 80,
-  port_range_end   => 83,
-  source_mac       => '12:47:e9:b1:77:b4',
-  source_ip        => '10.81.12.123',
-  target_ip        => '10.81.12.124'
+  provider         => 'v1',
+  server_name      => 'worker4',
+  type             => 'INGRESS',
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+

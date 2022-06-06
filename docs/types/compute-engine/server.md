@@ -42,17 +42,26 @@ Type representing a IonosCloud server.
 * nics
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource server
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
-$datacenter_name = 'testdc1'
+$datacenter_name = 'MyDataCenter'
 
 server { 'worker4' :
   ensure          => present,
   cores           => 1,
   datacenter_name => $datacenter_name,
   ram             => 1024,
-  cpu_family      => 'INTEL_XEON',
+  cpu_family      => 'INTEL_SKYLAKE',
   volumes         => [
     {
       name              => 'system',
@@ -67,8 +76,8 @@ server { 'worker4' :
     {
       name            => 'testnic3',
       dhcp            => true,
-      lan             => 'public1',
-      ips             => ['158.222.102.242'],
+      lan             => 'public',
+      ips             => ['127.0.0.1'],
       firewall_active => true,
       firewall_type   => 'EGRESS',
       firewall_rules  => [
@@ -99,17 +108,19 @@ server { 'worker4' :
     {
       name            => 'testnic2',
       dhcp            => true,
-      lan             => 'public1',
-      ips             => ['158.222.102.246'],
+      lan             => 'public',
+      ips             => ['127.0.0.1'],
       firewall_active => true,
       firewall_type   => 'INGRESS',
     }
   ],
   cdroms          => [
     {
-      id => 'cd963010-d348-11eb-ae0d-de68fed054b6',
+      id => '1c511436-5bfa-11ec-adcb-2e0e2737acfd',
     }
   ]
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+

@@ -52,7 +52,16 @@ Type representing a Ionoscloud K8s Nodepool.
 * public_ips
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource k8s_nodepool
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 $cluster_name = 'puppet_module_testa'
@@ -84,11 +93,13 @@ k8s_nodepool { 'nodepool_test' :
       id     => 3,
       dhcp   => true,
       routes => [{
-        network    => '1.2.3.4/24',
-        gateway_ip => '1.2.3.4',
+        network    => '127.0.0.1/24',
+        gateway_ip => '127.0.0.1',
       }],
     },
   ],
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+

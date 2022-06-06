@@ -21,6 +21,11 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.each_key do |key|
+      if instances.count { |instance| instance.name == key } > 1
+        raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+      end
+    end
     instances.each do |prov|
       if (resource = resources[prov.name])
         resource.provider = prov if resource[:display_name] == prov.name
@@ -39,6 +44,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
       storage_type: instance.properties.storage_type,
       connections: instance.properties.connections,
       location: instance.properties.location,
+      backup_location: instance.properties.backup_location,
       display_name: instance.properties.display_name,
       name: instance.properties.display_name,
       maintenance_day: instance.properties.maintenance_window.day_of_the_week,
@@ -125,6 +131,7 @@ Puppet::Type.type(:postgres_cluster).provide(:v1) do
           ),
         ],
         location: resource[:location],
+        backup_location: resource[:backup_location],
         display_name: resource[:display_name],
         maintenance_window: if resource[:maintenance_time] && resource[:maintenance_day]
                               IonoscloudDbaasPostgres::MaintenanceWindow.new(

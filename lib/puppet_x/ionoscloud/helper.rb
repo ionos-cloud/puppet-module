@@ -8,18 +8,17 @@ module PuppetX
   module IonoscloudX
     # Helper class for the IONOS Cloud Puppet module
     class Helper
-      def self.ionoscloud_config(_depth = nil)
-        Ionoscloud.configure do |config|
-          config.username = ENV['IONOS_USERNAME']
-          config.password = ENV['IONOS_PASSWORD']
-        end
-      end
-
       def self.ionoscloud_api_client
         api_config = Ionoscloud::Configuration.new
 
-        api_config.username = ENV['IONOS_USERNAME']
-        api_config.password = ENV['IONOS_PASSWORD']
+        if !ENV['IONOS_TOKEN'].nil?
+          api_config.token = ENV['IONOS_TOKEN']
+        elsif !ENV['IONOS_USERNAME'].nil? && !ENV['IONOS_PASSWORD'].nil?
+          api_config.username = ENV['IONOS_USERNAME']
+          api_config.password = ENV['IONOS_PASSWORD']
+        else
+          raise 'Either ionoscloud_token or ionoscloud_username and ionoscloud_password must be provided to access the Ionoscloud API.'
+        end
 
         unless ENV['IONOS_API_URL'].nil?
           uri = URI.parse(ENV['IONOS_API_URL'])
@@ -46,8 +45,14 @@ module PuppetX
       def self.ionoscloud_dbaas_postgres_api_client
         api_config = IonoscloudDbaasPostgres::Configuration.new
 
-        api_config.username = ENV['IONOS_USERNAME']
-        api_config.password = ENV['IONOS_PASSWORD']
+        if !ENV['IONOS_TOKEN'].nil?
+          api_config.token = ENV['IONOS_TOKEN']
+        elsif !ENV['IONOS_USERNAME'].nil? && !ENV['IONOS_PASSWORD'].nil?
+          api_config.username = ENV['IONOS_USERNAME']
+          api_config.password = ENV['IONOS_PASSWORD']
+        else
+          raise 'Either ionoscloud_token or ionoscloud_username and ionoscloud_password must be provided to access the Ionoscloud API.'
+        end
 
         unless ENV['IONOS_API_URL'].nil?
           uri = URI.parse(ENV['IONOS_API_URL'])

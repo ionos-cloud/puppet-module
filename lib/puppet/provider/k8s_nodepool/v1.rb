@@ -6,14 +6,11 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   mk_resource_methods
 
   def initialize(*args)
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
     super(*args)
     @property_flush = {}
   end
 
   def self.instances
-    PuppetX::IonoscloudX::Helper.ionoscloud_config
-
     PuppetX::IonoscloudX::Helper.kubernetes_api.k8s_get(depth: 3).items.map { |k8s_cluster|
       nodepools = []
       # Ignore data center if name is not defined.
@@ -30,6 +27,14 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.each_key do |key|
+      resource = resources[key]
+      next unless instances.count { |instance|
+        instance.name == key &&
+        (resource[:cluster_id] == instance.cluster_id || resource[:cluster_name] == instance.cluster_name)
+      } > 1
+      raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+    end
     instances.each do |prov|
       if (resource = resources[prov.name])
         resource.provider = prov if resource[:name] == prov.name

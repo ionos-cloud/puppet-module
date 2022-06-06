@@ -23,6 +23,7 @@ Type representing a Ionoscloud DBaaS Postgres Cluster.
 | storage_size | Yes | The size of the volume in GB.   |
 | storage_type | Yes | The volume type.   |
 | location | Yes | The Postgres Cluster location.   |
+| backup_location | No | The S3 location where the backups will be stored.   |
 | synchronization_mode | Yes | Represents different modes of replication.   |
 | connections | Yes | An array of connections to the Postgres Cluster.   |
 | db_username | Yes | The username for the initial postgres user. Some system usernames are restricted (e.g. "postgres", "admin", "standby")   |
@@ -47,13 +48,22 @@ Type representing a Ionoscloud DBaaS Postgres Cluster.
 * instances
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource postgres_cluster
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 $datacenter_name = 'testdc1'
 $lan_name = 1
 
-postgres_cluster { 'test_cluster' :
+postgres_cluster { 'test' :
   ensure               => present,
   restore              => false,
   instances            => 1,
@@ -64,13 +74,16 @@ postgres_cluster { 'test_cluster' :
   storage_type         => 'HDD',
   synchronization_mode => 'ASYNCHRONOUS',
   location             => 'de/fra',
+  backup_location      => 'eu-central-2',
   connections          => [
     'datacenter'       => $datacenter_name,
     'lan'              => $lan_name,
-    'cidr'             => '192.168.1.106/24',
+    'cidr'             => '192.168.1.108/24',
   ],
   db_username          => 'test',
   db_password          => '7357cluster',
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+
