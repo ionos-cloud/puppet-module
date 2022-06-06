@@ -31,7 +31,16 @@ Type representing a IonosCloud Target Group.
 * targets
 
 
-## Example
+## Examples
+
+### To list resources:
+```bash
+puppet resource target_group
+```
+> **_NOTE:_** If two resources have the same name only one of them will be shown.
+
+
+### To create, update or delete a resource:
 
 ```ruby
 target_group { 'puppet_module_test6f2nfctjrfqwfpmpamvpsjfewqfwqfqfwqd':
@@ -68,3 +77,5 @@ ensure              => absent,
 }
 
 ```
+> **_NOTE:_** If two resources with the same name ar found an error will be thrown, this only applies to cases where the resource cannot be identified. Example: an error is thrown for two servers with the same name in the same datacenter, not for two servers with the same name, but in different datacenters.
+
