@@ -25,6 +25,14 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.each_key do |key|
+      resource = resources[key]
+      next unless instances.count { |instance|
+        instance.name == key &&
+        (resource[:datacenter_id] == instance.datacenter_id || resource[:datacenter_name] == instance.datacenter_name)
+      } > 1
+      raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+    end
     instances.each do |prov|
       next unless (resource = resources[prov.name])
       if resource[:datacenter_id] == prov.datacenter_id || resource[:datacenter_name] == prov.datacenter_name

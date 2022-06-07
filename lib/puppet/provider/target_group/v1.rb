@@ -20,6 +20,11 @@ Puppet::Type.type(:target_group).provide(:v1) do
   end
 
   def self.prefetch(resources)
+    resources.each_key do |key|
+      if instances.count { |instance| instance.name == key } > 1
+        raise Puppet::Error, "Multiple #{resources[key].type} instances found for '#{key}'!"
+      end
+    end
     instances.each do |prov|
       if (resource = resources[prov.name])
         resource.provider = prov if resource[:name] == prov.name
