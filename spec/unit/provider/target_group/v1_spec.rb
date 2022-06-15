@@ -15,7 +15,7 @@ describe provider_class do
           protocol: 'HTTP',
           health_check: {
             'check_timeout' => 60,
-            'check_inteval' => 100,
+            'check_interval' => 1000,
             'retries' => 3,
           },
           http_health_check: {
@@ -49,7 +49,7 @@ describe provider_class do
           protocol: 'HTTP',
           health_check: {
             'check_timeout' => 53,
-            'check_inteval' => 100,
+            'check_interval' => 1000,
             'retries' => 3,
           },
           http_health_check: {
@@ -120,13 +120,12 @@ describe provider_class do
         end
         expect(updated_instance.algorithm).to eq('SOURCE_IP')
         expect(updated_instance.health_check).to eq({
-                                                      check_timeout: 57,
-          connect_timeout: 4000,
+          check_timeout: 57,
+          check_interval: 1000,
           retries: 4,
-          target_timeout: 50_000,
                                                     })
         expect(updated_instance.http_health_check).to eq({
-                                                           match_type: 'STATUS_CODE',
+          match_type: 'STATUS_CODE',
           method: 'POST',
           negate: false,
           path: '/.',

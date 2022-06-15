@@ -190,7 +190,7 @@ def create_ipblock(ipblock_name)
     ),
   )
   @ipblock_provider.create
-  @ipblock_provider.id
+  @ipblock_provider
 end
 
 def create_server(datacenter_name, server_name)

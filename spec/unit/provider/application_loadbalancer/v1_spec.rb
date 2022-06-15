@@ -17,8 +17,17 @@ describe provider_class do
         @lan_id2 = Integer(create_public_lan(@datacenter_name, @lan_name2))
         @lan_id3 = Integer(create_private_lan(@datacenter_name, @lan_name3))
 
-        @ip1, @ip2 = *Ionoscloud::IPBlocksApi.new.ipblocks_find_by_id(create_ipblock(@ipblock_name)).properties.ips
-        @ip3, @ip4 = *Ionoscloud::IPBlocksApi.new.ipblocks_find_by_id(create_ipblock(@ipblock_name2)).properties.ips
+        @ipblock1_id = create_ipblock(@ipblock_name)
+        Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
+          @ipblock1 = instance if instance.id == @ipblock1_id
+        end
+        @ip1, @ip2 = *@ipblock1.ips
+
+        @ipblock2_id = create_ipblock(@ipblock_name2)
+        Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
+          @ipblock2 = instance if instance.id == @ipblock2_id
+        end
+        @ip3, @ip4 = *@ipblock2.ips
 
         @application_loadbalancer1_name = 'puppet_module_test1'
         @application_loadbalancer2_name = 'puppet_module_test2'
@@ -229,33 +238,33 @@ describe provider_class do
           updated_instance = instance if instance.name == @application_loadbalancer1_name
         end
 
-        expect(updated_instance.rules[1][:name]).to eq('regula')
-        expect(updated_instance.rules[1][:protocol]).to eq('HTTP')
-        expect(updated_instance.rules[1][:listener_ip]).to eq(@ip2)
-        expect(updated_instance.rules[1][:listener_port]).to eq(49)
-        expect(updated_instance.rules[1][:client_timeout]).to eq(50_000)
-        expect(updated_instance.rules[1][:server_certificates]).to eq([])
-        expect(updated_instance.rules[1][:http_rules].first[:name]).to eq('nume3')
-        expect(updated_instance.rules[1][:http_rules].first[:type]).to eq('STATIC')
-        expect(updated_instance.rules[1][:http_rules].first[:response_message]).to eq('Test message.')
-        expect(updated_instance.rules[1][:http_rules].first[:status_code]).to eq(303)
-        expect(updated_instance.rules[1][:http_rules].first[:conditions]).to eq([
+        expect(updated_instance.rules.first[:name]).to eq('regula')
+        expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
+        expect(updated_instance.rules.first[:listener_ip]).to eq(@ip2)
+        expect(updated_instance.rules.first[:listener_port]).to eq(49)
+        expect(updated_instance.rules.first[:client_timeout]).to eq(50_000)
+        expect(updated_instance.rules.first[:server_certificates]).to eq([])
+        expect(updated_instance.rules.first[:http_rules].first[:name]).to eq('nume3')
+        expect(updated_instance.rules.first[:http_rules].first[:type]).to eq('STATIC')
+        expect(updated_instance.rules.first[:http_rules].first[:response_message]).to eq('Test message.')
+        expect(updated_instance.rules.first[:http_rules].first[:status_code]).to eq(303)
+        expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
                                                                                   {
                                                                                     type: 'PATH',
-                                                                                    condition: 'starts-with',
+                                                                                    condition: 'STARTS_WITH',
                                                                                     negate: true,
                                                                                     key: nil,
                                                                                     value: 'Sunday',
                                                                                   },
                                                                                 ])
 
-        expect(updated_instance.rules.first[:name]).to eq('regula2')
-        expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
-        expect(updated_instance.rules.first[:listener_ip]).to eq(@ip1)
-        expect(updated_instance.rules.first[:listener_port]).to eq(23)
-        expect(updated_instance.rules.first[:server_certificates]).to eq([])
-        expect(updated_instance.rules.first[:client_timeout]).to eq(45_000)
-        expect(updated_instance.rules.first[:http_rules]).to eq([])
+        expect(updated_instance.rules[1][:name]).to eq('regula2')
+        expect(updated_instance.rules[1][:protocol]).to eq('HTTP')
+        expect(updated_instance.rules[1][:listener_ip]).to eq(@ip1)
+        expect(updated_instance.rules[1][:listener_port]).to eq(23)
+        expect(updated_instance.rules[1][:server_certificates]).to eq([])
+        expect(updated_instance.rules[1][:client_timeout]).to eq(45_000)
+        expect(updated_instance.rules[1][:http_rules]).to eq([])
       end
     end
 
@@ -323,7 +332,7 @@ describe provider_class do
         expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
                                                                                      {
                                                                                        type: 'PATH',
-                                                                                       condition: 'starts-with',
+                                                                                       condition: 'STARTS_WITH',
                                                                                        negate: true,
                                                                                        key: nil,
                                                                                        value: 'Sunday',

@@ -17,8 +17,8 @@ describe provider_class do
         @lan_id2 = Integer(create_public_lan(@datacenter_name, @lan_name2))
         @lan_id3 = Integer(create_private_lan(@datacenter_name, @lan_name3))
 
-        @ip1, @ip2 = *Ionoscloud::IPBlocksApi.new.ipblocks_find_by_id(create_ipblock(@ipblock_name)).properties.ips
-        @ip3, @ip4 = *Ionoscloud::IPBlocksApi.new.ipblocks_find_by_id(create_ipblock(@ipblock_name2)).properties.ips
+        @ip1, @ip2 = *create_ipblock(@ipblock_name).ips
+        @ip3, @ip4 = *create_ipblock(@ipblock_name2).ips
 
         @networkloadbalancer1_name = 'puppet_module_test1'
         @networkloadbalancer2_name = 'puppet_module_test2'
