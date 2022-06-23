@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/9334afe6-9075-4f0a-a364-30e0ff4696ae/networkloadbalancers/eb042240-87d0-4f1f-b2fd-9e951f442353
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/18c8db24-aa32-47d6-9304-2dac1df74f70
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
       Content-Type:
       - application/json
       Accept:
@@ -19,18 +19,18 @@ http_interactions:
   response:
     status:
       code: 202
-      message: Accepted
+      message: ''
     headers:
-      Date:
-      - Fri, 30 Jul 2021 11:39:23 GMT
       Server:
-      - Apache/2.4.38 (Debian)
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 10:57:05 GMT
       Content-Length:
       - '0'
       Etag:
-      - e2b535a996dbfb1d9f6df1715ebcf525
+      - 808549d2fe212a6d9111ac3feff4da7b
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/bef748bb-1c9e-45db-8bff-37fc0626cbfb/status
+      - https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -47,21 +47,19 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Fri, 30 Jul 2021 11:39:23 GMT
+  recorded_at: Thu, 23 Jun 2022 10:57:05 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/bef748bb-1c9e-45db-8bff-37fc0626cbfb/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
       Content-Type:
       - application/json
       Accept:
@@ -72,16 +70,16 @@ http_interactions:
   response:
     status:
       code: 200
-      message: OK
+      message: ''
     headers:
-      Date:
-      - Fri, 30 Jul 2021 11:52:58 GMT
       Server:
-      - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '676'
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 11:00:58 GMT
       Content-Type:
       - application/json
+      Content-Length:
+      - '676'
       Etag:
       - 2ba22e58ca17bb728d522bba36cf8350
       X-Frame-Options:
@@ -100,39 +98,37 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
     body:
       encoding: UTF-8
       string: |
         {
-          "id" : "bef748bb-1c9e-45db-8bff-37fc0626cbfb/status",
+          "id" : "97d918c8-2410-49e8-9f71-db3b4cbaf086/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/bef748bb-1c9e-45db-8bff-37fc0626cbfb/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "eb042240-87d0-4f1f-b2fd-9e951f442353",
+                "id" : "18c8db24-aa32-47d6-9304-2dac1df74f70",
                 "type" : "networkloadbalancer",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/9334afe6-9075-4f0a-a364-30e0ff4696ae/networkloadbalancers/eb042240-87d0-4f1f-b2fd-9e951f442353"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/18c8db24-aa32-47d6-9304-2dac1df74f70"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 30 Jul 2021 11:52:58 GMT
+  recorded_at: Thu, 23 Jun 2022 11:00:58 GMT
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/9334afe6-9075-4f0a-a364-30e0ff4696ae/networkloadbalancers/2244f343-cf92-4b9a-a02e-951977bdbb9d
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/10cd63e1-1b59-4d90-8420-009e4e0b8941
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
       Content-Type:
       - application/json
       Accept:
@@ -143,18 +139,18 @@ http_interactions:
   response:
     status:
       code: 202
-      message: Accepted
+      message: ''
     headers:
-      Date:
-      - Fri, 30 Jul 2021 11:52:58 GMT
       Server:
-      - Apache/2.4.38 (Debian)
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 11:00:59 GMT
       Content-Length:
       - '0'
       Etag:
-      - e2b535a996dbfb1d9f6df1715ebcf525
+      - 808549d2fe212a6d9111ac3feff4da7b
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/b254b583-437e-447d-968e-ab3e028f0be5/status
+      - https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -171,21 +167,19 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Fri, 30 Jul 2021 11:52:58 GMT
+  recorded_at: Thu, 23 Jun 2022 11:00:59 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/b254b583-437e-447d-968e-ab3e028f0be5/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
       Content-Type:
       - application/json
       Accept:
@@ -196,16 +190,16 @@ http_interactions:
   response:
     status:
       code: 200
-      message: OK
+      message: ''
     headers:
-      Date:
-      - Fri, 30 Jul 2021 12:02:00 GMT
       Server:
-      - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '676'
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 11:03:31 GMT
       Content-Type:
       - application/json
+      Content-Length:
+      - '676'
       Etag:
       - 2ba22e58ca17bb728d522bba36cf8350
       X-Frame-Options:
@@ -224,28 +218,26 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
     body:
       encoding: UTF-8
       string: |
         {
-          "id" : "b254b583-437e-447d-968e-ab3e028f0be5/status",
+          "id" : "e7a56122-1653-4bb0-9050-2146382b4cb2/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/b254b583-437e-447d-968e-ab3e028f0be5/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "2244f343-cf92-4b9a-a02e-951977bdbb9d",
+                "id" : "10cd63e1-1b59-4d90-8420-009e4e0b8941",
                 "type" : "networkloadbalancer",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/9334afe6-9075-4f0a-a364-30e0ff4696ae/networkloadbalancers/2244f343-cf92-4b9a-a02e-951977bdbb9d"
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/10cd63e1-1b59-4d90-8420-009e4e0b8941"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Fri, 30 Jul 2021 12:02:00 GMT
+  recorded_at: Thu, 23 Jun 2022 11:03:31 GMT
 recorded_with: VCR 6.0.0

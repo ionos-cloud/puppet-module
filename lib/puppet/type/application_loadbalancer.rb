@@ -55,7 +55,7 @@ Puppet::Type.newtype(:application_loadbalancer) do
   end
 
   newproperty(:rules, array_matching: :all) do
-    desc 'A list of flow logs associated to the Application Load Balancer.'
+    desc 'A list of forwarding rules associated to the Application Load Balancer.'
 
     def insync?(is)
       PuppetX::IonoscloudX::Helper.objects_match(

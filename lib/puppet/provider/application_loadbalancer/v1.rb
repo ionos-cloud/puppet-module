@@ -170,19 +170,18 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
     return if @property_flush.empty?
 
     entities_headers = PuppetX::IonoscloudX::Helper.sync_objects(
-      @property_hash[:rules], @property_flush[:rules], [@property_hash[:datacenter_id], @property_hash[:id]],
+      resource[:rules], @property_flush[:rules], [@property_hash[:datacenter_id], @property_hash[:id]],
       :update_application_loadbalancer_rule, :create_application_loadbalancer_rule, :delete_application_loadbalancer_rule
     )
 
     changeable_properties = [:ips, :lb_private_ips, :listener_lan, :target_lan]
 
-    changes = Hash[*changeable_properties.flat_map { |v| [ v, @property_flush[v] ] } ].delete_if { |k, v| v.nil? || v == @property_hash[k] }
+    changes = Hash[*changeable_properties.flat_map { |v| [ v, @property_flush[v] ] } ].delete_if { |k, v| v.nil? || v == resource[k] }
 
-    changes[:ips] = @property_hash[:ips] if changes[:ips].nil?
+    changes[:ips] = resource[:ips] if changes[:ips].nil?
 
     changes = Ionoscloud::NetworkLoadBalancerProperties.new(**changes)
-    Puppet.info "Updating Application Load Balancer #{@property_hash[:name]} with #{changes}"
-
+    Puppet.info "Updating Application Load Balancer #{resource[:name]} with #{changes}"
     _, _, headers = PuppetX::IonoscloudX::Helper.application_loadbalancers_api.datacenters_applicationloadbalancers_patch_with_http_info(
       @property_hash[:datacenter_id], @property_hash[:id], changes
     )
@@ -192,9 +191,9 @@ Puppet::Type.type(:application_loadbalancer).provide(:v1) do
 
     all_headers.each { |headers| PuppetX::IonoscloudX::Helper.wait_request(headers) }
 
-    changeable_properties.each do |property|
-      @property_hash[property] = @property_flush[property] if @property_flush[property]
-    end
+    # changeable_properties.each do |property|
+    #   @property_hash[property] = @property_flush[property] if @property_flush[property]
+    # end
     @property_flush = {}
   end
 end

@@ -17,8 +17,17 @@ describe provider_class do
         @lan_id2 = Integer(create_public_lan(@datacenter_name, @lan_name2))
         @lan_id3 = Integer(create_private_lan(@datacenter_name, @lan_name3))
 
-        @ip1, @ip2 = *create_ipblock(@ipblock_name).ips
-        @ip3, @ip4 = *create_ipblock(@ipblock_name2).ips
+        @ipblock1_id = create_ipblock(@ipblock_name)
+        Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
+          @ipblock1 = instance if instance.id == @ipblock1_id
+        end
+        @ip1, @ip2 = *@ipblock1.ips
+
+        @ipblock2_id = create_ipblock(@ipblock_name2)
+        Puppet::Type.type(:ipblock).provider(:v1).instances.each do |instance|
+          @ipblock2 = instance if instance.id == @ipblock2_id
+        end
+        @ip3, @ip4 = *@ipblock2.ips
 
         @networkloadbalancer1_name = 'puppet_module_test1'
         @networkloadbalancer2_name = 'puppet_module_test2'
