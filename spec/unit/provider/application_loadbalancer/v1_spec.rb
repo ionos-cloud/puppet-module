@@ -176,98 +176,97 @@ describe provider_class do
       end
     end
 
-    it 'updates application_loadbalancer rule' do
-      next
-      VCR.use_cassette('application_loadbalancer_update4') do
-        @provider1.rules = [
-          {
-            'name' => 'regula',
-            'protocol' => 'HTTP',
-            'listener_ip' => @ip2,
-            'listener_port' => 49,
-            'client_timeout' => 50_000,
-            'server_certificates' => [
-            ],
-            'http_rules' => [
-              {
-                'name' => 'nume3',
-                'type' => 'STATIC',
-                'response_message' => 'Test message.',
-                'status_code' => 303,
-                'conditions' => [
-                  {
-                    'type' => 'PATH',
-                    'condition' => 'STARTS_WITH',
-                    'negate' => true,
-                    'value' => 'Sunday',
-                  },
-                ],
-              },
-              {
-                'name' => 'nume2',
-                'type' => 'STATIC',
-                'status_code' => 599,
-                'response_message' => 'Application Still Down',
-                'content_type' => 'application/json',
-                'conditions' => [
-                  {
-                    'type' => 'HEADER',
-                    'condition' => 'STARTS_WITH',
-                    'negate' => true,
-                    'key' => nil,
-                    'value' => 'Friday',
-                  },
-                ],
-              },
-            ]
-          },
-          {
-            'name' => 'regula2',
-            'protocol' => 'HTTP',
-            'listener_ip' => @ip1,
-            'listener_port' => 23,
-            'client_timeout' => 45_000,
-            'server_certificates' => [
-            ],
-            'http_rules' => [
-            ]
-          },
-        ]
-        @provider1.flush
-        updated_instance = nil
-        provider_class.instances.each do |instance|
-          updated_instance = instance if instance.name == @application_loadbalancer1_name
-        end
+    # it 'updates application_loadbalancer rule' do
+    #   VCR.use_cassette('application_loadbalancer_update4') do
+    #     @provider1.rules = [
+    #       {
+    #         'name' => 'regula',
+    #         'protocol' => 'HTTP',
+    #         'listener_ip' => @ip2,
+    #         'listener_port' => 49,
+    #         'client_timeout' => 50_000,
+    #         'server_certificates' => [
+    #         ],
+    #         'http_rules' => [
+    #           {
+    #             'name' => 'nume3',
+    #             'type' => 'STATIC',
+    #             'response_message' => 'Test message.',
+    #             'status_code' => 303,
+    #             'conditions' => [
+    #               {
+    #                 'type' => 'PATH',
+    #                 'condition' => 'STARTS_WITH',
+    #                 'negate' => true,
+    #                 'value' => 'Sunday',
+    #               },
+    #             ],
+    #           },
+    #           {
+    #             'name' => 'nume2',
+    #             'type' => 'STATIC',
+    #             'status_code' => 599,
+    #             'response_message' => 'Application Still Down',
+    #             'content_type' => 'application/json',
+    #             'conditions' => [
+    #               {
+    #                 'type' => 'HEADER',
+    #                 'condition' => 'STARTS_WITH',
+    #                 'negate' => true,
+    #                 'key' => nil,
+    #                 'value' => 'Friday',
+    #               },
+    #             ],
+    #           },
+    #         ]
+    #       },
+    #       {
+    #         'name' => 'regula2',
+    #         'protocol' => 'HTTP',
+    #         'listener_ip' => @ip1,
+    #         'listener_port' => 23,
+    #         'client_timeout' => 45_000,
+    #         'server_certificates' => [
+    #         ],
+    #         'http_rules' => [
+    #         ]
+    #       },
+    #     ]
+    #     @provider1.flush
+    #     updated_instance = nil
+    #     provider_class.instances.each do |instance|
+    #       updated_instance = instance if instance.name == @application_loadbalancer1_name
+    #     end
 
-        expect(updated_instance.rules.first[:name]).to eq('regula')
-        expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
-        expect(updated_instance.rules.first[:listener_ip]).to eq(@ip2)
-        expect(updated_instance.rules.first[:listener_port]).to eq(49)
-        expect(updated_instance.rules.first[:client_timeout]).to eq(50_000)
-        expect(updated_instance.rules.first[:server_certificates]).to eq([])
-        expect(updated_instance.rules.first[:http_rules].first[:name]).to eq('nume3')
-        expect(updated_instance.rules.first[:http_rules].first[:type]).to eq('STATIC')
-        expect(updated_instance.rules.first[:http_rules].first[:response_message]).to eq('Test message.')
-        expect(updated_instance.rules.first[:http_rules].first[:status_code]).to eq(303)
-        expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
-                                                                                  {
-                                                                                    type: 'PATH',
-                                                                                    condition: 'STARTS_WITH',
-                                                                                    negate: true,
-                                                                                    key: nil,
-                                                                                    value: 'Sunday',
-                                                                                  },
-                                                                                ])
+    #     expect(updated_instance.rules.first[:name]).to eq('regula')
+    #     expect(updated_instance.rules.first[:protocol]).to eq('HTTP')
+    #     expect(updated_instance.rules.first[:listener_ip]).to eq(@ip2)
+    #     expect(updated_instance.rules.first[:listener_port]).to eq(49)
+    #     expect(updated_instance.rules.first[:client_timeout]).to eq(50_000)
+    #     expect(updated_instance.rules.first[:server_certificates]).to eq([])
+    #     expect(updated_instance.rules.first[:http_rules].first[:name]).to eq('nume3')
+    #     expect(updated_instance.rules.first[:http_rules].first[:type]).to eq('STATIC')
+    #     expect(updated_instance.rules.first[:http_rules].first[:response_message]).to eq('Test message.')
+    #     expect(updated_instance.rules.first[:http_rules].first[:status_code]).to eq(303)
+    #     expect(updated_instance.rules.first[:http_rules].first[:conditions]).to eq([
+    #                                                                                  {
+    #                                                                                    type: 'PATH',
+    #                                                                                    condition: 'STARTS_WITH',
+    #                                                                                    negate: true,
+    #                                                                                    key: nil,
+    #                                                                                    value: 'Sunday',
+    #                                                                                  },
+    #                                                                                ])
 
-        expect(updated_instance.rules[1][:name]).to eq('regula2')
-        expect(updated_instance.rules[1][:protocol]).to eq('HTTP')
-        expect(updated_instance.rules[1][:listener_ip]).to eq(@ip1)
-        expect(updated_instance.rules[1][:listener_port]).to eq(23)
-        expect(updated_instance.rules[1][:server_certificates]).to eq([])
-        expect(updated_instance.rules[1][:client_timeout]).to eq(45_000)
-        expect(updated_instance.rules[1][:http_rules]).to eq([])
-      end
-    end
+    #     expect(updated_instance.rules[1][:name]).to eq('regula2')
+    #     expect(updated_instance.rules[1][:protocol]).to eq('HTTP')
+    #     expect(updated_instance.rules[1][:listener_ip]).to eq(@ip1)
+    #     expect(updated_instance.rules[1][:listener_port]).to eq(23)
+    #     expect(updated_instance.rules[1][:server_certificates]).to eq([])
+    #     expect(updated_instance.rules[1][:client_timeout]).to eq(45_000)
+    #     expect(updated_instance.rules[1][:http_rules]).to eq([])
+    #   end
+    # end
 
     it 'updates application_loadbalancer add rule' do
       VCR.use_cassette('application_loadbalancer_update5') do
