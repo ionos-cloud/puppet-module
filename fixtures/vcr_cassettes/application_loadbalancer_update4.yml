@@ -1,0 +1,184 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34/forwardingrules
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"name":"regula","protocol":"HTTP","listenerIp":"85.215.167.214","listenerPort":49,"clientTimeout":50000,"serverCertificates":[],"httpRules":[{"name":"nume3","type":"STATIC","statusCode":303,"responseMessage":"Test
+        message.","conditions":[{"type":"PATH","condition":"STARTS_WITH","negate":true,"value":"Sunday"}]},{"name":"nume2","type":"STATIC","statusCode":599,"responseMessage":"Application
+        Still Down","contentType":"application/json","conditions":[{"type":"HEADER","condition":"STARTS_WITH","negate":true,"value":"Friday"}]}]}}'
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 09:20:03 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1580'
+      Etag:
+      - 01f8a61026d78c10e8b37f6b03c57d03
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/28d5537a-c01c-4c42-8217-d6e93ec96ec8/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "c1209d5c-1154-4c26-b7fd-d6fbf3790d0a",
+          "type" : "forwarding-rule",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34/forwardingrules/c1209d5c-1154-4c26-b7fd-d6fbf3790d0a",
+          "metadata" : {
+            "etag" : "01f8a61026d78c10e8b37f6b03c57d03",
+            "createdDate" : "2022-06-23T09:20:03Z",
+            "createdBy" : "username",
+            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "lastModifiedDate" : "2022-06-23T09:20:03Z",
+            "lastModifiedBy" : "username",
+            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "state" : "BUSY"
+          },
+          "properties" : {
+            "name" : "regula",
+            "protocol" : "HTTP",
+            "listenerIp" : "85.215.167.214",
+            "listenerPort" : 49,
+            "clientTimeout" : 50000,
+            "serverCertificates" : [ ],
+            "httpRules" : [ {
+              "name" : "nume3",
+              "type" : "STATIC",
+              "statusCode" : 303,
+              "responseMessage" : "Test message.",
+              "conditions" : [ {
+                "type" : "PATH",
+                "condition" : "STARTS_WITH",
+                "negate" : true,
+                "key" : null,
+                "value" : "Sunday"
+              } ]
+            }, {
+              "name" : "nume2",
+              "type" : "STATIC",
+              "statusCode" : 599,
+              "responseMessage" : "Application Still Down",
+              "contentType" : "application/json",
+              "conditions" : [ {
+                "type" : "HEADER",
+                "condition" : "STARTS_WITH",
+                "negate" : true,
+                "key" : null,
+                "value" : "Friday"
+              } ]
+            } ]
+          }
+        }
+  recorded_at: Thu, 23 Jun 2022 09:20:03 GMT
+- request:
+    method: post
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34/forwardingrules
+    body:
+      encoding: UTF-8
+      string: '{"properties":{"name":"regula2","protocol":"HTTP","listenerIp":"85.215.167.212","listenerPort":23,"clientTimeout":45000,"serverCertificates":[],"httpRules":[]}}'
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.14.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 23 Jun 2022 09:20:04 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '933'
+      Etag:
+      - a6c16a03d200498ccddfba9d55cd0f8b
+      Location:
+      - https://api.ionos.com/cloudapi/v6/requests/d0d239d5-81a4-49ab-ad2a-ed6d5560ad12/status
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '50'
+      X-Ratelimit-Limit:
+      - '120'
+      X-Ratelimit-Remaining:
+      - '49'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "ea71d701-33a9-48eb-97fa-e86c7110aed8",
+          "type" : "forwarding-rule",
+          "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34/forwardingrules/ea71d701-33a9-48eb-97fa-e86c7110aed8",
+          "metadata" : {
+            "etag" : "a6c16a03d200498ccddfba9d55cd0f8b",
+            "createdDate" : "2022-06-23T09:20:04Z",
+            "createdBy" : "username",
+            "createdByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "lastModifiedDate" : "2022-06-23T09:20:04Z",
+            "lastModifiedBy" : "username",
+            "lastModifiedByUserId" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "state" : "BUSY"
+          },
+          "properties" : {
+            "name" : "regula2",
+            "protocol" : "HTTP",
+            "listenerIp" : "85.215.167.212",
+            "listenerPort" : 23,
+            "clientTimeout" : 45000,
+            "serverCertificates" : [ ],
+            "httpRules" : [ ]
+          }
+        }
+  recorded_at: Thu, 23 Jun 2022 09:20:04 GMT
+recorded_with: VCR 6.0.0

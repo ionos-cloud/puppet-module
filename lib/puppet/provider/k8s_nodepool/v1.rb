@@ -125,6 +125,10 @@ Puppet::Type.type(:k8s_nodepool).provide(:v1) do
     @property_flush[:max_node_count] = value
   end
 
+  def public_ips=(value)
+    @property_flush[:public_ips] = value
+  end
+
   def lans=(value)
     @property_flush[:lans] = value
   end

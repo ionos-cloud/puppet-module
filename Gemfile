@@ -16,7 +16,7 @@ end
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
-gem "ionoscloud", '6.0.2',     require: true
+gem "ionoscloud", '6.1.0',     require: true
 gem "ionoscloud-dbaas-postgres", '1.0.2',     require: true
 
 group :development do

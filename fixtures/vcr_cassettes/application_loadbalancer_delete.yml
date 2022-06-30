@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/18c8db24-aa32-47d6-9304-2dac1df74f70
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34
     body:
       encoding: US-ASCII
       string: ''
@@ -24,13 +24,13 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 23 Jun 2022 10:57:05 GMT
+      - Thu, 23 Jun 2022 09:22:36 GMT
       Content-Length:
       - '0'
       Etag:
       - 808549d2fe212a6d9111ac3feff4da7b
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status
+      - https://api.ionos.com/cloudapi/v6/requests/cdb051c3-7230-4d35-84c2-8fab8007edcb/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -50,10 +50,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Thu, 23 Jun 2022 10:57:05 GMT
+  recorded_at: Thu, 23 Jun 2022 09:22:36 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/cdb051c3-7230-4d35-84c2-8fab8007edcb/status
     body:
       encoding: US-ASCII
       string: ''
@@ -75,11 +75,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 23 Jun 2022 11:00:58 GMT
+      - Thu, 23 Jun 2022 09:24:58 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '676'
+      - '684'
       Etag:
       - 2ba22e58ca17bb728d522bba36cf8350
       X-Frame-Options:
@@ -102,27 +102,27 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "97d918c8-2410-49e8-9f71-db3b4cbaf086/status",
+          "id" : "cdb051c3-7230-4d35-84c2-8fab8007edcb/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/97d918c8-2410-49e8-9f71-db3b4cbaf086/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/cdb051c3-7230-4d35-84c2-8fab8007edcb/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "18c8db24-aa32-47d6-9304-2dac1df74f70",
-                "type" : "networkloadbalancer",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/18c8db24-aa32-47d6-9304-2dac1df74f70"
+                "id" : "2f83c4c6-4ff9-4a49-b71c-878ef3256b34",
+                "type" : "applicationloadbalancer",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/2f83c4c6-4ff9-4a49-b71c-878ef3256b34"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Thu, 23 Jun 2022 11:00:58 GMT
+  recorded_at: Thu, 23 Jun 2022 09:24:58 GMT
 - request:
     method: delete
-    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/10cd63e1-1b59-4d90-8420-009e4e0b8941
+    uri: https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/8e775943-a489-4618-8002-3bfa022efbe4
     body:
       encoding: US-ASCII
       string: ''
@@ -144,13 +144,13 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 23 Jun 2022 11:00:59 GMT
+      - Thu, 23 Jun 2022 09:24:59 GMT
       Content-Length:
       - '0'
       Etag:
       - 808549d2fe212a6d9111ac3feff4da7b
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status
+      - https://api.ionos.com/cloudapi/v6/requests/82fcc176-86e4-4e7a-8aab-ec803bbfb210/status
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -170,10 +170,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: ''
-  recorded_at: Thu, 23 Jun 2022 11:00:59 GMT
+  recorded_at: Thu, 23 Jun 2022 09:24:59 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/82fcc176-86e4-4e7a-8aab-ec803bbfb210/status
     body:
       encoding: US-ASCII
       string: ''
@@ -195,11 +195,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 23 Jun 2022 11:03:31 GMT
+      - Thu, 23 Jun 2022 09:27:21 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '676'
+      - '684'
       Etag:
       - 2ba22e58ca17bb728d522bba36cf8350
       X-Frame-Options:
@@ -222,22 +222,22 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id" : "e7a56122-1653-4bb0-9050-2146382b4cb2/status",
+          "id" : "82fcc176-86e4-4e7a-8aab-ec803bbfb210/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/e7a56122-1653-4bb0-9050-2146382b4cb2/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/82fcc176-86e4-4e7a-8aab-ec803bbfb210/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "10cd63e1-1b59-4d90-8420-009e4e0b8941",
-                "type" : "networkloadbalancer",
-                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/networkloadbalancers/10cd63e1-1b59-4d90-8420-009e4e0b8941"
+                "id" : "8e775943-a489-4618-8002-3bfa022efbe4",
+                "type" : "applicationloadbalancer",
+                "href" : "https://api.ionos.com/cloudapi/v6/datacenters/21bf8b94-6f88-4c9b-b4ec-c79269482dc5/applicationloadbalancers/8e775943-a489-4618-8002-3bfa022efbe4"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Thu, 23 Jun 2022 11:03:31 GMT
+  recorded_at: Thu, 23 Jun 2022 09:27:21 GMT
 recorded_with: VCR 6.0.0
