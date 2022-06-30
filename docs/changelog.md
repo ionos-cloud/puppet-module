@@ -27,3 +27,10 @@
 * removed public property from k8s_ccluster
 * removed gateway_ip property from k8s_nodepool
 * throwing error when finding multiple matches, updated docs
+
+ 
+## 6.1.0
+
+### Enhancements:
+
+* add application_loadbalancer and target_group
