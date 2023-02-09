@@ -25,7 +25,7 @@ Before you begin you will need to have [signed-up for a Ionoscloud account](http
 
 ### Requirements
 
-* Puppet 4.2.x or greater
+* Puppet 6.x or greater
 * Ruby 2.0 or greater
 * Ionoscloud Ruby SDK (ionoscloud)
 * Ionoscloud account

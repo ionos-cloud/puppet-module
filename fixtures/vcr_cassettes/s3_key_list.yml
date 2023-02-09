@@ -1,0 +1,311 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/um/users?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.23.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 15:59:53 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2941'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Vary:
+      - Origin
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id" : "users",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/um/users",
+          "items" : [ {
+            "id" : "f8c95908-27d1-4e02-b155-430695dae647",
+            "type" : "user",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647",
+            "metadata" : {
+              "etag" : "37a6259cc0c1dae299a7866489dff0bd",
+              "lastLogin" : null,
+              "createdDate" : "2022-10-27T12:25:13Z"
+            },
+            "properties" : {
+              "firstname" : "John",
+              "lastname" : "Doe",
+              "email" : "no-reply46899843@example.com",
+              "administrator" : true,
+              "forceSecAuth" : false,
+              "secAuthActive" : false,
+              "active" : true,
+              "s3CanonicalUserId" : "bfe43a58bd7e6ebf83018a423e40368c"
+            },
+            "entities" : {
+              "owns" : {
+                "id" : "f8c95908-27d1-4e02-b155-430695dae647/owns",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/owns"
+              },
+              "groups" : {
+                "id" : "f8c95908-27d1-4e02-b155-430695dae647/groups",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/groups"
+              },
+              "s3Keys" : {
+                "id" : "f8c95908-27d1-4e02-b155-430695dae647/s3keys",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/s3keys"
+              }
+            }
+          }, {
+            "id" : "99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "type" : "user",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0",
+            "metadata" : {
+              "etag" : "4c04ceb4108bbb3475b3f67502c030fe",
+              "lastLogin" : "2023-02-09T15:59:53Z",
+              "createdDate" : "2020-12-17T15:23:11Z"
+            },
+            "properties" : {
+              "firstname" : "Radu-Ionut",
+              "lastname" : "Mocanu",
+              "email" : "username",
+              "administrator" : true,
+              "forceSecAuth" : false,
+              "secAuthActive" : false,
+              "active" : true,
+              "s3CanonicalUserId" : "dcd3f33dfdaffa0ca0d2358591693c8d"
+            },
+            "entities" : {
+              "owns" : {
+                "id" : "99156d9e-eb3f-4024-a3a4-283be74699c0/owns",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/owns"
+              },
+              "groups" : {
+                "id" : "99156d9e-eb3f-4024-a3a4-283be74699c0/groups",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/groups"
+              },
+              "s3Keys" : {
+                "id" : "99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys",
+                "type" : "collection",
+                "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys"
+              }
+            }
+          } ],
+          "offset" : 0,
+          "limit" : 100,
+          "_links" : {
+            "self" : "https://api.ionos.com/cloudapi/v6/um/users?depth=1&offset=0&limit=100"
+          }
+        }
+  recorded_at: Thu, 09 Feb 2023 15:59:53 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/s3keys?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.23.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 15:59:53 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1046'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Vary:
+      - Origin
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "f8c95908-27d1-4e02-b155-430695dae647/s3keys",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/s3keys",
+          "items" : [ {
+            "id" : "54ae0c5ec4b3c552409a",
+            "type" : "s3key",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/s3keys/54ae0c5ec4b3c552409a",
+            "metadata" : {
+              "etag" : "60af21b638b81f4bb390acd7b58b698b",
+              "createdDate" : "2022-10-27T12:25:15"
+            },
+            "properties" : {
+              "secretKey" : "<Secret-Key>",
+              "active" : false
+            }
+          }, {
+            "id" : "13cb88ce1866d8a1fc1b",
+            "type" : "s3key",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/f8c95908-27d1-4e02-b155-430695dae647/s3keys/13cb88ce1866d8a1fc1b",
+            "metadata" : {
+              "etag" : "015ecaa62ea5556e0bbdc57ff7137ab9",
+              "createdDate" : "2022-10-27T12:25:35"
+            },
+            "properties" : {
+              "secretKey" : "<Secret-Key>",
+              "active" : true
+            }
+          } ]
+        }
+  recorded_at: Thu, 09 Feb 2023 15:59:53 GMT
+- request:
+    method: get
+    uri: https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys?depth=1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.23.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 15:59:54 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1046'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Vary:
+      - Origin
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Burst:
+      - '900'
+      X-Ratelimit-Limit:
+      - '1150'
+      X-Ratelimit-Remaining:
+      - '899'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Expose-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id" : "99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys",
+          "type" : "collection",
+          "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys",
+          "items" : [ {
+            "id" : "4c05f4d7368e035c3793",
+            "type" : "s3key",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys/4c05f4d7368e035c3793",
+            "metadata" : {
+              "etag" : "2a2ad6e9e529fd62578824b1ef86d083",
+              "createdDate" : "2022-10-25T14:36:31"
+            },
+            "properties" : {
+              "secretKey" : "<Secret-Key>",
+              "active" : false
+            }
+          }, {
+            "id" : "00aa5818b4bb0b89568a",
+            "type" : "s3key",
+            "href" : "https://api.ionos.com/cloudapi/v6/um/users/99156d9e-eb3f-4024-a3a4-283be74699c0/s3keys/00aa5818b4bb0b89568a",
+            "metadata" : {
+              "etag" : "ef185598b0471b787b2d611c9d9d9962",
+              "createdDate" : "2022-10-25T14:36:32"
+            },
+            "properties" : {
+              "secretKey" : "<Secret-Key>",
+              "active" : true
+            }
+          } ]
+        }
+  recorded_at: Thu, 09 Feb 2023 15:59:54 GMT
+recorded_with: VCR 6.1.0
