@@ -38,7 +38,7 @@ VCR.configure do |config|
     s3key_get_url_regex = %r{/um/users/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/s3keys}
     if s3key_get_url_regex.match?(rec.request.uri)
       JSON.parse(rec.response.body)['items'].each do |s3_key|
-        config.filter_sensitive_data('<Secret-Key>') do |interaction|
+        config.filter_sensitive_data('<Secret-Key>') do |_interaction|
           s3_key['properties']['secretKey']
         end
       end
@@ -48,15 +48,14 @@ VCR.configure do |config|
     if users_get_url_regex.match?(rec.request.uri)
       if rec.response.body != '' && JSON.parse(rec.response.body)['items']
         JSON.parse(rec.response.body)['items'].each do |user|
-          config.filter_sensitive_data('<s3-canonical-user-id>') do |interaction|
+          config.filter_sensitive_data('<s3-canonical-user-id>') do |_interaction|
             user['properties']['s3CanonicalUserId']
           end
 
-          if user['entities']['s3Keys']['items']
-            user['entities']['s3Keys']['items'].each do |s3_key|
-              config.filter_sensitive_data('<Secret-Key>') do |interaction|
-                s3_key['properties']['secretKey']
-              end
+          next unless user['entities']['s3Keys']['items']
+          user['entities']['s3Keys']['items'].each do |s3_key|
+            config.filter_sensitive_data('<Secret-Key>') do |_interaction|
+              s3_key['properties']['secretKey']
             end
           end
         end
