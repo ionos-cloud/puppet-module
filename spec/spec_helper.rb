@@ -35,6 +35,33 @@ VCR.configure do |config|
   config.before_record do |rec|
     filter_headers(rec, 'Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=')
 
+    s3key_get_url_regex = %r{/um/users/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/s3keys}
+    if s3key_get_url_regex.match?(rec.request.uri)
+      JSON.parse(rec.response.body)['items'].each do |s3_key|
+        config.filter_sensitive_data('<Secret-Key>') do |_interaction|
+          s3_key['properties']['secretKey']
+        end
+      end
+    end
+
+    users_get_url_regex = %r{/um/users}
+    if users_get_url_regex.match?(rec.request.uri)
+      if rec.response.body != '' && JSON.parse(rec.response.body)['items']
+        JSON.parse(rec.response.body)['items'].each do |user|
+          config.filter_sensitive_data('<s3-canonical-user-id>') do |_interaction|
+            user['properties']['s3CanonicalUserId']
+          end
+
+          next unless user['entities']['s3Keys']['items']
+          user['entities']['s3Keys']['items'].each do |s3_key|
+            config.filter_sensitive_data('<Secret-Key>') do |_interaction|
+              s3_key['properties']['secretKey']
+            end
+          end
+        end
+      end
+    end
+
     request_url_regex = %r{/requests/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)}
     rec.ignore! if request_url_regex.match?(rec.request.uri) && ['QUEUED', 'RUNNING'].include?(JSON.parse(rec.response.body)['metadata']['status'])
 

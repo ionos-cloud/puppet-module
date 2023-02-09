@@ -5,10 +5,10 @@ http_interactions:
     uri: https://api.ionos.com/cloudapi/v6/um/groups
     body:
       encoding: UTF-8
-      string: '{"properties":{"name":"puppet_module_test6f42342342432ef08d20f796d0ebc5ed","createDataCenter":"true","createSnapshot":"true","reserveIp":"true","accessActivityLog":"true","createPcc":"true","s3Privilege":"true","createBackupUnit":"true","createInternetAccess":"true","createK8sCluster":"true"}}'
+      string: '{"properties":{"name":"puppet_module_test6f423wgzxxevbvbqfqeee08d20f796d0ebc5ed","createDataCenter":"true","createSnapshot":"true","reserveIp":"true","accessActivityLog":"true","createPcc":"true","s3Privilege":"true","createBackupUnit":"true","createInternetAccess":"true","createK8sCluster":"true"}}'
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.23.0
       Content-Type:
       - application/json
       Accept:
@@ -19,20 +19,24 @@ http_interactions:
   response:
     status:
       code: 202
-      message: Accepted
+      message: ''
     headers:
-      Date:
-      - Wed, 26 May 2021 15:23:28 GMT
       Server:
-      - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '633'
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 16:33:37 GMT
       Content-Type:
       - application/json
+      Content-Length:
+      - '764'
+      Access-Control-Allow-Credentials:
+      - 'true'
       Etag:
-      - b82dd1b14ce4cf1b3629b782cdc1a1bb
+      - b8e74fb919189a9e583311b6c3468e5c
       Location:
-      - https://api.ionos.com/cloudapi/v6/requests/701cca41-4933-4496-966f-9592fe716ac5/status
+      - https://api.ionos.com/cloudapi/v6/requests/479d98f4-b942-4890-9c56-5c09c281863e/status
+      Vary:
+      - Origin
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -49,17 +53,17 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: |
         {
-          "id" : "dc44a6b6-54b6-482e-b1b0-83b58b2810b3",
+          "id" : "55e9d19f-45f5-4315-bbed-fd4f94f511f5",
           "type" : "group",
-          "href" : "https://api.ionos.com/cloudapi/v6/um/groups/dc44a6b6-54b6-482e-b1b0-83b58b2810b3",
+          "href" : "https://api.ionos.com/cloudapi/v6/um/groups/55e9d19f-45f5-4315-bbed-fd4f94f511f5",
           "properties" : {
-            "name" : "puppet_module_test6f42342342432ef08d20f796d0ebc5ed",
+            "name" : "puppet_module_test6f423wgzxxevbvbqfqeee08d20f796d0ebc5ed",
             "createDataCenter" : true,
             "createSnapshot" : true,
             "reserveIp" : true,
@@ -71,19 +75,23 @@ http_interactions:
             "createK8sCluster" : true,
             "createFlowLog" : false,
             "accessAndManageMonitoring" : false,
-            "accessAndManageCertificates" : false
+            "manageDBaaS" : false,
+            "manageRegistry" : false,
+            "manageDataplatform" : false,
+            "accessAndManageCertificates" : false,
+            "accessAndManageDns" : false
           }
         }
-  recorded_at: Wed, 26 May 2021 15:23:28 GMT
+  recorded_at: Thu, 09 Feb 2023 16:33:37 GMT
 - request:
     method: get
-    uri: https://api.ionos.com/cloudapi/v6/requests/701cca41-4933-4496-966f-9592fe716ac5/status
+    uri: https://api.ionos.com/cloudapi/v6/requests/479d98f4-b942-4890-9c56-5c09c281863e/status
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - ionos-cloud-sdk-ruby/v6
+      - puppet/v5.1.0_ionos-cloud-sdk-ruby/v6.1.0_puppet/7.23.0
       Content-Type:
       - application/json
       Accept:
@@ -94,18 +102,22 @@ http_interactions:
   response:
     status:
       code: 200
-      message: OK
+      message: ''
     headers:
-      Date:
-      - Wed, 26 May 2021 15:23:28 GMT
       Server:
-      - Apache/2.4.38 (Debian)
-      Content-Length:
-      - '602'
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 16:33:37 GMT
       Content-Type:
       - application/json
+      Content-Length:
+      - '602'
+      Access-Control-Allow-Credentials:
+      - 'true'
       Etag:
       - 2ba22e58ca17bb728d522bba36cf8350
+      Vary:
+      - Origin
       X-Frame-Options:
       - SAMEORIGIN
       X-Ratelimit-Burst:
@@ -122,28 +134,28 @@ http_interactions:
       - "*"
       Access-Control-Allow-Methods:
       - "*"
-      Access-Control-Allow-Credentials:
-      - 'true'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: |
         {
-          "id" : "701cca41-4933-4496-966f-9592fe716ac5/status",
+          "id" : "479d98f4-b942-4890-9c56-5c09c281863e/status",
           "type" : "request-status",
-          "href" : "https://api.ionos.com/cloudapi/v6/requests/701cca41-4933-4496-966f-9592fe716ac5/status",
+          "href" : "https://api.ionos.com/cloudapi/v6/requests/479d98f4-b942-4890-9c56-5c09c281863e/status",
           "metadata" : {
             "status" : "DONE",
             "message" : "Request has been successfully executed",
             "etag" : "2ba22e58ca17bb728d522bba36cf8350",
             "targets" : [ {
               "target" : {
-                "id" : "dc44a6b6-54b6-482e-b1b0-83b58b2810b3",
+                "id" : "55e9d19f-45f5-4315-bbed-fd4f94f511f5",
                 "type" : "group",
-                "href" : "https://api.ionos.com/cloudapi/v6/um/groups/dc44a6b6-54b6-482e-b1b0-83b58b2810b3"
+                "href" : "https://api.ionos.com/cloudapi/v6/um/groups/55e9d19f-45f5-4315-bbed-fd4f94f511f5"
               },
               "status" : "DONE"
             } ]
           }
         }
-  recorded_at: Wed, 26 May 2021 15:23:28 GMT
-recorded_with: VCR 6.0.0
+  recorded_at: Thu, 09 Feb 2023 16:33:37 GMT
+recorded_with: VCR 6.1.0
