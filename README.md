@@ -92,7 +92,7 @@ To demonstrate this on a CentOS 7 server, these steps could be followed.
 
         export IONOS_TOKEN="<token>"
 
-## Usage
+## Usage 
 
 A Puppet manifest uses a domain specific language, or DSL. This language allows resources and their states to be declared. Puppet will then build the resources and set the states as described in the manifest. The following snippet describes a simple LAN resource.
 
