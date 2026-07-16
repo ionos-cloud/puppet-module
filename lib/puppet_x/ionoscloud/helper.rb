@@ -11,6 +11,16 @@ module PuppetX
       def self.ionoscloud_api_client
         api_config = Ionoscloud::Configuration.new
 
+        unless ENV['IONOS_API_URL'].nil?
+          uri = URI.parse(ENV['IONOS_API_URL'])
+          raise Puppet::Error, "IONOS_API_URL must use HTTPS (got: #{uri.scheme})" if uri.scheme != 'https'
+
+          api_config.scheme = uri.scheme
+          api_config.host = uri.host
+          api_config.base_path = uri.path
+          api_config.server_index = nil
+        end
+
         if !ENV['IONOS_TOKEN'].nil?
           api_config.token = ENV['IONOS_TOKEN']
         elsif !ENV['IONOS_USERNAME'].nil? && !ENV['IONOS_PASSWORD'].nil?
@@ -18,15 +28,6 @@ module PuppetX
           api_config.password = ENV['IONOS_PASSWORD']
         else
           raise 'Either ionoscloud_token or ionoscloud_username and ionoscloud_password must be provided to access the Ionoscloud API.'
-        end
-
-        unless ENV['IONOS_API_URL'].nil?
-          uri = URI.parse(ENV['IONOS_API_URL'])
-
-          api_config.scheme = uri.scheme
-          api_config.host = uri.host
-          api_config.base_path = uri.path
-          api_config.server_index = nil
         end
 
         api_config.debugging = ENV['IONOS_DEBUG'] || false
@@ -45,6 +46,16 @@ module PuppetX
       def self.ionoscloud_dbaas_postgres_api_client
         api_config = IonoscloudDbaasPostgres::Configuration.new
 
+        unless ENV['IONOS_API_URL'].nil?
+          uri = URI.parse(ENV['IONOS_API_URL'])
+          raise Puppet::Error, "IONOS_API_URL must use HTTPS (got: #{uri.scheme})" if uri.scheme != 'https'
+
+          api_config.scheme = uri.scheme
+          api_config.host = uri.host
+          api_config.base_path = uri.path
+          api_config.server_index = nil
+        end
+
         if !ENV['IONOS_TOKEN'].nil?
           api_config.token = ENV['IONOS_TOKEN']
         elsif !ENV['IONOS_USERNAME'].nil? && !ENV['IONOS_PASSWORD'].nil?
@@ -52,15 +63,6 @@ module PuppetX
           api_config.password = ENV['IONOS_PASSWORD']
         else
           raise 'Either ionoscloud_token or ionoscloud_username and ionoscloud_password must be provided to access the Ionoscloud API.'
-        end
-
-        unless ENV['IONOS_API_URL'].nil?
-          uri = URI.parse(ENV['IONOS_API_URL'])
-
-          api_config.scheme = uri.scheme
-          api_config.host = uri.host
-          api_config.base_path = uri.path
-          api_config.server_index = nil
         end
 
         api_config.debugging = ENV['IONOS_DEBUG'] || false
@@ -1158,6 +1160,13 @@ module PuppetX
         return true if uuid_regex.match?(uuid.to_s.downcase)
         false
       end
+
+      def self.log_debug(msg)
+        sensitive_values = [ENV['IONOS_TOKEN'], ENV['IONOS_USERNAME'], ENV['IONOS_PASSWORD']].compact
+        masked = sensitive_values.reduce(msg.to_s) { |m, val| m.gsub(val, '[REDACTED]') }
+        Puppet.debug(masked)
+      end
+      private_class_method :log_debug
     end
   end
 end

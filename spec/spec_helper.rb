@@ -30,10 +30,12 @@ require 'puppetlabs_spec_helper/module_spec_helper'
 VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock
-  config.filter_sensitive_data('username') { ENV['IONOS_USERNAME'] }
+  config.filter_sensitive_data('<IONOS_USERNAME>') { ENV['IONOS_USERNAME'] } unless ENV['IONOS_USERNAME'].nil?
+  config.filter_sensitive_data('<IONOS_PASSWORD>') { ENV['IONOS_PASSWORD'] } unless ENV['IONOS_PASSWORD'].nil?
 
   config.before_record do |rec|
-    filter_headers(rec, 'Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=')
+    rec.request.headers['Authorization'] = ['<FILTERED>'] if rec.request.headers['Authorization']
+    rec.request.headers['X-Auth-Token'] = ['<FILTERED>'] if rec.request.headers['X-Auth-Token']
 
     s3key_get_url_regex = %r{/um/users/(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)/s3keys}
     if s3key_get_url_regex.match?(rec.request.uri)

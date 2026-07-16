@@ -3,6 +3,77 @@ require 'puppet_x/ionoscloud/helper'
 described_class = PuppetX::IonoscloudX::Helper
 
 describe described_class do
+  describe '#ionoscloud_api_client URL scheme validation' do
+    let(:mock_api_client) do
+      double('Ionoscloud::ApiClient',
+             default_headers: { 'User-Agent' => 'ionoscloud-ruby/6.1.0' },
+             'user_agent=' => nil)
+    end
+
+    before(:each) do
+      allow(Ionoscloud::ApiClient).to receive(:new).and_return(mock_api_client)
+      allow(Puppet).to receive(:version).and_return('7.0.0')
+      ENV['IONOS_TOKEN'] = 'test-token'
+    end
+
+    after(:each) do
+      ENV.delete('IONOS_API_URL')
+      ENV.delete('IONOS_TOKEN')
+    end
+
+    it 'accepts a valid HTTPS URL without raising an error' do
+      ENV['IONOS_API_URL'] = 'https://api.ionos.com/cloudapi/v6'
+      expect { described_class.ionoscloud_api_client }.not_to raise_error
+    end
+
+    it 'raises Puppet::Error for an HTTP URL' do
+      ENV['IONOS_API_URL'] = 'http://api.ionos.com/cloudapi/v6'
+      expect { described_class.ionoscloud_api_client }.to raise_error(Puppet::Error, /IONOS_API_URL must use HTTPS/)
+    end
+
+    it 'raises Puppet::Error for an ftp:// URL' do
+      ENV['IONOS_API_URL'] = 'ftp://api.ionos.com/cloudapi/v6'
+      expect { described_class.ionoscloud_api_client }.to raise_error(Puppet::Error, /IONOS_API_URL must use HTTPS/)
+    end
+
+    it 'skips scheme validation when IONOS_API_URL is not set' do
+      ENV.delete('IONOS_API_URL')
+      expect { described_class.ionoscloud_api_client }.not_to raise_error
+    end
+  end
+
+  describe '#log_debug' do
+    after(:each) do
+      ENV.delete('IONOS_TOKEN')
+      ENV.delete('IONOS_USERNAME')
+      ENV.delete('IONOS_PASSWORD')
+    end
+
+    it 'redacts IONOS_TOKEN value in debug output' do
+      ENV['IONOS_TOKEN'] = 'super-secret-token'
+      expect(Puppet).to receive(:debug).with('[REDACTED]')
+      described_class.send(:log_debug, 'super-secret-token')
+    end
+
+    it 'redacts IONOS_USERNAME value in debug output' do
+      ENV['IONOS_USERNAME'] = 'testuser@example.com'
+      expect(Puppet).to receive(:debug).with('[REDACTED]')
+      described_class.send(:log_debug, 'testuser@example.com')
+    end
+
+    it 'redacts IONOS_PASSWORD value in debug output' do
+      ENV['IONOS_PASSWORD'] = 'sekr3tpassword'
+      expect(Puppet).to receive(:debug).with('[REDACTED]')
+      described_class.send(:log_debug, 'sekr3tpassword')
+    end
+
+    it 'passes non-credential messages through unchanged' do
+      expect(Puppet).to receive(:debug).with('non-sensitive message')
+      described_class.send(:log_debug, 'non-sensitive message')
+    end
+  end
+
+
   describe '#sync_objects' do
     it 'calls nothing and return [] if target is nil' do
       existing = []
